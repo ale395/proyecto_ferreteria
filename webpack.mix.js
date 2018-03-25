@@ -3,8 +3,8 @@ let mix = require('laravel-mix');
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');
 
-mix.styles(['node_modules/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css',
-	'node_modules/gentelella/vendors/font-awesome/css/font-awesome.min.css',
+mix.styles(['node_modules/gentelella/vendors/bootstrap/dist/css/bootstrap.css',
+	'node_modules/gentelella/vendors/font-awesome/css/font-awesome.css',
 	'node_modules/gentelella/vendors/nprogress/nprogress.css',
 	'node_modules/gentelella/vendors/iCheck/skins/flat/green.css',
 	'node_modules/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css',

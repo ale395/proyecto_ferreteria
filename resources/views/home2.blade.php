@@ -11,7 +11,7 @@
     <title>Gentelella Alela! | </title>
 
     <!-- Custom Theme Style -->
-    <link href="css/app.css" rel="stylesheet">
+    <link href="{{asset('css/app.css')}}" rel="stylesheet">
   </head>
 
   <body class="nav-md">
@@ -965,7 +965,7 @@
     </div>
 
     <!-- Custom Theme Scripts -->
-    <script src="js/app.js"></script>
+    <script src="{{asset('js/app.js')}}"></script>
   
   </body>
 </html>
