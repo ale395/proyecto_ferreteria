@@ -1,8 +1,8 @@
 <?php
 
 Route::get('/', function () {
-    //return view('welcome');
-    return view('login');
+    return view('welcome');
+    //return view('login');
     //return view('home2');
 });
 
