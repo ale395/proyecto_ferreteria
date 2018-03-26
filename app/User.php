@@ -4,10 +4,16 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\UserTrait;
+use Illuminate\Auth\UserInterface;
+use Illuminate\Auth\Reminders\RemindableTrait;
+use Illuminate\Auth\Reminders\RemindableInterface;
+use Zizaco\Entrust\HasRole;//importamos la clase HasRole
 
-class User extends Authenticatable
+class User extends Authenticatable implements UserInterface, RemindableInterface
 {
     use Notifiable;
+    use HasRole;
 
     /**
      * The attributes that are mass assignable.
