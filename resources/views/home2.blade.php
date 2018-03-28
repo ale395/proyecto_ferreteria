@@ -964,6 +964,10 @@
       </div>
     </div>
 
+    <main class="py-4">
+        @yield('login')
+    </main>
+
     <!-- Custom Theme Scripts -->
     <script src="{{asset('js/app.js')}}"></script>
   
