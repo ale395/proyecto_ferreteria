@@ -259,6 +259,9 @@
         </div>
         <!-- /top navigation -->
 
+        <!-- extendemos con todo lo que tenemos -->
+        @yield('content')
+
         <!-- page content -->
         <div class="right_col" role="main">
           <!-- top tiles -->
