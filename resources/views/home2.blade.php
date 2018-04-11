@@ -156,9 +156,21 @@
               <a data-toggle="tooltip" data-placement="top" title="Lock">
                 <span class="fa fa-eye-slash" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+              <a class="dropdown-item" href="{{ route('logout') }}"
+               onclick="event.preventDefault();
+                             document.getElementById('logout-form').submit();">
+                  {{ __('Logout') }}
+              </a>
+
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+              </form>
+              <!--
+              <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+              document.getElementById('logout-form').submit();">
                 <span class="fa fa-power-off" aria-hidden="true"></span>
               </a>
+              -->
             </div>
             <!-- /menu footer buttons -->
           </div>
@@ -175,7 +187,7 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="images/img.jpg" alt="">{{ Auth::user()->name }}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -201,7 +213,7 @@
                       <a>
                         <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                         <span>
-                          <span>John Smith</span>
+                          <span>{{ Auth::user()->name }}</span>
                           <span class="time">3 mins ago</span>
                         </span>
                         <span class="message">
@@ -213,7 +225,7 @@
                       <a>
                         <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                         <span>
-                          <span>John Smith</span>
+                          <span>{{ Auth::user()->name }}</span>
                           <span class="time">3 mins ago</span>
                         </span>
                         <span class="message">
@@ -225,7 +237,7 @@
                       <a>
                         <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                         <span>
-                          <span>John Smith</span>
+                          <span>{{ Auth::user()->name }}</span>
                           <span class="time">3 mins ago</span>
                         </span>
                         <span class="message">
@@ -237,7 +249,7 @@
                       <a>
                         <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
                         <span>
-                          <span>John Smith</span>
+                          <span>{{ Auth::user()->name }}</span>
                           <span class="time">3 mins ago</span>
                         </span>
                         <span class="message">
