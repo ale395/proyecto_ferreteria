@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'FerreGest'),
+    'name' => 'Ferretería',//env('APP_NAME', 'FerreGest'),
 
     /*
     |--------------------------------------------------------------------------
@@ -147,6 +147,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Laraveles\Spanish\SpanishServiceProvider::class,
+        Caffeinated\Shinobi\ShinobiServiceProvider::class,
 
         /*
          * Package Service Providers...

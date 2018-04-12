@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\UserTrait;
 use Illuminate\Auth\UserInterface;
+use Caffeinated\Shinobi\Traits\ShinobiTrait;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 //use Zizaco\Entrust\HasRole;//importamos la clase HasRole
@@ -13,6 +14,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class User extends Authenticatable 
 {
     use Notifiable;
+    use ShinobiTrait;
     //use HasRole;
 
     public function roles()
