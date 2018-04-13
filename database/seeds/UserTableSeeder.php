@@ -13,33 +13,38 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $role_user = Role::where('slug', 'usuario')->first();
+        $role_user = Role::where('slug', 'operador')->first();
         $role_admin = Role::where('slug', 'administrador')->first();
 
-        /*$role_user->assignPermission(4);
-        $role_user->assignPermission(3);
-        $role_user->assignPermission(2);
-        $role_user->assignPermission(1);
-        $role_user->save();*/
-
-        /*$user = new User();
-        $user->name = 'User';
-        $user->email = 'user@ferregest.com';
-        $user->password = bcrypt('user');
+        $user = new User();
+        $user->name = 'Alexis Fernández';
+        $user->email = 'alexis.fernandez.rc@gmail.com';
+        $user->password = bcrypt('afernandez');
         $user->save();
-        $user->roles()->attach($role_user);*/
+        $user->roles()->attach($role_user);
 
-        //$user = User::find(1);
-        //$user->roles()->attach($role_user);
+        $user = new User();
+        $user->name = 'Yanina Sosa';
+        $user->email = 'yani_rsc@hotmail.com';
+        $user->password = bcrypt('Belen28');
+        $user->save();
+        $user->roles()->attach($role_admin);
 
-        $role_user->revokePermission(2);
-        //$role_user->assignPermission(4);
-
-        /*$user = new User();
-        $user->name = 'Admin';
+        //usuario administrador del sistema
+        $user = new User();
+        $user->name = 'Administrador';
         $user->email = 'admin@ferregest.com';
-        $user->password = bcrypt('admin');
+        $user->password = bcrypt('administrador');
         $user->save();
-        $user->roles()->attach($role_admin);*/
+        $user->roles()->attach($role_admin);
+
+        //usuario generico
+        $user = new User();
+        $user->name = 'Usuario';
+        $user->email = 'usuario@ferregest.com';
+        $user->password = bcrypt('usuario');
+        $user->save();
+        $user->roles()->attach($role_user);
+
     }
 }
