@@ -9,20 +9,18 @@ use Illuminate\Auth\UserInterface;
 use Caffeinated\Shinobi\Traits\ShinobiTrait;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
-//use Zizaco\Entrust\HasRole;//importamos la clase HasRole
 
 class User extends Authenticatable 
 {
     use Notifiable;
     use ShinobiTrait;
-    //use HasRole;
 
-    public function roles()
+    /*public function roles()
     {
         return $this
             ->belongsToMany('App\Role')
             ->withTimestamps();
-    }
+    }*/
 
     /**
      * The attributes that are mass assignable.
@@ -42,7 +40,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function authorizeRoles($roles)
+    /*public function authorizeRoles($roles)
     {
         if ($this->hasAnyRole($roles)) {
             return true;
@@ -72,5 +70,5 @@ class User extends Authenticatable
             return true;
         }
         return false;
-    }
+    }*/
 }

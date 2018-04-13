@@ -13,24 +13,33 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $role_user = Role::where('name', 'user')->first();
-        $role_admin = Role::where('name', 'admin')->first();
+        $role_user = Role::where('slug', 'usuario')->first();
+        $role_admin = Role::where('slug', 'administrador')->first();
 
-        $user = new User();
+        /*$role_user->assignPermission(4);
+        $role_user->assignPermission(3);
+        $role_user->assignPermission(2);
+        $role_user->assignPermission(1);
+        $role_user->save();*/
+
+        /*$user = new User();
         $user->name = 'User';
         $user->email = 'user@ferregest.com';
         $user->password = bcrypt('user');
         $user->save();
-        $user->roles()->attach($role_user);
+        $user->roles()->attach($role_user);*/
 
-        $user = User::find(1);
-        $user->roles()->attach($role_user);
+        //$user = User::find(1);
+        //$user->roles()->attach($role_user);
 
-        $user = new User();
+        $role_user->revokePermission(2);
+        //$role_user->assignPermission(4);
+
+        /*$user = new User();
         $user->name = 'Admin';
         $user->email = 'admin@ferregest.com';
         $user->password = bcrypt('admin');
         $user->save();
-        $user->roles()->attach($role_admin);
+        $user->roles()->attach($role_admin);*/
     }
 }

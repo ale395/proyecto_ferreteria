@@ -3,32 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Caffeinated\Shinobi\Traits\ShinobiTrait;
 
 class Role extends Model
 {
-    
-    public function users()
-	{
-    	return $this
-        	->belongsToMany('App\User')
-        	->withTimestamps();
-	}
-
-	public function permissions()
-    {
-        return $this
-            ->belongsToMany('App\Permission')
-            ->withTimestamps();
-    }
+    use ShinobiTrait;
 
 	 /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+    protected $table = 'roles';
+
     protected $fillable = [
         'id', 'name', 'description',
     ];
-
 
 }

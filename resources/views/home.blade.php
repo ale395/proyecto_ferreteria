@@ -48,10 +48,12 @@
                     <ul class="nav child_menu">
                         <!--<li><a href="#level1_1">Level One</a>-->
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                          @can('modulos.index')
                           <ul class="nav child_menu">
                             <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
                             </li>
                           </ul>
+                          @endcan
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
