@@ -8,8 +8,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/home2', function () {
-    return view('home2');
+Route::middleware(['auth'])->group(function() {
+	Route::resource('modulos', 'ModuloController');
 });
-
-Route::resource('modulos', 'ModuloController');
