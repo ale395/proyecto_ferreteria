@@ -44,5 +44,30 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un módulo del sistema';
         $permission->save();*/
 
+        //Permisos para el formulario de familias
+        $permission = new Permission();
+        $permission->name = 'Crear Familia';
+        $permission->slug = 'familias.create';
+        $permission->description = 'Permite la creación de nuevas familias en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Familia';
+        $permission->slug = 'familias.destroy';
+        $permission->description = 'Permite la eliminación de familias del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Familia';
+        $permission->slug = 'familias.edit';
+        $permission->description = 'Permite modificar los valores de una familia';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Familias';
+        $permission->slug = 'familias.index';
+        $permission->description = 'Permite ver el listado de familias del sistema';
+        $permission->save();
+
     }
 }
