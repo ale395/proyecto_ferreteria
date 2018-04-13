@@ -10,5 +10,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->group(function() {
 	Route::resource('modulos', 'ModuloController');
-	Route::resource('familia', 'FamiliaController');
+	Route::resource('familias', 'FamiliaController');
 });

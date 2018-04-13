@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Familia;
 use Illuminate\Http\Request;
+use App\Http\Requests\CrearFamiliasRequest;
 
 class FamiliaController extends Controller
 {
@@ -37,7 +38,7 @@ class FamiliaController extends Controller
     public function store(Request $request)
     {
         Familia::create($request->all())->save();
-        return redirect()->route('familia.index');
+        return redirect()->route('familias.index');
     }
 
     /**
@@ -72,13 +73,13 @@ class FamiliaController extends Controller
     public function update(Request $request, Familia $familia)
     {
         if (!$familia->isDirty()) {
-            $modulo->descripcion = $request->descripcion;
-            $modulo->modulo = $request->modulo;
+            $familia->num_familia = $request->num_familia;
+            $familia->descripcion = $request->descripcion;
         }
 
-        $modulo->save();
+        $familia->save();
 
-        return redirect()->route('modulos.index');
+        return redirect()->route('familias.index');
     }
 
     /**
@@ -90,6 +91,6 @@ class FamiliaController extends Controller
     public function destroy(Familia $familia)
     {
         $familia->delete();
-        return redirect()->route('familia.index');
+        return redirect()->route('familias.index');
     }
 }

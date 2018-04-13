@@ -11,7 +11,7 @@
 			</tr>	
 		</thead>
 		<tbody>
-			<a href="{{ route('modulos.create') }}">
+			<a href="{{ route('familias.create') }}">
 				<button class="btn btn-success">Nuevo Registro</i></button>
 			</a>
 			@foreach($familias as $familia)
@@ -19,9 +19,9 @@
 					<td>{{$familia->num_familia}}</td>
 					<td>{{$familia->descripcion}}</td>
 					<td>
-						<a href="{{url('/modulos/'.$modulo->id.'/edit')}}"><button class="btn btn-warning btn-sm">
+						<a href="{{url('/familias/'.$familia->id.'/edit')}}"><button class="btn btn-warning btn-sm">
 							<i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button></a>
-						<form style="display: inline" method="POST" action="{{ route('modulos.destroy', $modulo->id) }}">
+						<form style="display: inline" method="POST" action="{{ route('familias.destroy', $familia->id) }}">
 							{!! csrf_field() !!}
 							{!! method_field('DELETE') !!}
 							<button class="btn btn-danger btn-sm">

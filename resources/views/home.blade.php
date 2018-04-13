@@ -51,7 +51,7 @@
                           <ul class="nav child_menu">
                             <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
                             </li>
-                            <li class="sub_menu"><a href="{{route('familia.index')}}">Familias</a>
+                            <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                             </li>
                           </ul>
                         </li>

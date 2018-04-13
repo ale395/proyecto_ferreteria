@@ -2,19 +2,19 @@
 
 @section('content')
 
-	<form method="POST" action="{{ route('modulos.update', $modulo->id) }}">
+	<form method="POST" action="{{ route('familias.update', $familia->id) }}">
 	{!! method_field('PUT') !!}
 	{!! csrf_field() !!}
 
 		<div class="form-group">
-			<label>Modulo
-				<input type="text" name="modulo" value="{{ $modulo->modulo }}">
+			<label>Num. Familia
+				<input type="text" name="num_familia" value="{{ $familia->num_familia }}">
 			</label>
 		</div>
 
 		<div class="form-group">
 			<label>Descripcion
-				<input type="text" name="descripcion" value="{{ $modulo->descripcion }}">
+				<input type="text" name="descripcion" value="{{ $familia->descripcion }}">
 			</label>
 		</div>
 
@@ -22,6 +22,6 @@
 		
 
 	</form>
-	<a href="{{url('modulos')}}"><button class="btn btn-info">Cancelar</button></a>
+	<a href="{{url('familias')}}"><button class="btn btn-info">Cancelar</button></a>
 
 @stop
