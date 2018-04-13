@@ -55,6 +55,8 @@
                             </li>
                             <li class="sub_menu"><a href="#">Anulación de Comprobantes</a>
                             </li>
+                            <li class="sub_menu"><a href="{{route('modulos.index')}}">Modulos</a>
+                            </li>
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -124,12 +126,12 @@
         <!-- /top navigation -->
 
         <!-- extendemos con todo lo que tenemos -->
-        @yield('content')
+        
 
         <!-- page content -->
         <div class="right_col" role="main">
           <!-- top tiles -->
-          
+          @yield('content')
         </div>
         <!-- /page content -->
 

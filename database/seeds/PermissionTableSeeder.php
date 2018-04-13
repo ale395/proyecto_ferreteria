@@ -12,29 +12,40 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-    	//Permisos
+    	//Permisos para el formulario de módulos
         $permission = new Permission();
-        $permission->name = 'create_permission';
-        $permission->description = 'Crear Permiso';
+        $permission->name = 'Crear Módulo';
+        $permission->slug = 'modulos.create';
+        $permission->description = 'Permite la creación de nuevos módulos en el sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'delete_permission';
-        $permission->description = 'Borrar Permiso';
+        $permission->name = 'Borrar Módulo';
+        $permission->slug = 'modulos.destroy';
+        $permission->description = 'Permite la eliminación de módulos del sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'update_permission';
-        $permission->description = 'Modificar Permiso';
+        $permission->name = 'Editar Módulo';
+        $permission->slug = 'modulos.edit';
+        $permission->description = 'Permite modificar los valores de un módulo del sistema';
         $permission->save();
 
 		$permission = new Permission();
-        $permission->name = 'read_permission';
-        $permission->description = 'Ver Permiso';
+        $permission->name = 'Listar Módulos';
+        $permission->slug = 'modulos.index';
+        $permission->description = 'Permite ver el listado de módulos del sistema';
         $permission->save();
 
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Módulo';
+        $permission->slug = 'modulos.show';
+        $permission->description = 'Permite ver un módulo del sistema';
+        $permission->save();*/
+
     	//Usuarios
-        $permission = new Permission();
+        /*$permission = new Permission();
         $permission->name = 'create_user';
         $permission->description = 'Crear Usuarios';
         $permission->save();
@@ -52,7 +63,7 @@ class PermissionTableSeeder extends Seeder
 		$permission = new Permission();
         $permission->name = 'read_usuario';
         $permission->description = 'Ver Usuarios';
-        $permission->save();
+        $permission->save();*/
 
     }
 }

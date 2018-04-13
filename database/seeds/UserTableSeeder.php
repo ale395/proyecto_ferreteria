@@ -23,6 +23,9 @@ class UserTableSeeder extends Seeder
         $user->save();
         $user->roles()->attach($role_user);
 
+        $user = User::find(1);
+        $user->roles()->attach($role_user);
+
         $user = new User();
         $user->name = 'Admin';
         $user->email = 'admin@ferregest.com';
