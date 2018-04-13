@@ -44,26 +44,5 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un módulo del sistema';
         $permission->save();*/
 
-    	//Usuarios
-        /*$permission = new Permission();
-        $permission->name = 'create_user';
-        $permission->description = 'Crear Usuarios';
-        $permission->save();
-
-        $permission = new Permission();
-        $permission->name = 'delete_usuario';
-        $permission->description = 'Borrar Usuarios';
-        $permission->save();
-
-        $permission = new Permission();
-        $permission->name = 'update_usuario';
-        $permission->description = 'Modificar Usuarios';
-        $permission->save();
-
-		$permission = new Permission();
-        $permission->name = 'read_usuario';
-        $permission->description = 'Ver Usuarios';
-        $permission->save();*/
-
     }
 }
