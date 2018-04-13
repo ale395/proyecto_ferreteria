@@ -6,7 +6,7 @@
 	{!! csrf_field() !!}
 
 		<div class="form-group">
-			<label>Num. Familia
+			<label>Codigo
 				<input type="text" class="mayusculas" name="num_familia" value="{{ old('num_familia')}}" required>
 
 			</label>

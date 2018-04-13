@@ -53,8 +53,10 @@
                             <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
                             </li>
                             @endcan
+                            @can('familias.index')
                             <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                             </li>
+                            @endcan
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
