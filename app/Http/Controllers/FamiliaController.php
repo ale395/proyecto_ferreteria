@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Familia;
 use Illuminate\Http\Request;
 use App\Http\Requests\CrearFamiliasRequest;
+use Illuminate\Support\Facades\Validator;
 
 class FamiliaController extends Controller
 {
@@ -55,7 +56,7 @@ class FamiliaController extends Controller
         ]);
  
         if ($validator->fails()) {
-            return redirect('familia.create')
+            return redirect('familias/create')
                         ->withErrors($validator)
                         ->withInput();
         }
