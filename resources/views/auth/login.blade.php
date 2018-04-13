@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Login Page</title>
+    <title>Iniciar Sesión</title>
 
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
   </head>
@@ -26,11 +26,11 @@
                       <div class="col-md-8">
                         <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
 
-                        @if ($errors->has('email'))
+                        <!--@if ($errors->has('email'))
                           <span class="invalid-feedback">
                             <strong>{{ $errors->first('email') }}</strong>
                           </span>
-                        @endif
+                        @endif-->
                       </div>
                     </div>
 
@@ -40,11 +40,17 @@
                       <div class="col-md-8">
                         <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
+                        <!--@if ($errors->has('email'))
+                          <span class="invalid-feedback">
+                            <strong>{{ $errors->first('email') }}</strong>
+                          </span>
+                        @endif
+
                         @if ($errors->has('password'))
                           <span class="invalid-feedback">
                             <strong>{{ $errors->first('password') }}</strong>
                           </span>
-                        @endif
+                        @endif-->
                       </div>
                     </div>
 
@@ -56,6 +62,22 @@
                         <a class="btn btn-link" href="{{ route('password.request') }}">
                           {{ __('Olvidaste la contraseña?') }}
                         </a>
+                      </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                      <div class="col-md-12 offset-md-4">
+                        @if ($errors->has('email'))
+                          <span class="invalid-feedback">
+                            <strong>{{ $errors->first('email') }}</strong>
+                          </span>
+                        @endif
+
+                        @if ($errors->has('password'))
+                          <span class="invalid-feedback">
+                            <strong>{{ $errors->first('password') }}</strong>
+                          </span>
+                        @endif
                       </div>
                     </div>
               </form>

@@ -20,7 +20,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="#" class="site_title"><i class="fa fa-recycle"></i> <span> {{ config('app.name') }} </span></a>
+              <a href="{{route('home')}}" class="site_title"><i class="fa fa-recycle"></i> <span> {{ config('app.name') }} </span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -50,12 +50,12 @@
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
                             @can('modulos.index')
-                            <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
-                            </li>
+                              <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
+                              </li>
                             @endcan
                             @can('familias.index')
-                            <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
-                            </li>
+                              <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
+                              </li>
                             @endcan
                           </ul>
                         </li>
