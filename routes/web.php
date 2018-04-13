@@ -9,7 +9,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->group(function() {
-<<<<<<< HEAD
 	
 	//Rutas para MODULOS
 	Route::get('modulos', 'ModuloController@index')->name('modulos.index')
@@ -29,8 +28,8 @@ Route::middleware(['auth'])->group(function() {
 
 	Route::get('modulos/{modulo}/edit', 'ModuloController@edit')->name('modulos.edit')
 		->middleware('permission:modulos.edit');
-=======
-	Route::resource('modulos', 'ModuloController');
+
+	//Rutas para FAMILIAS
 	Route::resource('familias', 'FamiliaController');
->>>>>>> ebdd4dde75fe989b0dd4eb5b2a7e3211b9cd45f1
+
 });
