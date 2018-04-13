@@ -37,6 +37,31 @@ class FamiliaController extends Controller
      */
     public function store(Request $request)
     {
+
+        /*
+        $this->validate($request, [
+            'num_familia' => 'required|string|max:10|unique:familias',
+            'descripcion' => 'required|string|max:30',
+        ]);
+        */
+
+        /*aca validamos lo que necesitamos para Familias.
+        *el num_familia es requerido, debe ser cadena (alfanumerico) hasta 10 caracteres y no se debe repetir.
+        *la descripción tambien es cadena, obligatorio y el tamaño maximo es de 30 caracteres
+        */
+        $validator = Validator::make($request->all(), [
+            'num_familia' => 'required|string|max:10|unique:familias',
+            'descripcion' => 'required|string|max:30',
+        ]);
+ 
+        if ($validator->fails()) {
+            return redirect('familia.create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+
+
         Familia::create($request->all())->save();
         return redirect()->route('familias.index');
     }
