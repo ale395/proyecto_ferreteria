@@ -2,7 +2,7 @@
 
 @section('content')
 
-	<table class="table table-hover table-striped">
+	<table class="table table-hover table-striped" id="tableModulo">
 		<thead>
 			<tr>
 				<th>Módulo</th>

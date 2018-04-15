@@ -152,6 +152,10 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{{asset('js/app.js')}}"></script>
+    <script type="text/javascript">
+      $(document).ready( function () {
+        $('#tableModulo').DataTable();
+      });</script>
   
   </body>
 </html>
