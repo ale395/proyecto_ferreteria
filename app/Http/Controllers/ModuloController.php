@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Modulo;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
 
 class ModuloController extends Controller
 {
@@ -15,8 +16,7 @@ class ModuloController extends Controller
      */
     public function index()
     {
-        $modulos = Modulo::all();
-        return view('modulo.index', compact('modulos'));
+        return view('modulo.index');
     }
 
     /**
@@ -92,5 +92,30 @@ class ModuloController extends Controller
     {
         $modulo->delete();
         return redirect()->route('modulos.index');
+    }
+
+    public function apiModulos(){
+
+        return datatables(Modulo::all())
+        ->addColumn('acciones', function(Modulo $modulo){
+            return 'Editar/Eliminar';
+            /*return '{!! <a href="{{url("/modulos/".$modulo->id."/edit")}}">
+                            @can("modulos.edit")
+                                <button class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
+                            @else
+                                <button class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
+                            @endcan
+                        </a>
+
+                        <form style="display: inline" method="POST" action="{{ route("modulos.destroy", $modulo->id) }}">
+                            {!! csrf_field() !!}
+                            {!! method_field("DELETE") !!}
+                            @can("modulos.destroy")
+                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
+                            @else
+                                <button class="btn btn-danger btn-sm" disabled><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
+                            @endcan
+                        </form> !!}';*/
+        })->make(true);
     }
 }

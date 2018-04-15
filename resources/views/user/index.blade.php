@@ -6,15 +6,14 @@
 		<div class="col-md-12">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h1>Modulos</h1>
+					<h1>Usuarios</h1>
 				</div>
 				<div class="panel-body">
-					<table id="tableModulo" class="table table-hover table-striped">
+					<table id="tableUser" class="table table-hover table-striped">
 						<thead>
 							<tr>
-								<th>ID</th>
-								<th>Modulo</th>
-								<th>Descripcion</th>
+								<th>Nombre</th>
+								<th>Correo</th>
 								<th></th>
 							</tr>	
 						</thead>

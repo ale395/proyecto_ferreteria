@@ -57,6 +57,8 @@
                               <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                               </li>
                             @endcan
+                            <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
+                            </li>
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -152,10 +154,33 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{{asset('js/app.js')}}"></script>
+
     <script type="text/javascript">
-      $(document).ready( function () {
-        $('#tableModulo').DataTable();
-      });</script>
+        $('#tableModulo').DataTable({
+          "processing": true,
+            "serverSide": true,
+            "ajax": "{{ route('api.modulos') }}",
+            "columns": [
+              {data: 'id', name: 'id'},
+              {data: 'modulo', name: 'modulo'},
+              {data: 'descripcion', name: 'descripcion'},
+              {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
+            ]});
+    </script>
+
+    <script type="text/javascript">
+        $('#tableUser').DataTable({
+          "processing": true,
+            "serverSide": true,
+            "ajax": "{{ route('api.users') }}",
+            "columns": [
+              {data: 'name', name: 'name'},
+              {data: 'email', name: 'email'},
+              {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
+            ]});
+    </script>
+
+    
   
   </body>
 </html>

@@ -29852,6 +29852,7 @@ pointBorderWidth:1,data:[31,74,6,39,20,85,7]},{label:"My Second dataset",backgro
 		$.fn.DataTable[ prop ] = val;
 	} );
 
+	
 
 	// Information about events fired by DataTables - for documentation.
 	/**
