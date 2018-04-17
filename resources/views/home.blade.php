@@ -6,15 +6,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="images/favicon.ico" type="image/ico" />
+    <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
     <title> {{ config('app.name') }} </title>
 
-    <link rel="stylesheet" type="text/css" href="{{asset('fontawesome/css/font-awesome.min.css')}}">
- <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-
-<script src="https://use.fontawesome.com/0629d0f7b7.js"></script>->
-    <!-- Custom Theme Style--> 
+    <!-- Custom Theme Style -->
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
   </head>
 
@@ -61,10 +57,6 @@
                               <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                               </li>
                             @endcan
-                              <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
-                              </li>
-                              <li class="sub_menu"><a href="{{route('departamentos.index')}}">Departamentos</a>
-                              </li>
                             <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
                             </li>
                           </ul>
@@ -188,7 +180,23 @@
             ]});
     </script>
 
-    
-  
+    <!--Scripts de  JQuery-->
+    <script src="jquery-1.4.2.min.js" type="text/javascript"></script>
+    <script src="jquery.validate.js" type="text/javascript"></script>
+    @yield('script')
+    <!-- 
+    <script type="text/javascript">
+        $('#tableFamilia').DataTable({
+          "processing": true,
+            "serverSide": true,
+            "ajax": "{{ route('api.users') }}",
+            "columns": [
+              {data: 'id', name: 'id'},
+              {data: 'num_familia', name: 'name'},
+              {data: 'descripcion', name: 'email'},
+              {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
+            ]});
+    </script>
+    -->
   </body>
 </html>
