@@ -61,17 +61,12 @@
                               <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                               </li>
                             @endcan
-<<<<<<< HEAD
-                      
                               <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
                               </li>
                               <li class="sub_menu"><a href="{{route('departamentos.index')}}">Departamentos</a>
                               </li>
-                          
-=======
                             <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
                             </li>
->>>>>>> fd96c35609b06da69f37f4d512d394bc99331e2e
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
