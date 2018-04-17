@@ -61,12 +61,17 @@
                               <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                               </li>
                             @endcan
+<<<<<<< HEAD
                       
                               <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
                               </li>
                               <li class="sub_menu"><a href="{{route('departamentos.index')}}">Departamentos</a>
                               </li>
                           
+=======
+                            <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
+                            </li>
+>>>>>>> fd96c35609b06da69f37f4d512d394bc99331e2e
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -162,6 +167,33 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{{asset('js/app.js')}}"></script>
+
+    <script type="text/javascript">
+        $('#tableModulo').DataTable({
+          "processing": true,
+            "serverSide": true,
+            "ajax": "{{ route('api.modulos') }}",
+            "columns": [
+              {data: 'id', name: 'id'},
+              {data: 'modulo', name: 'modulo'},
+              {data: 'descripcion', name: 'descripcion'},
+              {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
+            ]});
+    </script>
+
+    <script type="text/javascript">
+        $('#tableUser').DataTable({
+          "processing": true,
+            "serverSide": true,
+            "ajax": "{{ route('api.users') }}",
+            "columns": [
+              {data: 'name', name: 'name'},
+              {data: 'email', name: 'email'},
+              {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
+            ]});
+    </script>
+
+    
   
   </body>
 </html>
