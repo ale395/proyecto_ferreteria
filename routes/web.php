@@ -51,4 +51,44 @@ Route::middleware(['auth'])->group(function() {
 
 	//Route::resource('familias', 'FamiliaController');
 
+		//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
+	Route::get('paises', 'PaisController@index')->name('paises.index');
+		//->middleware('permission:paises.index');
+
+	Route::post('paises/store', 'PaisController@store')->name('paises.store')
+		->middleware('permission:paises.create');
+
+	Route::get('paises/create', 'PaisController@create')->name('paises.create')
+		->middleware('permission:paises.create');
+
+	Route::put('paises/{modulo}', 'PaisController@update')->name('paises.update')
+		->middleware('permission:paises.edit');
+
+	Route::delete('paises/{modulo}', 'PaisesController@destroy')->name('paises.destroy')
+		->middleware('permission:paises.destroy');
+
+	Route::get('paises/{modulo}/edit', 'PaisesController@edit')->name('paises.edit')
+		->middleware('permission:paises.edit');
+
+
+				//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
+	Route::get('departamentos', 'DepartamentoController@index')->name('departamentos.index');
+		//->middleware('permission:departamentos.index');
+
+	Route::post('departamentos/store', 'DepartamentoController@store')->name('departamentos.store')
+		->middleware('permission:departamentos.create');
+
+	Route::get('departamentos/create', 'DepartamentoController@create')->name('departamentos.create')
+		->middleware('permission:departamentos.create');
+
+	Route::put('departamentos/{modulo}', 'DepartamentoController@update')->name('departamentos.update')
+		->middleware('permission:departamentos.edit');
+
+	Route::delete('departamentos/{modulo}', 'DepartamentoController@destroy')->name('departamentos.destroy')
+		->middleware('permission:departamentos.destroy');
+
+	Route::get('departamentos/{modulo}/edit', 'DepartamentoController@edit')->name('departamentos.edit')
+		->middleware('permission:departamentos.edit');
+
+
 });

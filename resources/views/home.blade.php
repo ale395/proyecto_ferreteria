@@ -10,7 +10,11 @@
 
     <title> {{ config('app.name') }} </title>
 
-    <!-- Custom Theme Style -->
+    <link rel="stylesheet" type="text/css" href="{{asset('fontawesome/css/font-awesome.min.css')}}">
+ <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+<script src="https://use.fontawesome.com/0629d0f7b7.js"></script>->
+    <!-- Custom Theme Style--> 
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
   </head>
 
@@ -57,6 +61,12 @@
                               <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                               </li>
                             @endcan
+                      
+                              <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
+                              </li>
+                              <li class="sub_menu"><a href="{{route('departamentos.index')}}">Departamentos</a>
+                              </li>
+                          
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
