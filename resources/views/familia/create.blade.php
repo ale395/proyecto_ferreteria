@@ -5,6 +5,15 @@
 	<form method="POST" id="create_familia" action="{{ route('familias.store') }}">
 	{!! csrf_field() !!}
 		<div id="ok"></div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 		<div class="form-group">
 			<label>Codigo
 				<input type="text" class="mayusculas" name="num_familia" id="num_familia" value="{{ old('num_familia')}}">
@@ -41,12 +50,12 @@
                     descripcion: "Debe introducir su apellido."
                 },
 
-
+                
                 submitHandler: function(form){
-                    var dataString = 'name='+$('#name').val()+'&lastname='+$('#lastname').val()+'...';
+                    var dataString = 'num_familia='+$('#num_familia').val()+'&descripcion='+$('#descripcion').val()+'...';
                     $.ajax({
                         type: "POST",
-                        url:"send.php",
+                        url:"{{ url('familias.store') }}",
                         data: dataString,
                         success: function(data){
                             $("#ok").html(data);
@@ -55,6 +64,7 @@
                         }
                     });
                 }
+                
             });
         });
     </script> 

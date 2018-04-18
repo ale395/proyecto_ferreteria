@@ -116,6 +116,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'num_familia' => 'Codigo Familia',
+
+    ],
 
 ];

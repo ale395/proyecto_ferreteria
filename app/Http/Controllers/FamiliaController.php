@@ -50,6 +50,14 @@ class FamiliaController extends Controller
         *el num_familia es requerido, debe ser cadena (alfanumerico) hasta 10 caracteres y no se debe repetir.
         *la descripción tambien es cadena, obligatorio y el tamaño maximo es de 30 caracteres
         */
+
+        $messages = [
+        'same'    => 'The :attribute and :other must match.',
+        'size'    => 'The :attribute must be exactly :size.',
+        'between' => 'The :attribute value :input is not between :min - :max.',
+        'in'      => 'The :attribute must be one of the following types: :values',
+        ];
+        
         $validator = Validator::make($request->all(), [
             'num_familia' => 'required|string|max:10|unique:familias',
             'descripcion' => 'required|string|max:30',
@@ -60,6 +68,7 @@ class FamiliaController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }
+        
 
 
 
