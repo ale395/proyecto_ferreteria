@@ -65,13 +65,13 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('familias/create', 'FamiliaController@create')->name('familias.create')
 		->middleware('permission:modulos.create');
 
-	Route::put('familias/{modulo}', 'FamiliaController@update')->name('familias.update')
+	Route::put('familias/{familia}', 'FamiliaController@update')->name('familias.update')
 		->middleware('permission:modulos.edit');
 
-	Route::delete('familias/{modulo}', 'FamiliaController@destroy')->name('familias.destroy')
+	Route::delete('familias/{familia}', 'FamiliaController@destroy')->name('familias.destroy')
 		->middleware('permission:modulos.destroy');
 
-	Route::get('familias/{modulo}/edit', 'FamiliaController@edit')->name('familias.edit')
+	Route::get('familias/{familia}/edit', 'FamiliaController@edit')->name('familias.edit')
 		->middleware('permission:modulos.edit');
 
 	//Route::resource('familias', 'FamiliaController');
@@ -86,13 +86,13 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('paises/create', 'PaisController@create')->name('paises.create')
 		->middleware('permission:paises.create');
 
-	Route::put('paises/{modulo}', 'PaisController@update')->name('paises.update')
+	Route::put('paises/{pais}', 'PaisController@update')->name('paises.update')
 		->middleware('permission:paises.edit');
 
-	Route::delete('paises/{modulo}', 'PaisesController@destroy')->name('paises.destroy')
+	Route::delete('paises/{pais}', 'PaisesController@destroy')->name('paises.destroy')
 		->middleware('permission:paises.destroy');
 
-	Route::get('paises/{modulo}/edit', 'PaisesController@edit')->name('paises.edit')
+	Route::get('paises/{pais}/edit', 'PaisesController@edit')->name('paises.edit')
 		->middleware('permission:paises.edit');
 
 
@@ -106,13 +106,13 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('departamentos/create', 'DepartamentoController@create')->name('departamentos.create')
 		->middleware('permission:departamentos.create');
 
-	Route::put('departamentos/{modulo}', 'DepartamentoController@update')->name('departamentos.update')
+	Route::put('departamentos/{departamento}', 'DepartamentoController@update')->name('departamentos.update')
 		->middleware('permission:departamentos.edit');
 
-	Route::delete('departamentos/{modulo}', 'DepartamentoController@destroy')->name('departamentos.destroy')
+	Route::delete('departamentos/{departamento}', 'DepartamentoController@destroy')->name('departamentos.destroy')
 		->middleware('permission:departamentos.destroy');
 
-	Route::get('departamentos/{modulo}/edit', 'DepartamentoController@edit')->name('departamentos.edit')
+	Route::get('departamentos/{departamento}/edit', 'DepartamentoController@edit')->name('departamentos.edit')
 		->middleware('permission:departamentos.edit');
 
 

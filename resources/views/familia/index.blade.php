@@ -23,7 +23,7 @@
 					<td>{{$familia->num_familia}}</td>
 					<td>{{$familia->descripcion}}</td>
 					<td>
-						<a href="{{url('/familias/'.$familia->id.'/edit')}}">
+						<a href="{{route('familias.edit', $familia)}}">
 							@can('familias.edit')
 								<button class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
 							@else
