@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
     <title> {{ config('app.name') }} </title>
@@ -155,48 +156,17 @@
     <!-- Custom Theme Scripts -->
     <script src="{{asset('js/app.js')}}"></script>
 
-    <script type="text/javascript">
-        $('#tableModulo').DataTable({
-          "processing": true,
-            "serverSide": true,
-            "ajax": "{{ route('api.modulos') }}",
-            "columns": [
-              {data: 'id', name: 'id'},
-              {data: 'modulo', name: 'modulo'},
-              {data: 'descripcion', name: 'descripcion'},
-              {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
-            ]});
-    </script>
+    <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
 
-    <script type="text/javascript">
-        $('#tableUser').DataTable({
-          "processing": true,
-            "serverSide": true,
-            "ajax": "{{ route('api.users') }}",
-            "columns": [
-              {data: 'name', name: 'name'},
-              {data: 'email', name: 'email'},
-              {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
-            ]});
-    </script>
+    <script src="{{ asset('assets/dataTables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/dataTables/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/validator/validator.js') }}"></script>
 
-    <!--Scripts de  JQuery-->
-    <script src="jquery-1.4.2.min.js" type="text/javascript"></script>
-    <script src="jquery.validate.js" type="text/javascript"></script>
-    @yield('script')
-    <!-- 
-    <script type="text/javascript">
-        $('#tableFamilia').DataTable({
-          "processing": true,
-            "serverSide": true,
-            "ajax": "{{ route('api.users') }}",
-            "columns": [
-              {data: 'id', name: 'id'},
-              {data: 'num_familia', name: 'name'},
-              {data: 'descripcion', name: 'email'},
-              {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
-            ]});
-    </script>
-    -->
+    <script src="{{ asset('assets/bootstrap/js/ie10-viewport-bug-workaround.js') }}"></script>
+
+    <!-- Para los Script JavaScript necesarios para la utilización de AJAX con el DataTables-->
+    @yield('ajax_datatables')
+
   </body>
 </html>

@@ -8,7 +8,6 @@ use Yajra\DataTables\Datatables;
 
 class ModuloController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +25,7 @@ class ModuloController extends Controller
      */
     public function create()
     {
-        return view('modulo.create');
+        //
     }
 
     /**
@@ -37,8 +36,12 @@ class ModuloController extends Controller
      */
     public function store(Request $request)
     {
-        Modulo::create($request->all())->save();
-        return redirect()->route('modulos.index');
+        $data = [
+            'modulo' => $request['modulo'],
+            'descripcion' => $request['descripcion']
+        ];
+
+        return Modulo::create($data);
     }
 
     /**
@@ -60,7 +63,7 @@ class ModuloController extends Controller
      */
     public function edit(Modulo $modulo)
     {
-        return view('modulo.edit', compact('modulo'));
+        return $modulo;
     }
 
     /**
@@ -72,14 +75,12 @@ class ModuloController extends Controller
      */
     public function update(Request $request, Modulo $modulo)
     {
-        if (!$modulo->isDirty()) {
-            $modulo->descripcion = $request->descripcion;
-            $modulo->modulo = $request->modulo;
-        }
+        $modulo->modulo = $request['modulo'];
+        $modulo->descripcion = $request['descripcion'];
+        
+        $modulo->update();
 
-        $modulo->save();
-
-        return redirect()->route('modulos.index');
+        return $modulo;
     }
 
     /**
@@ -88,34 +89,20 @@ class ModuloController extends Controller
      * @param  \App\Modulo  $modulo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Modulo $modulo)
+    public function destroy($id)
     {
-        $modulo->delete();
-        return redirect()->route('modulos.index');
+        return Modulo::destroy($id);
     }
 
-    public function apiModulos(){
+    //Función que retorna un JSON con todos los módulos para que los maneje AJAX desde el DataTable
+    public function apiModulo()
+    {
+        $modulo = Modulo::all();
 
-        return datatables(Modulo::all())
-        ->addColumn('acciones', function(Modulo $modulo){
-            return 'Editar/Eliminar';
-            /*return '{!! <a href="{{url("/modulos/".$modulo->id."/edit")}}">
-                            @can("modulos.edit")
-                                <button class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
-                            @else
-                                <button class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
-                            @endcan
-                        </a>
-
-                        <form style="display: inline" method="POST" action="{{ route("modulos.destroy", $modulo->id) }}">
-                            {!! csrf_field() !!}
-                            {!! method_field("DELETE") !!}
-                            @can("modulos.destroy")
-                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-                            @else
-                                <button class="btn btn-danger btn-sm" disabled><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-                            @endcan
-                        </form> !!}';*/
-        })->make(true);
+        return Datatables::of($modulo)
+            ->addColumn('action', function($modulo){
+                return '<a onclick="editForm('. $modulo->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a onclick="deleteData('. $modulo->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
     }
 }
