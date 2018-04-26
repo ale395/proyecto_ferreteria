@@ -14,25 +14,40 @@
                 </ul>
             </div>
         @endif
-		<div class="form-group">
-			<label>Codigo
-				<input type="text" class="mayusculas" name="num_familia" id="num_familia" value="{{ old('num_familia')}}">
 
-			</label>
-		</div>
-
-		<div class="form-group">
-			<label>Descripcion
-				<input type="text" name="descripcion" id="descripcion" value="{{ old('descripcion')}}">
-			</label>
-		</div>
-
-		<button type="submit" class="btn btn-success">Guardar</button>
-		
-
+        <div class="x_panel"> 
+            <h2>
+                <div class="x_title">
+                        Familias                 
+                </div>
+            </h2>
+            <br>
+            <div class="x_content">
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="num_familia">
+                        Codigo
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="num_familia" required="required" name="num_familia" class="form-control col-md-7 col-xs-12" type="text" value="{{ old('num_familia')}}">
+                    </div>
+                </div>
+                <br>
+                <div class="form-group">
+                    <br>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="descripcion">
+                        Descripcion
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="descripcion" required="required" name="descripcion" class="form-control col-md-7 col-xs-12" type="text" value="{{ old('descripcion')}}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a href="{{url('familias')}}"><button class="btn btn-info">Cancelar</button></a>                
+            </div>
+        </div>
 	</form>
-
-	<a href="{{url('familias')}}"><button class="btn btn-info">Cancelar</button></a>
 @stop
 
 @section('script')
