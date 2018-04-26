@@ -7,8 +7,8 @@
 	{!! csrf_field() !!}
 
 		<div class="form-group">
-			<label>Num. Familia
-				<input type="text" name="num_familia" value="{{ $familia->num_familia }}">
+			<label>Codigo	
+				<input type="text" name="num_familia" value="{{ $familia->num_familia }}" readonly>
 			</label>
 		</div>
 
