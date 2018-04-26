@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Familia;
 use Illuminate\Http\Request;
-use App\Http\Requests\CrearFamiliasRequest;
+//use App\Http\Requests\CrearFamiliasRequest;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Datatables;
 
 class FamiliaController extends Controller
 {
@@ -63,9 +64,6 @@ class FamiliaController extends Controller
                         ->withInput();
         }
         
-
-
-
         Familia::create($request->all())->save();
         return redirect()->route('familias.index');
     }
@@ -121,5 +119,17 @@ class FamiliaController extends Controller
     {
         $familia->delete();
         return redirect()->route('familias.index');
+    }
+
+    //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
+    public function apiFamilia()
+    {
+        $familia = Familia::all();
+
+        return Datatables::of($familia)
+            ->addColumn('action', function($familia){
+                return '<a onclick="editForm('. $familia->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a onclick="deleteData('. $familia->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
     }
 }

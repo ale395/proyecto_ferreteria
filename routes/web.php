@@ -19,8 +19,11 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('users', 'UserController@index')->name('users.index');
 	Route::get('api/users', 'UserController@apiUsers')->name('api.users');
 
+	//rutas para modelo 'Familias'
+	Route::resource('familias', 'FamiliaController');
+	Route::get('api/familias', 'FamiliaController@apiFamilia')->name('api.familias');
 
-
+	/*
 	//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
 	Route::get('familias', 'FamiliaController@index')->name('familias.index')
 		->middleware('permission:modulos.index');
@@ -41,6 +44,7 @@ Route::middleware(['auth'])->group(function() {
 		->middleware('permission:modulos.edit');
 
 	//Route::resource('familias', 'FamiliaController');
+	*/
 
 		//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
 	Route::get('paises', 'PaisController@index')->name('paises.index');
