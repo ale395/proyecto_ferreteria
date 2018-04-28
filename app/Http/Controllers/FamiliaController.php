@@ -17,8 +17,12 @@ class FamiliaController extends Controller
      */
     public function index()
     {
+
+        return view('familia.index');
+        /*
         $familias = Familia::all();
         return view('familia.index', compact('familias'));
+        */
     }
 
     /**
@@ -28,7 +32,7 @@ class FamiliaController extends Controller
      */
     public function create()
     {
-        return view('familia.create');
+        //return view('familia.create');
     }
 
     /**
@@ -39,6 +43,13 @@ class FamiliaController extends Controller
      */
     public function store(Request $request)
     {
+
+        $data = [
+            'num_familia' => $request['num_familia'],
+            'descripcion' => $request['descripcion']
+        ];
+
+        return Familia::create($data);
 
         /*
         $this->validate($request, [
@@ -52,7 +63,7 @@ class FamiliaController extends Controller
         *la descripción tambien es cadena, obligatorio y el tamaño maximo es de 30 caracteres
         */
 
-        
+        /*
         $validator = Validator::make($request->all(), [
             'num_familia' => 'required|string|max:10|unique:familias',
             'descripcion' => 'required|string|max:30',
@@ -66,6 +77,7 @@ class FamiliaController extends Controller
         
         Familia::create($request->all())->save();
         return redirect()->route('familias.index');
+        */
     }
 
     /**
@@ -87,7 +99,8 @@ class FamiliaController extends Controller
      */
     public function edit(Familia $familia)
     {
-        return view('familia.edit', compact('familia'));
+        return $familia;
+        //return view('familia.edit', compact('familia'));
     }
 
     /**
@@ -99,6 +112,14 @@ class FamiliaController extends Controller
      */
     public function update(Request $request, Familia $familia)
     {
+        
+        $familia->num_familia = $request['num_familia'];
+        $familia->descripcion = $request['descripcion'];
+        
+        $familia->update();
+
+        return $familia;
+        /*
         if (!$familia->isDirty()) {
             $familia->num_familia = $request->num_familia;
             $familia->descripcion = $request->descripcion;
@@ -107,6 +128,7 @@ class FamiliaController extends Controller
         $familia->save();
 
         return redirect()->route('familias.index');
+        */
     }
 
     /**
@@ -115,10 +137,14 @@ class FamiliaController extends Controller
      * @param  \App\Modulo  $modulo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Familia $familia)
+    public function destroy($id)
     {
+        
+        return Familia::destroy($id);
+        /*
         $familia->delete();
         return redirect()->route('familias.index');
+        */
     }
 
     //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
