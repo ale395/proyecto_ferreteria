@@ -20,7 +20,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/roles', 'RoleController@apiRole')->name('api.roles');
 
 	//RUTAS PARA MODELO USER
-	Route::get('users', 'UserController@index')->name('users.index');
+	Route::resource('users', 'UserController');
 	Route::get('api/users', 'UserController@apiUsers')->name('api.users');
 
 	//rutas para modelo 'Familias'
@@ -51,7 +51,7 @@ Route::middleware(['auth'])->group(function() {
 	*/
 
 		//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
-	Route::get('paises', 'PaisController@index')->name('paises.index');
+	/*Route::get('paises', 'PaisController@index')->name('paises.index');
 		//->middleware('permission:paises.index');
 
 	Route::post('paises/store', 'PaisController@store')->name('paises.store')
@@ -67,7 +67,7 @@ Route::middleware(['auth'])->group(function() {
 		->middleware('permission:paises.destroy');
 
 	Route::get('paises/{pais}/edit', 'PaisesController@edit')->name('paises.edit')
-		->middleware('permission:paises.edit');
+		->middleware('permission:paises.edit');*/
 
 
 				//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -17,28 +19,79 @@ class UserController extends Controller
         return view('user.index');
     }
 
-    public function apiUsers(){
+    public function create()
+    {
+        //
+    }
 
-        return datatables(User::all())
-        ->addColumn('acciones', function(){
-            return 'Editar/Eliminar';
-            /*return '<a href="{{url("/modulos/".$modulo->id."/edit")}}">
-                            @can("modulos.edit")
-                                <button class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
-                            @else
-                                <button class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
-                            @endcan
-                        </a>
+    public function store(Request $request)
+    {
+        $data = [
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => bcrypt($request['password'])
+        ];
 
-                        <form style="display: inline" method="POST" action="{{ route("modulos.destroy", $modulo->id) }}">
-                            {!! csrf_field() !!}
-                            {!! method_field("DELETE") !!}
-                            @can("modulos.destroy")
-                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-                            @else
-                                <button class="btn btn-danger btn-sm" disabled><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
-                            @endcan
-                        </form>';*/
-        })->make(true);
+        return User::create($data);
+    }
+
+    public function show(User $user)
+    {
+        //
+    }
+
+    public function edit(User $user)
+    {
+        return $user;
+    }
+
+    public function destroy($id)
+    {
+        return User::destroy($id);
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $user->name = $request['name'];
+        $user->email = $request['email'];
+        
+        $user->update();
+
+        return $user;
+    }
+
+    public function apiUsers()
+    {
+        $permiso_editar = Auth::user()->can('users.edit');;
+        $permiso_eliminar = Auth::user()->can('users.destroy');;
+        $user = User::all();
+
+        if ($permiso_editar) {
+            if ($permiso_eliminar) {
+                return Datatables::of($user)
+                ->addColumn('action', function($user){
+                    return '<a onclick="editForm('. $user->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $user->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            } else {
+                return Datatables::of($user)
+                ->addColumn('action', function($user){
+                    return '<a onclick="editForm('. $user->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            }
+        } elseif ($permiso_eliminar) {
+            return Datatables::of($user)
+            ->addColumn('action', function($user){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a onclick="deleteData('. $user->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
+        } else {
+            return Datatables::of($user)
+            ->addColumn('action', function($user){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
+        }
     }
 }

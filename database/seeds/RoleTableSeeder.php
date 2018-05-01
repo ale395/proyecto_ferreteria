@@ -13,6 +13,12 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
+        //permisos de USUARIOS
+        $permiso_listar_user = Permission::where('slug', 'users.index')->first();
+        $permiso_crear_user = Permission::where('slug', 'users.create')->first();
+        $permiso_editar_user = Permission::where('slug', 'users.edit')->first();
+        $permiso_eliminar_user = Permission::where('slug', 'users.destroy')->first();
+
         //permisos de MODULOS
         $permiso_listar = Permission::where('slug', 'modulos.index')->first();
         $permiso_crear = Permission::where('slug', 'modulos.create')->first();
@@ -50,6 +56,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_rol->id);
         $role->assignPermission($permiso_editar_rol->id);
         $role->assignPermission($permiso_eliminar_rol->id);
+        $role->assignPermission($permiso_listar_user->id);
+        $role->assignPermission($permiso_crear_user->id);
+        $role->assignPermission($permiso_editar_user->id);
+        $role->assignPermission($permiso_eliminar_user->id);
         $role->save();
 
         $role = new Role();
@@ -67,6 +77,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_rol->id);
         $role->assignPermission($permiso_editar_rol->id);
         $role->assignPermission($permiso_eliminar_rol->id);
+        $role->assignPermission($permiso_listar_user->id);
+        $role->assignPermission($permiso_crear_user->id);
+        $role->assignPermission($permiso_editar_user->id);
+        $role->assignPermission($permiso_eliminar_user->id);
         $role->save();
     }
 }

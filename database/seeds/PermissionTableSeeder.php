@@ -12,7 +12,39 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-    	//Permisos para el formulario de roles
+    	//Permisos para el formulario de usuarios
+        $permission = new Permission();
+        $permission->name = 'Crear Usuario';
+        $permission->slug = 'users.create';
+        $permission->description = 'Permite la creación de nuevos Usuarios en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Usuario';
+        $permission->slug = 'users.destroy';
+        $permission->description = 'Permite la eliminación de Usuarios del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Usuario';
+        $permission->slug = 'users.edit';
+        $permission->description = 'Permite modificar los valores de un Usuario del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Usuarios';
+        $permission->slug = 'users.index';
+        $permission->description = 'Permite ver el listado de Usuario del sistema';
+        $permission->save();
+
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Usuario';
+        $permission->slug = 'users.show';
+        $permission->description = 'Permite ver un Usuario del sistema';
+        $permission->save();*/
+
+        //Permisos para el formulario de roles
         $permission = new Permission();
         $permission->name = 'Crear Rol';
         $permission->slug = 'roles.create';
