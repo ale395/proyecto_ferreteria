@@ -15,6 +15,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('modulos', 'ModuloController');
 	Route::get('api/modulos', 'ModuloController@apiModulo')->name('api.modulos');
 
+	//RUTAS PARA MODELO "ROLES"
+	Route::resource('roles', 'RoleController');
+	Route::get('api/roles', 'RoleController@apiRole')->name('api.roles');
+
 	//RUTAS PARA MODELO USER
 	Route::get('users', 'UserController@index')->name('users.index');
 	Route::get('api/users', 'UserController@apiUsers')->name('api.users');

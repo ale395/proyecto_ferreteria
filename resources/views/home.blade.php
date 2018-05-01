@@ -54,6 +54,10 @@
                               <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
                               </li>
                             @endcan
+                            @can('roles.index')
+                              <li class="sub_menu"><a href="{{route('roles.index')}}">Roles</a>
+                              </li>
+                            @endcan
                             @can('familias.index')
                               <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                               </li>
@@ -164,6 +168,8 @@
     <script src="{{ asset('assets/validator/validator.js') }}"></script>
 
     <script src="{{ asset('assets/bootstrap/js/ie10-viewport-bug-workaround.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/gentelella/smartresize.js') }}"></script>
+    
 
     <!-- Para los Script JavaScript necesarios para la utilización de AJAX con el DataTables-->
     @yield('ajax_datatables')

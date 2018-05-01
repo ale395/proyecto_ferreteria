@@ -6,21 +6,22 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Módulos
+                    <h4>Lista de Roles
                         <!-- Verifica si el usuario tiene permiso para crear registros -->
-                        @can('modulos.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Módulo</a>
+                        @can('roles.create')
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Rol</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nuevo Módulo</a>
-                        @endcan
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nuevo Rol</a>
+                        @endcan 
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table id="modulo-table" class="table table-striped table-responsive">
+                    <table id="role-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th>Modulo</th>
-                                <th>Descripcion</th>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
                                 <th width="150">Acciones</th>
                             </tr>
                         </thead>
@@ -30,19 +31,20 @@
             </div>
         </div>
 
-    @include('modulo.form')
+    @include('role.form')
     
 @endsection
 
 @section('ajax_datatables')
 	<script type="text/javascript">
-      var table = $('#modulo-table').DataTable({
+      var table = $('#role-table').DataTable({
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.modulos') }}",
+                      ajax: "{{ route('api.roles') }}",
                       columns: [
-                        {data: 'modulo', name: 'modulo'},
-                        {data: 'descripcion', name: 'descripcion'},
+                        {data: 'slug', name: 'slug'},
+                        {data: 'name', name: 'name'},
+                        {data: 'description', name: 'description'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
@@ -52,15 +54,15 @@
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nuevo Modulo');
+        $('.modal-title').text('Nuevo Rol');
       }
 
       $(function(){
             $('#modal-form form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('modulos') }}";
-                    else url = "{{ url('modulos') . '/' }}" + id;
+                    if (save_method == 'add') url = "{{ url('roles') }}";
+                    else url = "{{ url('roles') . '/' }}" + id;
 
                     $.ajax({
                         url : url,
@@ -84,16 +86,17 @@
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
-          url: "{{ url('modulos') }}" + '/' + id + "/edit",
+          url: "{{ url('roles') }}" + '/' + id + "/edit",
           type: "GET",
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Modulo');
+            $('.modal-title').text('Editar Rol');
 
             $('#id').val(data.id);
-            $('#modulo').val(data.modulo);
-            $('#descripcion').val(data.descripcion);
+            $('#slug').val(data.slug);
+            $('#name').val(data.name);
+            $('#description').val(data.description);
           },
           error : function() {
               alert("Nothing Data");
@@ -106,7 +109,7 @@
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
             if (popup == true ){
                 $.ajax({
-                    url : "{{ url('modulos') }}" + '/' + id,
+                    url : "{{ url('roles') }}" + '/' + id,
                     type : "POST",
                     data : {'_method' : 'DELETE', '_token' : csrf_token},
                     success : function(data) {

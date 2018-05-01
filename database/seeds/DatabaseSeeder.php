@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
 
 	    // Los usuarios necesitarán los roles previamente generados
     	$this->call(UserTableSeeder::class);
+
+        //Carga los Modulos del Sistema
+        $this->call(ModuloTableSeeder::class);
     }
 }
