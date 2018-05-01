@@ -50,20 +50,22 @@
                         <!--<li><a href="#level1_1">Level One</a>-->
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                            @can('modulos.index')
-                              <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
-                              </li>
+                            @can('users.index')
+                            <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
+                            </li>
                             @endcan
                             @can('roles.index')
                               <li class="sub_menu"><a href="{{route('roles.index')}}">Roles</a>
+                              </li>
+                            @endcan
+                            @can('modulos.index')
+                              <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
                               </li>
                             @endcan
                             @can('familias.index')
                               <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                               </li>
                             @endcan
-                            <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
-                            </li>
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
