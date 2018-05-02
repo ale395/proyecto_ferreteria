@@ -7,12 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="images/favicon.ico" type="image/ico" />
+    <link rel="icon" href="{{asset('llave.ico')}}" type="image/ico" />
 
     <title> {{ config('app.name') }} </title>
 
     <!-- Custom Theme Style -->
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
+    
   </head>
 
   <body class="nav-md">

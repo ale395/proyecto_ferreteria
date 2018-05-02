@@ -21,7 +21,7 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Correo</th>
-                                <!--<th>Rol</th>-->
+                                <th>Rol</th>
                                 <th width="150">Acciones</th>
                             </tr>
                         </thead>
@@ -46,6 +46,7 @@
                       columns: [
                         {data: 'name', name: 'name'},
                         {data: 'email', name: 'email'},
+                        {data: 'role', name: 'role'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
