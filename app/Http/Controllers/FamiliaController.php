@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Familia;
 use Illuminate\Http\Request;
-//use App\Http\Requests\CrearFamiliasRequest;
-use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class FamiliaController extends Controller
 {
@@ -19,10 +18,7 @@ class FamiliaController extends Controller
     {
 
         return view('familia.index');
-        /*
-        $familias = Familia::all();
-        return view('familia.index', compact('familias'));
-        */
+
     }
 
     /**
@@ -51,33 +47,6 @@ class FamiliaController extends Controller
 
         return Familia::create($data);
 
-        /*
-        $this->validate($request, [
-            'num_familia' => 'required|string|max:10|unique:familias',
-            'descripcion' => 'required|string|max:30',
-        ]);
-        */
-
-        /*aca validamos lo que necesitamos para Familias.
-        *el num_familia es requerido, debe ser cadena (alfanumerico) hasta 10 caracteres y no se debe repetir.
-        *la descripción tambien es cadena, obligatorio y el tamaño maximo es de 30 caracteres
-        */
-
-        /*
-        $validator = Validator::make($request->all(), [
-            'num_familia' => 'required|string|max:10|unique:familias',
-            'descripcion' => 'required|string|max:30',
-        ]);
- 
-        if ($validator->fails()) {
-            return redirect('familias/create')
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-        
-        Familia::create($request->all())->save();
-        return redirect()->route('familias.index');
-        */
     }
 
     /**
@@ -119,16 +88,7 @@ class FamiliaController extends Controller
         $familia->update();
 
         return $familia;
-        /*
-        if (!$familia->isDirty()) {
-            $familia->num_familia = $request->num_familia;
-            $familia->descripcion = $request->descripcion;
-        }
 
-        $familia->save();
-
-        return redirect()->route('familias.index');
-        */
     }
 
     /**
@@ -141,21 +101,42 @@ class FamiliaController extends Controller
     {
         
         return Familia::destroy($id);
-        /*
-        $familia->delete();
-        return redirect()->route('familias.index');
-        */
+
     }
 
     //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
     public function apiFamilia()
     {
+        $permiso_editar = Auth::user()->can('familias.edit');;
+        $permiso_eliminar = Auth::user()->can('familias.destroy');;
         $familia = Familia::all();
 
-        return Datatables::of($familia)
+        if ($permiso_editar) {
+            if ($permiso_eliminar) {
+                return Datatables::of($familia)
+                ->addColumn('action', function($familia){
+                    return '<a onclick="editForm('. $familia->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $familia->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            } else {
+                return Datatables::of($familia)
+                ->addColumn('action', function($familia){
+                    return '<a onclick="editForm('. $familia->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            }
+        } elseif ($permiso_eliminar) {
+            return Datatables::of($familia)
             ->addColumn('action', function($familia){
-                return '<a onclick="editForm('. $familia->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a onclick="deleteData('. $familia->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
+        } else {
+            return Datatables::of($familia)
+            ->addColumn('action', function($familia){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
+        }
     }
 }
