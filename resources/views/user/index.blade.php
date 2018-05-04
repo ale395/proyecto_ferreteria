@@ -148,4 +148,11 @@
         }
 
     </script>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('.js-role').select2();
+      });
+    </script>
+    
 @endsection
