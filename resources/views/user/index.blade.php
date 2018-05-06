@@ -149,9 +149,18 @@
 
     </script>
 
-    <script type="text/javascript">
+    <script>
       $(document).ready(function() {
-          $('.js-role').select2();
+          $('.js-role').select2({
+            dropdownParent: $('#modal-form-create');
+            selectOnClose: true;
+          });
+      });
+
+      $(document).ready(function() {
+          $('.js-role-edit').select2({
+            dropdownParent: $('#modal-form-edit')
+          });
       });
     </script>
     

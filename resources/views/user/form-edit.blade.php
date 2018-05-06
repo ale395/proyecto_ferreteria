@@ -28,6 +28,17 @@
                       </div>
                     </div>
 
+                    <div class="form-group">
+                      <label for="name" class="col-md-3 control-label">Rol</label>
+                      <div class="col-md-6">
+                          <select class="form-control js-role" name="role_id" style="width: 100%">
+                            @foreach($roles as $role)
+                              <option value="{{$role->id}}">{{$role->name}}</option>
+                            @endforeach
+                          </select>
+                      </div>
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">

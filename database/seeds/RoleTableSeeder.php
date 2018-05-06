@@ -37,6 +37,19 @@ class RoleTableSeeder extends Seeder
         $permiso_familia_editar = Permission::where('slug', 'familias.edit')->first();
         $permiso_familia_eliminar = Permission::where('slug', 'familias.destroy')->first();
 
+
+      //permisos de PAISES
+        $permiso_listar = Permission::where('slug', 'paises.index')->first();
+        $permiso_crear = Permission::where('slug', 'paises.create')->first();
+        $permiso_editar = Permission::where('slug', 'paises.edit')->first();
+        $permiso_eliminar = Permission::where('slug', 'paises.destroy')->first();
+
+    //permisos de DEPARTAMENTOS
+        $permiso_departamentos_listar = Permission::where('slug', 'departamentos.index')->first();
+        $permiso_departamentos_crear = Permission::where('slug', 'departamentos.create')->first();
+        $permiso_departamentos_editar = Permission::where('slug', 'departamentos.edit')->first();
+        $permiso_departamentos_eliminar = Permission::where('slug', 'departamentos.destroy')->first();
+
         //permisos de Lineas
         $permiso_linea_listar = Permission::where('slug', 'lineas.index')->first();
         $permiso_linea_crear = Permission::where('slug', 'lineas.create')->first();
@@ -67,6 +80,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_user->id);
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
+
+        $role->assignPermission($permiso_departamentos_listar->id);
+        $role->assignPermission($permiso_departamentos_crear->id);
+        $role->assignPermission($permiso_departamentos_editar->id);
+        $role->assignPermission($permiso_departamentos_eliminar->id);
+
         $role->assignPermission($permiso_linea_listar->id);
         $role->assignPermission($permiso_linea_crear->id);
         $role->assignPermission($permiso_linea_editar->id);

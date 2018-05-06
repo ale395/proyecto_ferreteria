@@ -74,7 +74,11 @@ class UserController extends Controller
             if ($permiso_eliminar) {
                 return Datatables::of($user)
                 ->addColumn('role', function($user){
-                    return $user->role->name;
+                    if (empty($user->role)) {
+                         return null;
+                     } else {
+                        return $user->role->name;
+                    }
                 })
                 ->addColumn('action', function($user){
                     return '<a onclick="editForm('. $user->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
