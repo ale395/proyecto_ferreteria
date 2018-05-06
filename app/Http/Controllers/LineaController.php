@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Familia;
 use Illuminate\Http\Request;
+use App\Linea;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
 
-class FamiliaController extends Controller
+class LineaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class FamiliaController extends Controller
      */
     public function index()
     {
-        return view('familia.index');
+        return view('linea.index');
 
     }
 
@@ -27,7 +27,7 @@ class FamiliaController extends Controller
      */
     public function create()
     {
-        //return view('familia.create');
+        //
     }
 
     /**
@@ -39,21 +39,21 @@ class FamiliaController extends Controller
     public function store(Request $request)
     {
         $data = [
-            'num_familia' => $request['num_familia'],
+            'num_linea' => $request['num_linea'],
             'descripcion' => $request['descripcion']
         ];
 
-        return Familia::create($data);
+        return Linea::create($data);
 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Modulo  $modulo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Familia $familia)
+    public function show($id)
     {
         //
     }
@@ -61,50 +61,47 @@ class FamiliaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Modulo  $modulo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Familia $familia)
+    public function edit(Linea $linea)
     {
-        return $familia;
-        //return view('familia.edit', compact('familia'));
+        return $linea;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Modulo  $modulo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Familia $familia)
+    public function update(Request $request, Linea $linea)
     {
-        $familia->num_familia = $request['num_familia'];
-        $familia->descripcion = $request['descripcion'];
+        $linea->num_linea = $request['num_linea'];
+        $linea->descripcion = $request['descripcion'];
         
-        $familia->update();
+        $linea->update();
 
-        return $familia;
-
+        return $linea;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Modulo  $modulo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        return Familia::destroy($id);
-
+        return Linea::destroy($id);
     }
 
     //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
     public function apiFamilia()
     {
-        $permiso_editar = Auth::user()->can('familias.edit');;
-        $permiso_eliminar = Auth::user()->can('familias.destroy');;
+        $permiso_editar = Auth::user()->can('lineas.edit');;
+        $permiso_eliminar = Auth::user()->can('lineas.destroy');;
         $familia = Familia::all();
 
         if ($permiso_editar) {
@@ -135,4 +132,5 @@ class FamiliaController extends Controller
             })->make(true);
         }
     }
+
 }

@@ -37,6 +37,13 @@ class RoleTableSeeder extends Seeder
         $permiso_familia_editar = Permission::where('slug', 'familias.edit')->first();
         $permiso_familia_eliminar = Permission::where('slug', 'familias.destroy')->first();
 
+        //permisos de Lineas
+        $permiso_linea_listar = Permission::where('slug', 'lineas.index')->first();
+        $permiso_linea_crear = Permission::where('slug', 'lineas.create')->first();
+        $permiso_linea_editar = Permission::where('slug', 'lineas.edit')->first();
+        $permiso_linea_eliminar = Permission::where('slug', 'lineas.destroy')->first();
+
+
         $role = new Role();
         $role->name = 'Administrador';
         $role->slug = 'administrador';
@@ -60,6 +67,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_user->id);
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
+        $role->assignPermission($permiso_linea_listar->id);
+        $role->assignPermission($permiso_linea_crear->id);
+        $role->assignPermission($permiso_linea_editar->id);
+        $role->assignPermission($permiso_linea_eliminar->id);
         $role->save();
 
         $role = new Role();
