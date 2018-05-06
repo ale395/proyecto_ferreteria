@@ -91,10 +91,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_linea_editar->id);
         $role->assignPermission($permiso_linea_eliminar->id);
 
-        $role->assignPermission($permiso_linea_modulo->id);
-        $role->assignPermission($permiso_linea_modulo->id);
-        $role->assignPermission($permiso_linea_modulo->id);
-        $role->assignPermission($permiso_linea_modulo->id);
+        $role->assignPermission($permiso_listar_modulo->id);
+        $role->assignPermission($permiso_crear_modulo->id);
+        $role->assignPermission($permiso_editar_modulo->id);
+        $role->assignPermission($permiso_eliminar_modulo->id);
         $role->save();
 
         $role = new Role();
@@ -120,10 +120,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_departamentos_crear->id);
         $role->assignPermission($permiso_departamentos_editar->id);
         $role->assignPermission($permiso_departamentos_eliminar->id);
-        $role->assignPermission($permiso_linea_modulo->id);
-        $role->assignPermission($permiso_linea_modulo->id);
-        $role->assignPermission($permiso_linea_modulo->id);
-        $role->assignPermission($permiso_linea_modulo->id);
+        $role->assignPermission($permiso_listar_modulo->id);
+        $role->assignPermission($permiso_crear_modulo->id);
+        $role->assignPermission($permiso_editar_modulo->id);
+        $role->assignPermission($permiso_eliminar_modulo->id);
         $role->save();
     }
 }
