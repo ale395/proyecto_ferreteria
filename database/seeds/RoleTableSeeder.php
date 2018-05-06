@@ -39,16 +39,16 @@ class RoleTableSeeder extends Seeder
 
 
       //permisos de PAISES
-        $permiso_listar = Permission::where('slug', 'paises.index')->first();
-        $permiso_crear = Permission::where('slug', 'paises.create')->first();
-        $permiso_editar = Permission::where('slug', 'paises.edit')->first();
-        $permiso_eliminar = Permission::where('slug', 'paises.destroy')->first();
+        $permiso_listar_pais = Permission::where('slug', 'paises.index')->first();
+        $permiso_crear_pais = Permission::where('slug', 'paises.create')->first();
+        $permiso_editar_pais = Permission::where('slug', 'paises.edit')->first();
+        $permiso_eliminar_pais = Permission::where('slug', 'paises.destroy')->first();
 
     //permisos de DEPARTAMENTOS
-        $permiso_departamentos_listar = Permission::where('slug', 'departamentos.index')->first();
-        $permiso_departamentos_crear = Permission::where('slug', 'departamentos.create')->first();
-        $permiso_departamentos_editar = Permission::where('slug', 'departamentos.edit')->first();
-        $permiso_departamentos_eliminar = Permission::where('slug', 'departamentos.destroy')->first();
+        $permiso_listar_departamento = Permission::where('slug', 'departamentos.index')->first();
+        $permiso_crear_departamento = Permission::where('slug', 'departamentos.create')->first();
+        $permiso_editar_departamento = Permission::where('slug', 'departamentos.edit')->first();
+        $permiso_eliminar_departamento = Permission::where('slug', 'departamentos.destroy')->first();
 
         //permisos de Lineas
         $permiso_linea_listar = Permission::where('slug', 'lineas.index')->first();
@@ -64,27 +64,30 @@ class RoleTableSeeder extends Seeder
         $role->save();
 
         //A los Administradores le damos todos los permisos
-        $role->assignPermission($permiso_listar->id);
-        $role->assignPermission($permiso_crear->id);
-        $role->assignPermission($permiso_editar->id);
-        $role->assignPermission($permiso_eliminar->id);
+        $role->assignPermission($permiso_listar_pais->id);
+        $role->assignPermission($permiso_crear_pais->id);
+        $role->assignPermission($permiso_editar_pais->id);
+        $role->assignPermission($permiso_eliminar_pais->id);
+
         $role->assignPermission($permiso_familia_listar->id);
         $role->assignPermission($permiso_familia_crear->id);
         $role->assignPermission($permiso_familia_editar->id);
         $role->assignPermission($permiso_familia_eliminar->id);
+
         $role->assignPermission($permiso_listar_rol->id);
         $role->assignPermission($permiso_crear_rol->id);
         $role->assignPermission($permiso_editar_rol->id);
         $role->assignPermission($permiso_eliminar_rol->id);
+
         $role->assignPermission($permiso_listar_user->id);
         $role->assignPermission($permiso_crear_user->id);
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
 
-        $role->assignPermission($permiso_departamentos_listar->id);
-        $role->assignPermission($permiso_departamentos_crear->id);
-        $role->assignPermission($permiso_departamentos_editar->id);
-        $role->assignPermission($permiso_departamentos_eliminar->id);
+        $role->assignPermission($permiso_listar_departamento->id);
+        $role->assignPermission($permiso_crear_departamento->id);
+        $role->assignPermission($permiso_editar_departamento->id);
+        $role->assignPermission($permiso_editar_departamento->id);
 
         $role->assignPermission($permiso_linea_listar->id);
         $role->assignPermission($permiso_linea_crear->id);
@@ -104,10 +107,10 @@ class RoleTableSeeder extends Seeder
         $role->save();
 
         //A los operadores le damos unos cuantitos nomas
-        $role->assignPermission($permiso_listar->id);
-        $role->assignPermission($permiso_crear->id);
-        $role->assignPermission($permiso_editar->id);
-        $role->assignPermission($permiso_eliminar->id);
+        $role->assignPermission($permiso_listar_pais->id);
+        $role->assignPermission($permiso_crear_pais->id);
+        $role->assignPermission($permiso_editar_pais->id);
+        $role->assignPermission($permiso_eliminar_pais->id);
         $role->assignPermission($permiso_listar_rol->id);
         $role->assignPermission($permiso_crear_rol->id);
         $role->assignPermission($permiso_editar_rol->id);
@@ -116,10 +119,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_user->id);
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
-        $role->assignPermission($permiso_departamentos_listar->id);
-        $role->assignPermission($permiso_departamentos_crear->id);
-        $role->assignPermission($permiso_departamentos_editar->id);
-        $role->assignPermission($permiso_departamentos_eliminar->id);
+        $role->assignPermission($permiso_listar_departamento->id);
+        $role->assignPermission($permiso_crear_departamento->id);
+        $role->assignPermission($permiso_editar_departamento->id);
+        $role->assignPermission($permiso_eliminar_departamento->id);
         $role->assignPermission($permiso_listar_modulo->id);
         $role->assignPermission($permiso_crear_modulo->id);
         $role->assignPermission($permiso_editar_modulo->id);
