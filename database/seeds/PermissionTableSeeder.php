@@ -182,6 +182,7 @@ class PermissionTableSeeder extends Seeder
         $permission->name = 'Listar Departamentos';
         $permission->slug = 'departamentos.index';
         $permission->description = 'Permite ver el listado de departamentos del sistema';
+        $permission->save();
 
         //Permisos para el formulario de familias
         $permission = new Permission();

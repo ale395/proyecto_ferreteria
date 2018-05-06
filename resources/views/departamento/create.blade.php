@@ -1,6 +1,6 @@
-@extends('layout.layout')
+@extends('home')
 
-@section('contenido')
+@section('content')
 
 	<form method="POST" action="{{ route('departamentos.store') }}">
 	{!! csrf_field() !!}
