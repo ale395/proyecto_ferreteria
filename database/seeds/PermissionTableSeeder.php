@@ -134,8 +134,6 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de familias del sistema';
         $permission->save();
 
-<<<<<<< HEAD
-
         //Permisos para el formulario de paises
         $permission = new Permission();
         $permission->name = 'Crear Pais';
@@ -184,7 +182,7 @@ class PermissionTableSeeder extends Seeder
         $permission->name = 'Listar Departamentos';
         $permission->slug = 'departamentos.index';
         $permission->description = 'Permite ver el listado de departamentos del sistema';
-=======
+
         //Permisos para el formulario de familias
         $permission = new Permission();
         $permission->name = 'Crear Linea';
@@ -208,7 +206,6 @@ class PermissionTableSeeder extends Seeder
         $permission->name = 'Listar Linea';
         $permission->slug = 'lineas.index';
         $permission->description = 'Permite ver el listado de lineas del sistema';
->>>>>>> 6c883452092f040bbd9ff40d43ebd73422b3d835
         $permission->save();
 
     }
