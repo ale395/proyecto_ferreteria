@@ -134,5 +134,30 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de familias del sistema';
         $permission->save();
 
+        //Permisos para el formulario de familias
+        $permission = new Permission();
+        $permission->name = 'Crear Linea';
+        $permission->slug = 'lineas.create';
+        $permission->description = 'Permite la creación de nuevas lineas en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Linea';
+        $permission->slug = 'lineas.destroy';
+        $permission->description = 'Permite la eliminación de lineas del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Linea';
+        $permission->slug = 'lineas.edit';
+        $permission->description = 'Permite modificar los valores de una linea';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Linea';
+        $permission->slug = 'lineas.index';
+        $permission->description = 'Permite ver el listado de lineas del sistema';
+        $permission->save();
+
     }
 }
