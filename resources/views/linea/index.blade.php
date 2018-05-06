@@ -25,7 +25,7 @@
             </div>
         </div>
 
-    @include('familia.form')
+    @include('linea.form')
 @endsection
 
 @section('ajax_datatables')
