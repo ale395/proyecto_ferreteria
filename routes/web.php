@@ -27,6 +27,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('familias', 'FamiliaController');
 	Route::get('api/familias', 'FamiliaController@apiFamilia')->name('api.familias');
 
+	//rutas para modelo 'Lineas'
+	Route::resource('lineas', 'LineaController');
+	Route::get('api/lineas', 'LineaController@apiLineas')->name('api.lineas');
+
 	/*
 	//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
 	Route::get('familias', 'FamiliaController@index')->name('familias.index')

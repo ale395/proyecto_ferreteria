@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Linea;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
 
@@ -98,35 +98,35 @@ class LineaController extends Controller
     }
 
     //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
-    public function apiFamilia()
+    public function apiLineas()
     {
         $permiso_editar = Auth::user()->can('lineas.edit');;
         $permiso_eliminar = Auth::user()->can('lineas.destroy');;
-        $familia = Familia::all();
+        $linea = Linea::all();
 
         if ($permiso_editar) {
             if ($permiso_eliminar) {
-                return Datatables::of($familia)
-                ->addColumn('action', function($familia){
-                    return '<a onclick="editForm('. $familia->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $familia->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                return Datatables::of($linea)
+                ->addColumn('action', function($linea){
+                    return '<a onclick="editForm('. $linea->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $linea->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
-                return Datatables::of($familia)
-                ->addColumn('action', function($familia){
-                    return '<a onclick="editForm('. $familia->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                return Datatables::of($linea)
+                ->addColumn('action', function($linea){
+                    return '<a onclick="editForm('. $linea->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
-            return Datatables::of($familia)
-            ->addColumn('action', function($familia){
+            return Datatables::of($linea)
+            ->addColumn('action', function($linea){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a onclick="deleteData('. $familia->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                       '<a onclick="deleteData('. $linea->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
-            return Datatables::of($familia)
-            ->addColumn('action', function($familia){
+            return Datatables::of($linea)
+            ->addColumn('action', function($linea){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
