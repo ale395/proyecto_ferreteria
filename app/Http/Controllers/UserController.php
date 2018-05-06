@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.index');
+        $roles = Role::all();
+        return view('user.index', compact('roles'));
     }
 
     public function create()
@@ -29,7 +31,8 @@ class UserController extends Controller
         $data = [
             'name' => $request['name'],
             'email' => $request['email'],
-            'password' => bcrypt($request['password'])
+            'password' => bcrypt($request['password']),
+            'role_id' => $request['role_id']
         ];
 
         return User::create($data);
@@ -54,6 +57,7 @@ class UserController extends Controller
     {
         $user->name = $request['name'];
         $user->email = $request['email'];
+        $user->role_id = $request['role_id'];
         
         $user->update();
 
