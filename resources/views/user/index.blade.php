@@ -149,7 +149,7 @@
 
     </script>
 
-    <script type="text/javascript">
+    <script>
       $(document).ready(function() {
           $('.js-role').select2();
       });
