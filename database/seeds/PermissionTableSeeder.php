@@ -134,5 +134,56 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de familias del sistema';
         $permission->save();
 
+
+        //Permisos para el formulario de paises
+        $permission = new Permission();
+        $permission->name = 'Crear Pais';
+        $permission->slug = 'paises.create';
+        $permission->description = 'Permite la creación de nuevos paises en el sistema';
+        $permission->save();
+        
+        $permission = new Permission();
+        $permission->name = 'Borrar Pais';
+        $permission->slug = 'paises.destroy';
+        $permission->description = 'Permite la eliminación de familias del sistema';
+        $permission->save();
+        
+        $permission = new Permission();
+        $permission->name = 'Editar Pais';
+        $permission->slug = 'paises.edit';
+        $permission->description = 'Permite modificar los valores de un pais';
+        $permission->save();
+        
+        $permission = new Permission();
+        $permission->name = 'Listar Paises';
+        $permission->slug = 'paises.index';
+        $permission->description = 'Permite ver el listado de paises del sistema';
+        $permission->save();
+        
+             //Permisos para el formulario de DEPARTAMENTOS
+        $permission = new Permission();
+        $permission->name = 'Crear Departamento';
+        $permission->slug = 'departamentos.create';
+        $permission->description = 'Permite la creación de nuevos departamentos en el sistema';
+        $permission->save();
+        
+        $permission = new Permission();
+        $permission->name = 'Borrar Departamento';
+        $permission->slug = 'departamentos.destroy';
+        $permission->description = 'Permite la eliminación de departamentos del sistema';
+        $permission->save();
+        
+        $permission = new Permission();
+        $permission->name = 'Editar Departamento';
+        $permission->slug = 'departamentos.edit';
+        $permission->description = 'Permite modificar los valores de un pais';
+        $permission->save();
+        
+        $permission = new Permission();
+        $permission->name = 'Listar Departamentos';
+        $permission->slug = 'departamentos.index';
+        $permission->description = 'Permite ver el listado de departamentos del sistema';
+        $permission->save();
+
     }
 }

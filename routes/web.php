@@ -26,6 +26,15 @@ Route::middleware(['auth'])->group(function() {
 	//rutas para modelo 'Familias'
 	Route::resource('familias', 'FamiliaController');
 	Route::get('api/familias', 'FamiliaController@apiFamilia')->name('api.familias');
+	
+	//RUTAS PARA MODELO "PAISES"
+	Route::resource('paises', 'PaisController');
+	Route::get('api/paises', 'PaisController@apiPais')->name('api.paises');
+
+	//RUTAS PARA MODELO "DEPARTAMENTOS"
+	Route::resource('departamentos', 'DepartamentoController');
+	Route::get('api/departamentos', 'DepartamentoController@apiDepartamento')->name('api.departamentos');
+	
 
 	/*
 	//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
