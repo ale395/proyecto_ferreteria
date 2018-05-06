@@ -152,8 +152,7 @@
     <script>
       $(document).ready(function() {
           $('.js-role').select2({
-            dropdownParent: $('#modal-form-create');
-            selectOnClose: true;
+            dropdownParent: $('#modal-form-create')
           });
       });
 

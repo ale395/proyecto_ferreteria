@@ -20,10 +20,10 @@ class RoleTableSeeder extends Seeder
         $permiso_eliminar_user = Permission::where('slug', 'users.destroy')->first();
 
         //permisos de MODULOS
-        $permiso_listar = Permission::where('slug', 'modulos.index')->first();
-        $permiso_crear = Permission::where('slug', 'modulos.create')->first();
-        $permiso_editar = Permission::where('slug', 'modulos.edit')->first();
-        $permiso_eliminar = Permission::where('slug', 'modulos.destroy')->first();
+        $permiso_listar_modulo = Permission::where('slug', 'modulos.index')->first();
+        $permiso_crear_modulo = Permission::where('slug', 'modulos.create')->first();
+        $permiso_editar_modulo = Permission::where('slug', 'modulos.edit')->first();
+        $permiso_eliminar_modulo = Permission::where('slug', 'modulos.destroy')->first();
 
         //permisos de ROLES
         $permiso_listar_rol = Permission::where('slug', 'roles.index')->first();
@@ -90,6 +90,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_linea_crear->id);
         $role->assignPermission($permiso_linea_editar->id);
         $role->assignPermission($permiso_linea_eliminar->id);
+
+        $role->assignPermission($permiso_listar_modulo->id);
+        $role->assignPermission($permiso_crear_modulo->id);
+        $role->assignPermission($permiso_editar_modulo->id);
+        $role->assignPermission($permiso_eliminar_modulo->id);
         $role->save();
 
         $role = new Role();
@@ -115,6 +120,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_departamentos_crear->id);
         $role->assignPermission($permiso_departamentos_editar->id);
         $role->assignPermission($permiso_departamentos_eliminar->id);
+        $role->assignPermission($permiso_listar_modulo->id);
+        $role->assignPermission($permiso_crear_modulo->id);
+        $role->assignPermission($permiso_editar_modulo->id);
+        $role->assignPermission($permiso_eliminar_modulo->id);
         $role->save();
     }
 }
