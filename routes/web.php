@@ -80,7 +80,7 @@ Route::middleware(['auth'])->group(function() {
 		->middleware('permission:paises.destroy');
 
 	Route::get('paises/{pais}/edit', 'PaisesController@edit')->name('paises.edit')
-		->middleware('permission:paises.edit');*/
+		->middleware('permission:paises.edit');
 
 
 	//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
@@ -100,7 +100,7 @@ Route::middleware(['auth'])->group(function() {
 		->middleware('permission:departamentos.destroy');
 
 	Route::get('departamentos/{departamento}/edit', 'DepartamentoController@edit')->name('departamentos.edit')
-		->middleware('permission:departamentos.edit');
+		->middleware('permission:departamentos.edit');*/
 
 
 });
