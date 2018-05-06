@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <label for="name" class="col-md-3 control-label">Código</label>
                         <div class="col-md-6">
-                            <input type="text" id="num_familia" name="num_familia" class="form-control" autofocus required>
+                            <input type="text" id="num_familia" name="num_familia" class="form-control" autofocus style="text-transform:uppercase" required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                     <div class="form-group">
                       <label for="email" class="col-md-3 control-label">Descripción</label>
                       <div class="col-md-6">
-                          <input type="text" id="descripcion" name="descripcion" class="form-control" required>
+                          <input type="text" id="descripcion" name="descripcion" class="form-control" style="text-transform:uppercase" required>
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>

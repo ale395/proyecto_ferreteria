@@ -11,7 +11,7 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table id="modulo-table" class="table table-striped table-responsive">
+                    <table id="familia-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
@@ -115,6 +115,7 @@
 
     </script>
 
+    <!-- 
     <script type="text/javascript">
         $('#tableUser').DataTable({
           "processing": true,
@@ -126,4 +127,5 @@
               {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
             ]});
     </script>
+    -->
 @endsection

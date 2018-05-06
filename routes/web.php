@@ -70,7 +70,7 @@ Route::middleware(['auth'])->group(function() {
 		->middleware('permission:paises.edit');*/
 
 
-				//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
+	//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
 	Route::get('departamentos', 'DepartamentoController@index')->name('departamentos.index');
 		//->middleware('permission:departamentos.index');
 
