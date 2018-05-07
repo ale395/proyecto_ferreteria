@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/familias', 'FamiliaController@apiFamilia')->name('api.familias');
 	
 	//RUTAS PARA MODELO "PAISES"
-	Route::resource('paises', 'PaisController');
+	Route::resource('paises', 'PaisController', ['parameters' => ['paises' => 'pais']]);
 	Route::get('api/paises', 'PaisController@apiPais')->name('api.paises');
 
 	//RUTAS PARA MODELO "DEPARTAMENTOS"

@@ -54,7 +54,6 @@ class PaisController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -63,7 +62,9 @@ class PaisController extends Controller
      */
     public function edit(Pais $pais)
     {
+        dd($pais);
         return $pais;
+
     }
 
     /**
@@ -73,7 +74,7 @@ class PaisController extends Controller
      * @param  \App\Pais  $pais
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Modulo $modulo)
+    public function update(Request $request, Pais $pais)
     {
         $pais->descripcion = $request['descripcion'];
         
