@@ -209,5 +209,30 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de lineas del sistema';
         $permission->save();
 
+        //Permisos para el formulario de familias
+        $permission = new Permission();
+        $permission->name = 'Crear Rubro';
+        $permission->slug = 'rubros.create';
+        $permission->description = 'Permite la creación de nuevos rubros en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Rubro';
+        $permission->slug = 'rubros.destroy';
+        $permission->description = 'Permite la eliminación de rubros del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Rubro';
+        $permission->slug = 'rubros.edit';
+        $permission->description = 'Permite modificar los valores de un rubro';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Rubro';
+        $permission->slug = 'rubros.index';
+        $permission->description = 'Permite ver el listado de rubros del sistema';
+        $permission->save();
+
     }
 }

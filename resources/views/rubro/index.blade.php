@@ -7,7 +7,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Lista de Rubros
-                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Rubro</a>
+                        @can('rubros.create')
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Rubro</a>
+                        @else
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nuevo Rubro</a>
+                        @endcan
                     </h4>
                 </div>
                 <div class="panel-body">
