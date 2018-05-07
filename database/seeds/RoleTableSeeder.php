@@ -87,7 +87,7 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_listar_departamento->id);
         $role->assignPermission($permiso_crear_departamento->id);
         $role->assignPermission($permiso_editar_departamento->id);
-        $role->assignPermission($permiso_editar_departamento->id);
+        $role->assignPermission($permiso_eliminar_departamento->id);
 
         $role->assignPermission($permiso_linea_listar->id);
         $role->assignPermission($permiso_linea_crear->id);
