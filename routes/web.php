@@ -34,11 +34,14 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA MODELO "DEPARTAMENTOS"
 	Route::resource('departamentos', 'DepartamentoController');
 	Route::get('api/departamentos', 'DepartamentoController@apiDepartamento')->name('api.departamentos');
-	
 
 	//rutas para modelo 'Lineas'
 	Route::resource('lineas', 'LineaController');
 	Route::get('api/lineas', 'LineaController@apiLineas')->name('api.lineas');
+
+	//rutas para modelo 'rubros'
+	Route::resource('rubros', 'RubroController');
+	Route::get('api/rubros', 'RubroController@apiRubros')->name('api.rubros');
 
 	/*
 	//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
