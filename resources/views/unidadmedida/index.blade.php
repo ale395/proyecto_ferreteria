@@ -7,15 +7,15 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Lista de Rubros
-                        @can('rubros.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Rubro</a>
+                        @can('unidadmedidas.create')
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nueva Unidad de Medida</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nuevo Rubro</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nueva Unidad de Medida</a>
                         @endcan
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table id="rubro-table" class="table table-striped table-responsive">
+                    <table id="unidad-medida-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
@@ -29,17 +29,17 @@
             </div>
         </div>
 
-    @include('rubro.form')
+    @include('unidadmedida.form')
 @endsection
 
 @section('ajax_datatables')
 	<script type="text/javascript">
-      var table = $('#rubro-table').DataTable({
+      var table = $('#unidad-medida-table').DataTable({
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.rubros') }}",
+                      ajax: "{{ route('api.unidadmedidas') }}",
                       columns: [
-                        {data: 'num_rubro', name: 'num_rubro'},
+                        {data: 'num_umedida', name: 'num_umedida'},
                         {data: 'descripcion', name: 'descripcion'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
@@ -50,15 +50,15 @@
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nuevo Rubro');
+        $('.modal-title').text('Nueva Unidad de Medida');
       }
 
       $(function(){
             $('#modal-form form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('rubros') }}";
-                    else url = "{{ url('rubros') . '/' }}" + id;
+                    if (save_method == 'add') url = "{{ url('unidadmedidas') }}";
+                    else url = "{{ url('unidadmedidas') . '/' }}" + id;
 
                     $.ajax({
                         url : url,
@@ -82,15 +82,15 @@
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
-          url: "{{ url('rubros') }}" + '/' + id + "/edit",
+          url: "{{ url('unidadmedidas') }}" + '/' + id + "/edit",
           type: "GET",
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Rubro');
+            $('.modal-title').text('Editar Unidad de Medida');
 
             $('#id').val(data.id);
-            $('#num_rubro').val(data.num_rubro);
+            $('#num_umedida').val(data.num_umedida);
             $('#descripcion').val(data.descripcion);
           },
           error : function() {
@@ -104,7 +104,7 @@
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
             if (popup == true ){
                 $.ajax({
-                    url : "{{ url('rubros') }}" + '/' + id,
+                    url : "{{ url('unidadmedidas') }}" + '/' + id,
                     type : "POST",
                     data : {'_method' : 'DELETE', '_token' : csrf_token},
                     success : function(data) {

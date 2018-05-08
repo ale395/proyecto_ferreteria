@@ -184,7 +184,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de departamentos del sistema';
         $permission->save();
 
-        //Permisos para el formulario de familias
+        //Permisos para el formulario de lineas
         $permission = new Permission();
         $permission->name = 'Crear Linea';
         $permission->slug = 'lineas.create';
@@ -209,7 +209,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de lineas del sistema';
         $permission->save();
 
-        //Permisos para el formulario de familias
+        //Permisos para el formulario de rubros
         $permission = new Permission();
         $permission->name = 'Crear Rubro';
         $permission->slug = 'rubros.create';
@@ -231,6 +231,31 @@ class PermissionTableSeeder extends Seeder
         $permission = new Permission();
         $permission->name = 'Listar Rubro';
         $permission->slug = 'rubros.index';
+        $permission->description = 'Permite ver el listado de rubros del sistema';
+        $permission->save();
+
+        //Permisos para el formulario de unidad de medida
+        $permission = new Permission();
+        $permission->name = 'Crear Unidad de Medida';
+        $permission->slug = 'unidadmedidas.create';
+        $permission->description = 'Permite la creación de nuevas unidades de medidas en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Unidad de Medida';
+        $permission->slug = 'unidadmedidas.destroy';
+        $permission->description = 'Permite la eliminación de unidad de medida del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Unidad de Medida';
+        $permission->slug = 'unidadmedidas.edit';
+        $permission->description = 'Permite modificar los valores de un rubro';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Unidad de Medida';
+        $permission->slug = 'unidadmedidas.index';
         $permission->description = 'Permite ver el listado de rubros del sistema';
         $permission->save();
 

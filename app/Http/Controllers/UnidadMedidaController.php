@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Rubro; 
+use App\UnidadMedida; 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
 
-class RubroController extends Controller
+class UnidadMedidaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,7 @@ class RubroController extends Controller
      */
     public function index()
     {
-        return view('rubro.index');
-
+        return view('unidadmedida.index');
     }
 
     /**
@@ -39,11 +38,11 @@ class RubroController extends Controller
     public function store(Request $request)
     {
         $data = [
-            'num_rubro' => $request['num_rubro'],
+            'num_umedida' => $request['num_umedida'],
             'descripcion' => $request['descripcion']
         ];
 
-        return Rubro::create($data);
+        return UnidadMedida::create($data);
     }
 
     /**
@@ -63,9 +62,9 @@ class RubroController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Rubro $rubro)
+    public function edit(UnidadMedida $unidad_medida)
     {
-        return $rubro;
+        return ~unidad_medida;
     }
 
     /**
@@ -75,14 +74,14 @@ class RubroController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rubro $rubro)
+    public function update(Request $request, UnidadMedida $unidad_medida)
     {
-        $rubro->num_rubro = $request['num_rubro'];
-        $rubro->descripcion = $request['descripcion'];
+        $unidad_medida->num_umedida = $request['num_umedida'];
+        $unidad_medida->descripcion = $request['descripcion'];
         
-        $rubro->update();
+        $unidad_medida->update();
 
-        return $rubro;
+        return $unidad_medida;
     }
 
     /**
@@ -93,39 +92,40 @@ class RubroController extends Controller
      */
     public function destroy($id)
     {
-        return Rubro::destroy($id);
+        return UnidadMedida::destroy($id);
     }
 
-    //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
-    public function apiRubros()
+
+        //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
+    public function apiUnidadMedidas()
     {
-        $permiso_editar = Auth::user()->can('rubros.edit');;
-        $permiso_eliminar = Auth::user()->can('rubros.destroy');;
-        $rubro = Rubro::all();
+        $permiso_editar = Auth::user()->can('unidadmedidas.edit');;
+        $permiso_eliminar = Auth::user()->can('unidadmedidas.destroy');;
+        $unidad_medida = UnidadMedida::all();
 
         if ($permiso_editar) {
             if ($permiso_eliminar) {
-                return Datatables::of($rubro)
-                ->addColumn('action', function($Rubro){
-                    return '<a onclick="editForm('. $rubro->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $rubro->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                return Datatables::of($unidad_medida)
+                ->addColumn('action', function($UnidadMedida){
+                    return '<a onclick="editForm('. $unidad_medida->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $unidad_medida->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
-                return Datatables::of($rubro)
-                ->addColumn('action', function($Rubro){
-                    return '<a onclick="editForm('. $rubro->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                return Datatables::of($unidad_medida)
+                ->addColumn('action', function($UnidadMedida){
+                    return '<a onclick="editForm('. $unidad_medida->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
-            return Datatables::of($rubro)
-            ->addColumn('action', function($Rubro){
+            return Datatables::of($unidad_medida)
+            ->addColumn('action', function($UnidadMedida){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a onclick="deleteData('. $rubro->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                       '<a onclick="deleteData('. $unidad_medida->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
-            return Datatables::of($rubro)
-            ->addColumn('action', function($Rubro){
+            return Datatables::of($unidad_medida)
+            ->addColumn('action', function($UnidadMedida){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);

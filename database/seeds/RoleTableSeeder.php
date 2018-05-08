@@ -62,6 +62,12 @@ class RoleTableSeeder extends Seeder
         $permiso_rubro_editar = Permission::where('slug', 'rubros.edit')->first();
         $permiso_rubro_eliminar = Permission::where('slug', 'rubros.destroy')->first();
 
+        //permisos de Rubros
+        $permiso_unidadmedida_listar = Permission::where('slug', 'unidadmedidas.index')->first();
+        $permiso_unidadmedida_crear = Permission::where('slug', 'unidadmedidas.create')->first();
+        $permiso_unidadmedida_editar = Permission::where('slug', 'unidadmedidas.edit')->first();
+        $permiso_unidadmedida_eliminar = Permission::where('slug', 'unidadmedidas.destroy')->first();
+
 
         $role = new Role();
         $role->name = 'Administrador';
@@ -104,6 +110,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_rubro_crear->id);
         $role->assignPermission($permiso_rubro_editar->id);
         $role->assignPermission($permiso_rubro_eliminar->id);
+
+        $role->assignPermission($permiso_unidadmedida_listar->id);
+        $role->assignPermission($permiso_unidadmedida_crear->id);
+        $role->assignPermission($permiso_unidadmedida_editar->id);
+        $role->assignPermission($permiso_unidadmedida_eliminar->id);
 
         $role->assignPermission($permiso_listar_modulo->id);
         $role->assignPermission($permiso_crear_modulo->id);

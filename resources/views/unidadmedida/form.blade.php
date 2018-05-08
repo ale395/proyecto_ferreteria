@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <label for="name" class="col-md-3 control-label">Código</label>
                         <div class="col-md-6">
-                            <input type="text" id="num_rubro" name="num_rubro" class="form-control" autofocus style="text-transform:uppercase" required>
+                            <input type="text" id="num_umedida" name="num_umedida" class="form-control" autofocus style="text-transform:uppercase" required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
