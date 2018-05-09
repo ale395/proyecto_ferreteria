@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Rubro; 
+use App\Rubro;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -106,26 +106,26 @@ class RubroController extends Controller
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 return Datatables::of($rubro)
-                ->addColumn('action', function($Rubro){
+                ->addColumn('action', function($rubro){
                     return '<a onclick="editForm('. $rubro->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a onclick="deleteData('. $rubro->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
                 return Datatables::of($rubro)
-                ->addColumn('action', function($Rubro){
+                ->addColumn('action', function($rubro){
                     return '<a onclick="editForm('. $rubro->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
             return Datatables::of($rubro)
-            ->addColumn('action', function($Rubro){
+            ->addColumn('action', function($rubro){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a onclick="deleteData('. $rubro->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
             return Datatables::of($rubro)
-            ->addColumn('action', function($Rubro){
+            ->addColumn('action', function($rubro){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);

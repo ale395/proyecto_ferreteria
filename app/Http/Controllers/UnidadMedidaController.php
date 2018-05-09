@@ -106,26 +106,26 @@ class UnidadMedidaController extends Controller
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 return Datatables::of($unidad_medida)
-                ->addColumn('action', function($UnidadMedida){
+                ->addColumn('action', function($unidad_medida){
                     return '<a onclick="editForm('. $unidad_medida->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a onclick="deleteData('. $unidad_medida->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
                 return Datatables::of($unidad_medida)
-                ->addColumn('action', function($UnidadMedida){
+                ->addColumn('action', function($unidad_medida){
                     return '<a onclick="editForm('. $unidad_medida->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
             return Datatables::of($unidad_medida)
-            ->addColumn('action', function($UnidadMedida){
+            ->addColumn('action', function($unidad_medida){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a onclick="deleteData('. $unidad_medida->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
             return Datatables::of($unidad_medida)
-            ->addColumn('action', function($UnidadMedida){
+            ->addColumn('action', function($unidad_medida){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);

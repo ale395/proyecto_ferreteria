@@ -33,7 +33,7 @@
 @endsection
 
 @section('ajax_datatables')
-	<script type="text/javascript">
+  <script type="text/javascript">
       var table = $('#rubro-table').DataTable({
                       processing: true,
                       serverSide: true,
@@ -87,7 +87,7 @@
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Rubro');
+            $('.modal-title').text('Editar Linea');
 
             $('#id').val(data.id);
             $('#num_rubro').val(data.num_rubro);
