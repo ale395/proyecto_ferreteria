@@ -47,6 +47,14 @@ class FamiliaController extends Controller
 
     }
 
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'num_familia' => 'required|string|max:255|unique:num_familia',
+            'descripcion' => 'required|string|max:255',
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *
