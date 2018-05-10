@@ -68,6 +68,11 @@ class RoleTableSeeder extends Seeder
         $permiso_unidadmedida_editar = Permission::where('slug', 'unidadmedidas.edit')->first();
         $permiso_unidadmedida_eliminar = Permission::where('slug', 'unidadmedidas.destroy')->first();
 
+        //permisos de Conceptos de Ajuste
+        $permiso_concepto_listar = Permission::where('slug', 'conceptoajuste.index')->first();
+        $permiso_concepto_crear = Permission::where('slug', 'conceptoajuste.create')->first();
+        $permiso_concepto_editar = Permission::where('slug', 'conceptoajuste.edit')->first();
+        $permiso_concepto_eliminar = Permission::where('slug', 'conceptoajuste.destroy')->first();
 
         $role = new Role();
         $role->name = 'Administrador';
@@ -115,6 +120,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_unidadmedida_crear->id);
         $role->assignPermission($permiso_unidadmedida_editar->id);
         $role->assignPermission($permiso_unidadmedida_eliminar->id);
+
+        $role->assignPermission($permiso_concepto_listar->id);
+        $role->assignPermission($permiso_concepto_crear->id);
+        $role->assignPermission($permiso_concepto_editar->id);
+        $role->assignPermission($permiso_concepto_eliminar->id);
 
         $role->assignPermission($permiso_listar_modulo->id);
         $role->assignPermission($permiso_crear_modulo->id);

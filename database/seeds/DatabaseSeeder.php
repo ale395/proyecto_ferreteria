@@ -24,5 +24,8 @@ class DatabaseSeeder extends Seeder
 
         //Carga los Modulos del Sistema
         $this->call(ModuloTableSeeder::class);
+
+        //carga los datos de inicio
+        $this->call(DefaultSeeder::class);
     }
 }

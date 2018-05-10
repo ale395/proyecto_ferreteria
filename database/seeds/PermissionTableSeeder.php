@@ -259,5 +259,30 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de rubros del sistema';
         $permission->save();
 
+        //Permisos para el formulario de concepto de ajuste
+        $permission = new Permission();
+        $permission->name = 'Crear Concepto de Ajuste';
+        $permission->slug = 'conceptoajuste.create';
+        $permission->description = 'Permite la creación de nuevos conceptos de ajuste en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Concepto de Ajuste';
+        $permission->slug = 'conceptoajuste.destroy';
+        $permission->description = 'Permite la eliminación de Concepto de Ajuste del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Concepto de Ajuste';
+        $permission->slug = 'conceptoajuste.edit';
+        $permission->description = 'Permite modificar los valores de un Concepto de Ajuste';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Concepto de Ajuste';
+        $permission->slug = 'conceptoajuste.index';
+        $permission->description = 'Permite ver el listado de conceptos de ajuste';
+        $permission->save();
+
     }
 }

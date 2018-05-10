@@ -47,6 +47,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('unidadmedidas', 'UnidadMedidaController');
 	Route::get('api/unidadmedidas', 'UnidadMedidaController@apiUnidadMedidas')->name('api.unidadmedidas');
 
+	//rutas para modelo 'conceptoajuste'
+	Route::resource('conceptos', 'ConceptoAjusteController');
+	Route::get('api/conceptosajuste', 'ConceptoAjusteController@apiConceptosAjuste')->name('api.conceptos');
+
 	/*
 	//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
 	Route::get('familias', 'FamiliaController@index')->name('familias.index')

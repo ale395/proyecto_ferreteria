@@ -62,9 +62,9 @@ class UnidadMedidaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(UnidadMedida $unidad_medida)
+    public function edit(UnidadMedida $unidadmedida)
     {
-        return ~unidad_medida;
+        return $unidadmedida;
     }
 
     /**
@@ -74,14 +74,14 @@ class UnidadMedidaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UnidadMedida $unidad_medida)
+    public function update(Request $request, UnidadMedida $unidadmedida)
     {
-        $unidad_medida->num_umedida = $request['num_umedida'];
-        $unidad_medida->descripcion = $request['descripcion'];
+        $unidadmedida->num_umedida = $request['num_umedida'];
+        $unidadmedida->descripcion = $request['descripcion'];
         
-        $unidad_medida->update();
+        $unidadmedida->update();
 
-        return $unidad_medida;
+        return $unidadmedida;
     }
 
     /**
