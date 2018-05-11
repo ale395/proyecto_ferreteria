@@ -69,7 +69,25 @@
                             table.ajax.reload();
                         },
                         error : function(){
-                            alert('Ha ocurrido un error, favor verificar');
+                            //alert('Ha ocurrido un error, favor verificar');
+                            var msg = '';
+                            if (jqXHR.status === 0) {
+                                msg = 'Sin Conexion.\n Verifique la red.';
+                            } else if (jqXHR.status == 404) {
+                                msg = 'Pagina no encontradad.[404]';
+                            } else if (jqXHR.status == 500) {
+                                msg = 'Error del Servidor [500].';
+                            } else if (exception === 'parsererror') {
+                                msg = 'Requested JSON parse failed.';
+                            } else if (exception === 'timeout') {
+                                msg = 'Time out error.';
+                            } else if (exception === 'abort') {
+                                msg = 'Ajax request aborted.';
+                            } else {
+                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                            }
+                            //$('#post').html(msg);
+                            alert(msg);
                         }
                     });
                     return false;

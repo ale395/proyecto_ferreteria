@@ -13,18 +13,18 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
-                        <label for="name" class="col-md-3 control-label">Código</label>
+                        <label for="num_familia" class="col-md-3 control-label">Código</label>
                         <div class="col-md-6">
-                            <input type="text" id="num_familia" name="num_familia" class="form-control" autofocus style="text-transform:uppercase" required>
-                            <span class="help-block with-errors"></span>
+                            <input type="text" id="num_familia" name="num_familia" class="form-control" autofocus style="text-transform:uppercase" placeholder="Inserte un codigo" required>
+                            <span class="help-block with-errors" id"err_num_flia"> </span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="email" class="col-md-3 control-label">Descripción</label>
+                      <label for="descripcion" class="col-md-3 control-label">Descripción</label>
                       <div class="col-md-6">
-                          <input type="text" id="descripcion" name="descripcion" class="form-control" style="text-transform:uppercase" required>
-                          <span class="help-block with-errors"></span>
+                          <input type="text" id="descripcion" name="descripcion" class="form-control" style="text-transform:uppercase" placeholder="Inserte una descripcion" required>
+                          <span class="help-block with-errors" id"err_desc_familia"></span>
                       </div>
                     </div>
 
