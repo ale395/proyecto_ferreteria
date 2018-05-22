@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\ConceptoAjuste;
+use App\ClasificacionCliente;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
 
-class ConceptoAjusteController extends Controller
+class ClasificacionClienteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class ConceptoAjusteController extends Controller
      */
     public function index()
     {
-        return view('conceptoajuste.index');
+        return view('clasificacioncliente.index');
     }
 
     /**
@@ -26,7 +26,6 @@ class ConceptoAjusteController extends Controller
      */
     public function create()
     {
-
         //
     }
 
@@ -39,11 +38,11 @@ class ConceptoAjusteController extends Controller
     public function store(Request $request)
     {
         $data = [
-            'num_concepto' => $request['num_concepto'],
+            'num_clasif_cliente' => $request['num_clasif_cliente'],
             'descripcion' => $request['descripcion']
         ];
 
-        return ConceptoAjuste::create($data);
+        return ClasificacionCliente::create($data);
     }
 
     /**
@@ -63,9 +62,9 @@ class ConceptoAjusteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ConceptoAjuste $concepto)
+    public function edit(ClasificacionCliente $clasificacion_cliente)
     {
-        return $concepto;
+        return $clasificacion_cliente;
     }
 
     /**
@@ -75,14 +74,14 @@ class ConceptoAjusteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ConceptoAjuste $concepto)
+    public function update(Request $request, ClasificacionCliente $clasificacion_cliente)
     {
-        $concepto->num_concepto = $request['num_concepto'];
-        $concepto->descripcion = $request['descripcion'];
+        $clasificacion_cliente->num_clasif_cliente = $request['num_clasif_cliente'];
+        $clasificacion_cliente->descripcion = $request['descripcion'];
         
-        $concepto->update();
+        $clasificacion_cliente->update();
 
-        return $concepto;
+        return $clasificacion_cliente;
     }
 
     /**
@@ -93,39 +92,39 @@ class ConceptoAjusteController extends Controller
      */
     public function destroy($id)
     {
-        return ConceptoAjuste::destroy($id);
+        return ClasificacionCliente::destroy($id);
     }
 
-    //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
-    public function apiConceptosAjuste()
+      //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
+    public function apiClasifClientes()
     {
         $permiso_editar = Auth::user()->can('conceptoajuste.edit');;
         $permiso_eliminar = Auth::user()->can('conceptoajuste.destroy');;
-        $concepto = ConceptoAjuste::all();
+        $clasificacion_cliente = ClasificacionCliente::all();
 
         if ($permiso_editar) {
             if ($permiso_eliminar) {
-                return Datatables::of($concepto)
-                ->addColumn('action', function($concepto){
-                    return '<a onclick="editForm('. $concepto->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $concepto->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                return Datatables::of($clasificacion_cliente)
+                ->addColumn('action', function($clasificacion_cliente){
+                    return '<a onclick="editForm('. $clasificacion_cliente->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $clasificacion_cliente->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
-                return Datatables::of($concepto)
-                ->addColumn('action', function($concepto){
-                    return '<a onclick="editForm('. $concepto->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                return Datatables::of($clasificacion_cliente)
+                ->addColumn('action', function($clasificacion_cliente){
+                    return '<a onclick="editForm('. $clasificacion_cliente->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
-            return Datatables::of($concepto)
-            ->addColumn('action', function($concepto){
+            return Datatables::of($clasificacion_cliente)
+            ->addColumn('action', function($clasificacion_cliente){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a onclick="deleteData('. $concepto->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                       '<a onclick="deleteData('. $clasificacion_cliente->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
-            return Datatables::of($concepto)
-            ->addColumn('action', function($concepto){
+            return Datatables::of($clasificacion_cliente)
+            ->addColumn('action', function($clasificacion_cliente){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);

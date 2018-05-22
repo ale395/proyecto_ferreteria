@@ -51,6 +51,12 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('conceptos', 'ConceptoAjusteController');
 	Route::get('api/conceptosajuste', 'ConceptoAjusteController@apiConceptosAjuste')->name('api.conceptos');
 
+
+	//rutas para modelo 'clasificacioncliente'
+	Route::resource('clasificacionclientes', 'ClasificacionClienteController');
+	Route::get('api/clasificacionclientes', 'ClasificacionClienteController@apiClasifClientes')->name('api.clasificacionclientes');
+
+
 	/*
 	//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
 	Route::get('familias', 'FamiliaController@index')->name('familias.index')

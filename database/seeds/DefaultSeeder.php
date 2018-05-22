@@ -6,6 +6,8 @@ use App\Linea;
 use App\Rubro;
 use App\UnidadMedida;
 use App\ConceptoAjuste;
+use App\ClasificacionCliente;
+
 
 class DefaultSeeder extends Seeder
 {
@@ -45,6 +47,18 @@ class DefaultSeeder extends Seeder
         $familia = new ConceptoAjuste();
         $familia->num_concepto = '001';
         $familia->descripcion = 'AJUSTE DE EXISTENCIA';
+        $familia->save();
+
+        //Concepto ajuste por default - ajuste de existencia
+        $familia = new ClasificacionCliente();
+        $familia->num_clasif_cliente = '001';
+        $familia->descripcion = 'Mayorista';
+        $familia->save();
+
+        //Concepto ajuste por default - ajuste de existencia
+        $familia = new ClasificacionCliente();
+        $familia->num_clasif_cliente = '002';
+        $familia->descripcion = 'Detalle';
         $familia->save();
 
     }

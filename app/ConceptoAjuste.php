@@ -8,4 +8,5 @@ class ConceptoAjuste extends Model
 {
     protected $table = 'conceptos_ajuste';
 
-    protected $fillable = ['num_concepto', 'descripcion'];}
+    protected $fillable = ['num_concepto', 'descripcion'];
+}

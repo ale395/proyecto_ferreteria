@@ -74,6 +74,12 @@ class RoleTableSeeder extends Seeder
         $permiso_concepto_editar = Permission::where('slug', 'conceptoajuste.edit')->first();
         $permiso_concepto_eliminar = Permission::where('slug', 'conceptoajuste.destroy')->first();
 
+         //permisos de Categoria de clientes
+        $permiso_clasicli_listar = Permission::where('slug', 'clasificacioncliente.index')->first();
+        $permiso_clasicli_crear = Permission::where('slug', 'clasificacioncliente.create')->first();
+        $permiso_clasicli_editar = Permission::where('slug', 'clasificacioncliente.edit')->first();
+        $permiso_clasicli_eliminar = Permission::where('slug', 'clasificacioncliente.destroy')->first();
+
         $role = new Role();
         $role->name = 'Administrador';
         $role->slug = 'administrador';
@@ -125,6 +131,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_concepto_crear->id);
         $role->assignPermission($permiso_concepto_editar->id);
         $role->assignPermission($permiso_concepto_eliminar->id);
+
+        $role->assignPermission($permiso_clasicli_listar->id);
+        $role->assignPermission($permiso_clasicli_crear->id);
+        $role->assignPermission($permiso_clasicli_editar->id);
+        $role->assignPermission($permiso_clasicli_eliminar->id);
 
         $role->assignPermission($permiso_listar_modulo->id);
         $role->assignPermission($permiso_crear_modulo->id);

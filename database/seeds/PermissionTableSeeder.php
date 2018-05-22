@@ -284,5 +284,29 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de conceptos de ajuste';
         $permission->save();
 
+        //Permisos para el formulario de concepto de ajuste
+        $permission = new Permission();
+        $permission->name = 'Crear Clasificacion de Cliente';
+        $permission->slug = 'clasificacioncliente.create';
+        $permission->description = 'Permite la creación de nuevas clasificacion de clientes en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Clasificacion de Cliente';
+        $permission->slug = 'clasificacioncliente.destroy';
+        $permission->description = 'Permite la eliminación de clasificacion de cliente del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Clasificacion de Cliente';
+        $permission->slug = 'clasificacioncliente.edit';
+        $permission->description = 'Permite modificar los valores de una clasificacion de cliente';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Clasificacion de Clientee';
+        $permission->slug = 'clasificacioncliente.index';
+        $permission->description = 'Permite ver el listado de clasificacion de clientes';
+        $permission->save();
     }
 }
