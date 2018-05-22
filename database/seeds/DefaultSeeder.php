@@ -7,6 +7,8 @@ use App\Rubro;
 use App\UnidadMedida;
 use App\ConceptoAjuste;
 use App\ClasificacionCliente;
+use App\Cajero;
+use App\User;
 
 
 class DefaultSeeder extends Seeder
@@ -60,6 +62,19 @@ class DefaultSeeder extends Seeder
         $familia->num_clasif_cliente = '002';
         $familia->descripcion = 'Detalle';
         $familia->save();
+
+        //Concepto ajuste por default - ajuste de existencia
+
+        //traemos el usuario
+        $usuario = User::where('email', 'admin@ferregest.com')->first();
+        //creamos el cajero
+        $cajero = new Cajero();
+        $cajero->num_cajero = '001';
+        $cajero->descripcion = 'Administrador';
+        $cajero->save();
+        //asignamos el usuario al cajeros
+        $cajero->usuario()->associate($usuario);
+        $cajero->save();
 
     }
 }

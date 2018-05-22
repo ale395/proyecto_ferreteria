@@ -13,9 +13,9 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
-                        <label for="num_concepto" class="col-md-3 control-label">Código</label>
+                        <label for="num_clasif_cliente" class="col-md-3 control-label">Código</label>
                         <div class="col-md-6">
-                            <input type="text" id="num_concepto" name="num_concepto" class="form-control" autofocus required>
+                            <input type="text" id="num_clasif_cliente" name="num_clasif_cliente" class="form-control" autofocus required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>

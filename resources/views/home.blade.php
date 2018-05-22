@@ -90,6 +90,10 @@
                               <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajuste</a>
                               </li>
                             @endcan
+                            @can('clasificacioncliente.index')
+                              <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Clasificacion de Clientes</a>
+                              </li>
+                            @endcan
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>

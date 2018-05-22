@@ -284,7 +284,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de conceptos de ajuste';
         $permission->save();
 
-        //Permisos para el formulario de concepto de ajuste
+        //Permisos para el formulario de clasificacion de cliente
         $permission = new Permission();
         $permission->name = 'Crear Clasificacion de Cliente';
         $permission->slug = 'clasificacioncliente.create';
@@ -307,6 +307,31 @@ class PermissionTableSeeder extends Seeder
         $permission->name = 'Listar Clasificacion de Clientee';
         $permission->slug = 'clasificacioncliente.index';
         $permission->description = 'Permite ver el listado de clasificacion de clientes';
+        $permission->save();
+
+        //Permisos para el formulario de cajeros
+        $permission = new Permission();
+        $permission->name = 'Crear Cajero';
+        $permission->slug = 'cajeros.create';
+        $permission->description = 'Permite la creación de nuevas clasificacion de cajeros en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Cajero';
+        $permission->slug = 'cajeros.destroy';
+        $permission->description = 'Permite la eliminación de cajeros del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Cajero';
+        $permission->slug = 'cajeros.edit';
+        $permission->description = 'Permite modificar los valores de un cajero';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Cajero';
+        $permission->slug = 'cajeros.index';
+        $permission->description = 'Permite ver el listado de cajeros';
         $permission->save();
     }
 }

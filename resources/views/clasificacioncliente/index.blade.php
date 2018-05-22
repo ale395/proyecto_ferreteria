@@ -50,7 +50,7 @@
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nuevo Concepto de Ajuste');
+        $('.modal-title').text('Nueva clasificacion de Clientes');
       }
 
       $(function(){
@@ -105,14 +105,32 @@
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Concepto de Ajuste');
+            $('.modal-title').text('Editar Clasificacion de Clientes');
 
             $('#id').val(data.id);
-            $('#num_concepto').val(data.num_concepto);
+            $('#num_clasif_cliente').val(data.num_clasif_cliente);
             $('#descripcion').val(data.descripcion);
           },
           error : function() {
-              alert("Nothing Data");
+            //alert('Ha ocurrido un error, favor verificar');
+            var msg = '';
+            if (jqXHR.status === 0) {
+                msg = 'Sin Conexion.\n Verifique la red.';
+            } else if (jqXHR.status == 404) {
+                msg = 'Pagina no encontradad.[404]';
+            } else if (jqXHR.status == 500) {
+                msg = 'Error del Servidor [500].';
+            } else if (exception === 'parsererror') {
+                msg = 'Requested JSON parse failed.';
+            } else if (exception === 'timeout') {
+                msg = 'Time out error.';
+            } else if (exception === 'abort') {
+                msg = 'Ajax request aborted.';
+            } else {
+                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+            }
+            //$('#post').html(msg);
+            alert(msg);
           }
         });
       }

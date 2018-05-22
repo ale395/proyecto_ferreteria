@@ -62,9 +62,9 @@ class ClasificacionClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ClasificacionCliente $clasificacion_cliente)
+    public function edit(ClasificacionCliente $clasificacioncliente)
     {
-        return $clasificacion_cliente;
+        return $clasificacioncliente;
     }
 
     /**
@@ -74,14 +74,14 @@ class ClasificacionClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ClasificacionCliente $clasificacion_cliente)
+    public function update(Request $request, ClasificacionCliente $clasificacioncliente)
     {
-        $clasificacion_cliente->num_clasif_cliente = $request['num_clasif_cliente'];
-        $clasificacion_cliente->descripcion = $request['descripcion'];
+        $clasificacioncliente->num_clasif_cliente = $request['num_clasif_cliente'];
+        $clasificacioncliente->descripcion = $request['descripcion'];
         
-        $clasificacion_cliente->update();
+        $clasificacioncliente->update();
 
-        return $clasificacion_cliente;
+        return $clasificacioncliente;
     }
 
     /**
@@ -98,8 +98,8 @@ class ClasificacionClienteController extends Controller
       //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
     public function apiClasifClientes()
     {
-        $permiso_editar = Auth::user()->can('conceptoajuste.edit');;
-        $permiso_eliminar = Auth::user()->can('conceptoajuste.destroy');;
+        $permiso_editar = Auth::user()->can('clasificacioncliente.edit');;
+        $permiso_eliminar = Auth::user()->can('clasificacioncliente.destroy');;
         $clasificacion_cliente = ClasificacionCliente::all();
 
         if ($permiso_editar) {

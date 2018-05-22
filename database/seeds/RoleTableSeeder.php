@@ -80,6 +80,12 @@ class RoleTableSeeder extends Seeder
         $permiso_clasicli_editar = Permission::where('slug', 'clasificacioncliente.edit')->first();
         $permiso_clasicli_eliminar = Permission::where('slug', 'clasificacioncliente.destroy')->first();
 
+        //permisos de Cajeros
+        $permiso_cajero_listar = Permission::where('slug', 'cajeros.index')->first();
+        $permiso_cajero_crear = Permission::where('slug', 'cajeros.create')->first();
+        $permiso_cajero_editar = Permission::where('slug', 'cajeros.edit')->first();
+        $permiso_cajero_eliminar = Permission::where('slug', 'cajeros.destroy')->first();
+
         $role = new Role();
         $role->name = 'Administrador';
         $role->slug = 'administrador';
@@ -136,6 +142,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_clasicli_crear->id);
         $role->assignPermission($permiso_clasicli_editar->id);
         $role->assignPermission($permiso_clasicli_eliminar->id);
+
+        $role->assignPermission($permiso_cajero_listar->id);
+        $role->assignPermission($permiso_cajero_crear->id);
+        $role->assignPermission($permiso_cajero_editar->id);
+        $role->assignPermission($permiso_cajero_eliminar->id);
 
         $role->assignPermission($permiso_listar_modulo->id);
         $role->assignPermission($permiso_crear_modulo->id);
