@@ -94,6 +94,10 @@
                               <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Clasificacion de Clientes</a>
                               </li>
                             @endcan
+                            @can('cajeros.index')
+                              <li class="sub_menu"><a href="{{route('cajeros.index')}}">Clasificacion de Clientes</a>
+                              </li>
+                            @endcan
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>

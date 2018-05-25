@@ -56,6 +56,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('clasificacionclientes', 'ClasificacionClienteController');
 	Route::get('api/clasificacionclientes', 'ClasificacionClienteController@apiClasifClientes')->name('api.clasificacionclientes');
 
+	//Rutas para modelo Cajeros
+	Route::resource('cajeros', 'CajeroController');
+	Route::get('api/cajeros', 'CajeroController@apiCajeros')->name('api.cajeros');
+
 
 	/*
 	//Rutas para FAMILIAS - se agregan los permisos correspondientes para c/ operación
