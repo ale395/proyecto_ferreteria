@@ -151,13 +151,13 @@
 
     <script>
       $(document).ready(function() {
-          $('.js-role').select2({
+          $('.js-user').select2({
             dropdownParent: $('#modal-form-create')
           });
       });
 
       $(document).ready(function() {
-          $('.js-role-edit').select2({
+          $('.js-user-edit').select2({
             dropdownParent: $('#modal-form-edit')
           });
       });

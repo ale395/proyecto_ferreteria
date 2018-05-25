@@ -95,7 +95,7 @@
                               </li>
                             @endcan
                             @can('cajeros.index')
-                              <li class="sub_menu"><a href="{{route('cajeros.index')}}">Clasificacion de Clientes</a>
+                              <li class="sub_menu"><a href="{{route('cajeros.index')}}">Cajeros</a>
                               </li>
                             @endcan
                           </ul>

@@ -7,7 +7,7 @@ use App\Cajero;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
-class CajeroContrroller extends Controller
+class CajeroController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class CajeroContrroller extends Controller
      */
     public function index()
     {
-        $user = User::all();
-        return view('cajero.index', compact('user'));
+        $users = User::all();
+        return view('cajero.index', compact('users'));
     }
 
     /**
@@ -107,7 +107,7 @@ class CajeroContrroller extends Controller
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 return Datatables::of($cajero)
-                ->addColumn('role', function($cajero){
+                ->addColumn('usuario', function($cajero){
                     if (empty($cajero->usuario)) {
                          return null;
                      } else {

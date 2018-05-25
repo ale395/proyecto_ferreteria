@@ -11,29 +11,29 @@
                 </div>
 
                 <div class="modal-body">
-                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="id-create" name="id">
                     <div class="form-group">
-                        <label for="name" class="col-md-3 control-label">Nombre</label>
+                        <label for="num_cajero" class="col-md-3 control-label">Codigo</label>
                         <div class="col-md-6">
-                            <input type="text" id="name" name="name" class="form-control" autofocus required>
+                            <input type="text" id="num_cajero-create" name="num_cajero" class="form-control" autofocus required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="name" class="col-md-3 control-label">Correo</label>
+                      <label for="descripcion" class="col-md-3 control-label">Descripcion</label>
                       <div class="col-md-6">
-                          <input type="email" id="email" name="email" class="form-control" required>
+                          <input type="text" id="descripcion-create" name="descripcion" class="form-control" required>
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="name" class="col-md-3 control-label">Rol</label>
+                      <label for="id_usuario" class="col-md-3 control-label">Usuario</label>
                       <div class="col-md-6">
-                          <select class="form-control js-role-edit" name="role_id" style="width: 100%">
-                            @foreach($roles as $role)
-                              <option value="{{$role->id}}">{{$role->name}}</option>
+                          <select class="form-control js-user" name="id_usuario" style="width: 100%">
+                            @foreach($users as $user)
+                              <option value="{{$user->id}}">{{$user->name}}</option>
                             @endforeach
                           </select>
                       </div>
