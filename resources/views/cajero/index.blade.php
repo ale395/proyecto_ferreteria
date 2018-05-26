@@ -44,8 +44,8 @@
                       serverSide: true,
                       ajax: "{{ route('api.cajeros') }}",
                       columns: [
-                        {data: 'num_cajero', name: 'name'},
-                        {data: 'descripcion', name: 'email'},
+                        {data: 'num_cajero', name: 'num_cajero'},
+                        {data: 'descripcion', name: 'descripcion'},
                         {data: 'usuario', name: 'usuario'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]

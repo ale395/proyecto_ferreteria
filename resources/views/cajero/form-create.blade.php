@@ -29,9 +29,9 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="id_usuario" class="col-md-3 control-label">Usuario</label>
+                      <label for="usuario_id" class="col-md-3 control-label">Usuario</label>
                       <div class="col-md-6">
-                          <select class="form-control js-user" name="id_usuario" style="width: 100%">
+                          <select class="form-control js-user" name="usuario_id" style="width: 100%">
                             @foreach($users as $user)
                               <option value="{{$user->id}}">{{$user->name}}</option>
                             @endforeach
