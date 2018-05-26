@@ -16,6 +16,7 @@ class CajeroController extends Controller
      */
     public function index()
     {
+        $results = DB::select('select * from users';
         $users = User::all();
         return view('cajero.index', compact('users'));
     }
