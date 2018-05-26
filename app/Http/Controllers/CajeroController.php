@@ -16,8 +16,11 @@ class CajeroController extends Controller
      */
     public function index()
     {
-        $results = DB::select('select * from users';
-        $users = User::all();
+        //$results = DB::select('select * from users';
+        //$users =  User::where('email', 'admin@ferregest.com')->first();
+        $users = User::whereNotIn('id', function($query) {
+        $query->select('usuario_id')->from('cajeros');
+        })->get();
         return view('cajero.index', compact('users'));
     }
 
@@ -42,7 +45,7 @@ class CajeroController extends Controller
         $data = [
             'num_cajero' => $request['num_cajero'],
             'descripcion' => $request['descripcion'],
-            'id_usuario' => $request['id_usuario']
+            'usuario_id' => $request['usuario_id']
         ];
 
         return Cajero::create($data);
@@ -81,7 +84,7 @@ class CajeroController extends Controller
     {
         $cajero->num_cajero = $request['num_cajero'];
         $cajero->descripcion = $request['descripcion'];
-        $cajero->id_usuario = $request['id_usuario'];
+        $cajero->usuario_id = $request['usuario_id'];
         
         $cajero->update();
 

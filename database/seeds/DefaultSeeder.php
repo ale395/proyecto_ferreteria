@@ -63,8 +63,6 @@ class DefaultSeeder extends Seeder
         $familia->descripcion = 'Detalle';
         $familia->save();
 
-        //Concepto ajuste por default - ajuste de existencia
-
         //traemos el usuario
         $usuario = User::where('email', 'admin@ferregest.com')->first();
         //creamos el cajero
