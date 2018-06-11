@@ -169,6 +169,12 @@
         <!-- extendemos con todo lo que tenemos -->
         
 
+        <!-- footer content -->
+        <footer>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
@@ -178,12 +184,12 @@
         <!-- /page content -->
 
         <!-- footer content -->
-        <footer>
+        <!--<footer>
           <div class="pull-right">
             Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
           </div>
           <div class="clearfix"></div>
-        </footer>
+        </footer>-->
         <!-- /footer content -->
       </div>
     </div>
