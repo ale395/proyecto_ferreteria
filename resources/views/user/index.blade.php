@@ -122,6 +122,7 @@
             $('#id').val(data.id);
             $('#name').val(data.name);
             $('#email').val(data.email);
+            $('#role_id').val(data.role_id);
           },
           error : function() {
               alert("Nothing Data");

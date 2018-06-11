@@ -35,7 +35,12 @@ class UserController extends Controller
             'role_id' => $request['role_id']
         ];
 
-        return User::create($data);
+        $user = User::create($data);
+
+
+        $user->assignRole($request['role_id']);
+
+        return $user;
     }
 
     public function show(User $user)
@@ -57,7 +62,12 @@ class UserController extends Controller
     {
         $user->name = $request['name'];
         $user->email = $request['email'];
-        $user->role_id = $request['role_id'];
+
+        if ($user->role_id != $request['role_id']) {
+            $user->revokeRole($user->role_id);
+            $user->role_id = $request['role_id'];
+            $user->assignRole($request['role_id']);
+        }
         
         $user->update();
 
