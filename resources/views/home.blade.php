@@ -47,6 +47,32 @@
               <div class="menu_section">
                 <h3>Menú</h3>
                 <ul class="nav side-menu">
+                  <li><a><i class="fa fa-shield"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <!--<li><a href="#level1_1">Level One</a>-->
+                        <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                              <li class="sub_menu"><a href="#">Gestión de Permisos</a>
+                              </li>
+                            @can('roles.index')
+                              <li class="sub_menu"><a href="{{route('roles.index')}}">Roles</a>
+                              </li>
+                            @endcan
+                            @can('users.index')
+                              <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
+                              </li>
+                            @endcan
+                          </ul>
+                        </li>
+                        <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="#">Reporte 1</a>
+                            </li>
+                          </ul>
+                        </li>
+                    </ul>
+                  </li>
+
                   <li><a><i class="fa fa-cogs"></i> Parámetros Generales <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <!--<li><a href="#level1_1">Level One</a>-->
@@ -58,14 +84,6 @@
                             @endcan
                               <li class="sub_menu"><a href="{{route('departamentos.index')}}">Departamentos</a>
                               </li>
-                            @can('users.index')
-                            <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
-                            </li>
-                            @endcan
-                            @can('roles.index')
-                              <li class="sub_menu"><a href="{{route('roles.index')}}">Roles</a>
-                              </li>
-                            @endcan
                             @can('modulos.index')
                               <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
                               </li>
@@ -102,7 +120,7 @@
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="#">Ranking de ventas</a>
+                            <li class="sub_menu"><a href="#">Reporte 1</a>
                             </li>
                           </ul>
                         </li>

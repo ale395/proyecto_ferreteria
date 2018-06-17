@@ -11,6 +11,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['auth'])->group(function() {
 	
+	Route::get('datatables/translation/spanish', 'DatatablesTranslationController@spanish');
+
+	//Route::get('', 'DatatablesTranslationController@spanish')->name('gestionPermisos.index');
+
 	//RUTAS PARA MODELO "MODULOS"
 	Route::resource('modulos', 'ModuloController');
 	Route::get('api/modulos', 'ModuloController@apiModulo')->name('api.modulos');

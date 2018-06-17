@@ -40,6 +40,7 @@
 @section('ajax_datatables')
 	<script type="text/javascript">
       var table = $('#user-table').DataTable({
+                      language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
                       ajax: "{{ route('api.users') }}",

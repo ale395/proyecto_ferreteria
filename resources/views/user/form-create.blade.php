@@ -23,7 +23,7 @@
                     <div class="form-group">
                       <label for="name" class="col-md-3 control-label">Correo</label>
                       <div class="col-md-6">
-                          <input type="email" id="email-create" name="email" class="form-control" required>
+                          <input type="email" id="email-create" name="email" class="form-control col-md-7 col-xs-12" data-validate-linked="email" required="required">
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>
@@ -39,7 +39,7 @@
                     <div class="form-group">
                       <label for="name" class="col-md-3 control-label">Rol</label>
                       <div class="col-md-6">
-                          <select class="form-control js-role" name="role_id" style="width: 100%">
+                          <select class="form-control" name="role_id" style="width: 100%">
                             @foreach($roles as $role)
                               <option value="{{$role->id}}">{{$role->name}}</option>
                             @endforeach
