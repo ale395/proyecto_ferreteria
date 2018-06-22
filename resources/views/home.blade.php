@@ -47,29 +47,58 @@
               <div class="menu_section">
                 <h3>Menú</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-shield"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                        <!--<li><a href="#level1_1">Level One</a>-->
-                        <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                  
+                  <li><a><i class="fa fa-shopping-basket"></i> Compras <span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                              <li class="sub_menu"><a href="#">Gestión de Permisos</a>
+                              <!--<li><a href="#level1_1">Level One</a>-->
+                              <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu"><a href="#">Formulario 1</a>
+                                    </li>
+                                </ul>
                               </li>
-                            @can('roles.index')
-                              <li class="sub_menu"><a href="{{route('roles.index')}}">Roles</a>
+                              <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+                                  </li>
+                                </ul>
                               </li>
-                            @endcan
-                            @can('users.index')
-                              <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
-                              </li>
-                            @endcan
-                          </ul>
-                        </li>
-                        <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                    </ul>
+                  </li>
+
+                  <li><a><i class="fa fa-money"></i> Cuentas por Cobrar <span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="#">Reporte 1</a>
-                            </li>
-                          </ul>
-                        </li>
+                              <!--<li><a href="#level1_1">Level One</a>-->
+                              <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu"><a href="#">Formulario 1</a>
+                                    </li>
+                                </ul>
+                              </li>
+                              <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+                                  </li>
+                                </ul>
+                              </li>
+                    </ul>
+                  </li>
+
+                  <li><a><i class="fa fa-usd"></i> Cuentas por Pagar <span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                              <!--<li><a href="#level1_1">Level One</a>-->
+                              <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu"><a href="#">Formulario 1</a>
+                                    </li>
+                                </ul>
+                              </li>
+                              <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+                                  </li>
+                                </ul>
+                              </li>
                     </ul>
                   </li>
 
@@ -124,8 +153,71 @@
                             </li>
                           </ul>
                         </li>
-                        <!--<li><a href="#level1_2">Level One</a>-->
+                        </ul>
                         </li>
+
+                  <li><a><i class="fa fa-shield"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <!--<li><a href="#level1_1">Level One</a>-->
+                        <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                              <li class="sub_menu"><a href="#">Gestión de Permisos</a>
+                              </li>
+                            @can('roles.index')
+                              <li class="sub_menu"><a href="{{route('roles.index')}}">Roles</a>
+                              </li>
+                            @endcan
+                            @can('users.index')
+                              <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
+                              </li>
+                            @endcan
+                          </ul>
+                        </li>
+                        <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                            <li class="sub_menu"><a href="#">Reporte 1</a>
+                            </li>
+                          </ul>
+                        </li>
+                    </ul>
+                  </li>
+
+                  <li><a><i class="fa fa-archive"></i> Stock <span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                              <!--<li><a href="#level1_1">Level One</a>-->
+                              <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu"><a href="#">Formulario 1</a>
+                                    </li>
+                                </ul>
+                              </li>
+                              <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+                                  </li>
+                                </ul>
+                              </li>
+                    </ul>
+                  </li>
+
+                  <li><a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+                              <!--<li><a href="#level1_1">Level One</a>-->
+                              <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li class="sub_menu"><a href="#">Formulario 1</a>
+                                    </li>
+                                </ul>
+                              </li>
+                              <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+                                  </li>
+                                </ul>
+                              </li>
+                    </ul>
+                  </li>
+
                     </ul>
                   </li>
                 </ul>
