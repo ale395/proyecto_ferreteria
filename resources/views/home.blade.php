@@ -161,7 +161,7 @@
                         <!--<li><a href="#level1_1">Level One</a>-->
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                              <li class="sub_menu"><a href="#">Gestión de Permisos</a>
+                              <li class="sub_menu"><a href="{{route('gestionPermisos.index')}}">Permisos por Rol</a>
                               </li>
                             @can('roles.index')
                               <li class="sub_menu"><a href="{{route('roles.index')}}">Roles</a>
