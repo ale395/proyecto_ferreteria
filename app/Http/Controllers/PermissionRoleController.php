@@ -93,8 +93,10 @@ class PermissionRoleController extends Controller
      */
     public function destroy($id)
     {
-        PermissionRole::destroy($id);
-        return redirect('gestionpermisos.edit');
+        $permissionRole = PermissionRole::findOrFail($id);
+        $role_id = $permissionRole->role_id;
+        $permissionRole->delete();
+        return redirect('gestionpermisos/'.$role_id.'/edit');
     }
 
     //Función que retorna un JSON con todos los roles para que los maneje AJAX del lado del servidor

@@ -16,13 +16,6 @@ class User extends Authenticatable
     use Notifiable;
     use ShinobiTrait;
 
-    /*public function roles()
-    {
-        return $this
-            ->belongsToMany('App\Role')
-            ->withTimestamps();
-    }*/
-
     /**
      * The attributes that are mass assignable.
      *
@@ -43,6 +36,6 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo('App\Role');
     }
 }

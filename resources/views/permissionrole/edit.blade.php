@@ -23,7 +23,14 @@
                               <tr>
                                 <td>{{$permiso->permiso->name}}</td>
                                 <td>{{$permiso->permiso->description}}</td>
-                                <td width="150"><a href="{{route('gestionpermisos.destroy', $permiso->id)}}" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a></td>
+                                <td width="150">
+                                    <form method="post" action="{{route('gestionpermisos.destroy', $permiso->id)}}">
+                                        {{csrf_field()}}
+                                        {{method_field('DELETE')}}
+
+                                        <button href="{{route('gestionpermisos.destroy', $permiso->id)}}" type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</button>
+                                    </form>
+                                </td>
                               </tr>
                             @endforeach
                         </tbody>

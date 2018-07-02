@@ -96,6 +96,13 @@ class UserController extends Controller
                 })->make(true);
             } else {
                 return Datatables::of($user)
+                ->addColumn('role', function($user){
+                    if (empty($user->role)) {
+                         return null;
+                     } else {
+                        return $user->role->name;
+                    }
+                })
                 ->addColumn('action', function($user){
                     return '<a onclick="editForm('. $user->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
@@ -103,12 +110,26 @@ class UserController extends Controller
             }
         } elseif ($permiso_eliminar) {
             return Datatables::of($user)
+            ->addColumn('role', function($user){
+                    if (empty($user->role)) {
+                         return null;
+                     } else {
+                        return $user->role->name;
+                    }
+                })
             ->addColumn('action', function($user){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a onclick="deleteData('. $user->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
             return Datatables::of($user)
+            ->addColumn('role', function($user){
+                    if (empty($user->role)) {
+                         return null;
+                     } else {
+                        return $user->role->name;
+                    }
+                })
             ->addColumn('action', function($user){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
