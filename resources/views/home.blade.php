@@ -325,5 +325,7 @@
     <!-- Para los Script JavaScript necesarios para la utilización de AJAX con el DataTables-->
     @yield('ajax_datatables')
 
+    @yield('otros_scripts')
+
   </body>
 </html>

@@ -7,6 +7,7 @@ use App\Permission;
 use App\PermissionRole;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class PermissionRoleController extends Controller
@@ -40,7 +41,11 @@ class PermissionRoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $permissionRole = new PermissionRole;
+        $permissionRole->role_id = $request->role_id;
+        $permissionRole->permission_id = $request->permission_id;
+        $permissionRole->save();
+        return redirect('gestionpermisos/'.$request->role_id.'/edit');
     }
 
     /**
@@ -64,13 +69,17 @@ class PermissionRoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $permisos = PermissionRole::where('role_id', $role->id)->get();
+        
+        $permisos_no_asignados = DB::table('permissions')
+            ->whereNotIn('id', DB::table('permission_role')->where('role_id', '=', $role->id)->pluck('permission_id'))
+            ->get();
+
         $permisos->map(function ($permisos) {
             $permisos['permiso'] = $permisos->permiso;
             return $permisos;
         });
 
-        //return $permisos;//->permission;
-        return view('permissionrole.edit', compact('role', 'permisos'));
+        return view('permissionrole.edit', compact('role', 'permisos', 'permisos_no_asignados'));
     }
 
     /**
