@@ -13,7 +13,11 @@ Route::middleware(['auth'])->group(function() {
 	
 	Route::get('datatables/translation/spanish', 'DatatablesTranslationController@spanish');
 
-	Route::get('permisos', 'GestionPermisoController@index')->name('gestionPermisos.index');
+	/*Route::get('permisos', 'GestionPermisoController@index')->name('gestionPermisos.index');
+	Route::get('permisos/{role}/edit', 'GestionPermisoController@edit')->name('gestionPermisos.edit');*/
+
+	Route::resource('gestionpermisos', 'PermissionRoleController');
+	Route::get('api/gestionpermisos', 'PermissionRoleController@apiRolePermission')->name('api.rolepermission');
 
 	//RUTAS PARA MODELO "MODULOS"
 	Route::resource('modulos', 'ModuloController');

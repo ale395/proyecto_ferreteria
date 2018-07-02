@@ -1,0 +1,135 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Role;
+use App\Permission;
+use App\PermissionRole;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
+
+class PermissionRoleController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $roles = Role::all();
+        return view('permissionrole.index', compact('roles'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\PermissionRole  $permissionRole
+     * @return \Illuminate\Http\Response
+     */
+    public function show(PermissionRole $permissionRole)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\PermissionRole  $permissionRole
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $role = Role::findOrFail($id);
+        $permisos = PermissionRole::where('role_id', $role->id)->get();
+        $permisos->map(function ($permisos) {
+            $permisos['permiso'] = $permisos->permiso;
+            return $permisos;
+        });
+
+        //return $permisos;//->permission;
+        return view('permissionrole.edit', compact('role', 'permisos'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\PermissionRole  $permissionRole
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, PermissionRole $permissionRole)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\PermissionRole  $permissionRole
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        PermissionRole::destroy($id);
+        return redirect('gestionpermisos.edit');
+    }
+
+    //Función que retorna un JSON con todos los roles para que los maneje AJAX del lado del servidor
+    public function apiRolePermission()
+    {
+        $permiso_crear = Auth::user()->can('rolespermission.edit');;
+        $permiso_eliminar = Auth::user()->can('rolespermission.destroy');;
+        $role = Role::all();
+
+        if ($permiso_crear) {
+            if ($permiso_eliminar) {
+                return Datatables::of($role)
+                ->addColumn('action', function($role){
+                    return '<a onclick="editForm('. $role->id .')" class="btn btn-warning btn-sm"><i class="fa fa-key"></i> Agregar Permisos</a> ' .
+                           '<a onclick="deleteData('. $role->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar Permisos</a>';
+                })->make(true);
+            } else {
+                return Datatables::of($role)
+                ->addColumn('action', function($role){
+                    return '<a onclick="editForm('. $role->id .')" class="btn btn-warning btn-sm"><i class="fa fa-key"></i> Agregar Permisos</a> ' .
+                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar Permisos</a>';
+                })->make(true);
+            }
+        } elseif ($permiso_eliminar) {
+            return Datatables::of($role)
+            ->addColumn('action', function($role){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-key"></i> Agregar Permisos</a> ' .
+                       '<a onclick="deleteData('. $role->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar Permisos</a>';
+            })->make(true);
+        } else {
+            return Datatables::of($role)
+            ->addColumn('action', function($role){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-key"></i> Agregar Permisos</a> ' .
+                       '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar Permisos</a>';
+            })->make(true);
+        }
+    }
+}

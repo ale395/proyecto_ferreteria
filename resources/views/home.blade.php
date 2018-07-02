@@ -31,7 +31,7 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/user.jpg" alt="..." class="img-circle profile_img">
+                <img src="{{ URL::to('/') }}/images/user.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Bienvenido/a</span>
@@ -161,7 +161,7 @@
                         <!--<li><a href="#level1_1">Level One</a>-->
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                              <li class="sub_menu"><a href="{{route('gestionPermisos.index')}}">Permisos por Rol</a>
+                              <li class="sub_menu"><a href="{{route('gestionpermisos.index')}}">Permisos por Rol</a>
                               </li>
                             @can('roles.index')
                               <li class="sub_menu"><a href="{{route('roles.index')}}">Roles</a>

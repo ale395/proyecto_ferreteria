@@ -13,6 +13,11 @@ class Permission extends Model
             ->withTimestamps();
     }
 
+    public function permissionRole()
+    {
+        return $this->hasMany('App\PermissionRole');
+    }
+
 	 /**
      * The attributes that are mass assignable.
      *

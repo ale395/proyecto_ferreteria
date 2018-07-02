@@ -58,7 +58,8 @@ class GestionPermisoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        return view('permiso.edit', compact('role'));
     }
 
     /**
