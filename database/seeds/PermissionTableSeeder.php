@@ -109,6 +109,38 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un módulo del sistema';
         $permission->save();*/
 
+        //Permisos para el formulario de Conceptos
+        $permission = new Permission();
+        $permission->name = 'Crear Concepto';
+        $permission->slug = 'conceptos.create';
+        $permission->description = 'Permite la creación de nuevos Conceptos en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Concepto';
+        $permission->slug = 'conceptos.destroy';
+        $permission->description = 'Permite la eliminación de Usuarios del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Concepto';
+        $permission->slug = 'conceptos.edit';
+        $permission->description = 'Permite modificar los valores de un Concepto del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Conceptos';
+        $permission->slug = 'conceptos.index';
+        $permission->description = 'Permite ver el listado de Conceptos del sistema';
+        $permission->save();
+
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Concepto';
+        $permission->slug = 'conceptos.show';
+        $permission->description = 'Permite ver un Concepto del sistema';
+        $permission->save();*/
+
         //Permisos para el formulario de familias
         $permission = new Permission();
         $permission->name = 'Crear Familia';

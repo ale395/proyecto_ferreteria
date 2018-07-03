@@ -16,8 +16,8 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('gestionpermisos', 'PermissionRoleController');
 	Route::get('api/gestionpermisos', 'PermissionRoleController@apiRolePermission')->name('api.rolepermission');
 
-	Route::resource('conceptos', 'ConceptoController');
-	Route::get('api/conceptos', 'ConceptoController@apiConceptos')->name('api.conceptos');
+	Route::resource('tconceptos', 'ConceptoController');
+	Route::get('api/tconceptos', 'ConceptoController@apiConceptos')->name('api.tconceptos');
 
 	//RUTAS PARA MODELO "MODULOS"
 	Route::resource('modulos', 'ModuloController');

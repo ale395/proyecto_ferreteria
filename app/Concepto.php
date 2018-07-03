@@ -12,7 +12,7 @@ class Concepto extends Model
         'id', 'concepto', 'nombre_concepto','modulo_id', 'tipo_concepto','muev_stock',
     ];
 
-    public function modulos()
+    public function modulo()
     {
         return $this->belongsTo('App\Modulo');
     }

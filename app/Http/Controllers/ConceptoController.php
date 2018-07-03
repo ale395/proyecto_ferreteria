@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Modulo;
 use App\Concepto;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -16,7 +17,8 @@ class ConceptoController extends Controller
      */
     public function index()
     {
-        return view('concepto.index');
+        $modulos = Modulo::all();
+        return view('concepto.index', compact('modulos'));
     }
 
     /**
@@ -87,13 +89,20 @@ class ConceptoController extends Controller
 
     public function apiConceptos()
     {
-        $permiso_editar = Auth::user()->can('conceptos.edit');;
-        $permiso_eliminar = Auth::user()->can('conceptos.destroy');;
+        $permiso_editar = Auth::user()->can('conceptos.edit');
+        $permiso_eliminar = Auth::user()->can('conceptos.destroy');
         $conceptos = Concepto::all();
 
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 return Datatables::of($conceptos)
+                ->addColumn('modulo', function($conceptos){
+                    if (empty($conceptos->modulo)) {
+                         return null;
+                     } else {
+                        return $conceptos->modulo->descripcion;
+                    }
+                })
                 ->addColumn('action', function($conceptos){
                     return '<a onclick="editForm('. $conceptos->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a onclick="deleteData('. $conceptos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';

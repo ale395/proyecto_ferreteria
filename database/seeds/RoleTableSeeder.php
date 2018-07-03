@@ -31,6 +31,12 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_rol = Permission::where('slug', 'roles.edit')->first();
         $permiso_eliminar_rol = Permission::where('slug', 'roles.destroy')->first();
 
+        //Permisos para CONCEPTOS
+        $permiso_listar_concepto = Permission::where('slug', 'conceptos.index')->first();
+        $permiso_crear_concepto = Permission::where('slug', 'conceptos.create')->first();
+        $permiso_editar_concepto = Permission::where('slug', 'conceptos.edit')->first();
+        $permiso_eliminar_concepto = Permission::where('slug', 'conceptos.destroy')->first();
+
         //permisos de Familias
         $permiso_familia_listar = Permission::where('slug', 'familias.index')->first();
         $permiso_familia_crear = Permission::where('slug', 'familias.create')->first();
@@ -181,6 +187,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_modulo->id);
         $role->assignPermission($permiso_editar_modulo->id);
         $role->assignPermission($permiso_eliminar_modulo->id);
+        $role->assignPermission($permiso_listar_concepto->id);
+        $role->assignPermission($permiso_crear_concepto->id);
+        $role->assignPermission($permiso_editar_concepto->id);
+        $role->assignPermission($permiso_eliminar_concepto->id);
         $role->save();
     }
 }

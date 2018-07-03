@@ -76,8 +76,8 @@ class UserController extends Controller
 
     public function apiUsers()
     {
-        $permiso_editar = Auth::user()->can('users.edit');;
-        $permiso_eliminar = Auth::user()->can('users.destroy');;
+        $permiso_editar = Auth::user()->can('users.edit');
+        $permiso_eliminar = Auth::user()->can('users.destroy');
         $user = User::all();
 
         if ($permiso_editar) {

@@ -107,6 +107,10 @@
                         <!--<li><a href="#level1_1">Level One</a>-->
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
+                            @can('conceptos.index')
+                              <li class="sub_menu"><a href="{{route('tconceptos.index')}}">Conceptos</a>
+                              </li>
+                            @endcan
                             @can('paises.index')
                             <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
                             </li>
