@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Asignación de Permisos</h4>
+                    <h4>Asignación de Permisos para el rol <b>{{$role->name}}</b></h4>
                 </div>
                 <div class="panel-body">
                     <form action="{{route('gestionpermisos.store')}}" method="post" class="form-horizontal" data-toggle="validator">
@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary btn-save">Asignar Permiso</button>
+                            <button type="submit" class="btn btn-primary btn-save"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</button>
                             <a href="{{route('gestionpermisos.edit', $role->id)}}" type="button" class="btn btn-default">Cancelar</a>
                         </div>
 
@@ -44,7 +44,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Permisos para el rol <b>{{$role->name}}</b> <a href="{{route('gestionpermisos.index')}}" class="btn btn-info pull-right" style="margin-top: -8px;">Volver a Listado de Roles</a>
+                    <h4>Listado de Permisos para el rol <b>{{$role->name}}</b> <a href="{{route('gestionpermisos.index')}}" class="btn btn-default pull-right" style="margin-top: -8px;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Volver al Listado de Roles</a>
                     </h4>
                 </div>
                 <div class="panel-body">

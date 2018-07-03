@@ -23,7 +23,7 @@
                               <tr>
                                 <td>{{$role->name}}</td>
                                 <td>{{$role->description}}</td>
-                                <td width="150"><a href="{{route('gestionpermisos.edit', $role->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-key" aria-hidden="true"></i> Editar Permisos</a></td>
+                                <td width="150"><a href="{{route('gestionpermisos.edit', $role->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-key" aria-hidden="true"></i> Editar Permisos</a></td>
                               </tr>
                             @endforeach
                         </tbody>

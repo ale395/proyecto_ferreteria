@@ -86,6 +86,9 @@ sub {
 img {
   border: 0;
 }
+line {
+  color: inherit;
+}
 svg:not(:root) {
   overflow: hidden;
 }

@@ -68,7 +68,7 @@ class PermissionRoleController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
-        $permisos = PermissionRole::where('role_id', $role->id)->get();
+        $permisos = PermissionRole::where('role_id', $role->id)->orderBy('role_id')->get();
         
         $permisos_no_asignados = DB::table('permissions')
             ->whereNotIn('id', DB::table('permission_role')->where('role_id', '=', $role->id)->pluck('permission_id'))
