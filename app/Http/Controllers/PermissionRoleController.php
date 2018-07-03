@@ -54,9 +54,17 @@ class PermissionRoleController extends Controller
      * @param  \App\PermissionRole  $permissionRole
      * @return \Illuminate\Http\Response
      */
-    public function show(PermissionRole $permissionRole)
+    public function show($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $permisos = PermissionRole::where('role_id', $role->id)->orderBy('permission_id')->get();
+
+        $permisos->map(function ($permisos) {
+            $permisos['permiso'] = $permisos->permiso;
+            return $permisos;
+        });
+
+        return view('permissionrole.show', compact('role', 'permisos'));
     }
 
     /**
@@ -68,7 +76,7 @@ class PermissionRoleController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
-        $permisos = PermissionRole::where('role_id', $role->id)->orderBy('role_id')->get();
+        $permisos = PermissionRole::where('role_id', $role->id)->orderBy('permission_id')->get();
         
         $permisos_no_asignados = DB::table('permissions')
             ->whereNotIn('id', DB::table('permission_role')->where('role_id', '=', $role->id)->pluck('permission_id'))

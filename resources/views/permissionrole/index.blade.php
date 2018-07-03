@@ -15,7 +15,7 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Descripción</th>
-                                <th width="150">Acciones</th>
+                                <th width="270">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -23,7 +23,10 @@
                               <tr>
                                 <td>{{$role->name}}</td>
                                 <td>{{$role->description}}</td>
-                                <td width="150"><a href="{{route('gestionpermisos.edit', $role->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-key" aria-hidden="true"></i> Editar Permisos</a></td>
+                                <td width="270">
+                                  <a href="{{route('gestionpermisos.show', $role->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Ver Permisos</a>
+                                  <a href="{{route('gestionpermisos.edit', $role->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-key" aria-hidden="true"></i> Editar Permisos</a>
+                                </td>
                               </tr>
                             @endforeach
                         </tbody>
