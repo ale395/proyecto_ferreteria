@@ -39,7 +39,17 @@ class ConceptoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'concepto' => $request['concepto'],
+            'nombre_concepto' => $request['nombre_concepto'],
+            'modulo_id' => $request['modulo_id'],
+            'tipo_concepto' => $request['tipo_concepto'],
+            'muev_stock' => $request['muev_stock']
+        ];
+
+        $concepto = Concepto::create($data);
+
+        return $concepto;
     }
 
     /**
@@ -59,9 +69,10 @@ class ConceptoController extends Controller
      * @param  \App\TipoComprobante  $tipoComprobante
      * @return \Illuminate\Http\Response
      */
-    public function edit(Concepto $concepto)
+    public function edit($id)
     {
-        //
+        $concepto = Concepto::findOrFail($id);
+        return $concepto;
     }
 
     /**
@@ -73,7 +84,15 @@ class ConceptoController extends Controller
      */
     public function update(Request $request, Concepto $concepto)
     {
-        //
+        $concepto->concepto = $request['concepto'];
+        $concepto->nombre_concepto = $request['nombre_concepto'];
+        $concepto->modulo_id = $request['modulo_id'];
+        $concepto->tipo_concepto = $request['tipo_concepto'];
+        $concepto->muev_stock = $request['muev_stock'];
+        
+        $concepto->update();
+
+        return $concepto;
     }
 
     /**
@@ -82,9 +101,9 @@ class ConceptoController extends Controller
      * @param  \App\TipoComprobante  $tipoComprobante
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Concepto $concepto)
+    public function destroy($id)
     {
-        //
+        return Concepto::destroy($id);
     }
 
     public function apiConceptos()

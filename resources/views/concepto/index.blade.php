@@ -86,7 +86,7 @@
             });
         });
 
-      function editForm(id) {d
+      function editForm(id) {
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();

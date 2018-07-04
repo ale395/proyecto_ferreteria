@@ -23,7 +23,7 @@
                     <div class="form-group">
                         <label for="name" class="col-md-3 control-label">Nombre</label>
                         <div class="col-md-6">
-                            <input type="text" id="nombre_concepto" name="nombre_concepto" class="form-control" autofocus required>
+                            <input type="text" id="nombre_concepto" name="nombre_concepto" class="form-control" required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                     <div class="form-group">
                         <label for="name" class="col-md-3 control-label">Tipo Concepto</label>
                         <div class="col-md-6">
-                            <input type="text" id="tipo_concepto" name="tipo_concepto" class="form-control" autofocus required>
+                            <input type="text" id="tipo_concepto" name="tipo_concepto" class="form-control" required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                     <div class="form-group">
                         <label for="name" class="col-md-3 control-label">Afecta Stock</label>
                         <div class="col-md-6">
-                            <input type="text" id="muev_stock" name="muev_stock" class="form-control" autofocus required>
+                            <input type="text" id="muev_stock" name="muev_stock" class="form-control" required>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
