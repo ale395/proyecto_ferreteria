@@ -32,6 +32,7 @@
                       <label for="name" class="col-md-3 control-label">Módulo</label>
                       <div class="col-md-6">
                           <select class="form-control js-modulo" name="modulo_id" id="modulo_id" style="width: 100%">
+                            <option></option>
                             @foreach($modulos as $modulo)
                               <option value="{{$modulo->id}}">{{$modulo->descripcion}}</option>
                             @endforeach
