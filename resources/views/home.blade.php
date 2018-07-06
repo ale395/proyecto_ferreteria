@@ -111,6 +111,10 @@
                               <li class="sub_menu"><a href="{{route('tconceptos.index')}}">Conceptos</a>
                               </li>
                             @endcan
+                            @can('timbrados.index')
+                              <li class="sub_menu"><a href="{{route('timbrados.index')}}">Timbrados</a>
+                              </li>
+                            @endcan
                             @can('paises.index')
                             <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
                             </li>

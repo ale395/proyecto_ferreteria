@@ -37,6 +37,11 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_concepto = Permission::where('slug', 'conceptos.edit')->first();
         $permiso_eliminar_concepto = Permission::where('slug', 'conceptos.destroy')->first();
 
+        $permiso_listar_timb = Permission::where('slug', 'timbrados.index')->first();
+        $permiso_crear_timb = Permission::where('slug', 'timbrados.create')->first();
+        $permiso_editar_timb = Permission::where('slug', 'timbrados.edit')->first();
+        $permiso_eliminar_timb = Permission::where('slug', 'timbrados.destroy')->first();
+
         //permisos de Familias
         $permiso_familia_listar = Permission::where('slug', 'familias.index')->first();
         $permiso_familia_crear = Permission::where('slug', 'familias.create')->first();
@@ -191,6 +196,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_concepto->id);
         $role->assignPermission($permiso_editar_concepto->id);
         $role->assignPermission($permiso_eliminar_concepto->id);
+        $role->assignPermission($permiso_listar_timb->id);
+        $role->assignPermission($permiso_crear_timb->id);
+        $role->assignPermission($permiso_editar_timb->id);
+        $role->assignPermission($permiso_eliminar_timb->id);
         $role->save();
     }
 }

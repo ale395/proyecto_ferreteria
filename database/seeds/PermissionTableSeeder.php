@@ -141,6 +141,38 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un Concepto del sistema';
         $permission->save();*/
 
+        //Permisos para el formulario de Timbrados
+        $permission = new Permission();
+        $permission->name = 'Crear Timbrado';
+        $permission->slug = 'timbrados.create';
+        $permission->description = 'Permite la creación de nuevos Timbrados en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Timbrado';
+        $permission->slug = 'timbrados.destroy';
+        $permission->description = 'Permite la eliminación de Timbrados del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Timbrado';
+        $permission->slug = 'timbrados.edit';
+        $permission->description = 'Permite modificar los valores de un Timbrado del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Timbrados';
+        $permission->slug = 'timbrados.index';
+        $permission->description = 'Permite ver el listado de Timbrados del sistema';
+        $permission->save();
+
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Timbrado';
+        $permission->slug = 'timbrados.show';
+        $permission->description = 'Permite ver un Timbrado del sistema';
+        $permission->save();*/
+
         //Permisos para el formulario de familias
         $permission = new Permission();
         $permission->name = 'Crear Familia';

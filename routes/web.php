@@ -16,6 +16,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('gestionpermisos', 'PermissionRoleController');
 	Route::get('api/gestionpermisos', 'PermissionRoleController@apiRolePermission')->name('api.rolepermission');
 
+	Route::resource('timbrados', 'TimbradoController');
+	Route::get('api/timbrados', 'TimbradoController@apiTimbrados')->name('api.timbrados');
+
 	Route::resource('tconceptos', 'ConceptoController');
 	Route::get('api/tconceptos', 'ConceptoController@apiConceptos')->name('api.tconceptos');
 
