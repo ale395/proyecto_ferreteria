@@ -31,8 +31,7 @@
                     <div class="form-group">
                       <label for="name" class="col-md-3 control-label">Módulo</label>
                       <div class="col-md-6">
-                          <select class="form-control js-modulo" name="modulo_id" id="modulo_id" style="width: 100%">
-                            <option></option>
+                          <select class="form-control" name="modulo_id" id="modulo_id" style="width: 100%">
                             @foreach($modulos as $modulo)
                               <option value="{{$modulo->id}}">{{$modulo->descripcion}}</option>
                             @endforeach
@@ -41,19 +40,25 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="name" class="col-md-3 control-label">Tipo Concepto</label>
-                        <div class="col-md-6">
-                            <input type="text" id="tipo_concepto" name="tipo_concepto" class="form-control" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
+                      <label for="name" class="col-md-3 control-label">Tipo Concepto</label>
+                      <div class="col-md-6">
+                          <select class="form-control" name="tipo_concepto" id="tipo_concepto" style="width: 100%">
+                              <option value="D">Débito</option>
+                              <option value="C">Crédito</option>
+                              <option value="N">No Afecta</option>
+                          </select>
+                      </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="name" class="col-md-3 control-label">Afecta Stock</label>
-                        <div class="col-md-6">
-                            <input type="text" id="muev_stock" name="muev_stock" class="form-control" required>
-                            <span class="help-block with-errors"></span>
-                        </div>
+                      <label for="name" class="col-md-3 control-label">Afecta Stock</label>
+                      <div class="col-md-6">
+                          <select class="form-control" name="muev_stock" id="muev_stock" style="width: 100%">
+                              <option value="S">Suma</option>
+                              <option value="R">Resta</option>
+                              <option value="N">No Afecta</option>
+                          </select>
+                      </div>
                     </div>
 
                 </div>

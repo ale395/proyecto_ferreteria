@@ -49,7 +49,7 @@
                         {data: 'nombre_concepto', name: 'nombre_concepto'},
                         {data: 'modulo', name: 'modulo'},
                         {data: 'tipo_concepto', name: 'tipo_concepto'},
-                        {data: 'muev_stock', name: 'muev_stock'},
+                        {data: 'muev_stock_name', name: 'muev_stock_name'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
@@ -130,14 +130,4 @@
         }
 
     </script>
-@endsection
-
-@section('otros_scripts')
-  <script>
-    $(document).ready(function() {
-        $('.js-modulo').select2({
-          dropdownParent: $('#modal-form')
-        });
-    });
-  </script>
 @endsection

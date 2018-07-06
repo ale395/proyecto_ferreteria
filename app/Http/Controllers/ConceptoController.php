@@ -82,8 +82,9 @@ class ConceptoController extends Controller
      * @param  \App\TipoComprobante  $tipoComprobante
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Concepto $concepto)
+    public function update(Request $request, $id)
     {
+        $concepto = Concepto::findOrFail($id);
         $concepto->concepto = $request['concepto'];
         $concepto->nombre_concepto = $request['nombre_concepto'];
         $concepto->modulo_id = $request['modulo_id'];
@@ -115,6 +116,26 @@ class ConceptoController extends Controller
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 return Datatables::of($conceptos)
+                ->addColumn('muev_stock_name', function($conceptos){
+                    if ($conceptos->muev_stock == 'S') {
+                         return 'Suma';
+                     }
+                     elseif ($conceptos->muev_stock == 'R') {
+                          return 'Resta';
+                      } else {
+                        return 'No Aplica';
+                    }
+                })
+                ->addColumn('tipo_concepto', function($conceptos){
+                    if ($conceptos->tipo_concepto == 'D') {
+                         return 'Débito';
+                     }
+                     elseif ($conceptos->tipo_concepto == 'C') {
+                          return 'Crédito';
+                      } else {
+                        return 'No Aplica';
+                    }
+                })
                 ->addColumn('modulo', function($conceptos){
                     if (empty($conceptos->modulo)) {
                          return null;
