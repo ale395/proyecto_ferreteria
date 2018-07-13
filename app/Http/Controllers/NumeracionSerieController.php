@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Concepto;
+use App\Serie;
 use App\NumeracionSerie;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -16,7 +18,9 @@ class NumeracionSerieController extends Controller
      */
     public function index()
     {
-        //
+        $conceptos = Concepto::where('estado', 'A');
+        $series = Serie::where('estado', 'A');
+        return view('numeserie.index', compact('conceptos', 'series'));
     }
 
     /**
@@ -83,5 +87,128 @@ class NumeracionSerieController extends Controller
     public function destroy(NumeracionSerie $numeracionSerie)
     {
         //
+    }
+
+    public function apiNumeSeries()
+    {
+        $permiso_editar = Auth::user()->can('numeseries.edit');
+        $permiso_eliminar = Auth::user()->can('numeseries.destroy');
+        $nume_series = NumeracionSerie::all();
+
+        if ($permiso_editar) {
+            if ($permiso_eliminar) {
+                return Datatables::of($nume_series)
+                ->addColumn('concepto', function($nume_series){
+                    if (empty($nume_series->concepto)) {
+                         return null;
+                     } else {
+                        return $nume_series->concepto->concepto;
+                    }
+                })
+                ->addColumn('serie', function($nume_series){
+                    if (empty($nume_series->serie)) {
+                         return null;
+                     } else {
+                        return $nume_series->serie->serie;
+                    }
+                })
+                ->addColumn('nomb_estado', function($timbrado){
+                    if ($timbrado->estado == 'A') {
+                         return 'Activo';
+                     }
+                     else {
+                        return 'Inactivo';
+                    }
+                })
+                ->addColumn('action', function($nume_series){
+                    return '<a onclick="editForm('. $nume_series->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $nume_series->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            } else {
+                return Datatables::of($nume_series)
+                ->addColumn('concepto', function($nume_series){
+                    if (empty($nume_series->concepto)) {
+                         return null;
+                     } else {
+                        return $nume_series->concepto->concepto;
+                    }
+                })
+                ->addColumn('serie', function($nume_series){
+                    if (empty($nume_series->serie)) {
+                         return null;
+                     } else {
+                        return $nume_series->serie->serie;
+                    }
+                })
+                ->addColumn('nomb_estado', function($timbrado){
+                    if ($timbrado->estado == 'A') {
+                         return 'Activo';
+                     }
+                     else {
+                        return 'Inactivo';
+                    }
+                })
+                ->addColumn('action', function($nume_series){
+                    return '<a onclick="editForm('. $nume_series->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            }
+        } elseif ($permiso_eliminar) {
+            return Datatables::of($nume_series)
+            ->addColumn('concepto', function($nume_series){
+                    if (empty($nume_series->concepto)) {
+                         return null;
+                     } else {
+                        return $nume_series->concepto->concepto;
+                    }
+                })
+            ->addColumn('serie', function($nume_series){
+                if (empty($nume_series->serie)) {
+                    return null;
+                } else {
+                    return $nume_series->serie->serie;
+                }
+            })
+            ->addColumn('nomb_estado', function($timbrado){
+                    if ($timbrado->estado == 'A') {
+                         return 'Activo';
+                     }
+                     else {
+                        return 'Inactivo';
+                    }
+                })
+            ->addColumn('action', function($nume_series){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a onclick="deleteData('. $nume_series->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
+        } else {
+            return Datatables::of($nume_series)
+            ->addColumn('concepto', function($nume_series){
+                    if (empty($nume_series->concepto)) {
+                         return null;
+                     } else {
+                        return $nume_series->concepto->concepto;
+                    }
+                })
+            ->addColumn('serie', function($nume_series){
+                if (empty($nume_series->serie)) {
+                    return null;
+                } else {
+                    return $nume_series->serie->serie;
+                }
+            })
+            ->addColumn('nomb_estado', function($timbrado){
+                if ($timbrado->estado == 'A') {
+                    return 'Activo';
+                }
+                else {
+                    return 'Inactivo';
+                }
+            })
+            ->addColumn('action', function($nume_series){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
+        }
     }
 }

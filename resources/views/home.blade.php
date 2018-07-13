@@ -115,6 +115,10 @@
                               <li class="sub_menu"><a href="{{route('timbrados.index')}}">Timbrados</a>
                               </li>
                             @endcan
+                            @can('numeseries.index')
+                              <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Rango de Numeración de Series</a>
+                              </li>
+                            @endcan
                             @can('paises.index')
                             <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
                             </li>

@@ -13,14 +13,21 @@ Route::middleware(['auth'])->group(function() {
 	
 	Route::get('datatables/translation/spanish', 'DatatablesTranslationController@spanish');
 
+	//RUTAS PARA GESTION DE PERMISOS POR ROL
 	Route::resource('gestionpermisos', 'PermissionRoleController');
 	Route::get('api/gestionpermisos', 'PermissionRoleController@apiRolePermission')->name('api.rolepermission');
 
+	//RUTAS PARA TIMBRADOS
 	Route::resource('timbrados', 'TimbradoController');
 	Route::get('api/timbrados', 'TimbradoController@apiTimbrados')->name('api.timbrados');
 
+	//RUTAS PARA CONCEPTOS
 	Route::resource('tconceptos', 'ConceptoController');
 	Route::get('api/tconceptos', 'ConceptoController@apiConceptos')->name('api.tconceptos');
+
+	//RUTAS PARA NUMERACION DE SERIES
+	Route::resource('numeSeries', 'NumeracionSerieController');
+	Route::get('api/numeSeries', 'NumeracionSerieController@apiNumeSeries')->name('api.numeSeries');
 
 	//RUTAS PARA MODELO "MODULOS"
 	Route::resource('modulos', 'ModuloController');

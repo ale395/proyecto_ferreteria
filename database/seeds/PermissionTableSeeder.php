@@ -173,6 +173,38 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un Timbrado del sistema';
         $permission->save();*/
 
+        //Permisos para el formulario de numeracion de series
+        $permission = new Permission();
+        $permission->name = 'Crear Numeracion de Serie';
+        $permission->slug = 'numeseries.create';
+        $permission->description = 'Permite la creación de nuevos rangos de numeración de Series en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Numeracion de Serie';
+        $permission->slug = 'numeseries.destroy';
+        $permission->description = 'Permite la eliminación de Rangos de Numeración de Series del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Numeracion de Serie';
+        $permission->slug = 'numeseries.edit';
+        $permission->description = 'Permite modificar los valores de un Rango de Numeración de Serie del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Numeracion de Series';
+        $permission->slug = 'numeseries.index';
+        $permission->description = 'Permite ver el listado de Rangos de Numeración de Series del sistema';
+        $permission->save();
+
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Numeracion de Serie';
+        $permission->slug = 'numeseries.show';
+        $permission->description = 'Permite ver un Rango de Numeración de Serie del sistema';
+        $permission->save();*/
+
         //Permisos para el formulario de familias
         $permission = new Permission();
         $permission->name = 'Crear Familia';
