@@ -18,8 +18,8 @@ class NumeracionSerieController extends Controller
      */
     public function index()
     {
-        $conceptos = Concepto::where('estado', 'A');
-        $series = Serie::where('estado', 'A');
+        $conceptos = Concepto::where('estado', 'A')->get();
+        $series = Serie::where('estado', 'A')->get();
         return view('numeserie.index', compact('conceptos', 'series'));
     }
 
@@ -41,7 +41,17 @@ class NumeracionSerieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'concepto_id' => $request['concepto_id'],
+            'serie_id' => $request['serie_id'],
+            'nro_inicial' => $request['nro_inicial'],
+            'nro_final' => $request['nro_final'],
+            'estado' => $request['estado']
+        ];
+
+        $numeracion_serie = NumeracionSerie::create($data);
+
+        return $numeracion_serie;
     }
 
     /**
@@ -61,9 +71,10 @@ class NumeracionSerieController extends Controller
      * @param  \App\NumeracionSerie  $numeracionSerie
      * @return \Illuminate\Http\Response
      */
-    public function edit(NumeracionSerie $numeracionSerie)
+    public function edit($id)
     {
-        //
+        $numeracion_serie = NumeracionSerie::findOrFail($id);
+        return $numeracion_serie;
     }
 
     /**
@@ -73,9 +84,18 @@ class NumeracionSerieController extends Controller
      * @param  \App\NumeracionSerie  $numeracionSerie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, NumeracionSerie $numeracionSerie)
+    public function update(Request $request, $id)
     {
-        //
+        $numeracion_serie = NumeracionSerie::findOrFail($id);
+        $numeracion_serie->concepto_id = $request['concepto_id'];
+        $numeracion_serie->serie_id = $request['serie_id'];
+        $numeracion_serie->nro_inicial = $request['nro_inicial'];
+        $numeracion_serie->nro_final = $request['nro_final'];
+        $numeracion_serie->estado = $request['estado'];
+        
+        $numeracion_serie->update();
+
+        return $numeracion_serie;
     }
 
     /**
@@ -84,9 +104,9 @@ class NumeracionSerieController extends Controller
      * @param  \App\NumeracionSerie  $numeracionSerie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(NumeracionSerie $numeracionSerie)
+    public function destroy($id)
     {
-        //
+        return NumeracionSerie::destroy($id);
     }
 
     public function apiNumeSeries()

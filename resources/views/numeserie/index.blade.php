@@ -32,6 +32,8 @@
                 </div>
             </div>
         </div>
+
+        @include('numeserie.form')
     
 @endsection
 
@@ -121,9 +123,11 @@
             $('.modal-title').text('Editar Registro');
 
             $('#id').val(data.id);
-            $('#name').val(data.name);
-            $('#email').val(data.email);
-            $('#role_id').val(data.role_id);
+            $('#concepto_id').val(data.concepto_id);
+            $('#serie_id').val(data.serie_id);
+            $('#nro_inicial').val(data.nro_inicial);
+            $('#nro_final').val(data.nro_final);
+            $('#estado').val(data.estado);
           },
           error : function() {
               alert("Nothing Data");
