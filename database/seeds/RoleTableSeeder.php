@@ -233,6 +233,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_nume_series->id);
         $role->assignPermission($permiso_editar_nume_series->id);
         $role->assignPermission($permiso_eliminar_nume_series->id);
+
+        $role->assignPermission($permiso_clasicli_listar->id);
+        $role->assignPermission($permiso_clasicli_crear->id);
+        $role->assignPermission($permiso_clasicli_editar->id);
+        $role->assignPermission($permiso_clasicli_eliminar->id);
         
         $role->save();
     }
