@@ -9,4 +9,9 @@ class ListaPrecioCabecera extends Model
     protected $table = 'lista_precios_cabecera';
 
     protected $fillable = ['lista_precio', 'descripcion', 'moneda_id'];
+
+    public function moneda()
+    {
+        return $this->belongsTo('App\Moneda');
+    }
 }

@@ -6,26 +6,29 @@
 				<div class="col-md-12">
 						<div class="panel panel-default">
 								<div class="panel-heading">
-										<h4>Lista de Roles
+										<h4>Lista de Precios
 										</h4>
 								</div>
 								<div class="panel-body">
 										<table class="table table-striped table-responsive">
 												<thead>
 														<tr>
-																<th>Nombre</th>
+																<th>Código</th>
 																<th>Descripción</th>
-																<th width="270">Acciones</th>
+																<th>Moneda</th>
+																<th width="350">Acciones</th>
 														</tr>
 												</thead>
 												<tbody>
-														@foreach($roles as $role)
+														@foreach($lista_precios as $lista_precio)
 															<tr>
-																<td>{{$role->name}}</td>
-																<td>{{$role->description}}</td>
-																<td width="270">
-																	<a href="{{route('gestionpermisos.show', $role->id)}}" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Ver Permisos</a>
-																	<a href="{{route('gestionpermisos.edit', $role->id)}}" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar Permisos</a>
+																<td>{{$lista_precio->lista_precio}}</td>
+																<td>{{$lista_precio->descripcion}}</td>
+																<td>{{$lista_precio->moneda->descripcion}}</td>
+																<td width="350">
+																	<a onclick="" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
+																	<a onclick="" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
+																	<a href="#" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Asignar Precios</a>
 																</td>
 															</tr>
 														@endforeach
@@ -35,23 +38,23 @@
 						</div>
 				</div>
 
-		@include('role.form')
+		@include('listaPrecioCabecera.form')
 		
 @endsection
 
 @section('ajax_datatables')
 	<script type="text/javascript">
-			var table = $('#rolepermission-table').DataTable({
+			var table = $('#listaprecio-table').DataTable({
 											language: { url: 'datatables/translation/spanish' },
 											processing: true,
 											serverSide: true,
-											ajax: "{{ route('api.rolepermission') }}",
-											columns: [
+											ajax: "{{ route('api.rolepermission') }}"//,
+											/*columns: [
 												//{data: 'slug', name: 'slug'},
 												{data: 'name', name: 'name'},
 												{data: 'description', name: 'description'},
 												{data: 'action', name: 'action', orderable: false, searchable: false}
-											]
+											]*/
 										});
 
 			function addForm() {
@@ -59,7 +62,7 @@
 				$('input[name=_method]').val('POST');
 				$('#modal-form').modal('show');
 				$('#modal-form form')[0].reset();
-				$('.modal-title').text('Agregar Permiso');
+				$('.modal-title').text('Agregar Lista de Precio');
 			}
 
 			$(function(){

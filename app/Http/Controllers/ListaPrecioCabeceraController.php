@@ -14,7 +14,8 @@ class ListaPrecioCabeceraController extends Controller
      */
     public function index()
     {
-        //
+        $lista_precios = ListaPrecioCabecera::all();
+        return view('listaPrecioCabecera.index', compact('lista_precios'));
     }
 
     /**

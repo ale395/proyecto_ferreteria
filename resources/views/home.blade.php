@@ -210,17 +210,17 @@
                                 </ul>
                               </li>
                     </ul>
-                  </li>d
+                  </li>
 
                   <li><a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
                               <!--<li><a href="#level1_1">Level One</a>-->
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    @can('listaprecios.index')
+                                    
                                       <li class="sub_menu"><a href="{{route('listaPrecios.index')}}">Lista de Precios</a>
                                       </li>
-                                    @endcan
+                                    
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
