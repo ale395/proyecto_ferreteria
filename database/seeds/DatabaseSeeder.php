@@ -32,5 +32,7 @@ class DatabaseSeeder extends Seeder
 
         //carga los datos de inicio
         //$this->call(DefaultSeeder::class);
+
+        $this->call(MonedaTableSeeder::class);
     }
 }

@@ -38,6 +38,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/roles', 'RoleController@apiRole')->name('api.roles');
 
 	//RUTAS PARA MODELO USER
+	Route::resource('listaPrecios', 'ListaPrecioCabeceraController');
+	Route::get('api/listaPrecios', 'ListaPrecioCabecera@apiListaPrecios')->name('api.listaPrecios');
+
+	//RUTAS PARA MODELO LISTA DE PRECIOS
 	Route::resource('users', 'UserController');
 	Route::get('api/users', 'UserController@apiUsers')->name('api.users');
 
