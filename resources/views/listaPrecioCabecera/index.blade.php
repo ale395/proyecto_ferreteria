@@ -7,10 +7,11 @@
 						<div class="panel panel-default">
 								<div class="panel-heading">
 										<h4>Lista de Precios
+												<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Registro</a>
 										</h4>
 								</div>
 								<div class="panel-body">
-										<table class="table table-striped table-responsive">
+										<table id="listaprecio-table" class="table table-striped table-responsive">
 												<thead>
 														<tr>
 																<th>Código</th>
@@ -26,8 +27,8 @@
 																<td>{{$lista_precio->descripcion}}</td>
 																<td>{{$lista_precio->moneda->descripcion}}</td>
 																<td width="350">
-																	<a onclick="" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
-																	<a onclick="" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
+																	<a onclick="editForm('{{$lista_precio->id}}')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
+																	<a onclick="deleteData('{{$lista_precio->id}}')" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
 																	<a href="#" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Asignar Precios</a>
 																</td>
 															</tr>
@@ -44,18 +45,18 @@
 
 @section('ajax_datatables')
 	<script type="text/javascript">
-			var table = $('#listaprecio-table').DataTable({
+			var table = $('#listaprecio-table')/*.DataTable({
 											language: { url: 'datatables/translation/spanish' },
 											processing: true,
 											serverSide: true,
-											ajax: "{{ route('api.rolepermission') }}"//,
-											/*columns: [
+											ajax: "{{ route('api.rolepermission') }}",
+											columns: [
 												//{data: 'slug', name: 'slug'},
 												{data: 'name', name: 'name'},
 												{data: 'description', name: 'description'},
 												{data: 'action', name: 'action', orderable: false, searchable: false}
-											]*/
-										});
+											]
+										})*/;
 
 			function addForm() {
 				save_method = "add";
@@ -69,8 +70,8 @@
 						$('#modal-form form').validator().on('submit', function (e) {
 								if (!e.isDefaultPrevented()){
 										var id = $('#id').val();
-										if (save_method == 'add') url = "{{ url('roles') }}";
-										else url = "{{ url('roles') . '/' }}" + id;
+										if (save_method == 'add') url = "{{ url('listaPrecios') }}";
+										else url = "{{ url('listaPrecios') . '/' }}" + id;
 
 										$.ajax({
 												url : url,
@@ -78,7 +79,8 @@
 												data : $('#modal-form form').serialize(),
 												success : function($data) {
 														$('#modal-form').modal('hide');
-														table.ajax.reload();
+														//table.ajax.reload();
+														location.reload();
 												},
 												error : function(){
 														alert('Oops! Something Error!');
@@ -94,17 +96,17 @@
 				$('input[name=_method]').val('PATCH');
 				$('#modal-form form')[0].reset();
 				$.ajax({
-					url: "{{ url('roles') }}" + '/' + id + "/edit",
+					url: "{{ url('listaPrecios') }}" + '/' + id + "/edit",
 					type: "GET",
 					dataType: "JSON",
 					success: function(data) {
 						$('#modal-form').modal('show');
-						$('.modal-title').text('Editar Rol');
+						$('.modal-title').text('Editar Lista de Precio');
 
 						$('#id').val(data.id);
-						$('#slug').val(data.slug);
-						$('#name').val(data.name);
-						$('#description').val(data.description);
+						$('#lista_precio').val(data.lista_precio);
+						$('#descripcion').val(data.descripcion);
+						$('#moneda_id').val(data.moneda_id);
 					},
 					error : function() {
 							alert("Nothing Data");
@@ -117,11 +119,12 @@
 						var csrf_token = $('meta[name="csrf-token"]').attr('content');
 						if (popup == true ){
 								$.ajax({
-										url : "{{ url('roles') }}" + '/' + id,
+										url : "{{ url('listaPrecios') }}" + '/' + id,
 										type : "POST",
 										data : {'_method' : 'DELETE', '_token' : csrf_token},
 										success : function(data) {
-												table.ajax.reload();
+												//table.ajax.reload();
+												location.reload();
 										},
 										error : function () {
 												alert("Oops! Something Wrong!");
@@ -131,4 +134,12 @@
 				}
 
 		</script>
+
+		<script>
+      $(document).ready(function() {
+          $('.js-moneda').select2({
+            dropdownParent: $('#modal-form')
+          });
+      });
+    </script>
 @endsection
