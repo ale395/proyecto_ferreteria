@@ -32,7 +32,7 @@
                     <div class="form-group">
                       <label for="name" class="col-md-3 control-label">Moneda</label>
                       <div class="col-md-6">
-                          <select id="moneda_id" class="form-control js-moneda" name="moneda_id" style="width: 100%">
+                          <select id="moneda_id" class="form-control" name="moneda_id" style="width: 100%">
                             @foreach($monedas as $moneda)
                               <option value="{{$moneda->id}}">{{$moneda->descripcion}}</option>
                             @endforeach
