@@ -14,13 +14,14 @@ class CreateListaPreciosDetalleTable extends Migration
     public function up()
     {
         Schema::create('lista_precios_detalle', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('lista_precio_id')->unsigned();
             $table->integer('articulo_id')->unsigned();
             $table->date('fecha_vigencia');
             $table->decimal('precio', 12, 2);
             $table->timestamps();
 
-            $table->primary(['lista_precio_id', 'articulo_id', 'fecha_vigencia']);
+            $table->unique(['lista_precio_id', 'articulo_id', 'fecha_vigencia']);
             $table->foreign('lista_precio_id')->references('id')->on('lista_precios_cabecera');
             //$table->foreign('articulo_id')->references('id')->on('articulos');
         });

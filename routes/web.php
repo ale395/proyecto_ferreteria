@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function() {
 
 	//RUTAS PARA MODELO LISTA PRECIOS DETALLE
 	Route::resource('listaPreciosDet', 'ListaPrecioDetalleController');
-	Route::get('api/listaPreciosDet', 'ListaPrecioDetalle@apiListaPrecios')->name('api.listaPreciosDet');
+	Route::get('api/listaPreciosDet', 'ListaPrecioDetalleController@apiListaPrecios')->name('api.listaPreciosDet');
 
 
 	//RUTAS PARA MODELO USER

@@ -31,8 +31,10 @@ class DatabaseSeeder extends Seeder
         //$this->call(TimbradoTableSeeder::class);
 
         //carga los datos de inicio
-        //$this->call(DefaultSeeder::class);
+        $this->call(DefaultSeeder::class);
 
         $this->call(MonedaTableSeeder::class);
+
+        $this->call(ArticuloTableSeeder::class);
     }
 }
