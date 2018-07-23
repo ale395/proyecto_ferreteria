@@ -39,11 +39,11 @@ Route::middleware(['auth'])->group(function() {
 
 	//RUTAS PARA MODELO LISTA PRECIOS CABECERA
 	Route::resource('listaPrecios', 'ListaPrecioCabeceraController');
-	Route::get('api/listaPrecios', 'ListaPrecioCabecera@apiListaPrecios')->name('api.listaPrecios');
+	Route::get('api/listaPrecios', 'ListaPrecioCabeceraController@apiListaPrecios')->name('api.listaPrecios');
 
 	//RUTAS PARA MODELO LISTA PRECIOS DETALLE
 	Route::resource('listaPreciosDet', 'ListaPrecioDetalleController');
-	Route::get('api/listaPreciosDet', 'ListaPrecioDetalleController@apiListaPrecios')->name('api.listaPreciosDet');
+	Route::get('api/listaPreciosDet/{list_prec_id}', 'ListaPrecioDetalleController@apiListaPrecios')->name('api.listaPreciosDet');
 
 
 	//RUTAS PARA MODELO USER

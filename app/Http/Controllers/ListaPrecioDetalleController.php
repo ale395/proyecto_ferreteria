@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Articulo;
 use App\ListaPrecioDetalle;
+use App\ListaPrecioCabecera;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +19,7 @@ class ListaPrecioDetalleController extends Controller
     public function index()
     {
         $lista_precios_detalle = ListaPrecioDetalle::all();
-        return view('listaPrecioDetalle.index', compact('lista_precios_detalle'));
+        return view('listaPrecioDetalle.index');
     }
 
     /**
@@ -56,9 +58,13 @@ class ListaPrecioDetalleController extends Controller
      * @param  \App\ListaPrecioDetalle  $listaPrecioDetalle
      * @return \Illuminate\Http\Response
      */
-    public function show(ListaPrecioDetalle $listaPrecioDetalle)
+    public function show($id)
     {
-        //
+        $lista_precio_detalle = ListaPrecioDetalle::where('lista_precio_id', $id)->get();
+        $list_prec_id = $id;
+        $articulos = Articulo::all();
+        $lista_precio_cab = ListaPrecioCabecera::findOrFail($id);
+        return view('listaPrecioDetalle.index', compact('list_prec_id', 'articulos', 'lista_precio_cab'));
     }
 
     /**
@@ -95,14 +101,13 @@ class ListaPrecioDetalleController extends Controller
         return ListaPrecioDetalle::destroy($id);
     }
 
-    public function apiListaPrecios()
+    public function apiListaPrecios($list_prec_id)
     {
         $permiso_editar = Auth::user()->can('numeseries.edit');
         $permiso_eliminar = Auth::user()->can('numeseries.destroy');
-        $lista_precios_detalle = ListaPrecioDetalle::all();
+        $lista_precios_detalle = ListaPrecioDetalle::where('lista_precio_id', $list_prec_id)->get();
 
-        if ($permiso_editar) {
-            if ($permiso_eliminar) {
+        if ($permiso_eliminar) {
                 return Datatables::of($lista_precios_detalle)
                 ->addColumn('articulo', function($lista_precios_detalle){
                     if (empty($lista_precios_detalle->articulo)) {
@@ -119,50 +124,8 @@ class ListaPrecioDetalleController extends Controller
                     }
                 })
                 ->addColumn('action', function($lista_precios_detalle){
-                    return '<a onclick="editForm('. $lista_precios_detalle->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $lista_precios_detalle->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                    return '<a onclick="deleteData('. $lista_precios_detalle->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
-            } else {
-                return Datatables::of($lista_precios_detalle)
-                ->addColumn('articulo', function($lista_precios_detalle){
-                    if (empty($lista_precios_detalle->articulo)) {
-                         return null;
-                     } else {
-                        return $lista_precios_detalle->articulo->articulo;
-                    }
-                })
-                ->addColumn('descripcion', function($lista_precios_detalle){
-                    if (empty($lista_precios_detalle->articulo)) {
-                         return null;
-                     } else {
-                        return $lista_precios_detalle->articulo->descripcion;
-                    }
-                })
-                ->addColumn('action', function($lista_precios_detalle){
-                    return '<a onclick="editForm('. $lista_precios_detalle->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-                })->make(true);
-            }
-        } elseif ($permiso_eliminar) {
-            return Datatables::of($lista_precios_detalle)
-            ->addColumn('articulo', function($lista_precios_detalle){
-                if (empty($lista_precios_detalle->articulo)) {
-                     return null;
-                 } else {
-                     return $lista_precios_detalle->articulo->articulo;
-                 }
-            })
-            ->addColumn('descripcion', function($lista_precios_detalle){
-                if (empty($lista_precios_detalle->articulo)) {
-                     return null;
-                 } else {
-                     return $lista_precios_detalle->articulo->descripcion;
-                 }
-            })
-            ->addColumn('action', function($lista_precios_detalle){
-                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a onclick="deleteData('. $lista_precios_detalle->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
-            })->make(true);
         } else {
             return Datatables::of($lista_precios_detalle)
             ->addColumn('articulo', function($lista_precios_detalle){
@@ -180,8 +143,7 @@ class ListaPrecioDetalleController extends Controller
                  }
             })
             ->addColumn('action', function($nume_series){
-                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                return '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         }
     }

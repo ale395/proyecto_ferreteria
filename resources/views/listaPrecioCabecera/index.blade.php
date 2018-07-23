@@ -7,7 +7,7 @@
 						<div class="panel panel-default">
 								<div class="panel-heading">
 										<h4>Lista de Precios
-												<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Registro</a>
+												<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Registro</a>
 										</h4>
 								</div>
 								<div class="panel-body">
@@ -17,7 +17,7 @@
 																<th>Código</th>
 																<th>Descripción</th>
 																<th>Moneda</th>
-																<th width="350">Acciones</th>
+																<th width="310">Acciones</th>
 														</tr>
 												</thead>
 												<tbody>
@@ -26,10 +26,10 @@
 																<td>{{$lista_precio->lista_precio}}</td>
 																<td>{{$lista_precio->descripcion}}</td>
 																<td>{{$lista_precio->moneda->descripcion}}</td>
-																<td width="350">
+																<td width="310">
 																	<a onclick="editForm('{{$lista_precio->id}}')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
 																	<a onclick="deleteData('{{$lista_precio->id}}')" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
-																	<a href="{{route('listaPreciosDet.index')}}" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> Asignar Precios</a>
+																	<a href="{{route('listaPreciosDet.show', ['id' => $lista_precio->id])}}" class="btn btn-info btn-sm"><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
 																</td>
 															</tr>
 														@endforeach

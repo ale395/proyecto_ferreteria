@@ -6,7 +6,8 @@
 				<div class="col-md-12">
 						<div class="panel panel-default">
 								<div class="panel-heading">
-										<h4>Lista de Precios - Artículos
+										<h4>Lista de Precios <b>{{$lista_precio_cab->descripcion}}</b>
+											<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Registro</a>
 											<a href="{{route('listaPrecios.index')}}" class="btn btn-default pull-right" style="margin-top: -8px;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Volver al Listado anterior</a>
 										</h4>
 								</div>
@@ -18,7 +19,7 @@
 																<th>Descripción</th>
 																<th>Fecha Vigencia</th>
 																<th>Precio</th>
-																<th width="270">Acciones</th>
+																<th width="80">Acciones</th>
 														</tr>
 												</thead>
 												<tbody></tbody>
@@ -34,10 +35,10 @@
 @section('ajax_datatables')
 	<script type="text/javascript">
 			var table = $('#listaPreciosDetalle-table').DataTable({
-											language: { url: 'datatables/translation/spanish' },
+											language: { url: '/datatables/translation/spanish' },
 											processing: true,
 											serverSide: true,
-											ajax: "{{ route('api.listaPreciosDet') }}",
+											ajax: "{{ route('api.listaPreciosDet', ['list_prec_id' => $list_prec_id]) }}",
 											columns: [
 												{data: 'articulo', name: 'articulo'},
 												{data: 'descripcion', name: 'descripcion'},
@@ -68,7 +69,8 @@
 												data : $('#modal-form form').serialize(),
 												success : function($data) {
 														$('#modal-form').modal('hide');
-														table.ajax.reload();
+														//table.ajax.reload();
+														location.reload();
 												},
 												error : function(){
 														alert('Oops! Something Error!');
@@ -111,7 +113,8 @@
 										type : "POST",
 										data : {'_method' : 'DELETE', '_token' : csrf_token},
 										success : function(data) {
-												table.ajax.reload();
+												//table.ajax.reload();
+												location.reload();
 										},
 										error : function () {
 												alert("Oops! Something Wrong!");
