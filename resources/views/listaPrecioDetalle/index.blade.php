@@ -128,4 +128,11 @@
 				}
 
 		</script>
+
+		<script type="text/javascript">
+    $(document).ready(function() {
+      $('.fecha_vigencia').datepicker();
+    }); 
+		</script>
+
 @endsection

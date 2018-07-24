@@ -15,6 +15,7 @@
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     
+    
   </head>
 
   <body class="nav-md">
@@ -328,6 +329,7 @@
     <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
 
+    <script src="{{ asset('assets/jquery/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/dataTables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/dataTables/js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/validator/validator.js') }}"></script>

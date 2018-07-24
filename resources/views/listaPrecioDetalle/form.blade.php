@@ -28,8 +28,7 @@
                     <div class="form-group">
                       <label for="name" class="col-md-3 control-label">Fecha Vigencia</label>
                       <div class="col-md-6">
-                          <input type="text" id="fecha_vigencia" name="fecha_vigencia" class="form-control" required>
-                          <span class="help-block with-errors"></span>
+                          <input type="text" id="fecha_vigencia" name="fecha_vigencia" class="form-control" data-inputmask="'mask': '99/99/9999'">
                       </div>
                     </div>
 
