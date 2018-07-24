@@ -205,6 +205,50 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un Rango de Numeración de Serie del sistema';
         $permission->save();*/
 
+        //Permisos para el formulario de usuarios
+        $permission = new Permission();
+        $permission->name = 'Crear Lista Precio';
+        $permission->slug = 'listaprecio.create';
+        $permission->description = 'Permite la creación de Listas de Precios en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Lista Precio';
+        $permission->slug = 'listaprecio.destroy';
+        $permission->description = 'Permite la eliminación de Listas de Precios del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Lista Precio';
+        $permission->slug = 'listaprecio.edit';
+        $permission->description = 'Permite modificar los valores de un Listas de Precios del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Lista Precio';
+        $permission->slug = 'listaprecio.index';
+        $permission->description = 'Permite ver el listado de Listas de Precios del sistema';
+        $permission->save();
+
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Lista Precio';
+        $permission->slug = 'listaprecio.show';
+        $permission->description = 'Permite ver una Lista de Precios del sistema';
+        $permission->save();*/
+
+        $permission = new Permission();
+        $permission->name = 'Asignación de Precios';
+        $permission->slug = 'listapreciodet.asignar';
+        $permission->description = 'Permite asignar precios por artículo de una Lista de Precio del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Asignación de Precio';
+        $permission->slug = 'listapreciodet.destroy';
+        $permission->description = 'Permite eliminar una asignacion de precio por artículo de una Lista de Precio del sistema';
+        $permission->save();
+
         //Permisos para el formulario de familias
         $permission = new Permission();
         $permission->name = 'Crear Familia';

@@ -7,7 +7,11 @@
 						<div class="panel panel-default">
 								<div class="panel-heading">
 										<h4>Lista de Precios
-												<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Registro</a>
+												@can('listaprecio.create')
+														<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Registro</a>
+												@else
+														<a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Registro</a>
+												@endcan
 										</h4>
 								</div>
 								<div class="panel-body">
@@ -27,9 +31,21 @@
 																<td>{{$lista_precio->descripcion}}</td>
 																<td>{{$lista_precio->moneda->descripcion}}</td>
 																<td width="310">
-																	<a onclick="editForm('{{$lista_precio->id}}')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
-																	<a onclick="deleteData('{{$lista_precio->id}}')" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
-																	<a href="{{route('listaPreciosDet.show', ['id' => $lista_precio->id])}}" class="btn btn-info btn-sm"><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
+																	 @can('listaprecio.edit')
+																				<a onclick="editForm('{{$lista_precio->id}}')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
+																		@else
+																				<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
+																		@endcan
+																		@can('listaprecio.destroy')
+																				<a onclick="deleteData('{{$lista_precio->id}}')" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
+																		@else
+																				<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
+																		@endcan
+																		@can('listapreciodet.asignar')
+																				<a href="{{route('listaPreciosDet.show', ['id' => $lista_precio->id])}}" class="btn btn-info btn-sm"><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
+																		@else
+																				<a class="btn btn-info btn-sm" disabled><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
+																		@endcan
 																</td>
 															</tr>
 														@endforeach

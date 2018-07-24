@@ -48,6 +48,15 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_nume_series = Permission::where('slug', 'numeseries.edit')->first();
         $permiso_eliminar_nume_series = Permission::where('slug', 'numeseries.destroy')->first();
 
+        //permisos de Listas de Precios
+        $permiso_listar_lprec = Permission::where('slug', 'listaprecio.index')->first();
+        $permiso_crear_lprec = Permission::where('slug', 'listaprecio.create')->first();
+        $permiso_editar_lprec = Permission::where('slug', 'listaprecio.edit')->first();
+        $permiso_eliminar_lprec = Permission::where('slug', 'listaprecio.destroy')->first();
+
+        $permiso_asignar_lprec = Permission::where('slug', 'listapreciodet.asignar')->first();
+        $permiso_eliminar_asignacion_lprec = Permission::where('slug', 'listapreciodet.destroy')->first();
+
         //permisos de Familias
         $permiso_familia_listar = Permission::where('slug', 'familias.index')->first();
         $permiso_familia_crear = Permission::where('slug', 'familias.create')->first();
@@ -233,6 +242,14 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_nume_series->id);
         $role->assignPermission($permiso_editar_nume_series->id);
         $role->assignPermission($permiso_eliminar_nume_series->id);
+
+        $role->assignPermission($permiso_listar_lprec->id);
+        $role->assignPermission($permiso_crear_lprec->id);
+        $role->assignPermission($permiso_editar_lprec->id);
+        $role->assignPermission($permiso_eliminar_lprec->id);
+
+        $role->assignPermission($permiso_asignar_lprec->id);
+        $role->assignPermission($permiso_eliminar_asignacion_lprec->id);
 
         $role->assignPermission($permiso_clasicli_listar->id);
         $role->assignPermission($permiso_clasicli_crear->id);

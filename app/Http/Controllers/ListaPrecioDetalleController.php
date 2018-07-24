@@ -103,8 +103,7 @@ class ListaPrecioDetalleController extends Controller
 
     public function apiListaPrecios($list_prec_id)
     {
-        $permiso_editar = Auth::user()->can('numeseries.edit');
-        $permiso_eliminar = Auth::user()->can('numeseries.destroy');
+        $permiso_eliminar = Auth::user()->can('listapreciodet.destroy');
         $lista_precios_detalle = ListaPrecioDetalle::where('lista_precio_id', $list_prec_id)->get();
 
         if ($permiso_eliminar) {
