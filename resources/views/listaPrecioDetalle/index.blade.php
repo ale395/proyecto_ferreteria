@@ -46,7 +46,7 @@
 											columns: [
 												{data: 'articulo', name: 'articulo'},
 												{data: 'descripcion', name: 'descripcion'},
-												{data: 'fecha_vigencia', name: 'fecha_vigencia'},
+												{data: 'fecha_cast', name: 'fecha_cast'},
 												{data: 'precio', name: 'precio'},
 												{data: 'action', name: 'action', orderable: false, searchable: false}
 											]

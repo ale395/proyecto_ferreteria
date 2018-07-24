@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class ListaPrecioDetalle extends Model
@@ -18,5 +19,9 @@ class ListaPrecioDetalle extends Model
     public function listaPrecioCabecera()
     {
         return $this->belongsTo('App\ListaPrecioCabecera');
+    }
+
+    public function formatoFecha() {
+        return (new Carbon($this->attributes['fecha_vigencia']))->format('d/m/Y');
     }
 }

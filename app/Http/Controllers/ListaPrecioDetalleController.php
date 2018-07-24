@@ -108,6 +108,9 @@ class ListaPrecioDetalleController extends Controller
 
         if ($permiso_eliminar) {
                 return Datatables::of($lista_precios_detalle)
+                ->addColumn('fecha_cast', function($lista_precios_detalle){
+                    return $lista_precios_detalle->formatoFecha();
+                })
                 ->addColumn('articulo', function($lista_precios_detalle){
                     if (empty($lista_precios_detalle->articulo)) {
                          return null;
@@ -127,6 +130,9 @@ class ListaPrecioDetalleController extends Controller
                 })->make(true);
         } else {
             return Datatables::of($lista_precios_detalle)
+            ->addColumn('fecha_cast', function($lista_precios_detalle){
+                return $lista_precios_detalle->formatoFecha();
+            })
             ->addColumn('articulo', function($lista_precios_detalle){
                  if (empty($lista_precios_detalle->articulo)) {
                      return null;
