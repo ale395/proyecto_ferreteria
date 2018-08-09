@@ -9,9 +9,9 @@
                     <h4>Lista de Roles
                         <!-- Verifica si el usuario tiene permiso para crear registros -->
                         @can('roles.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Rol</a>
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nuevo Rol</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan 
                     </h4>
                 </div>
@@ -74,7 +74,7 @@
                             table.ajax.reload();
                         },
                         error : function(){
-                            alert('Oops! Something Error!');
+                            alert('Ops! Algo salio mal!');
                         }
                     });
                     return false;
@@ -100,28 +100,61 @@
             $('#description').val(data.description);
           },
           error : function() {
-              alert("Nothing Data");
+              alert("No se encontraron datos");
           }
         });
       }
 
       function deleteData(id){
-            var popup = confirm("Are you sure for delete this data ?");
-            var csrf_token = $('meta[name="csrf-token"]').attr('content');
-            if (popup == true ){
-                $.ajax({
-                    url : "{{ url('roles') }}" + '/' + id,
-                    type : "POST",
-                    data : {'_method' : 'DELETE', '_token' : csrf_token},
-                    success : function(data) {
-                        table.ajax.reload();
-                    },
-                    error : function () {
-                        alert("Oops! Something Wrong!");
+        $.confirm({
+            title: 'What is up?',
+            content: 'Here goes a little content',
+            type: 'green',
+            buttons: {   
+                ok: {
+                    text: "ok!",
+                    btnClass: 'btn-primary',
+                    keys: ['enter'],
+                    action: function(){
+                         console.log('the user clicked confirm');
                     }
-                })
+                },
+                cancel: function(){
+                        console.log('the user clicked cancel');
+                }
             }
-        }
+        });
+      }
+
+      /*function deleteData(id){
+        swal({
+          title: "Are you sure?",
+          text: "Once deleted, you will not be able to recover this imaginary file!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("Poof! Your imaginary file has been deleted!", {
+              icon: "success",
+            });
+          } else {
+            swal("Your imaginary file is safe!");
+          }
+        });
+    }*/
 
     </script>
 @endsection
+
+@section('otros_scripts')
+  <script type="text/javascript">
+    $('#modal-form').on('shown.bs.modal', function() {
+      $("#slug").focus();
+    });
+  </script>
+@endsection
+
+
+
