@@ -74,7 +74,12 @@
                             table.ajax.reload();
                         },
                         error : function(){
-                            alert('Ops! Algo salio mal!');
+                            $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
                         }
                     });
                     return false;
@@ -100,7 +105,12 @@
             $('#description').val(data.description);
           },
           error : function() {
-              alert("No se encontraron datos");
+              $.alert({
+                title: 'Atención!',
+                content: 'No se encontraron datos!',
+                icon: 'fa fa-exclamation-circle',
+                type: 'orange',
+              });
           }
         });
       }
@@ -134,12 +144,10 @@
                                           });
                                   }
                               })
-                          
-                         console.log('mensaje');
                     }
                 },
                 cancel: function(){
-                        console.log('the user clicked cancel');
+                        console.log('Cancel');
                 }
             }
         });
