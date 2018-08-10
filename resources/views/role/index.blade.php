@@ -107,16 +107,35 @@
 
       function deleteData(id){
         $.confirm({
-            title: 'What is up?',
-            content: 'Here goes a little content',
-            type: 'green',
+            title: '¿De verdad lo quieres eliminar?',
+            content: 'No podrás volver atras',
+            type: 'red',
             buttons: {   
                 ok: {
-                    text: "ok!",
-                    btnClass: 'btn-primary',
+                    text: "Eliminar",
+                    btnClass: 'btn-danger',
                     keys: ['enter'],
                     action: function(){
-                         console.log('the user clicked confirm');
+                          var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                          
+                              $.ajax({
+                                  url : "{{ url('roles') }}" + '/' + id,
+                                  type : "POST",
+                                  data : {'_method' : 'DELETE', '_token' : csrf_token},
+                                  success : function(data) {
+                                      table.ajax.reload();
+                                  },
+                                  error : function () {
+                                          $.alert({
+                                              title: 'Atención!',
+                                              content: 'Ocurrió un error durante el proceso!',
+                                              icon: 'fa fa-times-circle-o',
+                                              type: 'red',
+                                          });
+                                  }
+                              })
+                          
+                         console.log('mensaje');
                     }
                 },
                 cancel: function(){
@@ -125,25 +144,6 @@
             }
         });
       }
-
-      /*function deleteData(id){
-        swal({
-          title: "Are you sure?",
-          text: "Once deleted, you will not be able to recover this imaginary file!",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-        })
-        .then((willDelete) => {
-          if (willDelete) {
-            swal("Poof! Your imaginary file has been deleted!", {
-              icon: "success",
-            });
-          } else {
-            swal("Your imaginary file is safe!");
-          }
-        });
-    }*/
 
     </script>
 @endsection
