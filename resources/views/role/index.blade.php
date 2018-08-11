@@ -162,6 +162,10 @@
       $("#slug").focus();
     });
   </script>
+  
+  <script type="text/javascript">
+    $('#role-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator')
+  </script>
 @endsection
 
 

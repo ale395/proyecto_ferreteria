@@ -332,17 +332,19 @@
     <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
 
     <script src="{{ asset('assets/jquery/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js') }}"></script>
+
     <script src="{{ asset('assets/dataTables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/dataTables/js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/validator/validator.js') }}"></script>
+    <script src="{{ asset('assets/validator/es_ES.js') }}"></script>
 
     <script src="{{ asset('assets/bootstrap/js/ie10-viewport-bug-workaround.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('assets/gentelella/smartresize.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
     <!-- Para los Script JavaScript necesarios para la utilización de AJAX con el DataTables-->
