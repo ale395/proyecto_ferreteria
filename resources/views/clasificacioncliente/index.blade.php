@@ -8,9 +8,9 @@
                 <div class="panel-heading">
                     <h4>Lista de Clasificacion de Clientes
                         @can('clasificacioncliente.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nueva Clasificacion</a>
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"> Agregar</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nueva Clasificacion</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"> Agregar</a>
                         @endcan
                     </h4>
                 </div>
@@ -19,7 +19,7 @@
                         <thead>
                             <tr>
                                 <th>Codigo</th>
-                                <th>Descripcion</th>
+                                <th>Nombre</th>
                                 <th width="150">Acciones</th>
                             </tr>
                         </thead>
@@ -39,8 +39,8 @@
                       serverSide: true,
                       ajax: "{{ route('api.clasificacionclientes') }}",
                       columns: [
-                        {data: 'num_clasif_cliente', name: 'num_clasif_cliente'},
-                        {data: 'descripcion', name: 'descripcion'},
+                        {data: 'codigo', name: 'codigo'},
+                        {data: 'nombre', name: 'nombre'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
@@ -50,7 +50,7 @@
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nueva clasificacion de Clientes');
+        $('.modal-title').text('Nuevo tipo de Cliente');
       }
 
       $(function(){
@@ -105,11 +105,11 @@
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Clasificacion de Clientes');
+            $('.modal-title').text('Editar tipo de cliente');
 
             $('#id').val(data.id);
-            $('#num_clasif_cliente').val(data.num_clasif_cliente);
-            $('#descripcion').val(data.descripcion);
+            $('#codigo').val(data.codigo);
+            $('#nombre').val(data.nombre);
           },
           error : function() {
             //alert('Ha ocurrido un error, favor verificar');

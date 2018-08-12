@@ -13,10 +13,10 @@ class CreateClasificacionClientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('clasificacion_clientes', function (Blueprint $table) {
+        Schema::create('tipos_clientes', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('num_clasif_cliente', 4)->unique();
-            $table->string('descripcion');
+            $table->string('codigo', 20)->unique();
+            $table->string('nombre', 100);
             $table->timestamps();
         });
     }
@@ -29,5 +29,6 @@ class CreateClasificacionClientesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('clasificacion_clientes');
+        Schema::dropIfExists('tipos_clientes');
     }
 }

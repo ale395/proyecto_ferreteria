@@ -38,8 +38,8 @@ class ClasificacionClienteController extends Controller
     public function store(Request $request)
     {
         $data = [
-            'num_clasif_cliente' => $request['num_clasif_cliente'],
-            'descripcion' => $request['descripcion']
+            'codigo' => $request['codigo'],
+            'nombre' => $request['nombre']
         ];
 
         return ClasificacionCliente::create($data);
@@ -62,9 +62,10 @@ class ClasificacionClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ClasificacionCliente $clasificacioncliente)
+    public function edit($id)
     {
-        return $clasificacioncliente;
+        $clasificacion_cliente = ClasificacionCliente::findOrFail($id);
+        return $clasificacion_cliente;
     }
 
     /**
@@ -76,8 +77,8 @@ class ClasificacionClienteController extends Controller
      */
     public function update(Request $request, ClasificacionCliente $clasificacioncliente)
     {
-        $clasificacioncliente->num_clasif_cliente = $request['num_clasif_cliente'];
-        $clasificacioncliente->descripcion = $request['descripcion'];
+        $clasificacioncliente->codigo = $request['codigo'];
+        $clasificacioncliente->nombre = $request['nombre'];
         
         $clasificacioncliente->update();
 
