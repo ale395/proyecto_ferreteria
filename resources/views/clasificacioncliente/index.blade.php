@@ -6,11 +6,11 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Clasificacion de Clientes
+                    <h4>Lista de Tipos de Clientes
                         @can('clasificacioncliente.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"> Agregar</a>
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"> Agregar</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
                     </h4>
                 </div>
@@ -154,4 +154,16 @@
         }
 
     </script>
+@endsection
+
+@section('otros_scripts')
+  <script type="text/javascript">
+    $('#modal-form').on('shown.bs.modal', function() {
+      $("#codigo").focus();
+    });
+  </script>
+  
+  <script type="text/javascript">
+    $('#tipoCliente-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator')
+  </script>
 @endsection
