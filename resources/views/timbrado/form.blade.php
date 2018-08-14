@@ -13,13 +13,15 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
 
-                    <div id="error-block" class="col-md-6">
+                    <div class="form-group">
+                        <div id="error-block" class="alert alert-danger collapse">
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label for="nro_timbrado" class="col-md-3 control-label">Número de Timbrado</label>
                         <div class="col-md-6">
-                            <input type="number" id="nro_timbrado" name="nro_timbrado" class="form-control" autofocus required>
+                            <input type="number" id="nro_timbrado" name="nro_timbrado" class="form-control" required autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -27,7 +29,7 @@
                     <div class="form-group">
                         <label for="fecha_inicio_vigencia" class="col-md-3 control-label">Fecha Inicio Vigencia</label>
                         <div class="col-md-6">
-                            <input type="text" id="fecha_inicio_vigencia" name="fecha_inicio_vigencia" class="form-control dpiniciovigencia" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'" required>
+                            <input type="text" id="fecha_inicio_vigencia" name="fecha_inicio_vigencia" class="form-control dpiniciovigencia" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'" required="">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>

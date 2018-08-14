@@ -113,46 +113,12 @@
                         <!--<li><a href="#level1_1">Level One</a>-->
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                            @can('conceptos.index')
-                              <li class="sub_menu"><a href="{{route('tconceptos.index')}}">Conceptos</a>
-                              </li>
-                            @endcan
                             @can('timbrados.index')
                               <li class="sub_menu"><a href="{{route('timbrados.index')}}">Timbrados</a>
                               </li>
                             @endcan
                             @can('numeseries.index')
                               <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Rango de Numeración de Series</a>
-                              </li>
-                            @endcan
-                            @can('paises.index')
-                            <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
-                            </li>
-                            @endcan
-                              <li class="sub_menu"><a href="{{route('departamentos.index')}}">Departamentos</a>
-                              </li>
-                            @can('modulos.index')
-                              <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
-                              </li>
-                            @endcan
-                            @can('familias.index')
-                              <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
-                              </li>
-                            @endcan
-                            @can('lineas.index')
-                              <li class="sub_menu"><a href="{{route('lineas.index')}}">Lineas</a>
-                              </li>
-                            @endcan
-                            @can('rubros.index')
-                              <li class="sub_menu"><a href="{{route('rubros.index')}}">Rubros</a>
-                              </li>
-                            @endcan
-                            @can('unidadmedidas.index')
-                              <li class="sub_menu"><a href="{{route('unidadmedidas.index')}}">Unidad de Medidas</a>
-                              </li>
-                            @endcan
-                            @can('conceptoajuste.index')
-                              <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajuste</a>
                               </li>
                             @endcan
                             @can('cajeros.index')
@@ -201,8 +167,26 @@
                               <!--<li><a href="#level1_1">Level One</a>-->
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li class="sub_menu"><a href="#">Formulario 1</a>
-                                    </li>
+                                    @can('familias.index')
+                                      <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
+                                      </li>
+                                    @endcan
+                                    @can('lineas.index')
+                                      <li class="sub_menu"><a href="{{route('lineas.index')}}">Lineas</a>
+                                      </li>
+                                    @endcan
+                                    @can('rubros.index')
+                                      <li class="sub_menu"><a href="{{route('rubros.index')}}">Rubros</a>
+                                      </li>
+                                    @endcan
+                                    @can('unidadmedidas.index')
+                                      <li class="sub_menu"><a href="{{route('unidadmedidas.index')}}">Unidad de Medidas</a>
+                                      </li>
+                                    @endcan
+                                    @can('conceptoajuste.index')
+                                      <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajuste</a>
+                                      </li>
+                                    @endcan
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>

@@ -52,6 +52,7 @@
 
       function addForm() {
         save_method = "add";
+        $('#error-block').hide();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
@@ -69,22 +70,31 @@
                         url : url,
                         type : "POST",
                         data : $('#modal-form form').serialize(),
+                        dataType: 'json',
                         success : function($data) {
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
                         },
                         error : function(data){
+                            //console.log(data.responseJSON.errors);
                             var errors = '';
-                            for(datos in data.responseJSON){
-                                errors += data.responseJSON[datos] + '<br>';
-                            }
-                            $('#error-block').show().html(errors);
-                            /*$.alert({
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += value + '<br>'
+                                    //console.log(key+' / '+value);
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
                               title: 'Atención!',
                               content: 'Ocurrió un error durante el proceso!',
                               icon: 'fa fa-times-circle-o',
                               type: 'red',
-                            });*/
+                            });
+                          }
+                            
                         }
                     });
                     return false;
@@ -169,7 +179,7 @@
   </script>
   
   <script type="text/javascript">
-    $('#timbrado-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator')
+    $('#timbrado-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
 
   <script type="text/javascript">

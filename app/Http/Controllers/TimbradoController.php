@@ -45,17 +45,20 @@ class TimbradoController extends Controller
         $this->validate($request, $rules);*/
 
         $validator = Validator::make($request->all(), [
-            'nro_timbrado' => 'unique:timbrados,nro_timbrado'
+            'nro_timbrado' => 'min:2|required|unique:timbrados,nro_timbrado',
+            'fecha_inicio_vigencia' => 'required'
         ]);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errors =  json_decode($errors); 
 
-            return response()->json([
+            /*return response()->json([
                 'success' => false,
                 'message' => $errors
-            ], 422);
+            ], 422);*/
+
+            return response()->json(['errors' => $errors], 422); // Status code here
         }
 
         $data = [
