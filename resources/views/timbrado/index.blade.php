@@ -106,6 +106,7 @@
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
+        $('#error-block').hide();
         $.ajax({
           url: "{{ url('timbrados') }}" + '/' + id + "/edit",
           type: "GET",

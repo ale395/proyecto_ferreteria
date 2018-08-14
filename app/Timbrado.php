@@ -24,4 +24,13 @@ class Timbrado extends Model
         'nro_timbrado', 'fecha_inicio_vigencia', 'fecha_fin_vigencia',
     ];
 
+    public static $rules = [
+            'nro_timbrado' => 'required|unique:timbrados,nro_timbrado',
+            'fecha_inicio_vigencia' => 'required',
+            'fecha_fin_vigencia' => 'required|after_or_equal:fecha_inicio_vigencia'
+        ];
+
+    public function getRules(){
+        return $rules;
+    }
 }

@@ -38,16 +38,15 @@ class TimbradoController extends Controller
      */
     public function store(Request $request)
     {
-        /*$rules = [
-            'nro_timbrado' => 'unique:timbrados,nro_timbrado'
+        $rules = [
+            'nro_timbrado' => 'required|unique:timbrados,nro_timbrado',
+            'fecha_inicio_vigencia' => 'required',
+            'fecha_fin_vigencia' => 'required|after_or_equal:fecha_inicio_vigencia'
         ];
         
-        $this->validate($request, $rules);*/
+        /*$this->validate($request, $rules);*/
 
-        $validator = Validator::make($request->all(), [
-            'nro_timbrado' => 'min:2|required|unique:timbrados,nro_timbrado',
-            'fecha_inicio_vigencia' => 'required'
-        ]);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -105,6 +104,23 @@ class TimbradoController extends Controller
     public function update(Request $request, $id)
     {
         $timbrado = Timbrado::findOrFail($id);
+        //$fecha_inicio = date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_inicio_vigencia'])));
+
+        $rules = [
+            'nro_timbrado' => 'required|unique:timbrados,nro_timbrado,'.$timbrado->id,
+            'fecha_inicio_vigencia' => 'required',
+            'fecha_fin_vigencia' => 'required'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
         $timbrado->nro_timbrado = $request['nro_timbrado'];
 
         $timbrado->fecha_inicio_vigencia = date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_inicio_vigencia'])));
