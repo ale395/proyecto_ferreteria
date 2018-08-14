@@ -73,13 +73,18 @@
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
                         },
-                        error : function(){
-                            $.alert({
+                        error : function(data){
+                            var errors = '';
+                            for(datos in data.responseJSON){
+                                errors += data.responseJSON[datos] + '<br>';
+                            }
+                            $('#error-block').show().html(errors);
+                            /*$.alert({
                               title: 'Atención!',
                               content: 'Ocurrió un error durante el proceso!',
                               icon: 'fa fa-times-circle-o',
                               type: 'red',
-                            });
+                            });*/
                         }
                     });
                     return false;
@@ -173,7 +178,8 @@
         format: 'dd/mm/yyyy',
         language: 'es',
         todayBtn: true,
-        todayHighlight: true
+        todayHighlight: true,
+        autoclose: true
       });
       $('#fecha_inicio_vigencia').click(function(e){
                 e.stopPropagation();
@@ -188,7 +194,8 @@
         format: 'dd/mm/yyyy',
         language: 'es',
         todayBtn: true,
-        todayHighlight: true
+        todayHighlight: true,
+        autoclose: true
       });
       $('#fecha_fin_vigencia').click(function(e){
                 e.stopPropagation();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\Timbrado;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -37,6 +38,26 @@ class TimbradoController extends Controller
      */
     public function store(Request $request)
     {
+        /*$rules = [
+            'nro_timbrado' => 'unique:timbrados,nro_timbrado'
+        ];
+        
+        $this->validate($request, $rules);*/
+
+        $validator = Validator::make($request->all(), [
+            'nro_timbrado' => 'unique:timbrados,nro_timbrado'
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors); 
+
+            return response()->json([
+                'success' => false,
+                'message' => $errors
+            ], 422);
+        }
+
         $data = [
             'nro_timbrado' => $request['nro_timbrado'],
             'fecha_inicio_vigencia' => date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_inicio_vigencia']))),

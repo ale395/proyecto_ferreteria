@@ -12,6 +12,10 @@
 
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
+
+                    <div id="error-block" class="col-md-6">
+                    </div>
+
                     <div class="form-group">
                         <label for="nro_timbrado" class="col-md-3 control-label">Número de Timbrado</label>
                         <div class="col-md-6">
