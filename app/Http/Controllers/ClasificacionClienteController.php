@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\ClasificacionCliente;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -37,6 +38,20 @@ class ClasificacionClienteController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'codigo' => 'required|max:20|unique:tipos_clientes,codigo',
+            'nombre' => 'required|max:100'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
         $data = [
             'codigo' => $request['codigo'],
             'nombre' => $request['nombre']
@@ -75,14 +90,30 @@ class ClasificacionClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ClasificacionCliente $clasificacioncliente)
+    public function update(Request $request, $id)
     {
-        $clasificacioncliente->codigo = $request['codigo'];
-        $clasificacioncliente->nombre = $request['nombre'];
-        
-        $clasificacioncliente->update();
+        $tipo_cliente = ClasificacionCliente::findOrFail($id);
 
-        return $clasificacioncliente;
+        $rules = [
+            'codigo' => 'required|max:20|unique:tipos_clientes,codigo,'.$tipo_cliente->id,
+            'nombre' => 'required|max:100'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
+        $tipo_cliente->codigo = $request['codigo'];
+        $tipo_cliente->nombre = $request['nombre'];
+        
+        $tipo_cliente->update();
+
+        return $tipo_cliente;
     }
 
     /**

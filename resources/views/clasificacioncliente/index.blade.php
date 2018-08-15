@@ -35,6 +35,7 @@
 @section('ajax_datatables')
 	<script type="text/javascript">
       var table = $('#clasif-cliente-table').DataTable({
+                      language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
                       ajax: "{{ route('api.clasificacionclientes') }}",
@@ -47,10 +48,11 @@
 
       function addForm() {
         save_method = "add";
+        $('#error-block').hide();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nuevo tipo de Cliente');
+        $('.modal-title').text('Nuevo Tipo de Cliente');
       }
 
       $(function(){
@@ -68,26 +70,26 @@
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
                         },
-                        error : function(){
-                            //alert('Ha ocurrido un error, favor verificar');
-                            var msg = '';
-                            if (jqXHR.status === 0) {
-                                msg = 'Sin Conexion.\n Verifique la red.';
-                            } else if (jqXHR.status == 404) {
-                                msg = 'Pagina no encontradad.[404]';
-                            } else if (jqXHR.status == 500) {
-                                msg = 'Error del Servidor [500].';
-                            } else if (exception === 'parsererror') {
-                                msg = 'Requested JSON parse failed.';
-                            } else if (exception === 'timeout') {
-                                msg = 'Time out error.';
-                            } else if (exception === 'abort') {
-                                msg = 'Ajax request aborted.';
-                            } else {
-                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                            }
-                            //$('#post').html(msg);
-                            alert(msg);
+                        error : function(data){
+                            //console.log(data.responseJSON.errors);
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += value + '<br>'
+                                    //console.log(key+' / '+value);
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
+                          }
+                            
                         }
                     });
                     return false;
@@ -99,6 +101,7 @@
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
+        $('#error-block').hide();
         $.ajax({
           url: "{{ url('clasificacionclientes') }}" + '/' + id + "/edit",
           type: "GET",
@@ -112,48 +115,56 @@
             $('#nombre').val(data.nombre);
           },
           error : function() {
-            //alert('Ha ocurrido un error, favor verificar');
-            var msg = '';
-            if (jqXHR.status === 0) {
-                msg = 'Sin Conexion.\n Verifique la red.';
-            } else if (jqXHR.status == 404) {
-                msg = 'Pagina no encontradad.[404]';
-            } else if (jqXHR.status == 500) {
-                msg = 'Error del Servidor [500].';
-            } else if (exception === 'parsererror') {
-                msg = 'Requested JSON parse failed.';
-            } else if (exception === 'timeout') {
-                msg = 'Time out error.';
-            } else if (exception === 'abort') {
-                msg = 'Ajax request aborted.';
-            } else {
-                msg = 'Uncaught Error.\n' + jqXHR.responseText;
-            }
-            //$('#post').html(msg);
-            alert(msg);
+              $.alert({
+                title: 'Atención!',
+                content: 'No se encontraron datos!',
+                icon: 'fa fa-exclamation-circle',
+                type: 'orange',
+              });
           }
         });
       }
 
       function deleteData(id){
-            var popup = confirm("desea eliminar el registro?");
-            var csrf_token = $('meta[name="csrf-token"]').attr('content');
-            if (popup == true ){
-                $.ajax({
-                    url : "{{ url('clasificacionclientes') }}" + '/' + id,
-                    type : "POST",
-                    data : {'_method' : 'DELETE', '_token' : csrf_token},
-                    success : function(data) {
-                        table.ajax.reload();
-                    },
-                    error : function () {
-                        alert("Ha ocurrido un error, favor verificar");
+        $.confirm({
+            title: '¿De verdad lo quieres eliminar?',
+            content: 'No podrás volver atras',
+            type: 'red',
+            buttons: {   
+                ok: {
+                    text: "Eliminar",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                    action: function(){
+                          var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                          
+                              $.ajax({
+                                  url : "{{ url('clasificacionclientes') }}" + '/' + id,
+                                  type : "POST",
+                                  data : {'_method' : 'DELETE', '_token' : csrf_token},
+                                  success : function(data) {
+                                      table.ajax.reload();
+                                  },
+                                  error : function () {
+                                          $.alert({
+                                              title: 'Atención!',
+                                              content: 'Ocurrió un error durante el proceso!',
+                                              icon: 'fa fa-times-circle-o',
+                                              type: 'red',
+                                          });
+                                  }
+                              })
                     }
-                })
+                },
+                cancel: function(){
+                        console.log('Cancel');
+                }
             }
+        });
         }
 
     </script>
+    
 @endsection
 
 @section('otros_scripts')

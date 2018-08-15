@@ -21,7 +21,7 @@
                     <div class="form-group">
                         <label for="nro_timbrado" class="col-md-3 control-label">Número de Timbrado *</label>
                         <div class="col-md-6">
-                            <input type="number" id="nro_timbrado" name="nro_timbrado" class="form-control" required autofocus>
+                            <input type="number" id="nro_timbrado" name="nro_timbrado" class="form-control" autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                     <div class="form-group">
                         <label for="fecha_inicio_vigencia" class="col-md-3 control-label">Fecha Inicio Vigencia *</label>
                         <div class="col-md-6">
-                            <input type="text" id="fecha_inicio_vigencia" name="fecha_inicio_vigencia" class="form-control dpiniciovigencia" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'" required="">
+                            <input type="text" id="fecha_inicio_vigencia" name="fecha_inicio_vigencia" class="form-control dpiniciovigencia" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <label for="fecha_fin_vigencia" class="col-md-3 control-label">Fecha Fin Vigencia *</label>
                         <div class="col-md-6">
-                            <input type="text" id="fecha_fin_vigencia" name="fecha_fin_vigencia" class="form-control dpfinvigencia" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'" required>
+                            <input type="text" id="fecha_fin_vigencia" name="fecha_fin_vigencia" class="form-control dpfinvigencia" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
