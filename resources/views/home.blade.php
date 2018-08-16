@@ -121,6 +121,10 @@
                               <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Rango de Numeración de Series</a>
                               </li>
                             @endcan
+                            @can('sucursales.index')
+                              <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
+                              </li>
+                            @endcan
                             @can('cajeros.index')
                               <li class="sub_menu"><a href="{{route('cajeros.index')}}">Cajeros</a>
                               </li>

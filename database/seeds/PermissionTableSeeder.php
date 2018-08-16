@@ -173,6 +173,38 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un Timbrado del sistema';
         $permission->save();*/
 
+        //Permisos para el formulario de Sucursales
+        $permission = new Permission();
+        $permission->name = 'Crear Sucursal';
+        $permission->slug = 'sucursales.create';
+        $permission->description = 'Permite la creación de nuevas Sucursales en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Sucursal';
+        $permission->slug = 'sucursales.destroy';
+        $permission->description = 'Permite la eliminación de Sucursales del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Sucursal';
+        $permission->slug = 'sucursales.edit';
+        $permission->description = 'Permite modificar los valores de una sucursal del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Sucursales';
+        $permission->slug = 'sucursales.index';
+        $permission->description = 'Permite ver el listado de Sucursales del sistema';
+        $permission->save();
+
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Sucursal';
+        $permission->slug = 'sucursales.show';
+        $permission->description = 'Permite ver una Sucursal del sistema';
+        $permission->save();*/
+
         //Permisos para el formulario de numeracion de series
         $permission = new Permission();
         $permission->name = 'Crear Numeracion de Serie';

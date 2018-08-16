@@ -50,6 +50,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('users', 'UserController');
 	Route::get('api/users', 'UserController@apiUsers')->name('api.users');
 
+	//RUTAS PARA MODELO SUCURSALES
+	Route::resource('sucursales', 'SucursalController');
+	Route::get('api/sucursales', 'SucursalController@apiSucursales')->name('api.sucursales');
+
 	//rutas para modelo 'Familias'
 	Route::resource('familias', 'FamiliaController');
 	Route::get('api/familias', 'FamiliaController@apiFamilia')->name('api.familias');
