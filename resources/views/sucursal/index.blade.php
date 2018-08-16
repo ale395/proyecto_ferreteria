@@ -53,9 +53,13 @@
       function addForm() {
         save_method = "add";
         $('#error-block').hide();
+        $('#activo').attr('checked', true);
+        //$('#activo').attr('value', 1);
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
+
         $('#modal-form form')[0].reset();
+
         $('.modal-title').text('Nueva Sucursal');
       }
 
@@ -118,7 +122,12 @@
             $('#codigo').val(data.codigo);
             $('#nombre').val(data.nombre);
             $('#direccion').val(data.direccion);
-            $('#activo').val(data.activo);
+            if (data.activo) {
+              //$('#activo').val(data.activo);
+              $('#activo').attr('checked', true);
+            }else{
+              $('#activo').attr('checked', false);
+            }
           },
           error : function() {
               $.alert({

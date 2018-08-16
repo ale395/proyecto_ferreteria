@@ -42,16 +42,10 @@
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Activo *</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                          <div id="activo" class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                              <input type="radio" name="activo" value="true"> &nbsp; Si &nbsp;
-                            </label>
-                            <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                              <input type="radio" name="activo" value="false" checked> No
-                            </label>
+                          <div class="col-md-6 custom-control custom-checkbox">
+                            <input type="hidden" name="activo" value="false">
+                            <input id="activo" type="checkbox" class="custom-control-input" name="activo" value="true">
                           </div>
-                        </div>
                       </div>
 
                 </div>

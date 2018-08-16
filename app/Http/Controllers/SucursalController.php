@@ -38,17 +38,13 @@ class SucursalController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
+
         $rules = [
             'codigo' => 'required|max:20|unique:sucursales,codigo',
             'nombre' => 'required|max:100',
             'direccion' => 'max:100',
             'activo' => 'required'
         ];
-
-        if (empty($request['activo'])) {
-            $request['activo'] = false;
-        }
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -162,6 +158,13 @@ class SucursalController extends Controller
                 })->make(true);
             } else {
                 return Datatables::of($sucursales)
+                ->addColumn('activo', function($sucursales){
+                    if ($sucursales->activo) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('action', function($sucursales){
                     return '<a onclick="editForm('. $sucursales->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
@@ -169,12 +172,26 @@ class SucursalController extends Controller
             }
         } elseif ($permiso_eliminar) {
             return Datatables::of($sucursales)
+            ->addColumn('activo', function($sucursales){
+                    if ($sucursales->activo) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
             ->addColumn('action', function($sucursales){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a onclick="deleteData('. $sucursales->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
             return Datatables::of($sucursales)
+            ->addColumn('activo', function($sucursales){
+                    if ($sucursales->activo) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
             ->addColumn('action', function($sucursales){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
