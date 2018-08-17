@@ -25,6 +25,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('bancos', 'BancoController');
 	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');
 
+	//RUTAS PARA VENDEDORES
+	Route::resource('vendedores', 'VendedorController');
+	Route::get('api/Vendedores', 'VendedorController@apiVendedores')->name('api.vendedores');
+
 	//RUTAS PARA CONCEPTOS
 	Route::resource('tconceptos', 'ConceptoController');
 	Route::get('api/tconceptos', 'ConceptoController@apiConceptos')->name('api.tconceptos');

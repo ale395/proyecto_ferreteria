@@ -56,7 +56,6 @@ class BancoController extends Controller
         $data = [
             'codigo' => $request['codigo'],
             'nombre' => $request['nombre'],
-            'direccion' => $request['direccion'],
             'activo' => $request['activo']
         ];
 

@@ -108,6 +108,38 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un banco del sistema';
         $permission->save();*/
 
+        //Permisos para el formulario de Vendedores
+        $permission = new Permission();
+        $permission->name = 'Crear Vendedor';
+        $permission->slug = 'vendedores.create';
+        $permission->description = 'Permite la creación de nuevos vendedores en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Vendedor';
+        $permission->slug = 'vendedores.destroy';
+        $permission->description = 'Permite la eliminación de vendedores del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Vendedor';
+        $permission->slug = 'vendedores.edit';
+        $permission->description = 'Permite modificar los valores de un vendedor del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Vendedores';
+        $permission->slug = 'vendedores.index';
+        $permission->description = 'Permite ver el listado de vendedores del sistema';
+        $permission->save();
+
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Vendedor';
+        $permission->slug = 'vendedores.show';
+        $permission->description = 'Permite ver un vendedor del sistema';
+        $permission->save();*/
+
 
         //Permisos para el formulario de módulos
         $permission = new Permission();

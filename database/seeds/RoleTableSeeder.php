@@ -19,23 +19,12 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_user = Permission::where('slug', 'users.edit')->first();
         $permiso_eliminar_user = Permission::where('slug', 'users.destroy')->first();
 
-        //permisos de MODULOS
-        $permiso_listar_modulo = Permission::where('slug', 'modulos.index')->first();
-        $permiso_crear_modulo = Permission::where('slug', 'modulos.create')->first();
-        $permiso_editar_modulo = Permission::where('slug', 'modulos.edit')->first();
-        $permiso_eliminar_modulo = Permission::where('slug', 'modulos.destroy')->first();
-
         //permisos de ROLES
         $permiso_listar_rol = Permission::where('slug', 'roles.index')->first();
         $permiso_crear_rol = Permission::where('slug', 'roles.create')->first();
         $permiso_editar_rol = Permission::where('slug', 'roles.edit')->first();
         $permiso_eliminar_rol = Permission::where('slug', 'roles.destroy')->first();
 
-        //Permisos para CONCEPTOS
-        $permiso_listar_concepto = Permission::where('slug', 'conceptos.index')->first();
-        $permiso_crear_concepto = Permission::where('slug', 'conceptos.create')->first();
-        $permiso_editar_concepto = Permission::where('slug', 'conceptos.edit')->first();
-        $permiso_eliminar_concepto = Permission::where('slug', 'conceptos.destroy')->first();
 
         $permiso_listar_timb = Permission::where('slug', 'timbrados.index')->first();
         $permiso_crear_timb = Permission::where('slug', 'timbrados.create')->first();
@@ -68,6 +57,12 @@ class RoleTableSeeder extends Seeder
         $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
         $permiso_editar_banco = Permission::where('slug', 'bancos.edit')->first();
         $permiso_eliminar_banco = Permission::where('slug', 'bancos.destroy')->first();
+
+        //permisos de Vendedores
+        $permiso_listar_vend = Permission::where('slug', 'vendedores.index')->first();
+        $permiso_crear_vend = Permission::where('slug', 'vendedores.create')->first();
+        $permiso_editar_vend = Permission::where('slug', 'vendedores.edit')->first();
+        $permiso_eliminar_vend = Permission::where('slug', 'vendedores.destroy')->first();
 
         //permisos de Familias
         $permiso_familia_listar = Permission::where('slug', 'familias.index')->first();
@@ -186,15 +181,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_cajero_editar->id);
         $role->assignPermission($permiso_cajero_eliminar->id);
 
-        $role->assignPermission($permiso_listar_modulo->id);
-        $role->assignPermission($permiso_crear_modulo->id);
-        $role->assignPermission($permiso_editar_modulo->id);
-        $role->assignPermission($permiso_eliminar_modulo->id);
-
-        $role->assignPermission($permiso_listar_concepto->id);
+        /*$role->assignPermission($permiso_listar_concepto->id);
         $role->assignPermission($permiso_crear_concepto->id);
         $role->assignPermission($permiso_editar_concepto->id);
-        $role->assignPermission($permiso_eliminar_concepto->id);
+        $role->assignPermission($permiso_eliminar_concepto->id);*/
 
         $role->assignPermission($permiso_listar_timb->id);
         $role->assignPermission($permiso_crear_timb->id);
@@ -235,15 +225,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_departamento->id);
         $role->assignPermission($permiso_eliminar_departamento->id);
 
-        $role->assignPermission($permiso_listar_modulo->id);
-        $role->assignPermission($permiso_crear_modulo->id);
-        $role->assignPermission($permiso_editar_modulo->id);
-        $role->assignPermission($permiso_eliminar_modulo->id);
-
-        $role->assignPermission($permiso_listar_concepto->id);
-        $role->assignPermission($permiso_crear_concepto->id);
-        $role->assignPermission($permiso_editar_concepto->id);
-        $role->assignPermission($permiso_eliminar_concepto->id);
+        $role->assignPermission($permiso_listar_vend->id);
+        $role->assignPermission($permiso_crear_vend->id);
+        $role->assignPermission($permiso_editar_vend->id);
+        $role->assignPermission($permiso_eliminar_vend->id);
 
         $role->assignPermission($permiso_listar_timb->id);
         $role->assignPermission($permiso_crear_timb->id);

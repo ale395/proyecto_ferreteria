@@ -9,4 +9,9 @@ class Vendedor extends Model
     protected $table = 'vendedores';
 
     protected $fillable = ['codigo', 'nombre', 'usuario_id', 'activo'];
+
+    public function usuario()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

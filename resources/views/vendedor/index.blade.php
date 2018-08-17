@@ -6,8 +6,8 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Bancos
-                        @can('bancos.create')
+                    <h4>Lista de Vendedores
+                        @can('vendedores.create')
                           <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
@@ -15,11 +15,12 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table id="banco-table" class="table table-striped table-responsive">
+                    <table id="vendedor-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
+                                <th>Usuario</th>
                                 <th>Activo</th>
                                 <th width="150">Acciones</th>
                             </tr>
@@ -30,12 +31,12 @@
             </div>
         </div>
 
-    @include('banco.form')
+    @include('vendedor.form')
 @endsection
 
 @section('ajax_datatables')
   <script type="text/javascript">
-      var table = $('#banco-table').DataTable({
+      var table = $('#vendedor-table').DataTable({
                       language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
@@ -43,6 +44,7 @@
                       columns: [
                         {data: 'codigo', name: 'codigo'},
                         {data: 'nombre', name: 'nombre'},
+                        {data: 'usuario_id', name: 'usuario_id'},
                         {data: 'activo', name: 'activo'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
@@ -57,15 +59,15 @@
 
         $('#modal-form form')[0].reset();
 
-        $('.modal-title').text('Nuevo Banco');
+        $('.modal-title').text('Nuevo Vendedor');
       }
 
       $(function(){
             $('#modal-form form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('bancos') }}";
-                    else url = "{{ url('bancos') . '/' }}" + id;
+                    if (save_method == 'add') url = "{{ url('vendedores') }}";
+                    else url = "{{ url('vendedores') . '/' }}" + id;
 
                     $.ajax({
                         url : url,
@@ -106,7 +108,7 @@
         $('#modal-form form')[0].reset();
         $('#error-block').hide();
         $.ajax({
-          url: "{{ url('bancos') }}" + '/' + id + "/edit",
+          url: "{{ url('vendedores') }}" + '/' + id + "/edit",
           type: "GET",
           dataType: "JSON",
           success: function(data) {
@@ -116,6 +118,7 @@
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
             $('#nombre').val(data.nombre);
+            $('#usuario_id').val(data.usuario_id);
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -147,7 +150,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('bancos') }}" + '/' + id,
+                                  url : "{{ url('vendedores') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {
@@ -183,6 +186,6 @@
   </script>
   
   <script type="text/javascript">
-    $('#banco-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+    $('#vendedor-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
 @endsection

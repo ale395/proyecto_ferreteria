@@ -211,7 +211,10 @@
                               <!--<li><a href="#level1_1">Level One</a>-->
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    
+                                    @can('vendedores.index')
+                                      <li class="sub_menu"><a href="{{route('vendedores.index')}}">Vendedores</a>
+                                      </li>
+                                    @endcan
                                       <li class="sub_menu"><a href="{{route('listaPrecios.index')}}">Lista de Precios</a>
                                       </li>
                                     
