@@ -76,6 +76,38 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un rol del sistema';
         $permission->save();*/
 
+        //Permisos para el formulario de Bancos
+        $permission = new Permission();
+        $permission->name = 'Crear Banco';
+        $permission->slug = 'bancos.create';
+        $permission->description = 'Permite la creación de nuevos bancos en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Banco';
+        $permission->slug = 'bancos.destroy';
+        $permission->description = 'Permite la eliminación de bancos del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Banco';
+        $permission->slug = 'bancos.edit';
+        $permission->description = 'Permite modificar los valores de un banco del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Bancos';
+        $permission->slug = 'bancos.index';
+        $permission->description = 'Permite ver el listado de bancos del sistema';
+        $permission->save();
+
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Banco';
+        $permission->slug = 'bancos.show';
+        $permission->description = 'Permite ver un banco del sistema';
+        $permission->save();*/
+
 
         //Permisos para el formulario de módulos
         $permission = new Permission();

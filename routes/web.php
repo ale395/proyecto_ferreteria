@@ -21,6 +21,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('timbrados', 'TimbradoController');
 	Route::get('api/timbrados', 'TimbradoController@apiTimbrados')->name('api.timbrados');
 
+	//RUTAS PARA BANCOS
+	Route::resource('bancos', 'BancoController');
+	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');
+
 	//RUTAS PARA CONCEPTOS
 	Route::resource('tconceptos', 'ConceptoController');
 	Route::get('api/tconceptos', 'ConceptoController@apiConceptos')->name('api.tconceptos');

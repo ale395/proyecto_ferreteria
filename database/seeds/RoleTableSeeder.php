@@ -63,6 +63,12 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_sucu = Permission::where('slug', 'sucursales.edit')->first();
         $permiso_eliminar_sucu = Permission::where('slug', 'sucursales.destroy')->first();
 
+        //permisos de Sucursales
+        $permiso_listar_banco = Permission::where('slug', 'bancos.index')->first();
+        $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
+        $permiso_editar_banco = Permission::where('slug', 'bancos.edit')->first();
+        $permiso_eliminar_banco = Permission::where('slug', 'bancos.destroy')->first();
+
         //permisos de Familias
         $permiso_familia_listar = Permission::where('slug', 'familias.index')->first();
         $permiso_familia_crear = Permission::where('slug', 'familias.create')->first();
@@ -248,6 +254,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_sucu->id);
         $role->assignPermission($permiso_editar_sucu->id);
         $role->assignPermission($permiso_eliminar_sucu->id);
+
+        $role->assignPermission($permiso_listar_banco->id);
+        $role->assignPermission($permiso_crear_banco->id);
+        $role->assignPermission($permiso_editar_banco->id);
+        $role->assignPermission($permiso_eliminar_banco->id);
 
         $role->assignPermission($permiso_listar_nume_series->id);
         $role->assignPermission($permiso_crear_nume_series->id);

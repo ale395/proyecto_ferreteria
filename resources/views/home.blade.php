@@ -125,6 +125,10 @@
                               <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
                               </li>
                             @endcan
+                            @can('bancos.index')
+                              <li class="sub_menu"><a href="{{route('bancos.index')}}">Bancos</a>
+                              </li>
+                            @endcan
                             @can('cajeros.index')
                               <li class="sub_menu"><a href="{{route('cajeros.index')}}">Cajeros</a>
                               </li>
