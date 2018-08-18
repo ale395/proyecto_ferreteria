@@ -9,27 +9,22 @@ class Cliente extends Model
     protected $table = 'clientes';
 
     protected $fillable = [
-        'id', 'nombre', 'apellido','nro_cedula', 'ruc','nro_telefono', 'correo_electronico', 'pais_id', 'ciudad_id', 'direccion','categoria_id', 'lista_precio_id', 'vendedor_id', 'estado',
+        'codigo', 'nombre', 'apellido', 'ruc', 'nro_documento','telefono', 'direccion', 'correo_electronico', 'zona_id','tipo_cliente_id', 'lista_precio_id', 'vendedor_id', 'activo',
     ];
 
-    public function pais()
+    public function zona()
     {
-        return $this->belongsTo('App\Pais');
+        return $this->belongsTo('App\Zona');
     }
 
-    public function ciudad()
-    {
-        return $this->belongsTo('App\Ciudad');
-    }
-
-    public function categoria()
+    public function tipoCliente()
     {
         return $this->belongsTo('App\CategoriaCliente');
     }
 
-    public function lista_precio()
+    public function listaPrecio()
     {
-        return $this->belongsTo('App\ListaPrecio');
+        return $this->belongsTo('App\ListaPrecioCabecera');
     }
 
     public function vendedor()
