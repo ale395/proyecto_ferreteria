@@ -25,14 +25,6 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="nombre" class="col-md-3 control-label">Nombre *</label>
-                      <div class="col-md-6">
-                          <input type="text" id="nombre" name="nombre" class="form-control">
-                          <span class="help-block with-errors"></span>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
                       <label for="usuario_id" class="col-md-3 control-label">Usuario *</label>
                       <div class="col-md-6">
                           <input type="text" id="usuario_id" name="usuario_id" class="form-control">

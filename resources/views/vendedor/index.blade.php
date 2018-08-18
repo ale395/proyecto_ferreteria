@@ -19,7 +19,6 @@
                         <thead>
                             <tr>
                                 <th>Codigo</th>
-                                <th>Nombre</th>
                                 <th>Usuario</th>
                                 <th>Activo</th>
                                 <th width="150">Acciones</th>
@@ -40,11 +39,10 @@
                       language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.bancos') }}",
+                      ajax: "{{ route('api.vendedores') }}",
                       columns: [
                         {data: 'codigo', name: 'codigo'},
-                        {data: 'nombre', name: 'nombre'},
-                        {data: 'usuario_id', name: 'usuario_id'},
+                        {data: 'nombre_usuario', name: 'nombre_usuario'},
                         {data: 'activo', name: 'activo'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
@@ -117,7 +115,6 @@
 
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
-            $('#nombre').val(data.nombre);
             $('#usuario_id').val(data.usuario_id);
             if (data.activo) {
               $('#activo').attr('checked', true);

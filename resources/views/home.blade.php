@@ -118,7 +118,7 @@
                               </li>
                             @endcan
                             @can('numeseries.index')
-                              <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Rango de Numeración de Series</a>
+                              <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Series</a>
                               </li>
                             @endcan
                             @can('sucursales.index')

@@ -40,8 +40,7 @@ class VendedorController extends Controller
     {
         $rules = [
             'codigo' => 'required|max:20|unique:vendedores,codigo',
-            'nombre' => 'required|max:100',
-            'usuario_id' => 'required',
+            'usuario_id' => 'required|unique:vendedores,usuario_id',
             'activo' => 'required'
         ];
 
@@ -56,7 +55,6 @@ class VendedorController extends Controller
 
         $data = [
             'codigo' => $request['codigo'],
-            'nombre' => $request['nombre'],
             'usuario_id' => $request['usuario_id'],
             'activo' => $request['activo']
         ];
@@ -100,8 +98,7 @@ class VendedorController extends Controller
 
         $rules = [
             'codigo' => 'required|max:20|unique:vendedores,codigo,'.$vendedor->id,
-            'nombre' => 'required|max:100',
-            'usuario_id' => 'required',
+            'usuario_id' => 'required|unique:vendedores,usuario_id,'.$vendedor->id,
             'activo' => 'required'
         ];
 
@@ -115,8 +112,7 @@ class VendedorController extends Controller
         }
 
         $vendedor->codigo = $request['codigo'];
-        $vendedor->nombre = $request['nombre'];
-        $vendedor->nombre = $request['usuario_id'];
+        $vendedor->usuario_id = $request['usuario_id'];
         $vendedor->activo = $request['activo'];
         
         $vendedor->update();
@@ -144,7 +140,14 @@ class VendedorController extends Controller
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 return Datatables::of($vendedores)
-                ->addColumn('activo', function($bancos){
+                ->addColumn('nombre_usuario', function($vendedores){
+                    if (empty($vendedores->usuario)) {
+                         return null;
+                     } else {
+                        return $vendedores->usuario->name;
+                    }
+                })
+                ->addColumn('activo', function($vendedores){
                     if ($vendedores->activo) {
                         return 'Si';
                     }else{

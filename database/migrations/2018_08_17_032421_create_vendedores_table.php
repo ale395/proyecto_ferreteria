@@ -16,7 +16,6 @@ class CreateVendedoresTable extends Migration
         Schema::create('vendedores', function (Blueprint $table) {
             $table->increments('id');
             $table->string('codigo', 20)->unique();
-            $table->string('nombre', 100);
             $table->integer('usuario_id')->unsigned()->unique();
             $table->boolean('activo')->default(true);
             $table->timestamps();
