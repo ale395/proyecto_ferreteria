@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\User;
 use App\Vendedor;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -17,7 +18,8 @@ class VendedorController extends Controller
      */
     public function index()
     {
-        return view('vendedor.index');
+        $users = User::all();//where('activo', true)->get();
+        return view('vendedor.index', compact('users'));
     }
 
     /**

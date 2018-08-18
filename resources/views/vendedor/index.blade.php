@@ -52,6 +52,7 @@
         save_method = "add";
         $('#error-block').hide();
         $('#activo').attr('checked', true);
+        
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
 
@@ -116,6 +117,9 @@
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
             $('#usuario_id').val(data.usuario_id);
+            //$('#select2-usuarios').select2('destroy');
+            $("#select2-usuarios").select2("val", "");
+            $('#select2-usuarios').val(data.usuario_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -184,5 +188,17 @@
   
   <script type="text/javascript">
     $('#vendedor-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+            $('#select2-usuarios').select2({
+                placeholder : 'Seleccione una de las opciones',
+                tags: false,
+                width: 'resolve',
+                dropdownParent: $('#modal-form'),
+                language: "es"
+            });
+        });
   </script>
 @endsection

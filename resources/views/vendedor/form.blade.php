@@ -24,13 +24,19 @@
                         </div>
                     </div>
 
+                    
                     <div class="form-group">
-                      <label for="usuario_id" class="col-md-3 control-label">Usuario *</label>
-                      <div class="col-md-6">
-                          <input type="text" id="usuario_id" name="usuario_id" class="form-control">
-                          <span class="help-block with-errors"></span>
-                      </div>
+                        
+                            <label for="usuario_id" class="control-label col-md-3 col-sm-3 col-xs-12">Usuario *</label>
+                          <div class="col-md-6">
+                            <select name="usuario_id" id="select2-usuarios" class="form-control" style="width: 100%">
+                                @foreach($users as $id => $user)
+                                  <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                          </div>
                     </div>
+
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Activo *</label>
