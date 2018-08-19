@@ -284,7 +284,7 @@
                         console.log('Cancel');
                 }
             }
-        });
+          });
         }
 
     </script>

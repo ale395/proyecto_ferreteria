@@ -8,7 +8,7 @@ class ListaPrecioCabecera extends Model
 {
     protected $table = 'lista_precios_cabecera';
 
-    protected $fillable = ['lista_precio', 'descripcion', 'moneda_id'];
+    protected $fillable = ['codigo', 'nombre', 'moneda_id'];
 
     public function moneda()
     {

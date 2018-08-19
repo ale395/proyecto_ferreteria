@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\Moneda;
 use App\ListaPrecioCabecera;
 use Illuminate\Http\Request;
@@ -38,9 +39,24 @@ class ListaPrecioCabeceraController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'codigo' => 'required|max:20|unique:lista_precios_cabecera,codigo',
+            'nombre' => 'required|max:100',
+            'moneda_id' => 'required'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
         $data = [
-            'lista_precio' => $request['lista_precio'],
-            'descripcion' => $request['descripcion'],
+            'codigo' => $request['codigo'],
+            'nombre' => $request['nombre'],
             'moneda_id' => $request['moneda_id']
         ];
 
@@ -82,8 +98,25 @@ class ListaPrecioCabeceraController extends Controller
     public function update(Request $request, $id)
     {
         $lista_precio = ListaPrecioCabecera::findOrFail($id);
-        $lista_precio->lista_precio = $request['lista_precio'];
-        $lista_precio->descripcion = $request['descripcion'];
+
+        $rules = [
+            'codigo' => 'required|max:20|unique:lista_precios_cabecera,codigo,'.$lista_precio->id,
+            'nombre' => 'required|max:100',
+            'moneda_id' => 'required'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
+        
+        $lista_precio->codigo = $request['codigo'];
+        $lista_precio->nombre = $request['nombre'];
         $lista_precio->moneda_id = $request['moneda_id'];
         
         $lista_precio->update();

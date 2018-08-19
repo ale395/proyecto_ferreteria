@@ -15,8 +15,8 @@ class CreateListaPrecioCabecerasTable extends Migration
     {
         Schema::create('lista_precios_cabecera', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('lista_precio', 4);
-            $table->string('descripcion', 50);
+            $table->string('codigo', 20)->unique();
+            $table->string('nombre', 100);
             $table->integer('moneda_id')->unsigned();
             $table->timestamps();
 
