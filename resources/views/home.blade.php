@@ -76,9 +76,13 @@
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     @can('clasificacioncliente.index')
-                                    <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
-                                    </li>
-                                  @endcan
+                                      <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
+                                      </li>
+                                    @endcan
+                                    @can('clientes.index')
+                                      <li class="sub_menu"><a href="{{route('clientes.index')}}">Clientes</a>
+                                      </li>
+                                    @endcan
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>

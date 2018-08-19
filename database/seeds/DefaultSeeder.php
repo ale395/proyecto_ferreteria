@@ -60,7 +60,7 @@ class DefaultSeeder extends Seeder
         //Concepto ajuste por default - ajuste de existencia
         $familia = new ClasificacionCliente();
         $familia->codigo = '002';
-        $familia->nombre = 'Detalle';
+        $familia->nombre = 'Minorista';
         $familia->save();
 
         //traemos el usuario

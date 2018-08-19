@@ -25,6 +25,13 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_rol = Permission::where('slug', 'roles.edit')->first();
         $permiso_eliminar_rol = Permission::where('slug', 'roles.destroy')->first();
 
+        //permisos de Clientes
+        $permiso_listar_cliente = Permission::where('slug', 'clientes.index')->first();
+        $permiso_crear_cliente = Permission::where('slug', 'clientes.create')->first();
+        $permiso_editar_cliente = Permission::where('slug', 'clientes.edit')->first();
+        $permiso_eliminar_cliente = Permission::where('slug', 'clientes.destroy')->first();
+        $permiso_ver_cliente = Permission::where('slug', 'clientes.show')->first();
+
 
         $permiso_listar_timb = Permission::where('slug', 'timbrados.index')->first();
         $permiso_crear_timb = Permission::where('slug', 'timbrados.create')->first();
@@ -212,6 +219,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_banco->id);
         $role->assignPermission($permiso_editar_banco->id);
         $role->assignPermission($permiso_eliminar_banco->id);
+
+        $role->assignPermission($permiso_listar_cliente->id);
+        $role->assignPermission($permiso_crear_cliente->id);
+        $role->assignPermission($permiso_editar_cliente->id);
+        $role->assignPermission($permiso_eliminar_cliente->id);
+        $role->assignPermission($permiso_ver_cliente->id);
 
         $role->assignPermission($permiso_listar_nume_series->id);
         $role->assignPermission($permiso_crear_nume_series->id);

@@ -36,5 +36,9 @@ class DatabaseSeeder extends Seeder
         $this->call(MonedaTableSeeder::class);
 
         $this->call(ArticuloTableSeeder::class);
+
+        $this->call(ZonaTableSeeder::class);
+
+        $this->call(ClienteTableSeeder::class);
     }
 }
