@@ -36,6 +36,7 @@
 @section('ajax_datatables')
 	<script type="text/javascript">
       var table = $('#pais-table').DataTable({
+                      language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
                       ajax: "{{ route('api.paises') }}",

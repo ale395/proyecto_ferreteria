@@ -70,11 +70,11 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_pais = Permission::where('slug', 'paises.edit')->first();
         $permiso_eliminar_pais = Permission::where('slug', 'paises.destroy')->first();
 
-    //permisos de DEPARTAMENTOS
-        $permiso_listar_departamento = Permission::where('slug', 'departamentos.index')->first();
-        $permiso_crear_departamento = Permission::where('slug', 'departamentos.create')->first();
-        $permiso_editar_departamento = Permission::where('slug', 'departamentos.edit')->first();
-        $permiso_eliminar_departamento = Permission::where('slug', 'departamentos.destroy')->first();
+    //permisos de CIUDADES
+        $permiso_listar_ciudad = Permission::where('slug', 'ciudades.index')->first();
+        $permiso_crear_ciudad = Permission::where('slug', 'ciudades.create')->first();
+        $permiso_editar_ciudad = Permission::where('slug', 'ciudades.edit')->first();
+        $permiso_eliminar_ciudad = Permission::where('slug', 'ciudades.destroy')->first();
 
         //permisos de Lineas
         $permiso_linea_listar = Permission::where('slug', 'lineas.index')->first();
@@ -139,10 +139,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
 
-        $role->assignPermission($permiso_listar_departamento->id);
-        $role->assignPermission($permiso_crear_departamento->id);
-        $role->assignPermission($permiso_editar_departamento->id);
-        $role->assignPermission($permiso_eliminar_departamento->id);
+        $role->assignPermission($permiso_listar_ciudad->id);
+        $role->assignPermission($permiso_crear_ciudad->id);
+        $role->assignPermission($permiso_editar_ciudad->id);
+        $role->assignPermission($permiso_eliminar_ciudad->id);
 
         $role->assignPermission($permiso_linea_listar->id);
         $role->assignPermission($permiso_linea_crear->id);
@@ -218,10 +218,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
 
-        $role->assignPermission($permiso_listar_departamento->id);
-        $role->assignPermission($permiso_crear_departamento->id);
-        $role->assignPermission($permiso_editar_departamento->id);
-        $role->assignPermission($permiso_eliminar_departamento->id);
+        $role->assignPermission($permiso_listar_ciudad->id);
+        $role->assignPermission($permiso_crear_ciudad->id);
+        $role->assignPermission($permiso_editar_ciudad->id);
+        $role->assignPermission($permiso_eliminar_ciudad->id);
 
         $role->assignPermission($permiso_listar_modulo->id);
         $role->assignPermission($permiso_crear_modulo->id);

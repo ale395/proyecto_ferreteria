@@ -2,15 +2,14 @@
 
 namespace App;
 
-use App\Pais;
 use Illuminate\Database\Eloquent\Model;
 
-class Departamento extends Model
+class FormaDePago extends Model
 {
-    protected $table = 'departamentos';
+    protected $table = 'formasdepago';
     
     protected $fillable = [
-        'descripcion', 'pais_id',
+        'descripcion', 'id',
     ];
 
     public function pais()
@@ -18,4 +17,3 @@ class Departamento extends Model
         return $this->belongsTo(Pais::class);
     }
 }
-

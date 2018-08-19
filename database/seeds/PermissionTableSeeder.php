@@ -299,29 +299,29 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de paises del sistema';
         $permission->save();
         
-             //Permisos para el formulario de DEPARTAMENTOS
+             //Permisos para el formulario de Ciudades
         $permission = new Permission();
-        $permission->name = 'Crear Departamento';
-        $permission->slug = 'departamentos.create';
-        $permission->description = 'Permite la creación de nuevos departamentos en el sistema';
+        $permission->name = 'Crear Ciudad';
+        $permission->slug = 'ciudades.create';
+        $permission->description = 'Permite la creación de nuevos ciudades en el sistema';
         $permission->save();
         
         $permission = new Permission();
-        $permission->name = 'Borrar Departamento';
-        $permission->slug = 'departamentos.destroy';
-        $permission->description = 'Permite la eliminación de departamentos del sistema';
+        $permission->name = 'Borrar Ciudad';
+        $permission->slug = 'ciudades.destroy';
+        $permission->description = 'Permite la eliminación de ciudades del sistema';
         $permission->save();
         
         $permission = new Permission();
-        $permission->name = 'Editar Departamento';
-        $permission->slug = 'departamentos.edit';
+        $permission->name = 'Editar Ciudad';
+        $permission->slug = 'ciudades.edit';
         $permission->description = 'Permite modificar los valores de un pais';
         $permission->save();
         
         $permission = new Permission();
-        $permission->name = 'Listar Departamentos';
-        $permission->slug = 'departamentos.index';
-        $permission->description = 'Permite ver el listado de departamentos del sistema';
+        $permission->name = 'Listar Ciudades';
+        $permission->slug = 'ciudades.index';
+        $permission->description = 'Permite ver el listado de ciudades del sistema';
         $permission->save();
 
         //Permisos para el formulario de lineas

@@ -124,7 +124,7 @@
                             <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
                             </li>
                             @endcan
-                              <li class="sub_menu"><a href="{{route('departamentos.index')}}">Departamentos</a>
+                              <li class="sub_menu"><a href="{{route('ciudades.index')}}">Ciudades</a>
                               </li>
                             @can('modulos.index')
                               <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>

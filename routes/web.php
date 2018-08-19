@@ -58,9 +58,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('paises', 'PaisController', ['parameters' => ['paises' => 'pais']]);
 	Route::get('api/paises', 'PaisController@apiPais')->name('api.paises');
 
-	//RUTAS PARA MODELO "DEPARTAMENTOS"
-	Route::resource('departamentos', 'DepartamentoController');
-	Route::get('api/departamentos', 'DepartamentoController@apiDepartamento')->name('api.departamentos');
+	//RUTAS PARA MODELO "CIUDADES"
+	Route::resource('ciudades', 'CiudadController');
+	Route::get('api/ciudades', 'CiudadController@apiCiudades')->name('api.ciudades');
 
 	//rutas para modelo 'Lineas'
 	Route::resource('lineas', 'LineaController');

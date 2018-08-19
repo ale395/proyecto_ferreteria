@@ -6,17 +6,17 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Departamentos
+                    <h4>Lista de Ciudades
                         <!-- Verifica si el usuario tiene permiso para crear registros -->
-                        @can('departamentos.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Departamento</a>
+                        @can('ciudades.create')
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nueva Ciudad</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nuevo Departamento</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nueva Ciudad</a>
                         @endcan 
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table id="departamento-table" class="table table-striped table-responsive">
+                    <table id="ciudad-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
                                 <th>Descripcion</th>
@@ -29,16 +29,17 @@
                 </div>
             </div>
         </div>
-        @include('departamento.form')
+        @include('ciudad.form')
     
 @endsection
 
 @section('ajax_datatables')
 	<script type="text/javascript">
-      var table = $('#departamento-table').DataTable({
+      var table = $('#ciudad-table').DataTable({
+                      language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.departamentos') }}",
+                      ajax: "{{ route('api.ciudades') }}",
                       columns: [
                         {data: 'descripcion', name: 'descripcion'},
                         {data: 'pais', name: 'pais'},
@@ -51,15 +52,15 @@
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nuevo Departamento');
+        $('.modal-title').text('Nueva Ciudad');
       }
 
       $(function(){
             $('#modal-form form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('departamentos') }}";
-                    else url = "{{ url('departamentos') . '/' }}" + id;
+                    if (save_method == 'add') url = "{{ url('ciudades') }}";
+                    else url = "{{ url('ciudades') . '/' }}" + id;
 
                   
 
@@ -103,12 +104,12 @@
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
-          url: "{{ url('departamentos') }}" + '/' + id + "/edit",
+          url: "{{ url('ciudades') }}" + '/' + id + "/edit",
           type: "GET",
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Departamento');
+            $('.modal-title').text('Editar Ciudad');
 
             $('#id').val(data.id);
             $('#descripcion').val(data.descripcion);
@@ -124,7 +125,7 @@
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
             if (popup == true ){
                 $.ajax({
-                    url : "{{ url('departamentos') }}" + '/' + id,
+                    url : "{{ url('ciudades') }}" + '/' + id,
                     type : "POST",
                     data : {'_method' : 'DELETE', '_token' : csrf_token},
                     success : function(data) {

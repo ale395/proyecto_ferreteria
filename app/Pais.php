@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Departamento;
+use App\Ciudad;
 use Illuminate\Database\Eloquent\Model;
 
 class Pais extends Model
@@ -11,8 +11,8 @@ class Pais extends Model
 
     protected $fillable = ['descripcion'];
 
-    public function departamento()
+    public function ciudad()
     {
-    	return $this->hasMany(Departamento::class);
+    	return $this->hasMany(Ciudad::class);
     }
 }
