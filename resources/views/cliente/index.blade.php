@@ -18,13 +18,13 @@
                     <table id="cliente-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th>Codigo</th>
+                                <th width="50">Codigo</th>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
-                                <th>Nro Documento</th>
+                                <th width="80">Nro CI</th>
                                 <th>RUC</th>
-                                <th>Activo</th>
-                                <th width="150">Acciones</th>
+                                <th width="40">Activo</th>
+                                <th width="110">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -58,7 +58,10 @@
         save_method = "add";
         $('#error-block').hide();
         $('#activo').attr('checked', true);
-        
+        $('#select2-zonas').val("").change();
+        $('#select2-tipos').val("").change();
+        $('#select2-listas').val("").change();
+        $('#select2-vendedores').val("").change();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
 
@@ -118,14 +121,25 @@
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Banco');
+            $('.modal-title').text('Editar Cliente');
 
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
-            $('#usuario_id').val(data.usuario_id);
-            //$('#select2-usuarios').select2('destroy');
-            $("#select2-usuarios").select2("val", "");
-            $('#select2-usuarios').val(data.usuario_id).change();
+            $('#nombre').val(data.nombre);
+            $('#apellido').val(data.apellido);
+            $('#direccion').val(data.direccion);
+            $('#telefono').val(data.telefono);
+            $('#nro_documento').val(data.nro_documento);
+            $('#ruc').val(data.ruc);
+            $('#correo_electronico').val(data.correo_electronico);
+            $("#select2-zonas").select2("val", "");
+            $('#select2-zonas').val(data.zona_id).change();
+            $("#select2-tipos").select2("val", "");
+            $('#select2-tipos').val(data.tipo_cliente_id).change();
+            $("#select2-vendedores").select2("val", "");
+            $('#select2-vendedores').val(data.vendedor_id).change();
+            $("#select2-listas").select2("val", "");
+            $('#select2-listas').val(data.lista_precio_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{

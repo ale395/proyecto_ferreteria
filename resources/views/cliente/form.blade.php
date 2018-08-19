@@ -27,7 +27,7 @@
 
                     <div class="form-group">
                         <label for="nombre" class="col-md-2 control-label">Nombre *</label>
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <input type="text" id="nombre" name="nombre" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
@@ -35,7 +35,7 @@
 
                     <div class="form-group">
                         <label for="apellido" class="col-md-2 control-label">Apellido</label>
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <input type="text" id="apellido" name="apellido" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
@@ -43,7 +43,7 @@
 
                     <div class="form-group">
                         <label for="nro_documento" class="col-md-2 control-label">Nro Cédula</label>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <input type="number" id="nro_documento" name="nro_documento" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
@@ -57,7 +57,7 @@
 
                     <div class="form-group">
                         <label for="direccion" class="col-md-2 control-label">Dirección</label>
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <input type="text" id="direccion" name="direccion" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
@@ -65,7 +65,7 @@
 
                     <div class="form-group">
                         <label for="telefono" class="col-md-2 control-label">Nro Teléfono</label>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <input type="text" id="telefono" name="telefono" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
@@ -78,20 +78,20 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="zona_id" class="control-label col-md-2">Zona *</label>
-                        <div class="col-md-3">
-                            <select name="zona_id" id="select2-zonas" class="form-control" style="width: 100%">
-                                @foreach($zonas as $id => $zona)
-                                  <option value="{{ $zona->id }}">{{ $zona->nombre }}</option>
+                        <label for="tipo_cliente_id" class="control-label col-md-2">Tipo de Cliente *</label>
+                        <div class="col-md-4">
+                            <select name="tipo_cliente_id" id="select2-tipos" class="form-control" style="width: 100%">
+                                @foreach($tipos_clientes as $id => $tipo_cliente)
+                                  <option value="{{ $tipo_cliente->id }}">{{ $tipo_cliente->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <label for="tipo_cliente_id" class="control-label col-md-2">Tipo Cliente *</label>
-                        <div class="col-md-3">
-                            <select name="tipo_cliente_id" id="select2-tipos" class="form-control" style="width: 100%">
-                                @foreach($tipos_clientes as $id => $tipo_cliente)
-                                  <option value="{{ $tipo_cliente->id }}">{{ $tipo_cliente->nombre }}</option>
+                        <label for="zona_id" class="control-label col-md-1">Zona *</label>
+                        <div class="col-md-4">
+                            <select name="zona_id" id="select2-zonas" class="form-control" style="width: 100%">
+                                @foreach($zonas as $id => $zona)
+                                  <option value="{{ $zona->id }}">{{ $zona->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -99,7 +99,7 @@
 
                     <div class="form-group">
                         <label for="lista_precio_id" class="control-label col-md-2">Lista de Precio</label>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <select name="lista_precio_id" id="select2-listas" class="form-control" style="width: 100%">
                                 @foreach($lista_precios as $id => $lista)
                                   <option value="{{ $lista->id }}">{{ $lista->descripcion }}</option>
@@ -107,8 +107,8 @@
                             </select>
                         </div>
 
-                        <label for="vendedor_id" class="control-label col-md-2">Vendedor</label>
-                        <div class="col-md-3">
+                        <label for="vendedor_id" class="control-label col-md-1">Vendedor</label>
+                        <div class="col-md-4">
                             <select name="vendedor_id" id="select2-vendedores" class="form-control" style="width: 100%">
                                 @foreach($vendedores as $id => $vendedor)
                                   <option value="{{ $vendedor->id }}">{{ $vendedor->usuario->name }}</option>

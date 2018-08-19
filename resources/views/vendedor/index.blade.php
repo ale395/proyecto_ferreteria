@@ -52,7 +52,7 @@
         save_method = "add";
         $('#error-block').hide();
         $('#activo').attr('checked', true);
-        
+        $('#select2-usuarios').val("").change();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
 
@@ -112,12 +112,11 @@
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Banco');
+            $('.modal-title').text('Editar Vendedor');
 
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
             $('#usuario_id').val(data.usuario_id);
-            //$('#select2-usuarios').select2('destroy');
             $("#select2-usuarios").select2("val", "");
             $('#select2-usuarios').val(data.usuario_id).change();
             if (data.activo) {
