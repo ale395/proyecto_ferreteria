@@ -12,25 +12,29 @@
 
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
+                    <div class="form-group">
+                        <div id="error-block" class="alert alert-danger">
+                        </div>
+                    </div>
 
                     <div class="form-group">
-                      <label for="name" class="col-md-3 control-label">Lista de Precio</label>
+                      <label for="codigo" class="col-md-3 control-label">Código *</label>
                       <div class="col-md-6">
-                          <input type="text" id="lista_precio" name="lista_precio" class="form-control" required>
+                          <input type="text" id="codigo" name="codigo" class="form-control">
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="name" class="col-md-3 control-label">Descripción</label>
+                      <label for="nombre" class="col-md-3 control-label">Nombre *</label>
                       <div class="col-md-6">
-                          <input type="text" id="descripcion" name="descripcion" class="form-control" required>
+                          <input type="text" id="nombre" name="nombre" class="form-control">
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="name" class="col-md-3 control-label">Moneda</label>
+                      <label for="moneda_id" class="col-md-3 control-label">Moneda *</label>
                       <div class="col-md-6">
                           <select id="moneda_id" class="form-control" name="moneda_id" style="width: 100%">
                             @foreach($monedas as $moneda)

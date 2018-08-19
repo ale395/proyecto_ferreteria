@@ -1,7 +1,7 @@
-<div class="modal" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form method="post" class="form-horizontal" data-toggle="validator">
+            <form id="role-form" method="post" class="form-horizontal" data-toggle="validator">
                 {{ csrf_field() }} {{ method_field('POST') }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -12,10 +12,11 @@
 
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
+
                     <div class="form-group">
-                        <label for="name" class="col-md-3 control-label">Código</label>
+                        <label for="slug" class="col-md-3 control-label">Código</label>
                         <div class="col-md-6">
-                            <input type="text" id="slug" name="slug" class="form-control" autofocus required>
+                            <input type="text" id="slug" name="slug" class="form-control" autofocus required maxlength="20">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -23,15 +24,15 @@
                     <div class="form-group">
                       <label for="name" class="col-md-3 control-label">Nombre</label>
                       <div class="col-md-6">
-                          <input type="text" id="name" name="name" class="form-control" required>
+                          <input type="text" id="name" name="name" class="form-control" required maxlength="50">
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="name" class="col-md-3 control-label">Descripción</label>
+                      <label for="description" class="col-md-3 control-label">Descripción</label>
                       <div class="col-md-6">
-                          <input type="text" id="description" name="description" class="form-control" required>
+                          <input type="text" id="description" name="description" class="form-control" required maxlength="50">
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>

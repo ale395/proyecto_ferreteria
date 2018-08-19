@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\Timbrado;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -37,10 +38,28 @@ class TimbradoController extends Controller
      */
     public function store(Request $request)
     {
+
+        $rules = [
+            'nro_timbrado' => 'required|unique:timbrados,nro_timbrado',
+            'fecha_inicio_vigencia' => 'required|date_format:"d/m/Y"',
+            'fecha_fin_vigencia' => 'required|date_format:"d/m/Y"|after:fecha_inicio_vigencia'
+        ];
+        
+        /*$this->validate($request, $rules);*/
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
         $data = [
             'nro_timbrado' => $request['nro_timbrado'],
-            'fecha_vigencia' => $request['fecha_vigencia'],
-            'estado' => $request['estado']
+            'fecha_inicio_vigencia' => date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_inicio_vigencia']))),
+            'fecha_fin_vigencia' => date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_fin_vigencia'])))
         ];
 
         $timbrado = Timbrado::create($data);
@@ -81,9 +100,27 @@ class TimbradoController extends Controller
     public function update(Request $request, $id)
     {
         $timbrado = Timbrado::findOrFail($id);
+
+        $rules = [
+            'nro_timbrado' => 'required|unique:timbrados,nro_timbrado,'.$timbrado->id,
+            'fecha_inicio_vigencia' => 'required|date_format:"d/m/Y"',
+            'fecha_fin_vigencia' => 'required|date_format:"d/m/Y"|after:fecha_inicio_vigencia'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
         $timbrado->nro_timbrado = $request['nro_timbrado'];
-        $timbrado->fecha_vigencia = $request['fecha_vigencia'];
-        $timbrado->estado = $request['estado'];
+
+        $timbrado->fecha_inicio_vigencia = date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_inicio_vigencia'])));
+        
+        $timbrado->fecha_fin_vigencia = date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_fin_vigencia'])));
         
         $timbrado->update();
 
@@ -110,28 +147,12 @@ class TimbradoController extends Controller
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 return Datatables::of($timbrado)
-                ->addColumn('nomb_estado', function($timbrado){
-                    if ($timbrado->estado == 'A') {
-                         return 'Activo';
-                     }
-                     else {
-                        return 'Inactivo';
-                    }
-                })
                 ->addColumn('action', function($timbrado){
                     return '<a onclick="editForm('. $timbrado->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a onclick="deleteData('. $timbrado->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
                 return Datatables::of($timbrado)
-                ->addColumn('nomb_estado', function($timbrado){
-                    if ($timbrado->estado == 'A') {
-                         return 'Activo';
-                     }
-                     else {
-                        return 'Inactivo';
-                    }
-                })
                 ->addColumn('action', function($timbrado){
                     return '<a onclick="editForm('. $timbrado->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
@@ -139,28 +160,12 @@ class TimbradoController extends Controller
             }
         } elseif ($permiso_eliminar) {
             return Datatables::of($timbrado)
-            ->addColumn('nomb_estado', function($timbrado){
-                    if ($timbrado->estado == 'A') {
-                         return 'Activo';
-                     }
-                     else {
-                        return 'Inactivo';
-                    }
-                })
             ->addColumn('action', function($role){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a onclick="deleteData('. $timbrado->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
             return Datatables::of($timbrado)
-            ->addColumn('nomb_estado', function($timbrado){
-                    if ($timbrado->estado == 'A') {
-                         return 'Activo';
-                     }
-                     else {
-                        return 'Inactivo';
-                    }
-                })
             ->addColumn('action', function($timbrado){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';

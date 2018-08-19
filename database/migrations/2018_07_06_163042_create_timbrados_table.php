@@ -15,9 +15,9 @@ class CreateTimbradosTable extends Migration
     {
         Schema::create('timbrados', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('nro_timbrado')->unsigned();
-            $table->date('fecha_vigencia');
-            $table->char('estado', 1)->default('A');
+            $table->integer('nro_timbrado')->unsigned()->unique();
+            $table->date('fecha_inicio_vigencia');
+            $table->date('fecha_fin_vigencia');
             $table->timestamps();
         });
     }

@@ -8,9 +8,9 @@
 								<div class="panel-heading">
 										<h4>Lista de Precios
 												@can('listaprecio.create')
-														<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Registro</a>
+														<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
 												@else
-														<a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Registro</a>
+														<a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
 												@endcan
 										</h4>
 								</div>
@@ -27,8 +27,8 @@
 												<tbody>
 														@foreach($lista_precios as $lista_precio)
 															<tr>
-																<td>{{$lista_precio->lista_precio}}</td>
-																<td>{{$lista_precio->descripcion}}</td>
+																<td>{{$lista_precio->codigo}}</td>
+																<td>{{$lista_precio->nombre}}</td>
 																<td>{{$lista_precio->moneda->descripcion}}</td>
 																<td width="310">
 																	 @can('listaprecio.edit')
@@ -78,8 +78,10 @@
 				save_method = "add";
 				$('input[name=_method]').val('POST');
 				$('#modal-form').modal('show');
+				$('#error-block').hide();
 				$('#modal-form form')[0].reset();
-				$('.modal-title').text('Agregar Lista de Precio');
+				$('.modal-title').text('Nueva Lista de Precios');
+				$('#moneda_id').val("").change();
 			}
 
 			$(function(){
@@ -98,9 +100,25 @@
 														//table.ajax.reload();
 														location.reload();
 												},
-												error : function(){
-														alert('Oops! Something Error!');
-												}
+												error : function(data){
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += value + '<br>';
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
+                          }
+                            
+                        }
 										});
 										return false;
 								}
@@ -110,6 +128,7 @@
 			function editForm(id) {
 				save_method = 'edit';
 				$('input[name=_method]').val('PATCH');
+				$('#error-block').hide();
 				$('#modal-form form')[0].reset();
 				$.ajax({
 					url: "{{ url('listaPrecios') }}" + '/' + id + "/edit",
@@ -117,44 +136,86 @@
 					dataType: "JSON",
 					success: function(data) {
 						$('#modal-form').modal('show');
-						$('.modal-title').text('Editar Lista de Precio');
+						$('.modal-title').text('Editar Lista de Precios');
 
 						$('#id').val(data.id);
-						$('#lista_precio').val(data.lista_precio);
-						$('#descripcion').val(data.descripcion);
-						$('#moneda_id').val(data.moneda_id);
+						$('#codigo').val(data.codigo);
+						$('#nombre').val(data.nombre);
+						$("#moneda_id").select2("val", "");
+            $('#moneda_id').val(data.moneda_id).change();
 					},
 					error : function() {
-							alert("Nothing Data");
+							$.alert({
+                title: 'Atención!',
+                content: 'No se encontraron datos!',
+                icon: 'fa fa-exclamation-circle',
+                type: 'orange',
+              });
 					}
 				});
 			}
 
 			function deleteData(id){
-						var popup = confirm("Are you sure for delete this data ?");
-						var csrf_token = $('meta[name="csrf-token"]').attr('content');
-						if (popup == true ){
-								$.ajax({
-										url : "{{ url('listaPrecios') }}" + '/' + id,
-										type : "POST",
-										data : {'_method' : 'DELETE', '_token' : csrf_token},
-										success : function(data) {
-												//table.ajax.reload();
-												location.reload();
-										},
-										error : function () {
-												alert("Oops! Something Wrong!");
-										}
-								})
-						}
+				$.confirm({
+            title: '¿De verdad lo quieres eliminar?',
+            content: 'No podrás volver atras',
+            type: 'red',
+            buttons: {   
+                ok: {
+                    text: "Eliminar",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                    action: function(){
+                          var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                          
+                              $.ajax({
+                                  url : "{{ url('listaPrecios') }}" + '/' + id,
+                                  type : "POST",
+                                  data : {'_method' : 'DELETE', '_token' : csrf_token},
+                                  success : function(data) {
+                                      //table.ajax.reload();
+                                      location.reload();
+                                  },
+                                  error : function () {
+                                          $.alert({
+                                              title: 'Atención!',
+                                              content: 'Ocurrió un error durante el proceso!',
+                                              icon: 'fa fa-times-circle-o',
+                                              type: 'red',
+                                          });
+                                  }
+                              })
+                    }
+                },
+                cancel: function(){
+                        console.log('Cancel');
+                }
+            }
+          });
 				}
 
 		</script>
+@endsection
+
+@section('otros_scripts')
+	<script type="text/javascript">
+    $('#modal-form').on('shown.bs.modal', function() {
+      $("#codigo").focus();
+    });
+  </script>
+  
+  <script type="text/javascript">
+    $('#cliente-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+  </script>
 
 		<script>
       $(document).ready(function() {
-          $('.js-moneda').select2({
-          	placeholder: 'Select an option'
+          $('#moneda_id').select2({
+          	placeholder : 'Seleccione una de las opciones',
+            tags: false,
+            width: 'resolve',
+            dropdownParent: $('#modal-form'),
+            language: "es"
           });
       });
     </script>

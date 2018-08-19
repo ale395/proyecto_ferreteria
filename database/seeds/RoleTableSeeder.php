@@ -19,23 +19,19 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_user = Permission::where('slug', 'users.edit')->first();
         $permiso_eliminar_user = Permission::where('slug', 'users.destroy')->first();
 
-        //permisos de MODULOS
-        $permiso_listar_modulo = Permission::where('slug', 'modulos.index')->first();
-        $permiso_crear_modulo = Permission::where('slug', 'modulos.create')->first();
-        $permiso_editar_modulo = Permission::where('slug', 'modulos.edit')->first();
-        $permiso_eliminar_modulo = Permission::where('slug', 'modulos.destroy')->first();
-
         //permisos de ROLES
         $permiso_listar_rol = Permission::where('slug', 'roles.index')->first();
         $permiso_crear_rol = Permission::where('slug', 'roles.create')->first();
         $permiso_editar_rol = Permission::where('slug', 'roles.edit')->first();
         $permiso_eliminar_rol = Permission::where('slug', 'roles.destroy')->first();
 
-        //Permisos para CONCEPTOS
-        $permiso_listar_concepto = Permission::where('slug', 'conceptos.index')->first();
-        $permiso_crear_concepto = Permission::where('slug', 'conceptos.create')->first();
-        $permiso_editar_concepto = Permission::where('slug', 'conceptos.edit')->first();
-        $permiso_eliminar_concepto = Permission::where('slug', 'conceptos.destroy')->first();
+        //permisos de Clientes
+        $permiso_listar_cliente = Permission::where('slug', 'clientes.index')->first();
+        $permiso_crear_cliente = Permission::where('slug', 'clientes.create')->first();
+        $permiso_editar_cliente = Permission::where('slug', 'clientes.edit')->first();
+        $permiso_eliminar_cliente = Permission::where('slug', 'clientes.destroy')->first();
+        $permiso_ver_cliente = Permission::where('slug', 'clientes.show')->first();
+
 
         $permiso_listar_timb = Permission::where('slug', 'timbrados.index')->first();
         $permiso_crear_timb = Permission::where('slug', 'timbrados.create')->first();
@@ -57,12 +53,31 @@ class RoleTableSeeder extends Seeder
         $permiso_asignar_lprec = Permission::where('slug', 'listapreciodet.asignar')->first();
         $permiso_eliminar_asignacion_lprec = Permission::where('slug', 'listapreciodet.destroy')->first();
 
+        //permisos de Sucursales
+        $permiso_listar_sucu = Permission::where('slug', 'sucursales.index')->first();
+        $permiso_crear_sucu = Permission::where('slug', 'sucursales.create')->first();
+        $permiso_editar_sucu = Permission::where('slug', 'sucursales.edit')->first();
+        $permiso_eliminar_sucu = Permission::where('slug', 'sucursales.destroy')->first();
+
+        //permisos de Sucursales
+        $permiso_listar_banco = Permission::where('slug', 'bancos.index')->first();
+        $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
+        $permiso_editar_banco = Permission::where('slug', 'bancos.edit')->first();
+        $permiso_eliminar_banco = Permission::where('slug', 'bancos.destroy')->first();
+
+        //permisos de Vendedores
+        $permiso_listar_vend = Permission::where('slug', 'vendedores.index')->first();
+        $permiso_crear_vend = Permission::where('slug', 'vendedores.create')->first();
+        $permiso_editar_vend = Permission::where('slug', 'vendedores.edit')->first();
+        $permiso_eliminar_vend = Permission::where('slug', 'vendedores.destroy')->first();
+
         //permisos de Familias
         $permiso_familia_listar = Permission::where('slug', 'familias.index')->first();
         $permiso_familia_crear = Permission::where('slug', 'familias.create')->first();
         $permiso_familia_editar = Permission::where('slug', 'familias.edit')->first();
         $permiso_familia_eliminar = Permission::where('slug', 'familias.destroy')->first();
 
+<<<<<<< HEAD
 
       //permisos de PAISES
         $permiso_listar_pais = Permission::where('slug', 'paises.index')->first();
@@ -76,6 +91,8 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_ciudad = Permission::where('slug', 'ciudades.edit')->first();
         $permiso_eliminar_ciudad = Permission::where('slug', 'ciudades.destroy')->first();
 
+=======
+>>>>>>> 5d5b68b41abeab7bba4dcb702fb12fd689e26a33
         //permisos de Lineas
         $permiso_linea_listar = Permission::where('slug', 'lineas.index')->first();
         $permiso_linea_crear = Permission::where('slug', 'lineas.create')->first();
@@ -119,10 +136,6 @@ class RoleTableSeeder extends Seeder
         $role->save();
 
         //A los Administradores le damos todos los permisos
-        $role->assignPermission($permiso_listar_pais->id);
-        $role->assignPermission($permiso_crear_pais->id);
-        $role->assignPermission($permiso_editar_pais->id);
-        $role->assignPermission($permiso_eliminar_pais->id);
 
         $role->assignPermission($permiso_familia_listar->id);
         $role->assignPermission($permiso_familia_crear->id);
@@ -139,11 +152,14 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
 
+<<<<<<< HEAD
         $role->assignPermission($permiso_listar_ciudad->id);
         $role->assignPermission($permiso_crear_ciudad->id);
         $role->assignPermission($permiso_editar_ciudad->id);
         $role->assignPermission($permiso_eliminar_ciudad->id);
 
+=======
+>>>>>>> 5d5b68b41abeab7bba4dcb702fb12fd689e26a33
         $role->assignPermission($permiso_linea_listar->id);
         $role->assignPermission($permiso_linea_crear->id);
         $role->assignPermission($permiso_linea_editar->id);
@@ -174,15 +190,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_cajero_editar->id);
         $role->assignPermission($permiso_cajero_eliminar->id);
 
-        $role->assignPermission($permiso_listar_modulo->id);
-        $role->assignPermission($permiso_crear_modulo->id);
-        $role->assignPermission($permiso_editar_modulo->id);
-        $role->assignPermission($permiso_eliminar_modulo->id);
-
-        $role->assignPermission($permiso_listar_concepto->id);
+        /*$role->assignPermission($permiso_listar_concepto->id);
         $role->assignPermission($permiso_crear_concepto->id);
         $role->assignPermission($permiso_editar_concepto->id);
-        $role->assignPermission($permiso_eliminar_concepto->id);
+        $role->assignPermission($permiso_eliminar_concepto->id);*/
 
         $role->assignPermission($permiso_listar_timb->id);
         $role->assignPermission($permiso_crear_timb->id);
@@ -202,12 +213,7 @@ class RoleTableSeeder extends Seeder
         $role->description = 'Usuario Operador del sistema';
         $role->save();
 
-        //A los operadores le damos unos cuantitos nomas
-        $role->assignPermission($permiso_listar_pais->id);
-        $role->assignPermission($permiso_crear_pais->id);
-        $role->assignPermission($permiso_editar_pais->id);
-        $role->assignPermission($permiso_eliminar_pais->id);
-
+        //Se asignan unos pocos permisos al rol operador
         $role->assignPermission($permiso_listar_rol->id);
         $role->assignPermission($permiso_crear_rol->id);
         $role->assignPermission($permiso_editar_rol->id);
@@ -218,6 +224,7 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
 
+<<<<<<< HEAD
         $role->assignPermission($permiso_listar_ciudad->id);
         $role->assignPermission($permiso_crear_ciudad->id);
         $role->assignPermission($permiso_editar_ciudad->id);
@@ -232,11 +239,33 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_concepto->id);
         $role->assignPermission($permiso_editar_concepto->id);
         $role->assignPermission($permiso_eliminar_concepto->id);
+=======
+        $role->assignPermission($permiso_listar_vend->id);
+        $role->assignPermission($permiso_crear_vend->id);
+        $role->assignPermission($permiso_editar_vend->id);
+        $role->assignPermission($permiso_eliminar_vend->id);
+>>>>>>> 5d5b68b41abeab7bba4dcb702fb12fd689e26a33
 
         $role->assignPermission($permiso_listar_timb->id);
         $role->assignPermission($permiso_crear_timb->id);
         $role->assignPermission($permiso_editar_timb->id);
         $role->assignPermission($permiso_eliminar_timb->id);
+
+        $role->assignPermission($permiso_listar_sucu->id);
+        $role->assignPermission($permiso_crear_sucu->id);
+        $role->assignPermission($permiso_editar_sucu->id);
+        $role->assignPermission($permiso_eliminar_sucu->id);
+
+        $role->assignPermission($permiso_listar_banco->id);
+        $role->assignPermission($permiso_crear_banco->id);
+        $role->assignPermission($permiso_editar_banco->id);
+        $role->assignPermission($permiso_eliminar_banco->id);
+
+        $role->assignPermission($permiso_listar_cliente->id);
+        $role->assignPermission($permiso_crear_cliente->id);
+        $role->assignPermission($permiso_editar_cliente->id);
+        $role->assignPermission($permiso_eliminar_cliente->id);
+        $role->assignPermission($permiso_ver_cliente->id);
 
         $role->assignPermission($permiso_listar_nume_series->id);
         $role->assignPermission($permiso_crear_nume_series->id);

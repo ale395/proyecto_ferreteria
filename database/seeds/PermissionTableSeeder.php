@@ -76,69 +76,99 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un rol del sistema';
         $permission->save();*/
 
-
-        //Permisos para el formulario de módulos
+        //Permisos para el formulario de Bancos
         $permission = new Permission();
-        $permission->name = 'Crear Módulo';
-        $permission->slug = 'modulos.create';
-        $permission->description = 'Permite la creación de nuevos módulos en el sistema';
+        $permission->name = 'Crear Banco';
+        $permission->slug = 'bancos.create';
+        $permission->description = 'Permite la creación de nuevos bancos en el sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Borrar Módulo';
-        $permission->slug = 'modulos.destroy';
-        $permission->description = 'Permite la eliminación de módulos del sistema';
+        $permission->name = 'Borrar Banco';
+        $permission->slug = 'bancos.destroy';
+        $permission->description = 'Permite la eliminación de bancos del sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Editar Módulo';
-        $permission->slug = 'modulos.edit';
-        $permission->description = 'Permite modificar los valores de un módulo del sistema';
+        $permission->name = 'Editar Banco';
+        $permission->slug = 'bancos.edit';
+        $permission->description = 'Permite modificar los valores de un banco del sistema';
         $permission->save();
 
-		$permission = new Permission();
-        $permission->name = 'Listar Módulos';
-        $permission->slug = 'modulos.index';
-        $permission->description = 'Permite ver el listado de módulos del sistema';
+        $permission = new Permission();
+        $permission->name = 'Listar Bancos';
+        $permission->slug = 'bancos.index';
+        $permission->description = 'Permite ver el listado de bancos del sistema';
         $permission->save();
 
         //Para tablas pequeñas no creo que haga falta
         /*$permission = new Permission();
-        $permission->name = 'Ver Módulo';
-        $permission->slug = 'modulos.show';
-        $permission->description = 'Permite ver un módulo del sistema';
+        $permission->name = 'Ver Banco';
+        $permission->slug = 'bancos.show';
+        $permission->description = 'Permite ver un banco del sistema';
         $permission->save();*/
 
-        //Permisos para el formulario de Conceptos
+        //Permisos para el formulario de Clientes
         $permission = new Permission();
-        $permission->name = 'Crear Concepto';
-        $permission->slug = 'conceptos.create';
-        $permission->description = 'Permite la creación de nuevos Conceptos en el sistema';
+        $permission->name = 'Crear Cliente';
+        $permission->slug = 'clientes.create';
+        $permission->description = 'Permite la creación de nuevos clientes en el sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Borrar Concepto';
-        $permission->slug = 'conceptos.destroy';
-        $permission->description = 'Permite la eliminación de Usuarios del sistema';
+        $permission->name = 'Borrar Cliente';
+        $permission->slug = 'clientes.destroy';
+        $permission->description = 'Permite la eliminación de clientes del sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Editar Concepto';
-        $permission->slug = 'conceptos.edit';
-        $permission->description = 'Permite modificar los valores de un Concepto del sistema';
+        $permission->name = 'Editar Cliente';
+        $permission->slug = 'clientes.edit';
+        $permission->description = 'Permite modificar los valores de un cliente del sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Listar Conceptos';
-        $permission->slug = 'conceptos.index';
-        $permission->description = 'Permite ver el listado de Conceptos del sistema';
+        $permission->name = 'Listar Clientes';
+        $permission->slug = 'clientes.index';
+        $permission->description = 'Permite ver el listado de clientes del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Cliente';
+        $permission->slug = 'clientes.show';
+        $permission->description = 'Permite ver un cliente del sistema';
+        $permission->save();
+
+        //Permisos para el formulario de Vendedores
+        $permission = new Permission();
+        $permission->name = 'Crear Vendedor';
+        $permission->slug = 'vendedores.create';
+        $permission->description = 'Permite la creación de nuevos vendedores en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Vendedor';
+        $permission->slug = 'vendedores.destroy';
+        $permission->description = 'Permite la eliminación de vendedores del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Vendedor';
+        $permission->slug = 'vendedores.edit';
+        $permission->description = 'Permite modificar los valores de un vendedor del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Vendedores';
+        $permission->slug = 'vendedores.index';
+        $permission->description = 'Permite ver el listado de vendedores del sistema';
         $permission->save();
 
         //Para tablas pequeñas no creo que haga falta
         /*$permission = new Permission();
-        $permission->name = 'Ver Concepto';
-        $permission->slug = 'conceptos.show';
-        $permission->description = 'Permite ver un Concepto del sistema';
+        $permission->name = 'Ver Vendedor';
+        $permission->slug = 'vendedores.show';
+        $permission->description = 'Permite ver un vendedor del sistema';
         $permission->save();*/
 
         //Permisos para el formulario de Timbrados
@@ -171,6 +201,38 @@ class PermissionTableSeeder extends Seeder
         $permission->name = 'Ver Timbrado';
         $permission->slug = 'timbrados.show';
         $permission->description = 'Permite ver un Timbrado del sistema';
+        $permission->save();*/
+
+        //Permisos para el formulario de Sucursales
+        $permission = new Permission();
+        $permission->name = 'Crear Sucursal';
+        $permission->slug = 'sucursales.create';
+        $permission->description = 'Permite la creación de nuevas Sucursales en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Sucursal';
+        $permission->slug = 'sucursales.destroy';
+        $permission->description = 'Permite la eliminación de Sucursales del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Sucursal';
+        $permission->slug = 'sucursales.edit';
+        $permission->description = 'Permite modificar los valores de una sucursal del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Sucursales';
+        $permission->slug = 'sucursales.index';
+        $permission->description = 'Permite ver el listado de Sucursales del sistema';
+        $permission->save();
+
+        //Para tablas pequeñas no creo que haga falta
+        /*$permission = new Permission();
+        $permission->name = 'Ver Sucursal';
+        $permission->slug = 'sucursales.show';
+        $permission->description = 'Permite ver una Sucursal del sistema';
         $permission->save();*/
 
         //Permisos para el formulario de numeracion de series
@@ -274,6 +336,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de familias del sistema';
         $permission->save();
 
+<<<<<<< HEAD
         //Permisos para el formulario de paises
         $permission = new Permission();
         $permission->name = 'Crear Pais';
@@ -324,6 +387,8 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de ciudades del sistema';
         $permission->save();
 
+=======
+>>>>>>> 5d5b68b41abeab7bba4dcb702fb12fd689e26a33
         //Permisos para el formulario de lineas
         $permission = new Permission();
         $permission->name = 'Crear Linea';

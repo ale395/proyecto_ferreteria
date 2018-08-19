@@ -1,7 +1,7 @@
-<div class="modal" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form method="post" class="form-horizontal" data-toggle="validator">
+            <form id="timbrado-form" method="post" class="form-horizontal" data-toggle="validator">
                 {{ csrf_field() }} {{ method_field('POST') }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -12,31 +12,35 @@
 
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
+
                     <div class="form-group">
-                        <label for="name" class="col-md-3 control-label">Número de Timbrado</label>
+                        <div id="error-block" class="alert alert-danger">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nro_timbrado" class="col-md-3 control-label">Número de Timbrado *</label>
                         <div class="col-md-6">
-                            <input type="text" id="nro_timbrado" name="nro_timbrado" class="form-control" autofocus required>
+                            <input type="number" id="nro_timbrado" name="nro_timbrado" class="form-control" autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="name" class="col-md-3 control-label">Fecha Vigencia</label>
+                        <label for="fecha_inicio_vigencia" class="col-md-3 control-label">Fecha Inicio Vigencia *</label>
                         <div class="col-md-6">
-                            <input type="text" id="fecha_vigencia" name="fecha_vigencia" class="form-control" required>
+                            <input type="text" id="fecha_inicio_vigencia" name="fecha_inicio_vigencia" class="form-control dpiniciovigencia" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
 
 
                     <div class="form-group">
-                      <label for="name" class="col-md-3 control-label">Estado</label>
-                      <div class="col-md-6">
-                          <select class="form-control" name="estado" id="estado" style="width: 100%">
-                              <option value="A">Activo</option>
-                              <option value="I">Inactivo</option>
-                          </select>
-                      </div>
+                        <label for="fecha_fin_vigencia" class="col-md-3 control-label">Fecha Fin Vigencia *</label>
+                        <div class="col-md-6">
+                            <input type="text" id="fecha_fin_vigencia" name="fecha_fin_vigencia" class="form-control dpfinvigencia" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
+                            <span class="help-block with-errors"></span>
+                        </div>
                     </div>
 
                 </div>

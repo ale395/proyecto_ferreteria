@@ -9,9 +9,9 @@
                     <h4>Lista de Timbrados
                         <!-- Verifica si el usuario tiene permiso para crear registros -->
                         @can('timbrados.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Timbrado</a>
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nuevo Timbrado</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan 
                     </h4>
                 </div>
@@ -20,8 +20,8 @@
                         <thead>
                             <tr>
                                 <th>Número de Timbrado</th>
-                                <th>Fecha Vigencia</th>
-                                <th>Estado</th>
+                                <th>Fecha Inicio Vigencia</th>
+                                <th>Fecha Fin Vigencia</th>
                                 <th width="150">Acciones</th>
                             </tr>
                         </thead>
@@ -44,14 +44,15 @@
                       ajax: "{{ route('api.timbrados') }}",
                       columns: [
                         {data: 'nro_timbrado', name: 'nro_timbrado'},
-                        {data: 'fecha_vigencia', name: 'fecha_vigencia'},
-                        {data: 'nomb_estado', name: 'nomb_estado'},
+                        {data: 'fecha_inicio_vigencia', name: 'fecha_inicio_vigencia'},
+                        {data: 'fecha_fin_vigencia', name: 'fecha_fin_vigencia'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
 
       function addForm() {
         save_method = "add";
+        $('#error-block').hide();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
@@ -69,12 +70,31 @@
                         url : url,
                         type : "POST",
                         data : $('#modal-form form').serialize(),
+                        dataType: 'json',
                         success : function($data) {
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
                         },
-                        error : function(){
-                            alert('Oops! Something Error!');
+                        error : function(data){
+                            //console.log(data.responseJSON.errors);
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += value + '<br>'
+                                    //console.log(key+' / '+value);
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
+                          }
+                            
                         }
                     });
                     return false;
@@ -86,6 +106,7 @@
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
+        $('#error-block').hide();
         $.ajax({
           url: "{{ url('timbrados') }}" + '/' + id + "/edit",
           type: "GET",
@@ -96,32 +117,101 @@
 
             $('#id').val(data.id);
             $('#nro_timbrado').val(data.nro_timbrado);
-            $('#fecha_vigencia').val(data.fecha_vigencia);
-            $('#estado').val(data.estado);
+            $('#fecha_inicio_vigencia').val(data.fecha_inicio_vigencia);
+            $('#fecha_fin_vigencia').val(data.fecha_fin_vigencia);
           },
           error : function() {
-              alert("Nothing Data");
+              $.alert({
+                title: 'Atención!',
+                content: 'No se encontraron datos!',
+                icon: 'fa fa-exclamation-circle',
+                type: 'orange',
+              });
           }
         });
       }
 
       function deleteData(id){
-            var popup = confirm("Are you sure for delete this data ?");
-            var csrf_token = $('meta[name="csrf-token"]').attr('content');
-            if (popup == true ){
-                $.ajax({
-                    url : "{{ url('timbrados') }}" + '/' + id,
-                    type : "POST",
-                    data : {'_method' : 'DELETE', '_token' : csrf_token},
-                    success : function(data) {
-                        table.ajax.reload();
-                    },
-                    error : function () {
-                        alert("Oops! Something Wrong!");
+          $.confirm({
+            title: '¿De verdad lo quieres eliminar?',
+            content: 'No podrás volver atras',
+            type: 'red',
+            buttons: {   
+                ok: {
+                    text: "Eliminar",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                    action: function(){
+                          var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                          
+                              $.ajax({
+                                  url : "{{ url('timbrados') }}" + '/' + id,
+                                  type : "POST",
+                                  data : {'_method' : 'DELETE', '_token' : csrf_token},
+                                  success : function(data) {
+                                      table.ajax.reload();
+                                  },
+                                  error : function () {
+                                          $.alert({
+                                              title: 'Atención!',
+                                              content: 'Ocurrió un error durante el proceso!',
+                                              icon: 'fa fa-times-circle-o',
+                                              type: 'red',
+                                          });
+                                  }
+                              })
                     }
-                })
+                },
+                cancel: function(){
+                        console.log('Cancel');
+                }
             }
+        });
         }
 
     </script>
+@endsection
+
+@section('otros_scripts')
+  <script type="text/javascript">
+    $('#modal-form').on('shown.bs.modal', function() {
+      $("#nro_timbrado").focus();
+    });
+  </script>
+  
+  <script type="text/javascript">
+    $('#timbrado-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+  </script>
+
+  <script type="text/javascript">
+    $(function() {
+      $('.dpiniciovigencia').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        todayBtn: true,
+        todayHighlight: true,
+        autoclose: true
+      });
+      $('#fecha_inicio_vigencia').click(function(e){
+                e.stopPropagation();
+                $('.dpiniciovigencia').datepicker('update');
+            });  
+    });
+  </script>
+
+  <script type="text/javascript">
+    $(function() {
+      $('.dpfinvigencia').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        todayBtn: true,
+        todayHighlight: true,
+        autoclose: true
+      });
+      $('#fecha_fin_vigencia').click(function(e){
+                e.stopPropagation();
+                $('.dpfinvigencia').datepicker('update');
+            });  
+    });
+  </script>
 @endsection

@@ -1,7 +1,7 @@
-<div class="modal" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form method="post" class="form-horizontal" data-toggle="validator">
+            <form id="tipoCliente-form" method="post" class="form-horizontal" data-toggle="validator">
                 {{ csrf_field() }} {{ method_field('POST') }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -13,17 +13,21 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
-                        <label for="num_clasif_cliente" class="col-md-3 control-label">Código</label>
+                        <div id="error-block" class="alert alert-danger">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="codigo" class="col-md-3 control-label">Código *</label>
                         <div class="col-md-6">
-                            <input type="text" id="num_clasif_cliente" name="num_clasif_cliente" class="form-control" autofocus required>
+                            <input type="text" id="codigo" name="codigo" class="form-control" autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="descripcion" class="col-md-3 control-label">Descripción</label>
+                      <label for="nombre" class="col-md-3 control-label">Descripción *</label>
                       <div class="col-md-6">
-                          <input type="text" id="descripcion" name="descripcion" class="form-control" required>
+                          <input type="text" id="nombre" name="nombre" class="form-control">
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>

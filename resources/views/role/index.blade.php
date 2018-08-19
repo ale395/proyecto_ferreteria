@@ -9,9 +9,9 @@
                     <h4>Lista de Roles
                         <!-- Verifica si el usuario tiene permiso para crear registros -->
                         @can('roles.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Rol</a>
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nuevo Rol</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan 
                     </h4>
                 </div>
@@ -74,7 +74,12 @@
                             table.ajax.reload();
                         },
                         error : function(){
-                            alert('Oops! Something Error!');
+                            $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
                         }
                     });
                     return false;
@@ -100,28 +105,68 @@
             $('#description').val(data.description);
           },
           error : function() {
-              alert("Nothing Data");
+              $.alert({
+                title: 'Atención!',
+                content: 'No se encontraron datos!',
+                icon: 'fa fa-exclamation-circle',
+                type: 'orange',
+              });
           }
         });
       }
 
       function deleteData(id){
-            var popup = confirm("Are you sure for delete this data ?");
-            var csrf_token = $('meta[name="csrf-token"]').attr('content');
-            if (popup == true ){
-                $.ajax({
-                    url : "{{ url('roles') }}" + '/' + id,
-                    type : "POST",
-                    data : {'_method' : 'DELETE', '_token' : csrf_token},
-                    success : function(data) {
-                        table.ajax.reload();
-                    },
-                    error : function () {
-                        alert("Oops! Something Wrong!");
+        $.confirm({
+            title: '¿De verdad lo quieres eliminar?',
+            content: 'No podrás volver atras',
+            type: 'red',
+            buttons: {   
+                ok: {
+                    text: "Eliminar",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                    action: function(){
+                          var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                          
+                              $.ajax({
+                                  url : "{{ url('roles') }}" + '/' + id,
+                                  type : "POST",
+                                  data : {'_method' : 'DELETE', '_token' : csrf_token},
+                                  success : function(data) {
+                                      table.ajax.reload();
+                                  },
+                                  error : function () {
+                                          $.alert({
+                                              title: 'Atención!',
+                                              content: 'Ocurrió un error durante el proceso!',
+                                              icon: 'fa fa-times-circle-o',
+                                              type: 'red',
+                                          });
+                                  }
+                              })
                     }
-                })
+                },
+                cancel: function(){
+                        console.log('Cancel');
+                }
             }
-        }
+        });
+      }
 
     </script>
 @endsection
+
+@section('otros_scripts')
+  <script type="text/javascript">
+    $('#modal-form').on('shown.bs.modal', function() {
+      $("#slug").focus();
+    });
+  </script>
+  
+  <script type="text/javascript">
+    $('#role-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator')
+  </script>
+@endsection
+
+
+
