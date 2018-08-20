@@ -117,12 +117,14 @@
                         <!--<li><a href="#level1_1">Level One</a>-->
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
+                              <li class="sub_menu"><a href="#">Empresa</a>
+                              </li>
                             @can('timbrados.index')
                               <li class="sub_menu"><a href="{{route('timbrados.index')}}">Timbrados</a>
                               </li>
                             @endcan
                             @can('numeseries.index')
-                              <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Rango de Numeración de Series</a>
+                              <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Series</a>
                               </li>
                             @endcan
                             @can('bancos.index')
@@ -143,18 +145,7 @@
                             @endcan
                             @can('rubros.index')
                               <li class="sub_menu"><a href="{{route('rubros.index')}}">Rubros</a>
-                              <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Series</a>
-                              </li>
                             @endcan
-                            @can('sucursales.index')
-                              <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
-                              </li>
-                            @endcan
-                            @can('bancos.index')
-                              <li class="sub_menu"><a href="{{route('bancos.index')}}">Bancos</a>
-                              </li>
-                            @endcan
-                            
                             @can('cajeros.index')
                               <li class="sub_menu"><a href="{{route('cajeros.index')}}">Cajeros</a>
                               </li>

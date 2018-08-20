@@ -52,13 +52,11 @@
         save_method = "add";
         $('#error-block').hide();
         $('#activo').attr('checked', true);
-        $('#select2-usuarios').val("").change();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
-
         $('#modal-form form')[0].reset();
-
         $('.modal-title').text('Nuevo Vendedor');
+        $('#select2-usuarios').val("").change();
       }
 
       $(function(){
