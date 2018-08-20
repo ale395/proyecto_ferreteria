@@ -13,6 +13,7 @@
 
     <!-- Custom Theme Style -->
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
@@ -142,14 +143,15 @@
                             @endcan
                             @can('rubros.index')
                               <li class="sub_menu"><a href="{{route('rubros.index')}}">Rubros</a>
+                              <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Series</a>
                               </li>
                             @endcan
-                            @can('unidadmedidas.index')
-                              <li class="sub_menu"><a href="{{route('unidadmedidas.index')}}">Unidad de Medidas</a>
+                            @can('sucursales.index')
+                              <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
                               </li>
                             @endcan
-                            @can('conceptoajuste.index')
-                              <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajuste</a>
+                            @can('bancos.index')
+                              <li class="sub_menu"><a href="{{route('bancos.index')}}">Bancos</a>
                               </li>
                             @endcan
                             
@@ -199,8 +201,26 @@
                               <!--<li><a href="#level1_1">Level One</a>-->
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li class="sub_menu"><a href="#">Formulario 1</a>
-                                    </li>
+                                    @can('familias.index')
+                                      <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
+                                      </li>
+                                    @endcan
+                                    @can('lineas.index')
+                                      <li class="sub_menu"><a href="{{route('lineas.index')}}">Lineas</a>
+                                      </li>
+                                    @endcan
+                                    @can('rubros.index')
+                                      <li class="sub_menu"><a href="{{route('rubros.index')}}">Rubros</a>
+                                      </li>
+                                    @endcan
+                                    @can('unidadmedidas.index')
+                                      <li class="sub_menu"><a href="{{route('unidadmedidas.index')}}">Unidad de Medidas</a>
+                                      </li>
+                                    @endcan
+                                    @can('conceptoajuste.index')
+                                      <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajuste</a>
+                                      </li>
+                                    @endcan
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -330,18 +350,31 @@
     <script src="{{asset('js/app.js')}}"></script>
 
     <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+    
     <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
 
     <script src="{{ asset('assets/jquery/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js') }}"></script>
+
     <script src="{{ asset('assets/dataTables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/dataTables/js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/validator/validator.js') }}"></script>
 
     <script src="{{ asset('assets/bootstrap/js/ie10-viewport-bug-workaround.js') }}"></script>
+
     <script type="text/javascript" src="{{ asset('assets/gentelella/smartresize.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/i18n/es.js"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
 
     <!-- Para los Script JavaScript necesarios para la utilización de AJAX con el DataTables-->

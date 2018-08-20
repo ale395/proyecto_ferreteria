@@ -9,7 +9,7 @@ class FormaDePago extends Model
     protected $table = 'formasdepago';
     
     protected $fillable = [
-        'descripcion', 'id',
+        'descripcion', 'id','codigo','porcentaje'
     ];
 
     public function pais()
