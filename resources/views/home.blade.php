@@ -15,7 +15,7 @@
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
     
     
@@ -75,12 +75,12 @@
                               <!--<li><a href="#level1_1">Level One</a>-->
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    @can('clasificacioncliente.index')
-                                      <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
-                                      </li>
-                                    @endcan
                                     @can('clientes.index')
                                       <li class="sub_menu"><a href="{{route('clientes.index')}}">Clientes</a>
+                                      </li>
+                                    @endcan
+                                    @can('clasificacioncliente.index')
+                                      <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
                                       </li>
                                     @endcan
                                 </ul>
@@ -125,14 +125,12 @@
                               <li class="sub_menu"><a href="{{route('numeSeries.index')}}">Rango de Numeración de Series</a>
                               </li>
                             @endcan
-                            @can('paises.index')
-                            <li class="sub_menu"><a href="{{route('paises.index')}}">Paises</a>
-                            </li>
-                            @endcan
-                              <li class="sub_menu"><a href="{{route('ciudades.index')}}">Ciudades</a>
+                            @can('bancos.index')
+                              <li class="sub_menu"><a href="{{route('bancos.index')}}">Bancos</a>
                               </li>
-                            @can('modulos.index')
-                              <li class="sub_menu"><a href="{{route('modulos.index')}}">Módulos</a>
+                            @endcan
+                            @can('sucursales.index')
+                              <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
                               </li>
                             @endcan
                             @can('familias.index')
@@ -156,6 +154,7 @@
                               <li class="sub_menu"><a href="{{route('bancos.index')}}">Bancos</a>
                               </li>
                             @endcan
+                            
                             @can('cajeros.index')
                               <li class="sub_menu"><a href="{{route('cajeros.index')}}">Cajeros</a>
                               </li>
@@ -239,12 +238,13 @@
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     @can('vendedores.index')
-                                      <li class="sub_menu"><a href="{{route('vendedores.index')}}">Vendedores</a>
-                                      </li>
+                                        <li class="sub_menu"><a href="{{route('vendedores.index')}}">Vendedores</a>
+                                        </li>
                                     @endcan
-                                      <li class="sub_menu"><a href="{{route('listaPrecios.index')}}">Lista de Precios</a>
-                                      </li>
-                                    
+                                    @can('listaprecio.index')
+                                        <li class="sub_menu"><a href="{{route('listaPrecios.index')}}">Lista de Precios</a>
+                                        </li>
+                                    @endcan
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -363,6 +363,9 @@
 
     <script type="text/javascript" src="{{ asset('assets/gentelella/smartresize.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.es.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/i18n/es.js"></script>
 

@@ -19,7 +19,7 @@
 												<thead>
 														<tr>
 																<th>Código</th>
-																<th>Descripción</th>
+																<th>Nombre</th>
 																<th>Moneda</th>
 																<th width="310">Acciones</th>
 														</tr>
