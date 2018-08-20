@@ -60,17 +60,6 @@ Route::middleware(['auth'])->group(function() {
 	//rutas para modelo 'Familias'
 	Route::resource('familias', 'FamiliaController');
 	Route::get('api/familias', 'FamiliaController@apiFamilia')->name('api.familias');
-<<<<<<< HEAD
-	
-	//RUTAS PARA MODELO "PAISES"
-	Route::resource('paises', 'PaisController', ['parameters' => ['paises' => 'pais']]);
-	Route::get('api/paises', 'PaisController@apiPais')->name('api.paises');
-
-	//RUTAS PARA MODELO "CIUDADES"
-	Route::resource('ciudades', 'CiudadController');
-	Route::get('api/ciudades', 'CiudadController@apiCiudades')->name('api.ciudades');
-=======
->>>>>>> 5d5b68b41abeab7bba4dcb702fb12fd689e26a33
 
 	//rutas para modelo 'Lineas'
 	Route::resource('lineas', 'LineaController');
