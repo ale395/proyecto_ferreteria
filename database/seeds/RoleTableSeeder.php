@@ -77,8 +77,6 @@ class RoleTableSeeder extends Seeder
         $permiso_familia_editar = Permission::where('slug', 'familias.edit')->first();
         $permiso_familia_eliminar = Permission::where('slug', 'familias.destroy')->first();
 
-<<<<<<< HEAD
-
       //permisos de PAISES
         $permiso_listar_pais = Permission::where('slug', 'paises.index')->first();
         $permiso_crear_pais = Permission::where('slug', 'paises.create')->first();
@@ -91,8 +89,6 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_ciudad = Permission::where('slug', 'ciudades.edit')->first();
         $permiso_eliminar_ciudad = Permission::where('slug', 'ciudades.destroy')->first();
 
-=======
->>>>>>> 5d5b68b41abeab7bba4dcb702fb12fd689e26a33
         //permisos de Lineas
         $permiso_linea_listar = Permission::where('slug', 'lineas.index')->first();
         $permiso_linea_crear = Permission::where('slug', 'lineas.create')->first();
@@ -152,14 +148,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
 
-<<<<<<< HEAD
         $role->assignPermission($permiso_listar_ciudad->id);
         $role->assignPermission($permiso_crear_ciudad->id);
         $role->assignPermission($permiso_editar_ciudad->id);
         $role->assignPermission($permiso_eliminar_ciudad->id);
 
-=======
->>>>>>> 5d5b68b41abeab7bba4dcb702fb12fd689e26a33
         $role->assignPermission($permiso_linea_listar->id);
         $role->assignPermission($permiso_linea_crear->id);
         $role->assignPermission($permiso_linea_editar->id);
@@ -224,27 +217,10 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
 
-<<<<<<< HEAD
-        $role->assignPermission($permiso_listar_ciudad->id);
-        $role->assignPermission($permiso_crear_ciudad->id);
-        $role->assignPermission($permiso_editar_ciudad->id);
-        $role->assignPermission($permiso_eliminar_ciudad->id);
-
-        $role->assignPermission($permiso_listar_modulo->id);
-        $role->assignPermission($permiso_crear_modulo->id);
-        $role->assignPermission($permiso_editar_modulo->id);
-        $role->assignPermission($permiso_eliminar_modulo->id);
-
-        $role->assignPermission($permiso_listar_concepto->id);
-        $role->assignPermission($permiso_crear_concepto->id);
-        $role->assignPermission($permiso_editar_concepto->id);
-        $role->assignPermission($permiso_eliminar_concepto->id);
-=======
         $role->assignPermission($permiso_listar_vend->id);
         $role->assignPermission($permiso_crear_vend->id);
         $role->assignPermission($permiso_editar_vend->id);
         $role->assignPermission($permiso_eliminar_vend->id);
->>>>>>> 5d5b68b41abeab7bba4dcb702fb12fd689e26a33
 
         $role->assignPermission($permiso_listar_timb->id);
         $role->assignPermission($permiso_crear_timb->id);

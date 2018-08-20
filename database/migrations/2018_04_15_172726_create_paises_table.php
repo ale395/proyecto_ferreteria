@@ -27,6 +27,8 @@ class CreatePaisesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('ciudades');
+        Schema::dropIfExists('departamentos');
         Schema::dropIfExists('paises');
     }
 }

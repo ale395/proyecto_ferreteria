@@ -26,7 +26,7 @@ class AlterListaPreciosDetalleTable extends Migration
     public function down()
     {
         Schema::table('lista_precios_detalle', function (Blueprint $table) {
-            $table->dropForeign('lista_precios_detalle_articulo_id_foreign');
+            //$table->dropForeign('lista_precios_detalle_articulo_id_foreign');
         });
     }
 }

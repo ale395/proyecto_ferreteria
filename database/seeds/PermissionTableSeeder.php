@@ -336,7 +336,6 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de familias del sistema';
         $permission->save();
 
-<<<<<<< HEAD
         //Permisos para el formulario de paises
         $permission = new Permission();
         $permission->name = 'Crear Pais';
@@ -387,8 +386,6 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de ciudades del sistema';
         $permission->save();
 
-=======
->>>>>>> 5d5b68b41abeab7bba4dcb702fb12fd689e26a33
         //Permisos para el formulario de lineas
         $permission = new Permission();
         $permission->name = 'Crear Linea';

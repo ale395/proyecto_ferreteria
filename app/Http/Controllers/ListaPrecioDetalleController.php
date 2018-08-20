@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\Articulo;
 use App\ListaPrecioDetalle;
 use App\ListaPrecioCabecera;
@@ -40,6 +41,22 @@ class ListaPrecioDetalleController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'lista_precio_id' => 'required',
+            'articulo_id' => 'required',
+            'fecha_vigencia' => 'required',
+            'precio' => 'required'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
         $data = [
             'lista_precio_id' => $request['lista_precio_id'],
             'articulo_id' => $request['articulo_id'],

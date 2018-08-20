@@ -6,11 +6,11 @@
 				<div class="col-md-12">
 						<div class="panel panel-default">
 								<div class="panel-heading">
-										<h4>Lista de Precios <b>{{$lista_precio_cab->descripcion}}</b>
+										<h4>Lista de Precios <b>{{$lista_precio_cab->nombre}}</b>
 												@can('listapreciodet.asignar')
-														<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Registro</a>
+														<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
 												@else
-														<a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo Registro</a>
+														<a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
 												@endcan
 											<a href="{{route('listaPrecios.index')}}" class="btn btn-default pull-right" style="margin-top: -8px;"><i class="fa fa-arrow-left" aria-hidden="true"></i> Volver al Listado anterior</a>
 										</h4>
@@ -20,7 +20,7 @@
 												<thead>
 														<tr>
 																<th>Artículo</th>
-																<th>Descripción</th>
+																<th>Nombre</th>
 																<th>Fecha Vigencia</th>
 																<th>Precio</th>
 																<th width="80">Acciones</th>
@@ -57,6 +57,8 @@
 				$('input[name=_method]').val('POST');
 				$('#modal-form').modal('show');
 				$('#modal-form form')[0].reset();
+				$('#error-block').hide();
+        $('#select2-articulos').val("").change();
 				$('.modal-title').text('Agregar Artículo');
 			}
 
@@ -76,9 +78,25 @@
 														//table.ajax.reload();
 														location.reload();
 												},
-												error : function(){
-														alert('Oops! Something Error!');
-												}
+												error : function(data){
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += value + '<br>';
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
+                          }
+                            
+                        }
 										});
 										return false;
 								}
@@ -89,6 +107,7 @@
 				save_method = 'edit';
 				$('input[name=_method]').val('PATCH');
 				$('#modal-form form')[0].reset();
+				$('#error-block').hide();
 				$.ajax({
 					url: "{{ url('listaPreciosDet') }}" + '/' + id + "/edit",
 					type: "GET",
@@ -98,41 +117,98 @@
 						$('.modal-title').text('Editar Precio');
 
 						$('#id').val(data.id);
-						$('#articulo_id').val(data.articulo_id);
+						$("#select2-articulos").select2("val", "");
+            $('#select2-articulos').val(data.articulo_id).change();
 						$('#fecha_vigencia').val(data.fecha_vigencia);
 						$('#precio').val(data.precio);
 					},
 					error : function() {
-							alert("Nothing Data");
+							$.alert({
+                title: 'Atención!',
+                content: 'No se encontraron datos!',
+                icon: 'fa fa-exclamation-circle',
+                type: 'orange',
+              });
 					}
 				});
 			}
 
 			function deleteData(id){
-						var popup = confirm("Are you sure for delete this data ?");
-						var csrf_token = $('meta[name="csrf-token"]').attr('content');
-						if (popup == true ){
-								$.ajax({
-										url : "{{ url('listaPreciosDet') }}" + '/' + id,
-										type : "POST",
-										data : {'_method' : 'DELETE', '_token' : csrf_token},
-										success : function(data) {
-												//table.ajax.reload();
-												location.reload();
-										},
-										error : function () {
-												alert("Oops! Something Wrong!");
-										}
-								})
-						}
+					$.confirm({
+            title: '¿De verdad lo quieres eliminar?',
+            content: 'No podrás volver atras',
+            type: 'red',
+            buttons: {   
+                ok: {
+                    text: "Eliminar",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                    action: function(){
+                          var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                          
+                              $.ajax({
+                                  url : "{{ url('listaPreciosDet') }}" + '/' + id,
+                                  type : "POST",
+                                  data : {'_method' : 'DELETE', '_token' : csrf_token},
+                                  success : function(data) {
+                                      table.ajax.reload();
+                                  },
+                                  error : function () {
+                                          $.alert({
+                                              title: 'Atención!',
+                                              content: 'Ocurrió un error durante el proceso!',
+                                              icon: 'fa fa-times-circle-o',
+                                              type: 'red',
+                                          });
+                                  }
+                              })
+                    }
+                },
+                cancel: function(){
+                        console.log('Cancel');
+                }
+            }
+          });
 				}
 
 		</script>
+@endsection
+@section('otros_scripts')
+	<script type="text/javascript">
+    $('#modal-form').on('shown.bs.modal', function() {
+      $("#articulo_id").focus();
+    });
+  </script>
+  
+  <script type="text/javascript">
+    $('#articulo-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+  </script>
 
 		<script type="text/javascript">
-    $(document).ready(function() {
-      $('.fecha_vigencia').datepicker();
-    }); 
+	    $(function() {
+      $('.dpvigencia').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        todayBtn: true,
+        todayHighlight: true,
+        autoclose: true
+      });
+      $('#fecha_vigencia').click(function(e){
+          e.stopPropagation();
+          $('.dpvigencia').datepicker('update');
+          });  
+   		});
 		</script>
+		<script type="text/javascript">
+    	$(document).ready(function(){
+        $('#select2-articulos').select2({
+          placeholder : 'Seleccione una de las opciones',
+          tags: false,
+          width: 'resolve',
+          dropdownParent: $('#modal-form'),
+          language: "es"
+        });
+    	});
+  </script>
 
 @endsection
