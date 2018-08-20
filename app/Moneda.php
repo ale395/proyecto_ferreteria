@@ -9,6 +9,6 @@ class Moneda extends Model
     protected $table = 'monedas';
 
     protected $fillable = [
-        'id', 'moneda', 'descripcion','simbolo',
+    'codigo', 'descripcion','simbolo',
     ];
 }
