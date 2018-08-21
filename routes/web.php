@@ -31,11 +31,15 @@ Route::middleware(['auth'])->group(function() {
 
 	//RUTAS PARA CLIENTES
 	Route::resource('clientes', 'ClienteController');
-	Route::get('api/clientes', 'ClienteController@apiClientes')->name('api.clientes');
+	Route::get('api/clientes', 'ClienteController@apiClientes')->name('api.clientes');//seriesVendedores
 
 	//RUTAS PARA NUMERACION DE SERIES
 	Route::resource('series', 'SerieController');
 	Route::get('api/series', 'SerieController@apiSeries')->name('api.series');
+
+	//RUTAS PARA NUMERACION DE SERIES
+	Route::resource('seriesVendedores', 'SerieVendedorController');
+	Route::get('api/seriesVendedores', 'SerieVendedorController@apiSeriesVendedores')->name('api.seriesVendedores');
 
 	//RUTAS PARA MODELO "ROLES"
 	Route::resource('roles', 'RoleController');

@@ -44,9 +44,9 @@ class SerieVendedorController extends Controller
      * @param  \App\SerieVendedor  $serieVendedor
      * @return \Illuminate\Http\Response
      */
-    public function show(SerieVendedor $serieVendedor)
+    public function show($id)
     {
-        //
+        return $id;
     }
 
     /**

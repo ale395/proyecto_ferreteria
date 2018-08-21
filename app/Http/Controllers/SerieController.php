@@ -44,7 +44,7 @@ class SerieController extends Controller
             'tipo_comprobante' => 'required',
             'serie' => 'required|max:6',
             'timbrado_id' => 'required',
-            'nro_inicial' => 'required|min:1',
+            'nro_inicial' => 'required',
             'nro_final' => 'required',
             'activo' => 'required'
         ];
@@ -62,7 +62,7 @@ class SerieController extends Controller
             'tipo_comprobante' => $request['tipo_comprobante'],
             'serie' => $request['serie'],
             'timbrado_id' => $request['timbrado_id'],
-            'nro_actual' => $request['nro_actual'],
+            'nro_inicial' => $request['nro_inicial'],
             'nro_final' => $request['nro_final'],
             'activo' => $request['activo']
         ];
@@ -125,7 +125,7 @@ class SerieController extends Controller
         $serie->tipo_comprobante = $request['tipo_comprobante'];
         $serie->serie = $request['serie'];
         $serie->timbrado_id = $request['timbrado_id'];
-        $serie->nro_actual = $request['nro_actual'];
+        $serie->nro_inicial = $request['nro_inicial'];
         $serie->nro_final = $request['nro_final'];
         $serie->activo = $request['activo'];
         
@@ -176,7 +176,7 @@ class SerieController extends Controller
                     }
                 })
                 ->addColumn('action', function($series){
-                    return '<a onclick="editForm('. $series->id .')" class="btn btn-warning btn-sm" title="Editar Serie"><i class="fa fa-pencil-square-o"></i></a> ' .
+                    return '<a onclick="addVendedor('. $series->id .')" class="btn btn-info btn-sm" title="Asignar Vendedor"><i class="fa fa-share-square-o" aria-hidden="true"></i></a> ' .'<a onclick="editForm('. $series->id .')" class="btn btn-warning btn-sm" title="Editar Serie"><i class="fa fa-pencil-square-o"></i></a> ' .
                            '<a onclick="deleteData('. $series->id .')" class="btn btn-danger btn-sm" title="Eliminar Serie"><i class="fa fa-trash-o"></i></a>';
                 })->make(true);
             } else {

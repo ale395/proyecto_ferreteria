@@ -25,7 +25,7 @@
                                 <th>Nro Final</th>
                                 <th>Nro Actual</th>
                                 <th>Activo</th>
-                                <th width="100">Acciones</th>
+                                <th width="120">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -56,6 +56,10 @@
                       ]
                     });
 
+      function addVendedor(id){
+        window.location.href = "{{ url('seriesVendedores') . '/' }}" + id;
+      }
+
       function addForm() {
         save_method = "add";
         $('#error-block').hide();
@@ -64,15 +68,15 @@
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
         $('.modal-title').text('Nueva Serie');
-        $('#select2-usuarios').val("").change();
+        $('#select2-timbrados').val("").change();
       }
 
       $(function(){
             $('#modal-form form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('vendedores') }}";
-                    else url = "{{ url('vendedores') . '/' }}" + id;
+                    if (save_method == 'add') url = "{{ url('series') }}";
+                    else url = "{{ url('series') . '/' }}" + id;
 
                     $.ajax({
                         url : url,
@@ -113,18 +117,21 @@
         $('#modal-form form')[0].reset();
         $('#error-block').hide();
         $.ajax({
-          url: "{{ url('vendedores') }}" + '/' + id + "/edit",
+          url: "{{ url('series') }}" + '/' + id + "/edit",
           type: "GET",
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Vendedor');
+            $('.modal-title').text('Editar Serie');
 
             $('#id').val(data.id);
-            $('#codigo').val(data.codigo);
-            $('#usuario_id').val(data.usuario_id);
-            $("#select2-usuarios").select2("val", "");
-            $('#select2-usuarios').val(data.usuario_id).change();
+            $('#tipo_comprobante').val(data.tipo_comprobante);
+            $('#serie').val(data.serie);
+            $('#nro_inicial').val(data.nro_inicial);
+            $('#nro_final').val(data.nro_final);
+            $('#nro_actual').val(data.nro_actual);
+            $("#select2-timbrados").select2("val", "");
+            $('#select2-timbrados').val(data.timbrado_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -156,7 +163,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('vendedores') }}" + '/' + id,
+                                  url : "{{ url('series') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {
@@ -187,17 +194,17 @@
 @section('otros_scripts')
   <script type="text/javascript">
     $('#modal-form').on('shown.bs.modal', function() {
-      $("#codigo").focus();
+      $("#tipo_comprobante").focus();
     });
   </script>
   
   <script type="text/javascript">
-    $('#vendedor-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+    $('#serie-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
 
   <script type="text/javascript">
     $(document).ready(function(){
-            $('#select2-usuarios').select2({
+            $('#select2-timbrados').select2({
                 placeholder : 'Seleccione una de las opciones',
                 tags: false,
                 width: 'resolve',
