@@ -34,8 +34,8 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/clientes', 'ClienteController@apiClientes')->name('api.clientes');
 
 	//RUTAS PARA NUMERACION DE SERIES
-	Route::resource('numeSeries', 'NumeracionSerieController');
-	Route::get('api/numeSeries', 'NumeracionSerieController@apiNumeSeries')->name('api.numeSeries');
+	Route::resource('series', 'SerieController');
+	Route::get('api/series', 'SerieController@apiSeries')->name('api.series');
 
 	//RUTAS PARA MODELO "ROLES"
 	Route::resource('roles', 'RoleController');

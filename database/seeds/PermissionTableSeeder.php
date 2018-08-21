@@ -237,34 +237,34 @@ class PermissionTableSeeder extends Seeder
 
         //Permisos para el formulario de numeracion de series
         $permission = new Permission();
-        $permission->name = 'Crear Numeracion de Serie';
-        $permission->slug = 'numeseries.create';
-        $permission->description = 'Permite la creación de nuevos rangos de numeración de Series en el sistema';
+        $permission->name = 'Crear Serie';
+        $permission->slug = 'series.create';
+        $permission->description = 'Permite la creación de Series en el sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Borrar Numeracion de Serie';
-        $permission->slug = 'numeseries.destroy';
-        $permission->description = 'Permite la eliminación de Rangos de Numeración de Series del sistema';
+        $permission->name = 'Borrar Serie';
+        $permission->slug = 'series.destroy';
+        $permission->description = 'Permite la eliminación de Series del sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Editar Numeracion de Serie';
-        $permission->slug = 'numeseries.edit';
-        $permission->description = 'Permite modificar los valores de un Rango de Numeración de Serie del sistema';
+        $permission->name = 'Editar Serie';
+        $permission->slug = 'series.edit';
+        $permission->description = 'Permite modificar los valores de una Serie del sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Listar Numeracion de Series';
-        $permission->slug = 'numeseries.index';
-        $permission->description = 'Permite ver el listado de Rangos de Numeración de Series del sistema';
+        $permission->name = 'Listar Series';
+        $permission->slug = 'series.index';
+        $permission->description = 'Permite ver el listado de Series del sistema';
         $permission->save();
 
         //Para tablas pequeñas no creo que haga falta
         /*$permission = new Permission();
-        $permission->name = 'Ver Numeracion de Serie';
-        $permission->slug = 'numeseries.show';
-        $permission->description = 'Permite ver un Rango de Numeración de Serie del sistema';
+        $permission->name = 'Ver Serie';
+        $permission->slug = 'series.show';
+        $permission->description = 'Permite ver una Serie del sistema';
         $permission->save();*/
 
         //Permisos para el formulario de usuarios

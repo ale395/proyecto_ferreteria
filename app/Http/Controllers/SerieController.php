@@ -161,6 +161,13 @@ class SerieController extends Controller
                         return $series->timbrado->nro_timbrado;
                     }
                 })
+                ->addColumn('tipo_comp', function($series){
+                    if ($series->tipo_comprobante == 'F') {
+                         return 'Factura';
+                     } else {
+                        return 'Nota de Crédito';
+                    }
+                })
                 ->addColumn('activo', function($series){
                     if ($series->activo) {
                         return 'Si';
@@ -179,6 +186,13 @@ class SerieController extends Controller
                          return null;
                      } else {
                         return $series->timbrado->nro_timbrado;
+                    }
+                })
+                ->addColumn('tipo_comp', function($series){
+                    if ($series->tipo_comprobante == 'F') {
+                         return 'Factura';
+                     } else {
+                        return 'Nota de Crédito';
                     }
                 })
                 ->addColumn('activo', function($series){
@@ -202,6 +216,13 @@ class SerieController extends Controller
                     return $series->timbrado->nro_timbrado;
                 }
             })
+            ->addColumn('tipo_comp', function($series){
+                if ($series->tipo_comprobante == 'F') {
+                    return 'Factura';
+                } else {
+                    return 'Nota de Crédito';
+                }
+            })
             ->addColumn('activo', function($series){
                 if ($series->activo) {
                     return 'Si';
@@ -220,6 +241,13 @@ class SerieController extends Controller
                     return null;
                 } else {
                     return $series->timbrado->nro_timbrado;
+                }
+            })
+            ->addColumn('tipo_comp', function($series){
+                if ($series->tipo_comprobante == 'F') {
+                    return 'Factura';
+                } else {
+                    return 'Nota de Crédito';
                 }
             })
             ->addColumn('activo', function($series){
