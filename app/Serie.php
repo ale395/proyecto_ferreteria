@@ -9,6 +9,11 @@ class Serie extends Model
     protected $table = 'series';
 
     protected $fillable = [
-        'concepto_id', 'serie', 'timbrado_id', 'estado',
+        'tipo_comprobante', 'serie', 'timbrado_id', 'nro_inicial', 'nro_final', 'nro_actual', 'activo',
     ];
+
+    public function timbrado()
+    {
+        return $this->belongsTo('App\Timbrado');
+    }
 }
