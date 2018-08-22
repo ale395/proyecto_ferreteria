@@ -8,9 +8,9 @@
                 <div class="panel-heading">
                     <h4>Lista de Lineas
                         @can('lineas.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nueva Linea</a>
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nueva Linea</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
                     </h4>
                 </div>
@@ -35,6 +35,7 @@
 @section('ajax_datatables')
 	<script type="text/javascript">
       var table = $('#linea-table').DataTable({
+                      language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
                       ajax: "{{ route('api.lineas') }}",
@@ -47,6 +48,7 @@
 
       function addForm() {
         save_method = "add";
+        $('#error-block').hide();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
@@ -68,8 +70,24 @@
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
                         },
-                        error : function(){
-                            alert('Ha ocurrido un error, favor verificar');
+                        error : function(data){
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += value + '<br>';
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
+                          }
+                            
                         }
                     });
                     return false;
@@ -118,4 +136,16 @@
         }
 
     </script>
+@endsection
+
+@section('otros_scripts')
+  <script type="text/javascript">
+    $('#modal-form').on('shown.bs.modal', function() {
+      $("#num_linea").focus();
+    });
+  </script>
+  
+  <script type="text/javascript">
+    $('#linea-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+  </script>
 @endsection
