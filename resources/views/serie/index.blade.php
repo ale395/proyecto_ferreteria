@@ -57,7 +57,7 @@
                     });
 
       function addVendedor(id){
-        window.location.href = "{{ url('seriesVendedores') . '/' }}" + id;
+        window.location.href = "{{ url('seriesVendedores') . '/' }}" + id + "/edit";
       }
 
       function addForm() {
