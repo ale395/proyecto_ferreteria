@@ -6,14 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class FormaDePago extends Model
 {
-    protected $table = 'formasdepago';
+    protected $table = 'formas_pagos';
     
-    protected $fillable = [
-        'descripcion', 'id','codigo','porcentaje'
-    ];
+    protected $fillable = 
+    ['codigo','descripcion','control_valor'];
 
-    public function pais()
-    {
-        return $this->belongsTo(Pais::class);
-    }
+
 }

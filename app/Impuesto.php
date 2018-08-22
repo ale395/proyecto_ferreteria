@@ -8,8 +8,7 @@ class Impuesto extends Model
 {
     protected $table = 'impuestos';
     
-    protected $fillable = [
-        'id','codigo','descripcion', 'porcentaje'
-    ];
+    protected $fillable = 
+    ['codigo','descripcion', 'porcentaje'];
 
 }

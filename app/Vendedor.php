@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vendedor extends Model
 {
-
     protected $table = 'vendedores';
 
     protected $fillable = ['codigo', 'usuario_id', 'activo'];
@@ -15,5 +14,4 @@ class Vendedor extends Model
     {
         return $this->belongsTo('App\User');
     }
-
 }

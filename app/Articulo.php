@@ -8,5 +8,6 @@ class Articulo extends Model
 {
     protected $table = 'articulos';
 
-    protected $fillable = ['id','codigo','descripcion','codigo_barra','costo','control_existencia','vendible','activo'];
+    protected $fillable = 
+    ['codigo','descripcion','codigo_barra','costo','control_existencia','vendible','activo'];
 }
