@@ -39,10 +39,10 @@ class RoleTableSeeder extends Seeder
         $permiso_eliminar_timb = Permission::where('slug', 'timbrados.destroy')->first();
 
         //permisos de NUMERACION DE SERIES
-        $permiso_listar_nume_series = Permission::where('slug', 'numeseries.index')->first();
-        $permiso_crear_nume_series = Permission::where('slug', 'numeseries.create')->first();
-        $permiso_editar_nume_series = Permission::where('slug', 'numeseries.edit')->first();
-        $permiso_eliminar_nume_series = Permission::where('slug', 'numeseries.destroy')->first();
+        $permiso_listar_nume_series = Permission::where('slug', 'series.index')->first();
+        $permiso_crear_nume_series = Permission::where('slug', 'series.create')->first();
+        $permiso_editar_nume_series = Permission::where('slug', 'series.edit')->first();
+        $permiso_eliminar_nume_series = Permission::where('slug', 'series.destroy')->first();
 
         //permisos de Listas de Precios
         $permiso_listar_lprec = Permission::where('slug', 'listaprecio.index')->first();
@@ -76,7 +76,6 @@ class RoleTableSeeder extends Seeder
         $permiso_familia_crear = Permission::where('slug', 'familias.create')->first();
         $permiso_familia_editar = Permission::where('slug', 'familias.edit')->first();
         $permiso_familia_eliminar = Permission::where('slug', 'familias.destroy')->first();
-
 
       //permisos de PAISES
         $permiso_listar_pais = Permission::where('slug', 'paises.index')->first();

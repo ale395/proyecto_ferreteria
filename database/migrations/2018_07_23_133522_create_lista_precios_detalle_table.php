@@ -21,8 +21,8 @@ class CreateListaPreciosDetalleTable extends Migration
             $table->decimal('precio', 12, 2);
             $table->timestamps();
 
-            $table->unique(['lista_precio_id', 'articulo_id', 'fecha_vigencia']);
-            $table->foreign('lista_precio_id')->references('id')->on('lista_precios_cabecera');
+            //$table->unique(['lista_precio_id', 'articulo_id', 'fecha_vigencia']);
+            //$table->foreign('lista_precio_id')->references('id')->on('lista_precios_cabecera');
             //$table->foreign('articulo_id')->references('id')->on('articulos');
         });
     }
@@ -34,6 +34,7 @@ class CreateListaPreciosDetalleTable extends Migration
      */
     public function down()
     {
+        //Schema::dropIfExists('lista_precios_detalle');
         Schema::dropIfExists('lista_precios_detalle');
     }
 }

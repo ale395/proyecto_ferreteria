@@ -31,6 +31,7 @@ class CreateListaPrecioCabecerasTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('lista_precios_detalle');
         Schema::dropIfExists('lista_precios_cabecera');
     }
 }

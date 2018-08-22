@@ -15,13 +15,15 @@ class CreateSeriesTable extends Migration
     {
         Schema::create('series', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('concepto_id')->unsigned();
-            $table->string('serie', 10);
-            $table->integer('timbrado_id')->unsigned()->nullable();
-            $table->char('estado', 1)->default('A');
+            $table->char('tipo_comprobante', 1);//(F) Factura - (N) Nota de Credito
+            $table->char('serie', 6);
+            $table->integer('timbrado_id')->unsigned();
+            $table->integer('nro_inicial')->unsigned();
+            $table->integer('nro_final')->unsigned();
+            $table->integer('nro_actual')->unsigned()->default(0);
+            $table->boolean('activo')->default(true);
             $table->timestamps();
 
-            $table->foreign('concepto_id')->references('id')->on('conceptos');
             $table->foreign('timbrado_id')->references('id')->on('timbrados');
         });
     }

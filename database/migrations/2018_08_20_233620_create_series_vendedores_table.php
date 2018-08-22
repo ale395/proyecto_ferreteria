@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaisesTable extends Migration
+class CreateSeriesVendedoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class CreatePaisesTable extends Migration
      */
     public function up()
     {
-        Schema::create('paises', function (Blueprint $table) {
+        Schema::create('series_vendedores', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('descripcion', 50);
+            $table->integer('serie_id');
+            $table->integer('vendedor_id');
             $table->timestamps();
+
+            $table->foreign('serie_id')->references('id')->on('series');
+            $table->foreign('vendedor_id')->references('id')->on('vendedores');
         });
     }
 
@@ -27,8 +31,6 @@ class CreatePaisesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ciudades');
-        Schema::dropIfExists('departamentos');
-        Schema::dropIfExists('paises');
+        Schema::dropIfExists('series_vendedores');
     }
 }

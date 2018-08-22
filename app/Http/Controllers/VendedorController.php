@@ -162,6 +162,13 @@ class VendedorController extends Controller
                 })->make(true);
             } else {
                 return Datatables::of($vendedores)
+                ->addColumn('nombre_usuario', function($vendedores){
+                    if (empty($vendedores->usuario)) {
+                         return null;
+                     } else {
+                        return $vendedores->usuario->name;
+                    }
+                })
                 ->addColumn('activo', function($vendedores){
                     if ($vendedores->activo) {
                         return 'Si';
@@ -176,26 +183,40 @@ class VendedorController extends Controller
             }
         } elseif ($permiso_eliminar) {
             return Datatables::of($vendedores)
+            ->addColumn('nombre_usuario', function($vendedores){
+                if (empty($vendedores->usuario)) {
+                    return null;
+                } else {
+                    return $vendedores->usuario->name;
+                }
+            })
             ->addColumn('activo', function($vendedores){
-                    if ($vendedores->activo) {
-                        return 'Si';
-                    }else{
-                        return 'No';
-                    }
-                })
+                if ($vendedores->activo) {
+                    return 'Si';
+                }else{
+                    return 'No';
+                }
+            })
             ->addColumn('action', function($vendedores){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a onclick="deleteData('. $vendedores->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
             return Datatables::of($vendedores)
+            ->addColumn('nombre_usuario', function($vendedores){
+                if (empty($vendedores->usuario)) {
+                    return null;
+                } else {
+                    return $vendedores->usuario->name;
+                }
+            })
             ->addColumn('activo', function($vendedores){
-                    if ($vendedores->activo) {
-                        return 'Si';
-                    }else{
-                        return 'No';
-                    }
-                })
+                if ($vendedores->activo) {
+                    return 'Si';
+                }else{
+                    return 'No';
+                }
+            })
             ->addColumn('action', function($vendedores){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';

@@ -28,6 +28,7 @@ class CreateArticulosTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('lista_precios_detalle');
         Schema::dropIfExists('articulos');
     }
 }

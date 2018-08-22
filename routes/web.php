@@ -31,11 +31,15 @@ Route::middleware(['auth'])->group(function() {
 
 	//RUTAS PARA CLIENTES
 	Route::resource('clientes', 'ClienteController');
-	Route::get('api/clientes', 'ClienteController@apiClientes')->name('api.clientes');
+	Route::get('api/clientes', 'ClienteController@apiClientes')->name('api.clientes');//seriesVendedores
 
 	//RUTAS PARA NUMERACION DE SERIES
-	Route::resource('numeSeries', 'NumeracionSerieController');
-	Route::get('api/numeSeries', 'NumeracionSerieController@apiNumeSeries')->name('api.numeSeries');
+	Route::resource('series', 'SerieController');
+	Route::get('api/series', 'SerieController@apiSeries')->name('api.series');
+
+	//RUTAS PARA NUMERACION DE SERIES
+	Route::resource('seriesVendedores', 'SerieVendedorController');
+	Route::get('api/seriesVendedores', 'SerieVendedorController@apiSeriesVendedores')->name('api.seriesVendedores');
 
 	//RUTAS PARA MODELO "ROLES"
 	Route::resource('roles', 'RoleController');
@@ -60,14 +64,6 @@ Route::middleware(['auth'])->group(function() {
 	//rutas para modelo 'Familias'
 	Route::resource('familias', 'FamiliaController');
 	Route::get('api/familias', 'FamiliaController@apiFamilia')->name('api.familias');
-	
-	//RUTAS PARA MODELO "PAISES"
-	Route::resource('paises', 'PaisController', ['parameters' => ['paises' => 'pais']]);
-	Route::get('api/paises', 'PaisController@apiPais')->name('api.paises');
-
-	//RUTAS PARA MODELO "CIUDADES"
-	Route::resource('ciudades', 'CiudadController');
-	Route::get('api/ciudades', 'CiudadController@apiCiudades')->name('api.ciudades');
 
 	//rutas para modelo 'Lineas'
 	Route::resource('lineas', 'LineaController');
