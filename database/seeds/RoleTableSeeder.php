@@ -58,7 +58,11 @@ class RoleTableSeeder extends Seeder
         $permiso_crear_sucu = Permission::where('slug', 'sucursales.create')->first();
         $permiso_editar_sucu = Permission::where('slug', 'sucursales.edit')->first();
         $permiso_eliminar_sucu = Permission::where('slug', 'sucursales.destroy')->first();
-
+        //permisos de Impuestos
+        $permiso_listar_impuesto = Permission::where('slug', 'impuestos.index')->first();
+        $permiso_crear_impuesto = Permission::where('slug', 'impuestos.create')->first();
+        $permiso_editar_impuesto = Permission::where('slug', 'impuestos.edit')->first();
+        $permiso_eliminar_impuesto = Permission::where('slug', 'impuestos.destroy')->first();
         //permisos de Sucursales
         $permiso_listar_banco = Permission::where('slug', 'bancos.index')->first();
         $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
@@ -187,7 +191,16 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_concepto->id);
         $role->assignPermission($permiso_editar_concepto->id);
         $role->assignPermission($permiso_eliminar_concepto->id);*/
+        $role->assignPermission($permiso_listar_impuesto->id);
+        $role->assignPermission($permiso_crear_impuesto->id);
+        $role->assignPermission($permiso_editar_impuesto->id);
+        $role->assignPermission($permiso_eliminar_impuesto->id);
 
+        $role->assignPermission($permiso_listar_banco->id);
+        $role->assignPermission($permiso_crear_banco->id);
+        $role->assignPermission($permiso_editar_banco->id);
+        $role->assignPermission($permiso_eliminar_banco->id);
+        
         $role->assignPermission($permiso_listar_timb->id);
         $role->assignPermission($permiso_crear_timb->id);
         $role->assignPermission($permiso_editar_timb->id);
@@ -231,6 +244,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_sucu->id);
         $role->assignPermission($permiso_editar_sucu->id);
         $role->assignPermission($permiso_eliminar_sucu->id);
+
+        $role->assignPermission($permiso_listar_impuesto->id);
+        $role->assignPermission($permiso_crear_impuesto->id);
+        $role->assignPermission($permiso_editar_impuesto->id);
+        $role->assignPermission($permiso_eliminar_impuesto->id);
 
         $role->assignPermission($permiso_listar_banco->id);
         $role->assignPermission($permiso_crear_banco->id);

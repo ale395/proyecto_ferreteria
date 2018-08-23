@@ -6,8 +6,8 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Bancos
-                        @can('bancos.create')
+                    <h4>Lista de Impuestos
+                        @can('impuestos.create')
                           <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
@@ -20,7 +20,7 @@
                             <tr>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
-                                <th>Activo</th>
+                                <th>Porcentaje</th>
                                 <th width="150">Acciones</th>
                             </tr>
                         </thead>
@@ -39,7 +39,7 @@
                       language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.bancos') }}",
+                      ajax: "{{ route('api.impuestos') }}",
                       columns: [
                         {data: 'codigo', name: 'codigo'},
                         {data: 'nombre', name: 'nombre'},

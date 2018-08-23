@@ -131,6 +131,10 @@
                               <li class="sub_menu"><a href="{{route('bancos.index')}}">Bancos</a>
                               </li>
                             @endcan
+                            @can('impuestos.index')
+                              <li class="sub_menu"><a href="{{route('impuestos.index')}}">Impuestos</a>
+                              </li>
+                            @endcan
                             @can('sucursales.index')
                               <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
                               </li>

@@ -12,7 +12,7 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-    	//Permisos para el formulario de usuarios
+    	//PERMISOS PARA EL FORMULARIO DE USUARIOS
         $permission = new Permission();
         $permission->name = 'Crear Usuario';
         $permission->slug = 'users.create';
@@ -44,7 +44,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un Usuario del sistema';
         $permission->save();*/
 
-        //Permisos para el formulario de roles
+    	//PERMISOS PARA EL FORMULARIO DE ROL
         $permission = new Permission();
         $permission->name = 'Crear Rol';
         $permission->slug = 'roles.create';
@@ -76,7 +76,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un rol del sistema';
         $permission->save();*/
 
-        //Permisos para el formulario de Bancos
+        //PERMISOS PARA EL FORMULARIO DE BANCOS
         $permission = new Permission();
         $permission->name = 'Crear Banco';
         $permission->slug = 'bancos.create';
@@ -101,6 +101,32 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de bancos del sistema';
         $permission->save();
 
+
+         //PERMISOS PARA EL FORMULARIO DE IMPUESTOS
+         $permission = new Permission();
+         $permission->name = 'Crear Impuesto';
+         $permission->slug = 'impuestos.create';
+         $permission->description = 'Permite la creación de nuevos impuestos en el sistema';
+         $permission->save();
+ 
+         $permission = new Permission();
+         $permission->name = 'Borrar Impuesto';
+         $permission->slug = 'impuestos.destroy';
+         $permission->description = 'Permite la eliminación de impuestos del sistema';
+         $permission->save();
+ 
+         $permission = new Permission();
+         $permission->name = 'Editar Impuesto';
+         $permission->slug = 'impuestos.edit';
+         $permission->description = 'Permite modificar los valores de un impuestos del sistema';
+         $permission->save();
+ 
+         $permission = new Permission();
+         $permission->name = 'Listar Impuestos';
+         $permission->slug = 'impuestos.index';
+         $permission->description = 'Permite ver el listado de impuestos del sistema';
+         $permission->save();
+
         //Para tablas pequeñas no creo que haga falta
         /*$permission = new Permission();
         $permission->name = 'Ver Banco';
@@ -108,7 +134,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un banco del sistema';
         $permission->save();*/
 
-        //Permisos para el formulario de Clientes
+    	//PERMISOS PARA EL FORMULARIO DE CLIENTES
         $permission = new Permission();
         $permission->name = 'Crear Cliente';
         $permission->slug = 'clientes.create';
@@ -139,7 +165,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un cliente del sistema';
         $permission->save();
 
-        //Permisos para el formulario de Vendedores
+        //PERMISOS PARA EL FORMULARIO DE VENDEDORES
         $permission = new Permission();
         $permission->name = 'Crear Vendedor';
         $permission->slug = 'vendedores.create';
@@ -171,7 +197,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un vendedor del sistema';
         $permission->save();*/
 
-        //Permisos para el formulario de Timbrados
+        //PERMISOS PARA EL FORMULARIO DE TIMBRADOS
         $permission = new Permission();
         $permission->name = 'Crear Timbrado';
         $permission->slug = 'timbrados.create';
@@ -203,7 +229,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un Timbrado del sistema';
         $permission->save();*/
 
-        //Permisos para el formulario de Sucursales
+        //PERMISOS PARA EL FORMULARIO DE SUCURSALES
         $permission = new Permission();
         $permission->name = 'Crear Sucursal';
         $permission->slug = 'sucursales.create';
@@ -235,7 +261,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver una Sucursal del sistema';
         $permission->save();*/
 
-        //Permisos para el formulario de numeracion de series
+        //PERMISOS PARA EL FORMULARIO DE SERIE
         $permission = new Permission();
         $permission->name = 'Crear Serie';
         $permission->slug = 'series.create';
@@ -267,7 +293,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver una Serie del sistema';
         $permission->save();*/
 
-        //Permisos para el formulario de usuarios
+        //PERMISOS PARA EL FORMULARIO DE LISTA DE PRECIOS
         $permission = new Permission();
         $permission->name = 'Crear Lista Precio';
         $permission->slug = 'listaprecio.create';
@@ -298,7 +324,7 @@ class PermissionTableSeeder extends Seeder
         $permission->slug = 'listaprecio.show';
         $permission->description = 'Permite ver una Lista de Precios del sistema';
         $permission->save();*/
-
+    	
         $permission = new Permission();
         $permission->name = 'Asignación de Precios';
         $permission->slug = 'listapreciodet.asignar';
@@ -311,7 +337,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite eliminar una asignacion de precio por artículo de una Lista de Precio del sistema';
         $permission->save();
 
-        //Permisos para el formulario de familias
+        //PERMISOS PARA EL FORMULARIO DE FAMILIAS
         $permission = new Permission();
         $permission->name = 'Crear Familia';
         $permission->slug = 'familias.create';
@@ -336,7 +362,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de familias del sistema';
         $permission->save();
 
-        //Permisos para el formulario de paises
+        //PERMISOS PARA EL FORMULARIO DE PAISES
         $permission = new Permission();
         $permission->name = 'Crear Pais';
         $permission->slug = 'paises.create';
@@ -361,7 +387,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de paises del sistema';
         $permission->save();
         
-             //Permisos para el formulario de Ciudades
+        //PERMISOS PARA EL FORMULARIO DE CIUDADES
         $permission = new Permission();
         $permission->name = 'Crear Ciudad';
         $permission->slug = 'ciudades.create';
@@ -386,7 +412,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de ciudades del sistema';
         $permission->save();
 
-        //Permisos para el formulario de lineas
+        //PERMISOS PARA EL FORMULARIO DE LINEAS
         $permission = new Permission();
         $permission->name = 'Crear Linea';
         $permission->slug = 'lineas.create';
@@ -411,7 +437,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de lineas del sistema';
         $permission->save();
 
-        //Permisos para el formulario de rubros
+        //PERMISOS PARA EL FORMULARIO DE RUBROS
         $permission = new Permission();
         $permission->name = 'Crear Rubro';
         $permission->slug = 'rubros.create';
@@ -436,7 +462,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de rubros del sistema';
         $permission->save();
 
-        //Permisos para el formulario de unidad de medida
+        //PERMISOS PARA EL FORMULARIO DE UNIDADES DE MEDIDAS
         $permission = new Permission();
         $permission->name = 'Crear Unidad de Medida';
         $permission->slug = 'unidadesMedidas.create';
@@ -461,7 +487,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de rubros del sistema';
         $permission->save();
 
-        //Permisos para el formulario de concepto de ajuste
+        //PERMISOS PARA EL FORMULARIO DE CONCEPTO AJUSTES
         $permission = new Permission();
         $permission->name = 'Crear Concepto de Ajuste';
         $permission->slug = 'conceptoajuste.create';
@@ -486,7 +512,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de conceptos de ajuste';
         $permission->save();
 
-        //Permisos para el formulario de clasificacion de cliente
+        //PERMISOS PARA EL FORMULARIO DE CLASIFICACION DE CLIENTES
         $permission = new Permission();
         $permission->name = 'Crear Clasificacion de Cliente';
         $permission->slug = 'clasificacioncliente.create';
@@ -511,7 +537,7 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de clasificacion de clientes';
         $permission->save();
 
-        //Permisos para el formulario de cajeros
+        //PERMISOS PARA EL FORMULARIO DE CAJEROS
         $permission = new Permission();
         $permission->name = 'Crear Cajero';
         $permission->slug = 'cajeros.create';

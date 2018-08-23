@@ -20,7 +20,9 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA TIMBRADOS
 	Route::resource('timbrados', 'TimbradoController');
 	Route::get('api/timbrados', 'TimbradoController@apiTimbrados')->name('api.timbrados');
-
+	//RUTAS PARA IMPUESTOS
+	Route::resource('impuestos', 'ImpuestoController');
+	Route::get('api/impuestos', 'ImpuestoController@apiImpuestos')->name('api.impuestos');
 	//RUTAS PARA BANCOS
 	Route::resource('bancos', 'BancoController');
 	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');
