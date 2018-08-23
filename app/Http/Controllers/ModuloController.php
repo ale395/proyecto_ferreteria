@@ -96,7 +96,7 @@ class ModuloController extends Controller
     }
 
     //Función que retorna un JSON con todos los módulos para que los maneje AJAX del lado del servidor
-    public function apiModulo()
+    public function apiModulos()
     {
         $permiso_editar = Auth::user()->can('modulos.edit');;
         $permiso_eliminar = Auth::user()->can('modulos.destroy');;

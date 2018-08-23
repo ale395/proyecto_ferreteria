@@ -204,8 +204,8 @@
                                       <li class="sub_menu"><a href="{{route('rubros.index')}}">Rubros</a>
                                       </li>
                                     @endcan
-                                    @can('unidadmedidas.index')
-                                      <li class="sub_menu"><a href="{{route('unidadmedidas.index')}}">Unidad de Medidas</a>
+                                    @can('unidadesMedidas.index')
+                                      <li class="sub_menu"><a href="{{route('unidadesMedidas.index')}}">Unidades de Medidas</a>
                                       </li>
                                     @endcan
                                     @can('conceptoajuste.index')

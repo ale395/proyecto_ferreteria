@@ -17,7 +17,7 @@ class ClasificacionClienteController extends Controller
      */
     public function index()
     {
-        return view('clasificacioncliente.index');
+        return view('clasificacionCliente.index');
     }
 
     /**

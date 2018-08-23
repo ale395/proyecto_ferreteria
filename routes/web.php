@@ -63,7 +63,7 @@ Route::middleware(['auth'])->group(function() {
 
 	//rutas para modelo 'Familias'
 	Route::resource('familias', 'FamiliaController');
-	Route::get('api/familias', 'FamiliaController@apiFamilia')->name('api.familias');
+	Route::get('api/familias', 'FamiliaController@apiFamilias')->name('api.familias');
 
 	//rutas para modelo 'Lineas'
 	Route::resource('lineas', 'LineaController');
@@ -74,8 +74,8 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/rubros', 'RubroController@apiRubros')->name('api.rubros');
 
 	//rutas para modelo 'unidadmedidas'
-	Route::resource('unidadmedidas', 'UnidadMedidaController');
-	Route::get('api/unidadmedidas', 'UnidadMedidaController@apiUnidadMedidas')->name('api.unidadmedidas');
+	Route::resource('unidadesMedidas', 'UnidadMedidaController');
+	Route::get('api/unidadesMedidas', 'UnidadMedidaController@apiUnidadesMedidas')->name('api.unidadesMedidas');
 
 	//rutas para modelo 'conceptoajuste'
 	Route::resource('conceptos', 'ConceptoAjusteController');

@@ -20,7 +20,7 @@ class PermissionRoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return view('permissionrole.index', compact('roles'));
+        return view('permissionRole.index', compact('roles'));
     }
 
     /**

@@ -9,7 +9,7 @@ class FormaDePago extends Model
     protected $table = 'formas_pagos';
     
     protected $fillable = 
-    ['codigo','descripcion','control_valor'];
+    ['codigo', 'descripcion', 'control_valor'];
 
 
 }

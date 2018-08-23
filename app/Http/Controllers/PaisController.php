@@ -95,7 +95,7 @@ class PaisController extends Controller
     }
 
     //Función que retorna un JSON con todos los módulos para que los maneje AJAX del lado del servidor
-    public function apiPais()
+    public function apiPaises()
     {
         $permiso_editar = Auth::user()->can('paises.edit');;
         $permiso_eliminar = Auth::user()->can('paises.destroy');;

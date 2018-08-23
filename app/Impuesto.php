@@ -9,6 +9,6 @@ class Impuesto extends Model
     protected $table = 'impuestos';
     
     protected $fillable = 
-    ['codigo','descripcion', 'porcentaje'];
+    ['codigo', 'descripcion', 'porcentaje'];
 
 }

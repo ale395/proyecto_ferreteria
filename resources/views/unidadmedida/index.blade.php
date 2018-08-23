@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Lista de Unidades de medida
-                        @can('unidadmedidas.create')
+                        @can('unidadesMedidas.create')
                           <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nueva Unidad de Medida</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nueva Unidad de Medida</a>
@@ -37,7 +37,7 @@
       var table = $('#unidad-medida-table').DataTable({
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.unidadmedidas') }}",
+                      ajax: "{{ route('api.unidadesMedidas') }}",
                       columns: [
                         {data: 'num_umedida', name: 'num_umedida'},
                         {data: 'descripcion', name: 'descripcion'},

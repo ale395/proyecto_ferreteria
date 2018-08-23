@@ -109,7 +109,7 @@ class FamiliaController extends Controller
     }
 
     //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
-    public function apiFamilia()
+    public function apiFamilias()
     {
         $permiso_editar = Auth::user()->can('familias.edit');;
         $permiso_eliminar = Auth::user()->can('familias.destroy');;

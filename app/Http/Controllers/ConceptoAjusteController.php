@@ -16,7 +16,7 @@ class ConceptoAjusteController extends Controller
      */
     public function index()
     {
-        return view('conceptoajuste.index');
+        return view('conceptoAjuste.index');
     }
 
     /**

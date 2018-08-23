@@ -35,7 +35,10 @@ class DepositoController extends Controller
     public function store(Request $request)
     {
         $data = [
-        'descripcion' => $request['descripcion']
+             'codigo' => $request['codigo'],
+        'descripcion' => $request['descripcion'],
+             'activo' => $request['activo']
+        
         ];
 
         return Deposito::create($data);
@@ -73,8 +76,9 @@ class DepositoController extends Controller
      */
     public function update(Request $request, Deposito $deposito)
     {
-        $deposito->descripcion = $request['deposito'];
-        
+             $deposito->codigo = $request['codigo'];
+        $deposito->descripcion = $request['descripcion'];
+             $deposito->activo = $request['activo'];
         $deposito->update();
 
         return $deposito;
@@ -92,10 +96,10 @@ class DepositoController extends Controller
     }
 
     //Función que retorna un JSON con todos los módulos para que los maneje AJAX del lado del servidor
-    public function apiDeposito()
+    public function apiDepositos()
     {
-        $permiso_editar = Auth::user()->can('deposito.edit');;
-        $permiso_eliminar = Auth::user()->can('deposito.destroy');;
+        $permiso_editar = Auth::user()->can('depositos.edit');;
+        $permiso_eliminar = Auth::user()->can('depositos.destroy');;
         $deposito = Deposito::all();
 
         if ($permiso_editar) {

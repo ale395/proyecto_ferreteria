@@ -14,7 +14,7 @@ class ArticuloController extends Controller
      */
     public function index()
     {
-        //
+        return view('articulo.index');
     }
 
     /**

@@ -92,10 +92,10 @@ class CotizacionController extends Controller
     }
 
     //Función que retorna un JSON con todos los módulos para que los maneje AJAX del lado del servidor
-    public function apiCotizacion()
+    public function apiCotizaciones()
     {
-        $permiso_editar = Auth::user()->can('cotizacion.edit');;
-        $permiso_eliminar = Auth::user()->can('cotizacion.destroy');;
+        $permiso_editar = Auth::user()->can('cotizaciones.edit');;
+        $permiso_eliminar = Auth::user()->can('cotizaciones.destroy');;
         $cotizacion = Cotizacion::all();
 
         if ($permiso_editar) {

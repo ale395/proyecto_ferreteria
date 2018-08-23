@@ -439,25 +439,25 @@ class PermissionTableSeeder extends Seeder
         //Permisos para el formulario de unidad de medida
         $permission = new Permission();
         $permission->name = 'Crear Unidad de Medida';
-        $permission->slug = 'unidadmedidas.create';
+        $permission->slug = 'unidadesMedidas.create';
         $permission->description = 'Permite la creación de nuevas unidades de medidas en el sistema';
         $permission->save();
 
         $permission = new Permission();
         $permission->name = 'Borrar Unidad de Medida';
-        $permission->slug = 'unidadmedidas.destroy';
+        $permission->slug = 'unidadesMedidas.destroy';
         $permission->description = 'Permite la eliminación de unidad de medida del sistema';
         $permission->save();
 
         $permission = new Permission();
         $permission->name = 'Editar Unidad de Medida';
-        $permission->slug = 'unidadmedidas.edit';
-        $permission->description = 'Permite modificar los valores de un rubro';
+        $permission->slug = 'unidadesMedidas.edit';
+        $permission->description = 'Permite modificar los valores de una unidad de medida';
         $permission->save();
 
         $permission = new Permission();
         $permission->name = 'Listar Unidad de Medida';
-        $permission->slug = 'unidadmedidas.index';
+        $permission->slug = 'unidadesMedidas.index';
         $permission->description = 'Permite ver el listado de rubros del sistema';
         $permission->save();
 

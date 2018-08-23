@@ -39,7 +39,7 @@ class BancoController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'codigo' => 'required|max:20|unique:bancos,codigo',
+            'codigo' => 'required|max:20|unique:banco,codigo',
             'nombre' => 'required|max:100',
             'activo' => 'required'
         ];
@@ -97,7 +97,7 @@ class BancoController extends Controller
         $banco = Banco::findOrFail($id);
 
         $rules = [
-            'codigo' => 'required|max:20|unique:bancos,codigo,'.$banco->id,
+            'codigo' => 'required|max:20|unique:banco,codigo,'.$banco->id,
             'nombre' => 'required|max:100',
             'activo' => 'required'
         ];
@@ -135,59 +135,59 @@ class BancoController extends Controller
     {
         $permiso_editar = Auth::user()->can('bancos.edit');
         $permiso_eliminar = Auth::user()->can('bancos.destroy');
-        $bancos = Banco::all();
+        $banco = Banco::all();
 
         if ($permiso_editar) {
             if ($permiso_eliminar) {
-                return Datatables::of($bancos)
-                ->addColumn('activo', function($bancos){
-                    if ($bancos->activo) {
+                return Datatables::of($banco)
+                ->addColumn('activo', function($banco){
+                    if ($banco->activo) {
                         return 'Si';
                     }else{
                         return 'No';
                     }
                 })
-                ->addColumn('action', function($bancos){
-                    return '<a onclick="editForm('. $bancos->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $bancos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                ->addColumn('action', function($banco){
+                    return '<a onclick="editForm('. $banco->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $banco->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
-                return Datatables::of($bancos)
-                ->addColumn('activo', function($bancos){
-                    if ($bancos->activo) {
+                return Datatables::of($banco)
+                ->addColumn('activo', function($banco){
+                    if ($banco->activo) {
                         return 'Si';
                     }else{
                         return 'No';
                     }
                 })
-                ->addColumn('action', function($bancos){
-                    return '<a onclick="editForm('. $bancos->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                ->addColumn('action', function($banco){
+                    return '<a onclick="editForm('. $banco->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
-            return Datatables::of($bancos)
-            ->addColumn('activo', function($bancos){
-                    if ($bancos->activo) {
+            return Datatables::of($banco)
+            ->addColumn('activo', function($banco){
+                    if ($banco->activo) {
                         return 'Si';
                     }else{
                         return 'No';
                     }
                 })
-            ->addColumn('action', function($bancos){
+            ->addColumn('action', function($banco){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a onclick="deleteData('. $bancos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                       '<a onclick="deleteData('. $banco->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
-            return Datatables::of($bancos)
-            ->addColumn('activo', function($bancos){
-                    if ($bancos->activo) {
+            return Datatables::of($banco)
+            ->addColumn('activo', function($banco){
+                    if ($banco->activo) {
                         return 'Si';
                     }else{
                         return 'No';
                     }
                 })
-            ->addColumn('action', function($bancos){
+            ->addColumn('action', function($banco){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);

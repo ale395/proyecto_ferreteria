@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 
 class MonedaController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('moneda.index');
     }
 
     /**
@@ -35,7 +35,13 @@ class MonedaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+             'codigo' => $request['codigo'],
+        'descripcion' => $request['descripcion'],
+            'simbolo' => $request['simbolo']
+        ];
+
+        return Moneda::create($data);
     }
 
     /**
@@ -48,7 +54,6 @@ class MonedaController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -57,7 +62,9 @@ class MonedaController extends Controller
      */
     public function edit(Moneda $moneda)
     {
-        //
+        dd($moneda);
+        return $moneda;
+
     }
 
     /**
@@ -69,7 +76,12 @@ class MonedaController extends Controller
      */
     public function update(Request $request, Moneda $moneda)
     {
-        //
+             $moneda->codigo = $request['codigo'];
+        $moneda->descripcion = $request['descripcion'];
+            $moneda->simbolo = $request['simbolo'];
+        $moneda->update();
+
+        return $moneda;
     }
 
     /**
@@ -78,8 +90,44 @@ class MonedaController extends Controller
      * @param  \App\Moneda  $moneda
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Moneda $moneda)
+    public function destroy($id)
     {
-        //
+        return Moneda::destroy($id);
+    }
+
+    //Función que retorna un JSON con todos los módulos para que los maneje AJAX del lado del servidor
+    public function apiMonedas()
+    {
+        $permiso_editar = Auth::user()->can('monedas.edit');;
+        $permiso_eliminar = Auth::user()->can('monedas.destroy');;
+        $moneda = Moneda::all();
+
+        if ($permiso_editar) {
+            if ($permiso_eliminar) {
+                return Datatables::of($moneda)
+                ->addColumn('action', function($moneda){
+                    return '<a onclick="editForm('. $moneda->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $moneda->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            } else {
+                return Datatables::of($moneda)
+                ->addColumn('action', function($moneda){
+                    return '<a onclick="editForm('. $moneda->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            }
+        } elseif ($permiso_eliminar) {
+            return Datatables::of($moneda)
+            ->addColumn('action', function($moneda){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a onclick="deleteData('. $moneda->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
+        } else {
+            return Datatables::of($moneda)
+            ->addColumn('action', function($moneda){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
+        }
     }
 }

@@ -8,5 +8,6 @@ class Familia extends Model
 {
     protected $table = 'familias';
 
-    protected $fillable = ['num_familia', 'descripcion'];
+    protected $fillable = 
+    ['num_familia', 'descripcion'];
 }

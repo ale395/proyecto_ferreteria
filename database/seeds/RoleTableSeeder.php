@@ -102,10 +102,10 @@ class RoleTableSeeder extends Seeder
         $permiso_rubro_eliminar = Permission::where('slug', 'rubros.destroy')->first();
 
         //permisos de Rubros
-        $permiso_unidadmedida_listar = Permission::where('slug', 'unidadmedidas.index')->first();
-        $permiso_unidadmedida_crear = Permission::where('slug', 'unidadmedidas.create')->first();
-        $permiso_unidadmedida_editar = Permission::where('slug', 'unidadmedidas.edit')->first();
-        $permiso_unidadmedida_eliminar = Permission::where('slug', 'unidadmedidas.destroy')->first();
+        $permiso_unidadmedida_listar = Permission::where('slug', 'unidadesMedidas.index')->first();
+        $permiso_unidadmedida_crear = Permission::where('slug', 'unidadesMedidas.create')->first();
+        $permiso_unidadmedida_editar = Permission::where('slug', 'unidadesMedidas.edit')->first();
+        $permiso_unidadmedida_eliminar = Permission::where('slug', 'unidadesMedidas.destroy')->first();
 
         //permisos de Conceptos de Ajuste
         $permiso_concepto_listar = Permission::where('slug', 'conceptoajuste.index')->first();

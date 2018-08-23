@@ -16,7 +16,7 @@ class UnidadMedidaController extends Controller
      */
     public function index()
     {
-        return view('unidadmedida.index');
+        return view('unidadMedida.index');
     }
 
     /**
@@ -97,10 +97,10 @@ class UnidadMedidaController extends Controller
 
 
         //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
-    public function apiUnidadMedidas()
+    public function apiUnidadesMedidas()
     {
-        $permiso_editar = Auth::user()->can('unidadmedidas.edit');;
-        $permiso_eliminar = Auth::user()->can('unidadmedidas.destroy');;
+        $permiso_editar = Auth::user()->can('unidadesMedidas.edit');;
+        $permiso_eliminar = Auth::user()->can('unidadesMedidas.destroy');;
         $unidad_medida = UnidadMedida::all();
 
         if ($permiso_editar) {

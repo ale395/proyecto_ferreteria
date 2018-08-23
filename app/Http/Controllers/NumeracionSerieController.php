@@ -20,7 +20,7 @@ class NumeracionSerieController extends Controller
     {
         $conceptos = Concepto::where('estado', 'A')->get();
         $series = Serie::where('estado', 'A')->get();
-        return view('numeserie.index', compact('conceptos', 'series'));
+        return view('numeracionSerie.index', compact('conceptos', 'series'));
     }
 
     /**
