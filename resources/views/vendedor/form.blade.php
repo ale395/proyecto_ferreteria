@@ -30,6 +30,7 @@
                             <label for="usuario_id" class="control-label col-md-3 col-sm-3 col-xs-12">Usuario *</label>
                           <div class="col-md-6">
                             <select name="usuario_id" id="select2-usuarios" class="form-control" style="width: 100%">
+                                <option></option>
                                 @foreach($users as $id => $user)
                                   <option value="{{ $user->id }}">{{ $user->name }}</option>
                                 @endforeach

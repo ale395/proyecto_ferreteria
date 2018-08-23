@@ -58,6 +58,7 @@
         save_method = "add";
         $('#error-block').hide();
         $('#activo').attr('checked', true);
+        
         $('#select2-zonas').val("").change();
         $('#select2-tipos').val("").change();
         $('#select2-listas').val("").change();

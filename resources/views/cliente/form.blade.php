@@ -81,6 +81,7 @@
                         <label for="tipo_cliente_id" class="control-label col-md-2">Tipo de Cliente *</label>
                         <div class="col-md-4">
                             <select name="tipo_cliente_id" id="select2-tipos" class="form-control" style="width: 100%">
+                                <option></option>
                                 @foreach($tipos_clientes as $id => $tipo_cliente)
                                   <option value="{{ $tipo_cliente->id }}">{{ $tipo_cliente->nombre }}</option>
                                 @endforeach
@@ -90,6 +91,7 @@
                         <label for="zona_id" class="control-label col-md-1">Zona *</label>
                         <div class="col-md-4">
                             <select name="zona_id" id="select2-zonas" class="form-control" style="width: 100%">
+                                <option></option>
                                 @foreach($zonas as $id => $zona)
                                   <option value="{{ $zona->id }}">{{ $zona->nombre }}</option>
                                 @endforeach
@@ -101,6 +103,7 @@
                         <label for="lista_precio_id" class="control-label col-md-2">Lista de Precio</label>
                         <div class="col-md-4">
                             <select name="lista_precio_id" id="select2-listas" class="form-control" style="width: 100%">
+                                <option></option>
                                 @foreach($lista_precios as $id => $lista)
                                   <option value="{{ $lista->id }}">{{ $lista->descripcion }}</option>
                                 @endforeach
@@ -110,6 +113,7 @@
                         <label for="vendedor_id" class="control-label col-md-1">Vendedor</label>
                         <div class="col-md-4">
                             <select name="vendedor_id" id="select2-vendedores" class="form-control" style="width: 100%">
+                                <option></option>
                                 @foreach($vendedores as $id => $vendedor)
                                   <option value="{{ $vendedor->id }}">{{ $vendedor->usuario->name }}</option>
                                 @endforeach
