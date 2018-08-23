@@ -13,6 +13,15 @@
                         {{ csrf_field() }} {{ method_field('POST') }}
 
                         <div class="modal-body">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <input type="hidden" id="serie_id" name="serie_id" value="{{$serie->id}}">
                             <div class="form-group">
                               <label for="vendedor_id" class="col-md-3 control-label">Vendedor *</label>

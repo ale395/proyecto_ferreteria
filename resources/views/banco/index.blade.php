@@ -81,7 +81,7 @@
                             if(data.status === 422) {
                                 var errors = data.responseJSON;
                                 $.each(data.responseJSON.errors, function (key, value) {
-                                    errores += value + '<br>';
+                                    errores += '<li>' + value + '</li>';
                                 });
                                 $('#error-block').show().html(errores);
                             }else{

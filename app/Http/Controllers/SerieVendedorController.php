@@ -38,6 +38,11 @@ class SerieVendedorController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'serie_id' => 'required',
+            'vendedor_id' => 'required',
+        ]);
+
         $serieVendedor = new SerieVendedor;
         $serieVendedor->serie_id = $request->serie_id;
         $serieVendedor->vendedor_id = $request->vendedor_id;
