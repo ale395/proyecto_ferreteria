@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\Familia;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -38,6 +39,22 @@ class FamiliaController extends Controller
      */
     public function store(Request $request)
     {
+
+        $rules = [
+            'num_familia' => 'required|max:20|unique:familias,num_familia',
+            'descripcion' => 'required|max:100',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
+
         $data = [
             'num_familia' => $request['num_familia'],
             'descripcion' => $request['descripcion']
@@ -47,6 +64,7 @@ class FamiliaController extends Controller
 
     }
 
+    /*
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -54,6 +72,7 @@ class FamiliaController extends Controller
             'descripcion' => 'required|string|max:255',
         ]);
     }
+    */
 
     /**
      * Display the specified resource.
@@ -87,6 +106,21 @@ class FamiliaController extends Controller
      */
     public function update(Request $request, Familia $familia)
     {
+
+        $rules = [
+            'num_familia' => 'required|max:20|unique:familias,num_familia',
+            'descripcion' => 'required|max:100',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
         $familia->num_familia = $request['num_familia'];
         $familia->descripcion = $request['descripcion'];
         

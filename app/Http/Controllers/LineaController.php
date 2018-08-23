@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\Linea;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -38,6 +39,13 @@ class LineaController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'num_linea' => 'required|max:20|unique:lineas,num_linea',
+            'descripcion' => 'required|max:100',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);        
+
         $data = [
             'num_linea' => $request['num_linea'],
             'descripcion' => $request['descripcion']
@@ -78,6 +86,14 @@ class LineaController extends Controller
      */
     public function update(Request $request, Linea $linea)
     {
+
+        $rules = [
+            'num_linea' => 'required|max:20|unique:lineas,num_linea',
+            'descripcion' => 'required|max:100',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);        
+
         $linea->num_linea = $request['num_linea'];
         $linea->descripcion = $request['descripcion'];
         

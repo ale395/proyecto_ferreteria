@@ -1,7 +1,7 @@
 <div class="modal" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form method="post" class="form-horizontal" data-toggle="validator">
+            <form id="linea-form" method="post" class="form-horizontal" data-toggle="validator">
                 {{ csrf_field() }} {{ method_field('POST') }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -13,17 +13,21 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
-                        <label for="name" class="col-md-3 control-label">Código</label>
+                        <div id="error-block" class="alert alert-danger">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_linea" class="col-md-3 control-label">Código</label>
                         <div class="col-md-6">
-                            <input type="text" id="num_linea" name="num_linea" class="form-control" autofocus style="text-transform:uppercase" required>
+                            <input type="text" id="num_linea" name="num_linea" class="form-control" autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                      <label for="email" class="col-md-3 control-label">Descripción</label>
+                      <label for="descripcion" class="col-md-3 control-label">Descripción</label>
                       <div class="col-md-6">
-                          <input type="text" id="descripcion" name="descripcion" class="form-control" style="text-transform:uppercase" required>
+                          <input type="text" id="descripcion" name="descripcion" class="form-control">
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>

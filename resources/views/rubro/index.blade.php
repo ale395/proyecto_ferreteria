@@ -8,9 +8,9 @@
                 <div class="panel-heading">
                     <h4>Lista de Rubros
                         @can('rubros.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nuevo Rubro</a>
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nuevo Rubro</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
                     </h4>
                 </div>
@@ -35,6 +35,7 @@
 @section('ajax_datatables')
   <script type="text/javascript">
       var table = $('#rubro-table').DataTable({
+                      language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
                       ajax: "{{ route('api.rubros') }}",
@@ -118,4 +119,16 @@
         }
 
     </script>
+@endsection
+
+@section('otros_scripts')
+  <script type="text/javascript">
+    $('#modal-form').on('shown.bs.modal', function() {
+      $("#num_rubro").focus();
+    });
+  </script>
+  
+  <script type="text/javascript">
+    $('#rubro-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+  </script>
 @endsection

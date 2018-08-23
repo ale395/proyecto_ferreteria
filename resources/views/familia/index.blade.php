@@ -8,9 +8,9 @@
                 <div class="panel-heading">
                     <h4>Lista de Familias
                         @can('familias.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;">Nueva Familia</a>
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;">Nueva Familia</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
                     </h4>
                 </div>
@@ -35,6 +35,7 @@
 @section('ajax_datatables')
 	<script type="text/javascript">
       var table = $('#familia-table').DataTable({
+                      language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
                       ajax: "{{ route('api.familias') }}",
@@ -47,6 +48,7 @@
 
       function addForm() {
         save_method = "add";
+        $('#error-block').hide();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
@@ -68,26 +70,24 @@
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
                         },
-                        error : function(jqXHR, exception){
-                            //alert('Ha ocurrido un error, favor verificar');
-                            var msg = '';
-                            if (jqXHR.status === 0) {
-                                msg = 'Sin Conexion.\n Verifique la red.';
-                            } else if (jqXHR.status == 404) {
-                                msg = 'Pagina no encontradad.[404]';
-                            } else if (jqXHR.status == 500) {
-                                msg = 'Error del Servidor [500].';
-                            } else if (exception === 'parsererror') {
-                                msg = 'Requested JSON parse failed.';
-                            } else if (exception === 'timeout') {
-                                msg = 'Time out error.';
-                            } else if (exception === 'abort') {
-                                msg = 'Ajax request aborted.';
-                            } else {
-                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                            }
-                            //$('#post').html(msg);
-                            alert(msg);
+                        error : function(data){
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += value + '<br>';
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
+                          }
+                            
                         }
                     });
                     return false;
@@ -137,17 +137,16 @@
 
     </script>
 
-    <!-- 
-    <script type="text/javascript">
-        $('#tableUser').DataTable({
-          "processing": true,
-            "serverSide": true,
-            "ajax": "{{ route('api.users') }}",
-            "columns": [
-              {data: 'name', name: 'name'},
-              {data: 'email', name: 'email'},
-              {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
-            ]});
-    </script>
-    -->
+@endsection
+
+@section('otros_scripts')
+  <script type="text/javascript">
+    $('#modal-form').on('shown.bs.modal', function() {
+      $("#num_familia").focus();
+    });
+  </script>
+  
+  <script type="text/javascript">
+    $('#familia-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+  </script>
 @endsection
