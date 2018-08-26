@@ -241,6 +241,8 @@
                                         <li class="sub_menu"><a href="{{route('listaPrecios.index')}}">Lista de Precios</a>
                                         </li>
                                     @endcan
+                                        <li class="sub_menu"><a href="#">Toma de Pedido</a>
+                                        </li>
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
