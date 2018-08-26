@@ -14,8 +14,14 @@ class EmpresaController extends Controller
      */
     public function index()
     {
-        $empresa = Empresa::all();
-        return view('empresa.index', compact('empresa'));
+        $empresas = Empresa::all();
+        if (count($empresas) == 0) {
+            return view('empresa.create');
+        } else{
+            $empresa = $empresas[0];
+            return redirect()->action('EmpresaController@edit', ['id' => $empresa->id]);
+            //return view('empresa.edit', compact('empresa'));
+        }
     }
 
     /**
@@ -56,9 +62,10 @@ class EmpresaController extends Controller
      * @param  \App\Empresa  $empresa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Empresa $empresa)
+    public function edit($id)
     {
-        //
+        $empresa = Empresa::findOrFail($id);
+        return view('empresa.edit', compact('empresa'));
     }
 
     /**
@@ -68,7 +75,7 @@ class EmpresaController extends Controller
      * @param  \App\Empresa  $empresa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Empresa $empresa)
+    public function update(Request $request, $id)
     {
         //
     }
