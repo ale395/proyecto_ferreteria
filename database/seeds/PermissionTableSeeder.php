@@ -101,6 +101,18 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de bancos del sistema';
         $permission->save();
 
+        //PERMISOS PARA EL FORMULARIO DE EMPRESA
+        $permission = new Permission();
+        $permission->name = 'Ver Configuración de Empresa';
+        $permission->slug = 'empresas.index';
+        $permission->description = 'Permite ver la configuación de Empresa en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Configuración de Empresa';
+        $permission->slug = 'empresas.edit';
+        $permission->description = 'Permite modificar los valores de la Configuración de Empresa del sistema';
+        $permission->save();
 
          //PERMISOS PARA EL FORMULARIO DE IMPUESTOS
          $permission = new Permission();

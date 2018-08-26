@@ -63,11 +63,16 @@ class RoleTableSeeder extends Seeder
         $permiso_crear_impuesto = Permission::where('slug', 'impuestos.create')->first();
         $permiso_editar_impuesto = Permission::where('slug', 'impuestos.edit')->first();
         $permiso_eliminar_impuesto = Permission::where('slug', 'impuestos.destroy')->first();
+
         //permisos de Sucursales
         $permiso_listar_banco = Permission::where('slug', 'bancos.index')->first();
         $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
         $permiso_editar_banco = Permission::where('slug', 'bancos.edit')->first();
         $permiso_eliminar_banco = Permission::where('slug', 'bancos.destroy')->first();
+
+        //permisos para Configuración de Empresa
+        $permiso_listar_empresa = Permission::where('slug', 'empresas.index')->first();
+        $permiso_editar_empresa = Permission::where('slug', 'empresas.edit')->first();
 
         //permisos de Vendedores
         $permiso_listar_vend = Permission::where('slug', 'vendedores.index')->first();
@@ -278,6 +283,9 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_clasicli_crear->id);
         $role->assignPermission($permiso_clasicli_editar->id);
         $role->assignPermission($permiso_clasicli_eliminar->id);
+
+        $role->assignPermission($permiso_listar_empresa->id);
+        $role->assignPermission($permiso_editar_empresa->id);
         
         $role->save();
     }

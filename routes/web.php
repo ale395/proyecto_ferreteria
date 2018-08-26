@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('seriesVendedores', 'SerieVendedorController');
 	Route::get('api/seriesVendedores', 'SerieVendedorController@apiSeriesVendedores')->name('api.seriesVendedores');
 
+	//RUTAS PARA EMPRESA
+	Route::resource('empresa', 'EmpresaController');
+
 	//RUTAS PARA MODELO "ROLES"
 	Route::resource('roles', 'RoleController');
 	Route::get('api/roles', 'RoleController@apiRole')->name('api.roles');

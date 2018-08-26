@@ -117,8 +117,10 @@
                         <!--<li><a href="#level1_1">Level One</a>-->
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                              <li class="sub_menu"><a href="#">Empresa</a>
+                            @can('empresas.index')
+                              <li class="sub_menu"><a href="{{route('empresa.index')}}">Empresa</a>
                               </li>
+                            @endcan
                             @can('timbrados.index')
                               <li class="sub_menu"><a href="{{route('timbrados.index')}}">Timbrados</a>
                               </li>
