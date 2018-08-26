@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\Empresa;
 use Illuminate\Http\Request;
 
@@ -16,11 +17,10 @@ class EmpresaController extends Controller
     {
         $empresas = Empresa::all();
         if (count($empresas) == 0) {
-            return view('empresa.create');
+            return redirect()->action('EmpresaController@create');
         } else{
             $empresa = $empresas[0];
             return redirect()->action('EmpresaController@edit', ['id' => $empresa->id]);
-            //return view('empresa.edit', compact('empresa'));
         }
     }
 
@@ -31,7 +31,7 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        //
+        return view('empresa.create');
     }
 
     /**
@@ -42,7 +42,33 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $empresa = new Empresa();
+
+        $rules = [
+            'razon_social' => 'required|max:100',
+            'ruc' => 'required|max:20',
+            'telefono' => 'required|max:20',
+            'direccion' => 'required|max:100',
+            'rubro' => 'required|max:100',
+            'sitio_web' => 'max:100',
+            'eslogan' => 'max:100',
+            'correo_electronico' => 'required|max:100'
+        ];
+
+        Validator::make($request->all(), $rules)->validate();
+
+        $empresa->razon_social = $request['razon_social'];
+        $empresa->ruc = $request['ruc'];
+        $empresa->sitio_web = $request['sitio_web'];
+        $empresa->correo_electronico = $request['correo_electronico'];
+        $empresa->direccion = $request['direccion'];
+        $empresa->telefono = $request['telefono'];
+        $empresa->eslogan = $request['eslogan'];
+        $empresa->rubro = $request['rubro'];
+
+        $empresa->save();
+
+        return redirect('/empresa');
     }
 
     /**
@@ -77,7 +103,34 @@ class EmpresaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $empresa = Empresa::findOrFail($id);
+
+        $rules = [
+            'razon_social' => 'required|max:100',
+            'ruc' => 'required|max:20',
+            'telefono' => 'required|max:20',
+            'direccion' => 'required|max:100',
+            'rubro' => 'required|max:100',
+            'sitio_web' => 'max:100',
+            'eslogan' => 'max:100',
+            'correo_electronico' => 'required|max:100'
+        ];
+
+
+        Validator::make($request->all(), $rules)->validate();
+
+        $empresa->razon_social = $request['razon_social'];
+        $empresa->ruc = $request['ruc'];
+        $empresa->sitio_web = $request['sitio_web'];
+        $empresa->correo_electronico = $request['correo_electronico'];
+        $empresa->direccion = $request['direccion'];
+        $empresa->telefono = $request['telefono'];
+        $empresa->eslogan = $request['eslogan'];
+        $empresa->rubro = $request['rubro'];
+        
+        $empresa->update();
+
+        return redirect('/empresa');
     }
 
     /**

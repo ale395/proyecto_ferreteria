@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<!--<div class="container">
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -12,7 +12,7 @@
             </ul>
         </div><br />
     @endif
-<!--    <div class="row">
+    <div class="row">
     <form method="post" action="{{url('/create/ticket')}}">
         <div class="form-group">
             <input type="hidden" value="{{csrf_token()}}" name="_token" />
@@ -37,55 +37,64 @@
                     <h4>Configuración de Datos de la Empresa</h4>
                 </div>
                 <div class="panel-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                                </ul>
+                        </div><br/>
+                    @endif
                     <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
                         <label for="razon_social" class="col-md-2 control-label">Razon Social *</label>
                         <div class="col-md-5">
-                            <input type="text" id="razon_social" name="razon_social" class="form-control" value="{{$empresa->razon_social}}" autofocus>
+                            <input type="text" id="razon_social" name="razon_social" class="form-control" value="{{old('razon_social', $empresa->razon_social)}}" autofocus>
                         </div>
                         <label for="ruc" class="col-md-1 control-label">RUC *</label>
                         <div class="col-md-3">
-                            <input type="text" id="ruc" name="ruc" class="form-control" value="{{$empresa->ruc}}">
+                            <input type="text" id="ruc" name="ruc" class="form-control" value="{{old('ruc', $empresa->ruc)}}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="direccion" class="col-md-2 control-label">Dirección *</label>
                         <div class="col-md-5">
-                            <input type="text" id="direccion" name="direccion" class="form-control" value="{{$empresa->direccion}}">
+                            <input type="text" id="direccion" name="direccion" class="form-control" value="{{old('direccion',$empresa->direccion)}}">
                         </div>
                         <label for="telefono" class="col-md-1 control-label">Telefono *</label>
                         <div class="col-md-3">
-                            <input type="text" id="telefono" name="telefono" class="form-control" value="{{$empresa->telefono}}">
+                            <input type="text" id="telefono" name="telefono" class="form-control" value="{{old('telefono',$empresa->telefono)}}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="sitio_web" class="col-md-2 control-label">Sitio Web *</label>
+                        <label for="sitio_web" class="col-md-2 control-label">Sitio Web</label>
                         <div class="col-md-5">
-                            <input type="text" id="sitio_web" name="sitio_web" class="form-control" value="{{$empresa->sitio_web}}">
+                            <input type="text" id="sitio_web" name="sitio_web" class="form-control" value="{{old('sitio_web',$empresa->sitio_web)}}">
                         </div>
                         <label for="correo_electronico" class="col-md-1 control-label">Correo *</label>
                         <div class="col-md-3">
-                            <input type="text" id="correo_electronico" name="correo_electronico" class="form-control" value="{{$empresa->correo_electronico}}">
+                            <input type="text" id="correo_electronico" name="correo_electronico" class="form-control" value="{{old('correo_electronico',$empresa->correo_electronico)}}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="eslogan" class="col-md-2 control-label">Eslogan</label>
                         <div class="col-md-5">
-                            <input type="text" id="eslogan" name="eslogan" class="form-control" value="{{$empresa->eslogan}}">
+                            <input type="text" id="eslogan" name="eslogan" class="form-control" value="{{old('eslogan',$empresa->eslogan)}}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="rubro" class="col-md-2 control-label">Rubro *</label>
                         <div class="col-md-5">
-                            <input type="text" id="rubro" name="rubro" class="form-control" value="{{$empresa->rubro}}">
+                            <input type="text" id="rubro" name="rubro" class="form-control" value="{{old('rubro',$empresa->rubro)}}">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                        <button class="btn btn-default">Cancelar</button>
-                    </div>
+                    <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-save">Guardar</button>
+                            <a href="{{route('empresa.index')}}" type="button" class="btn btn-default">Cancelar</a>
+                        </div>
                 </div>
             </div>
         </form>
