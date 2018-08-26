@@ -10,15 +10,18 @@
                     <h4>Configuración de Datos de la Empresa</h4>
                 </div>
                 <div class="panel-body">
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
+                    <div class="form-group">
+                        @if ($errors->any())
+                            <div class="alert alert-danger alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
                                 </ul>
-                        </div><br/>
-                    @endif
+                            </div>
+                        @endif
+                    </div>
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id">

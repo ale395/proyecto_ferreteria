@@ -68,7 +68,10 @@ class EmpresaController extends Controller
 
         $empresa->save();
 
-        return redirect('/empresa');
+        $empresas = Empresa::all();
+        $id = $empresas[0]->id;
+
+        return redirect('/empresa/'.$id.'/edit')->with('status', 'Datos guardados correctamente!');
     }
 
     /**
@@ -130,7 +133,7 @@ class EmpresaController extends Controller
         
         $empresa->update();
 
-        return redirect('/empresa');
+        return redirect('/empresa/'.$empresa->id.'/edit')->with('status', 'Datos guardados correctamente!');
     }
 
     /**

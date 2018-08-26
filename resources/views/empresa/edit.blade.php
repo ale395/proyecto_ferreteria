@@ -2,33 +2,6 @@
 
 @section('content')
 
-<!--<div class="container">
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div><br />
-    @endif
-    <div class="row">
-    <form method="post" action="{{url('/create/ticket')}}">
-        <div class="form-group">
-            <input type="hidden" value="{{csrf_token()}}" name="_token" />
-            <label for="title">Ticket Title:</label>
-            <input type="text" class="form-control" name="title"/>
-        </div>
-        <div class="form-group">
-            <label for="description">Ticket Description:</label>
-            <textarea cols="5" rows="5" class="form-control" name="description"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <button class="btn btn-default">Cancelar</button>
-        </form>
-    </div>
-</div>-->
-
 <div class="row">
     <div class="col-md-12">
         <form method="post" action="{{action('EmpresaController@update', $empresa->id)}}" class="form-horizontal" data-toggle="validator">
@@ -38,13 +11,20 @@
                 </div>
                 <div class="panel-body">
                     @if ($errors->any())
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert">&times;</a>
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
                                 </ul>
                         </div><br/>
+                    @endif
+                    @if (session('status'))
+                        <div class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            {{ session('status') }}
+                        </div>
                     @endif
                     <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
