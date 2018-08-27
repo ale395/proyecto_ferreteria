@@ -38,7 +38,9 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA NUMERACION DE SERIES
 	Route::resource('series', 'SerieController');
 	Route::get('api/series', 'SerieController@apiSeries')->name('api.series');
-
+	//RUTAS PARA FORMAS DE PAGO
+	Route::resource('formasPagos', 'FormaPagoController', ['parameters'=>['formasPagos'=>'formaPago']]);
+	Route::get('api/formasPagos', 'FormaPagoController@apiFormasPagos')->name('api.formasPagos');
 	//RUTAS PARA NUMERACION DE SERIES
 	Route::resource('seriesVendedores', 'SerieVendedorController');
 	Route::get('api/seriesVendedores', 'SerieVendedorController@apiSeriesVendedores')->name('api.seriesVendedores');
@@ -78,7 +80,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('rubros', 'RubroController');
 	Route::get('api/rubros', 'RubroController@apiRubros')->name('api.rubros');
 
-	//rutas para modelo 'unidadmedidas'
+	//rutas para modelo 'unidadesmedidas'
 	Route::resource('unidadesMedidas', 'UnidadMedidaController');
 	Route::get('api/unidadesMedidas', 'UnidadMedidaController@apiUnidadesMedidas')->name('api.unidadesMedidas');
 

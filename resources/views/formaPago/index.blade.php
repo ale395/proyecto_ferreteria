@@ -6,8 +6,8 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Impuestos
-                        @can('impuestos.create')
+                    <h4>Formas de pagos
+                        @can('formasPagos.create')
                           <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
@@ -15,12 +15,12 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table id="impuesto-table" class="table table-striped table-responsive">
+                    <table id="forma-pago-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
-                                <th>Porcentaje</th>
+                                <th>Activo</th>
                                 <th width="150">Acciones</th>
                             </tr>
                         </thead>
@@ -30,20 +30,20 @@
             </div>
         </div>
 
-    @include('impuesto.form')
+    @include('formaPago.form')
 @endsection
 
 @section('ajax_datatables')
   <script type="text/javascript">
-      var table = $('#impuesto-table').DataTable({
-                      language: { url: 'datatables/translation/spanish' },
+      var table = $('#forma-Pago-table').DataTable({
+                      language: { url: 'datatables/translation/spanish'},
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.impuestos') }}",
+                      ajax: "{{ route('api.formasPagos') }}",
                       columns: [
                         {data: 'codigo', name: 'codigo'},
-                        {data: 'nombre', name: 'nombre'},
-                        {data: 'activo', name: 'activo'},
+                        {data: 'descripcion', name: 'descripcion'},
+                        {data: 'control_valor', name: 'control_valor'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
@@ -51,7 +51,7 @@
       function addForm() {
         save_method = "add";
         $('#error-block').hide();
-        $('#activo').attr('checked', true);
+        $('#control_valor').attr('checked', true);
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
 
@@ -64,8 +64,8 @@
             $('#modal-form form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('bancos') }}";
-                    else url = "{{ url('bancos') . '/' }}" + id;
+                    if (save_method == 'add') url = "{{ url('formasPagos') }}";
+                    else url = "{{ url('formasPagos') . '/' }}" + id;
 
                     $.ajax({
                         url : url,
@@ -106,20 +106,20 @@
         $('#modal-form form')[0].reset();
         $('#error-block').hide();
         $.ajax({
-          url: "{{ url('bancos') }}" + '/' + id + "/edit",
+          url: "{{ url('formasPagos') }}" + '/' + id + "/edit",
           type: "GET",
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Banco');
+            $('.modal-title').text('Editar forma de pago');
 
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
-            $('#nombre').val(data.nombre);
-            if (data.activo) {
-              $('#activo').attr('checked', true);
+            $('#descripcion').val(data.descripcion);
+            if (data.control_valor) {
+              $('#control_valor').attr('checked', true);
             }else{
-              $('#activo').attr('checked', false);
+              $('#control_valor').attr('checked', false);
             }
           },
           error : function() {
@@ -147,7 +147,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('bancos') }}" + '/' + id,
+                                  url : "{{ url('formasPagos') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {
@@ -183,6 +183,6 @@
   </script>
   
   <script type="text/javascript">
-    $('#impuesto-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+    $('#banco-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
 @endsection

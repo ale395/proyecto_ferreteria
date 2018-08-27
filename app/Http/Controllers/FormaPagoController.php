@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Validator;
+use App\FormaPago;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
+
 class FormaPagoController extends Controller
 {
       /**
@@ -35,9 +40,9 @@ class FormaPagoController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'codigo' => 'required|max:20|unique:formaPagos,codigo',
-            'nombre' => 'required|max:100',
-            'activo' => 'required'
+            'codigo' => 'required|max:20|unique:forma_Pago,codigo',
+            'descripcion' => 'required|max:100',
+            'control_valor' => 'required'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -51,8 +56,8 @@ class FormaPagoController extends Controller
 
         $data = [
             'codigo' => $request['codigo'],
-            'nombre' => $request['nombre'],
-            'activo' => $request['activo']
+            'descripcion' => $request['descripcion'],
+            'control_valor' => $request['control_valor']
         ];
 
         return FormaPago::create($data);
@@ -64,7 +69,7 @@ class FormaPagoController extends Controller
      * @param  \App\FormaPago  $formaPago
      * @return \Illuminate\Http\Response
      */
-    public function show(FormaPago $formaPago)
+    public function show($id)
     {
         //
     }
@@ -77,8 +82,8 @@ class FormaPagoController extends Controller
      */
     public function edit($id)
     {
-        $formaPago = FormaPago::findOrFail($id);
-        return $formaPago;
+        $forma_Pago = FormaPago::findOrFail($id);
+        return $forma_Pago;
     }
 
     /**
@@ -90,12 +95,12 @@ class FormaPagoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $formaPago = FormaPago::findOrFail($id);
+        $forma_Pago = FormaPago::findOrFail($id);
 
         $rules = [
-            'codigo' => 'required|max:20|unique:formaPagos,codigo,'.$formaPago->id,
-            'nombre' => 'required|max:100',
-            'activo' => 'required'
+            'codigo' => 'required|max:20|unique:formas_Pagos,codigo,'.$forma_Pago->id,
+            'descripcion' => 'required|max:100',
+            'control_valor' => 'required'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -107,13 +112,13 @@ class FormaPagoController extends Controller
             return response()->json(['errors' => $errors], 422); // Status code here
         }
 
-        $formaPago->codigo = $request['codigo'];
-        $formaPago->nombre = $request['nombre'];
-        $formaPago->activo = $request['activo'];
+        $forma_Pago->codigo = $request['codigo'];
+        $forma_Pago->descripcion = $request['descripcion'];
+        $forma_Pago->control_valor = $request['control_valor'];
         
-        $formaPago->update();
+        $forma_Pago->update();
 
-        return $formaPago;
+        return $forma_Pago;
     }
 
     /**
@@ -131,59 +136,59 @@ class FormaPagoController extends Controller
     {
         $permiso_editar = Auth::user()->can('formasPagos.edit');
         $permiso_eliminar = Auth::user()->can('formasPagos.destroy');
-        $formaPagos = FormaPago::all();
+        $forma_Pago = FormaPago::all();
 
         if ($permiso_editar) {
             if ($permiso_eliminar) {
-                return Datatables::of($formaPagos)
-                ->addColumn('activo', function($formaPagos){
-                    if ($formaPagos->activo) {
+                return Datatables::of($forma_Pago)
+                ->addColumn('activo', function($forma_Pago){
+                    if ($forma_Pago->activo) {
                         return 'Si';
                     }else{
                         return 'No';
                     }
                 })
-                ->addColumn('action', function($formaPagos){
-                    return '<a onclick="editForm('. $formaPagos->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $formaPagos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                ->addColumn('action', function($forma_Pago){
+                    return '<a onclick="editForm('. $forma_Pago->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $forma_Pago->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
-                return Datatables::of($formaPagos)
-                ->addColumn('activo', function($formaPagos){
-                    if ($formaPagos->activo) {
+                return Datatables::of($forma_Pago)
+                ->addColumn('activo', function($forma_Pago){
+                    if ($forma_Pago->activo) {
                         return 'Si';
                     }else{
                         return 'No';
                     }
                 })
-                ->addColumn('action', function($formaPagos){
-                    return '<a onclick="editForm('. $formaPagos->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                ->addColumn('action', function($forma_Pago){
+                    return '<a onclick="editForm('. $forma_Pago->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
-            return Datatables::of($formaPagos)
-            ->addColumn('activo', function($formaPagos){
-                    if ($formaPagos->activo) {
+            return Datatables::of($forma_Pago)
+            ->addColumn('activo', function($forma_Pago){
+                    if ($forma_Pago->activo) {
                         return 'Si';
                     }else{
                         return 'No';
                     }
                 })
-            ->addColumn('action', function($formaPagos){
+            ->addColumn('action', function($forma_Pago){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a onclick="deleteData('. $formaPagos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                       '<a onclick="deleteData('. $forma_Pago->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
-            return Datatables::of($formaPagos)
-            ->addColumn('activo', function($formaPagos){
-                    if ($formaPagos->activo) {
+            return Datatables::of($forma_Pago)
+            ->addColumn('activo', function($forma_Pago){
+                    if ($forma_Pago->activo) {
                         return 'Si';
                     }else{
                         return 'No';
                     }
                 })
-            ->addColumn('action', function($formaPagos){
+            ->addColumn('action', function($forma_Pago){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
