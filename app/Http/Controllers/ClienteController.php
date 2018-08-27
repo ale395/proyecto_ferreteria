@@ -180,62 +180,123 @@ class ClienteController extends Controller
     {
         $permiso_editar = Auth::user()->can('clientes.edit');
         $permiso_eliminar = Auth::user()->can('clientes.destroy');
+        $permiso_ver = Auth::user()->can('clientes.show');
         $clientes = Cliente::all();
 
         if ($permiso_editar) {
             if ($permiso_eliminar) {
-                return Datatables::of($clientes)
-                ->addColumn('activo', function($clientes){
-                    if ($clientes->activo) {
-                        return 'Si';
-                    }else{
-                        return 'No';
-                    }
-                })
-                ->addColumn('action', function($clientes){
-                    return '<a onclick="showForm('. $clientes->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $clientes->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
-                           '<a onclick="deleteData('. $clientes->id .')" class="btn btn-danger btn-sm" title="Eliminar Cliente"><i class="fa fa-trash-o"></i></a>';
-                })->make(true);
+                if ($permiso_ver) {
+                    return Datatables::of($clientes)
+                    ->addColumn('activo', function($clientes){
+                        if ($clientes->activo) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
+                    ->addColumn('action', function($clientes){
+                        return '<a onclick="showForm('. $clientes->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $clientes->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a onclick="deleteData('. $clientes->id .')" class="btn btn-danger btn-sm" title="Eliminar Cliente"><i class="fa fa-trash-o"></i></a>';
+                    })->make(true);
+                } else{
+                    return Datatables::of($clientes)
+                    ->addColumn('activo', function($clientes){
+                        if ($clientes->activo) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
+                    ->addColumn('action', function($clientes){
+                        return '<a class="btn btn-primary btn-sm" title="Ver Cliente"  disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $clientes->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a onclick="deleteData('. $clientes->id .')" class="btn btn-danger btn-sm" title="Eliminar Cliente"><i class="fa fa-trash-o"></i></a>';
+                    })->make(true);
+                }
             } else {
+                if ($permiso_ver) {
+                    return Datatables::of($clientes)
+                    ->addColumn('activo', function($clientes){
+                        if ($clientes->activo) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
+                    ->addColumn('action', function($clientes){
+                        return '<a onclick="showForm('. $clientes->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $clientes->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                               '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                    })->make(true);
+                } else{
+                    return Datatables::of($clientes)
+                    ->addColumn('activo', function($clientes){
+                        if ($clientes->activo) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
+                    ->addColumn('action', function($clientes){
+                        return '<a class="btn btn-primary btn-sm" title="Ver Cliente" disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $clientes->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a class="btn btn-danger btn-sm" title="Eliminar Cliente" disabled><i class="fa fa-trash-o"></i></a>';
+                    })->make(true);
+                }
+            }
+        } elseif ($permiso_eliminar) {
+            if ($permiso_ver) {
                 return Datatables::of($clientes)
                 ->addColumn('activo', function($clientes){
-                    if ($clientes->activo) {
-                        return 'Si';
-                    }else{
-                        return 'No';
-                    }
-                })
+                        if ($clientes->activo) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
                 ->addColumn('action', function($clientes){
-                    return '<a onclick="editForm('. $clientes->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                    return '<a onclick="showForm('. $clientes->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $clientes->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            } else{
+                return Datatables::of($clientes)
+                ->addColumn('activo', function($clientes){
+                        if ($clientes->activo) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
+                ->addColumn('action', function($clientes){
+                    return '<a class="btn btn-primary btn-sm" title="Ver Cliente" disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $clientes->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            }
+        } else {
+            if ($permiso_ver) {
+                return Datatables::of($clientes)
+                ->addColumn('activo', function($clientes){
+                        if ($clientes->activo) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
+                ->addColumn('action', function($clientes){
+                    return '<a onclick="showForm('. $clientes->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            } else{
+                return Datatables::of($clientes)
+                ->addColumn('activo', function($clientes){
+                        if ($clientes->activo) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
+                ->addColumn('action', function($clientes){
+                    return '<a class="btn btn-primary btn-sm" title="Ver Cliente"  disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
-        } elseif ($permiso_eliminar) {
-            return Datatables::of($clientes)
-            ->addColumn('activo', function($clientes){
-                    if ($clientes->activo) {
-                        return 'Si';
-                    }else{
-                        return 'No';
-                    }
-                })
-            ->addColumn('action', function($clientes){
-                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a onclick="deleteData('. $clientes->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
-            })->make(true);
-        } else {
-            return Datatables::of($clientes)
-            ->addColumn('activo', function($clientes){
-                    if ($clientes->activo) {
-                        return 'Si';
-                    }else{
-                        return 'No';
-                    }
-                })
-            ->addColumn('action', function($clientes){
-                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-            })->make(true);
         }
     }
 }
