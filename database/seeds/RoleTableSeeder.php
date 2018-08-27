@@ -63,6 +63,11 @@ class RoleTableSeeder extends Seeder
         $permiso_crear_impuesto = Permission::where('slug', 'impuestos.create')->first();
         $permiso_editar_impuesto = Permission::where('slug', 'impuestos.edit')->first();
         $permiso_eliminar_impuesto = Permission::where('slug', 'impuestos.destroy')->first();
+         //permisos de Impuestos
+         $permiso_listar_formaPago = Permission::where('slug', 'formasPagos.index')->first();
+         $permiso_crear_formaPago = Permission::where('slug', 'formasPagos.create')->first();
+         $permiso_editar_formaPago = Permission::where('slug', 'formasPagos.edit')->first();
+         $permiso_eliminar_formaPago = Permission::where('slug', 'formasPagos.destroy')->first();
         //permisos de Sucursales
         $permiso_listar_banco = Permission::where('slug', 'bancos.index')->first();
         $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
@@ -142,6 +147,17 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_familia_editar->id);
         $role->assignPermission($permiso_familia_eliminar->id);
 
+
+        $role->assignPermission($permiso_listar_formaPago->id);
+        $role->assignPermission($permiso_crear_formaPago->id);
+        $role->assignPermission($permiso_editar_formaPago->id);
+        $role->assignPermission($permiso_eliminar_formaPago->id);
+
+        $role->assignPermission($permiso_listar_sucu->id);
+        $role->assignPermission($permiso_crear_sucu->id);
+        $role->assignPermission($permiso_editar_sucu->id);
+        $role->assignPermission($permiso_eliminar_sucu->id);
+
         $role->assignPermission($permiso_listar_rol->id);
         $role->assignPermission($permiso_crear_rol->id);
         $role->assignPermission($permiso_editar_rol->id);
@@ -200,16 +216,30 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_banco->id);
         $role->assignPermission($permiso_editar_banco->id);
         $role->assignPermission($permiso_eliminar_banco->id);
-        
+
         $role->assignPermission($permiso_listar_timb->id);
         $role->assignPermission($permiso_crear_timb->id);
         $role->assignPermission($permiso_editar_timb->id);
         $role->assignPermission($permiso_eliminar_timb->id);
 
+
+        $role->assignPermission($permiso_listar_vend->id);
+        $role->assignPermission($permiso_crear_vend->id);
+        $role->assignPermission($permiso_editar_vend->id);
+        $role->assignPermission($permiso_eliminar_vend->id);
+
         $role->assignPermission($permiso_listar_nume_series->id);
         $role->assignPermission($permiso_crear_nume_series->id);
         $role->assignPermission($permiso_editar_nume_series->id);
         $role->assignPermission($permiso_eliminar_nume_series->id);
+
+        $role->assignPermission($permiso_listar_lprec->id);
+        $role->assignPermission($permiso_crear_lprec->id);
+        $role->assignPermission($permiso_editar_lprec->id);
+        $role->assignPermission($permiso_eliminar_lprec->id);
+
+        $role->assignPermission($permiso_asignar_lprec->id);
+        $role->assignPermission($permiso_eliminar_asignacion_lprec->id);
 
         $role->save();
 

@@ -123,6 +123,10 @@
                               <li class="sub_menu"><a href="{{route('timbrados.index')}}">Timbrados</a>
                               </li>
                             @endcan
+                            @can('formasPagos.index')
+                              <li class="sub_menu"><a href="{{route('formasPagos.index')}}">Formas de Pago</a>
+                              </li>
+                            @endcan
                             @can('series.index')
                               <li class="sub_menu"><a href="{{route('series.index')}}">Series</a>
                               </li>

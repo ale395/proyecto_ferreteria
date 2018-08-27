@@ -127,6 +127,31 @@ class PermissionTableSeeder extends Seeder
          $permission->description = 'Permite ver el listado de impuestos del sistema';
          $permission->save();
 
+        //PERMISOS PARA EL FORMULARIO DE IMPUESTOS
+         $permission = new Permission();
+         $permission->name = 'Crear Formas de pago';
+         $permission->slug = 'formasPagos.create';
+         $permission->description = 'Permite la creación de nuevos formas pagos en el sistema';
+         $permission->save();
+ 
+         $permission = new Permission();
+         $permission->name = 'Borrar Forma de pago';
+         $permission->slug = 'formasPagos.destroy';
+         $permission->description = 'Permite la eliminación de la forma de pago del sistema';
+         $permission->save();
+ 
+         $permission = new Permission();
+         $permission->name = 'Editar Forma de pago';
+         $permission->slug = 'formasPagos.edit';
+         $permission->description = 'Permite modificar los valores de una forma de pago del sistema';
+         $permission->save();
+ 
+         $permission = new Permission();
+         $permission->name = 'Listar forma de pago';
+         $permission->slug = 'formasPagos.index';
+         $permission->description = 'Permite ver el listado de formas de pago del sistema';
+         $permission->save();
+
         //Para tablas pequeñas no creo que haga falta
         /*$permission = new Permission();
         $permission->name = 'Ver Banco';
