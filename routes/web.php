@@ -64,6 +64,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('users', 'UserController');
 	Route::get('api/users', 'UserController@apiUsers')->name('api.users');
 
+	//RUTA PARA EL CONTROLADOR DE PEDIDOS - VENTAS
+	Route::resource('pedidosVentas', 'PedidoVentaController');
+
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');
 	Route::get('api/sucursales', 'SucursalController@apiSucursales')->name('api.sucursales');
