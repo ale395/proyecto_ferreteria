@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\UnidadMedida; 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -37,6 +38,21 @@ class UnidadMedidaController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'num_umedida' => 'required|max:20|unique:unidadmedida,num_umedida',
+            'descripcion' => 'required|max:100'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
+
         $data = [
             'num_umedida' => $request['num_umedida'],
             'descripcion' => $request['descripcion']
@@ -76,6 +92,20 @@ class UnidadMedidaController extends Controller
      */
     public function update(Request $request, UnidadMedida $unidadmedida)
     {
+        $rules = [
+            'num_umedida' => 'required|max:20|unique:unidadmedida,num_umedida',
+            'descripcion' => 'required|max:100'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
         $unidadmedida->num_umedida = $request['num_umedida'];
         $unidadmedida->descripcion = $request['descripcion'];
         
