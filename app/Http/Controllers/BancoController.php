@@ -39,7 +39,7 @@ class BancoController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'codigo' => 'required|max:20|unique:banco,codigo',
+            'codigo' => 'required|max:20|unique:bancos,codigo',
             'nombre' => 'required|max:100',
             'activo' => 'required'
         ];
