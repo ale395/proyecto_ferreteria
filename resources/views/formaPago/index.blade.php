@@ -183,6 +183,6 @@
   </script>
   
   <script type="text/javascript">
-    $('#banco-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+    $('#formaPago-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
 @endsection

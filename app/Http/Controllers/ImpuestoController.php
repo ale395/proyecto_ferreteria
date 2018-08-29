@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class ImpuestoController extends Controller
 {
@@ -73,7 +75,7 @@ class ImpuestoController extends Controller
      * @param  \App\Impuesto  $impuesto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pais $pais)
+    public function update(Request $request, Impuesto $impuesto)
     {
              $impuesto->codigo = $request['codigo'];
         $impuesto->descripcion = $request['descripcion'];

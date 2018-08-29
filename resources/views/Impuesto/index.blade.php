@@ -42,8 +42,8 @@
                       ajax: "{{ route('api.impuestos') }}",
                       columns: [
                         {data: 'codigo', name: 'codigo'},
-                        {data: 'nombre', name: 'nombre'},
-                        {data: 'activo', name: 'activo'},
+                        {data: 'descripcion', name: 'descripcion'},
+                        {data: 'porcentaje', name: 'porcentaje'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
@@ -57,15 +57,15 @@
 
         $('#modal-form form')[0].reset();
 
-        $('.modal-title').text('Nuevo Banco');
+        $('.modal-title').text('Nuevo Impuesto');
       }
 
       $(function(){
             $('#modal-form form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('bancos') }}";
-                    else url = "{{ url('bancos') . '/' }}" + id;
+                    if (save_method == 'add') url = "{{ url('impuestos') }}";
+                    else url = "{{ url('impuestos') . '/' }}" + id;
 
                     $.ajax({
                         url : url,
@@ -106,7 +106,7 @@
         $('#modal-form form')[0].reset();
         $('#error-block').hide();
         $.ajax({
-          url: "{{ url('bancos') }}" + '/' + id + "/edit",
+          url: "{{ url('impuestos') }}" + '/' + id + "/edit",
           type: "GET",
           dataType: "JSON",
           success: function(data) {
@@ -115,12 +115,8 @@
 
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
-            $('#nombre').val(data.nombre);
-            if (data.activo) {
-              $('#activo').attr('checked', true);
-            }else{
-              $('#activo').attr('checked', false);
-            }
+            $('#descripcion').val(data.descripcion);
+            $('#porcentaje').val(data.porcentaje);
           },
           error : function() {
               $.alert({
@@ -147,7 +143,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('bancos') }}" + '/' + id,
+                                  url : "{{ url('impuestos') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {
