@@ -399,56 +399,6 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de familias del sistema';
         $permission->save();
 
-        //PERMISOS PARA EL FORMULARIO DE PAISES
-        $permission = new Permission();
-        $permission->name = 'Crear Pais';
-        $permission->slug = 'paises.create';
-        $permission->description = 'Permite la creación de nuevos paises en el sistema';
-        $permission->save();
-        
-        $permission = new Permission();
-        $permission->name = 'Borrar Pais';
-        $permission->slug = 'paises.destroy';
-        $permission->description = 'Permite la eliminación de familias del sistema';
-        $permission->save();
-        
-        $permission = new Permission();
-        $permission->name = 'Editar Pais';
-        $permission->slug = 'paises.edit';
-        $permission->description = 'Permite modificar los valores de un pais';
-        $permission->save();
-        
-        $permission = new Permission();
-        $permission->name = 'Listar Paises';
-        $permission->slug = 'paises.index';
-        $permission->description = 'Permite ver el listado de paises del sistema';
-        $permission->save();
-        
-        //PERMISOS PARA EL FORMULARIO DE CIUDADES
-        $permission = new Permission();
-        $permission->name = 'Crear Ciudad';
-        $permission->slug = 'ciudades.create';
-        $permission->description = 'Permite la creación de nuevos ciudades en el sistema';
-        $permission->save();
-        
-        $permission = new Permission();
-        $permission->name = 'Borrar Ciudad';
-        $permission->slug = 'ciudades.destroy';
-        $permission->description = 'Permite la eliminación de ciudades del sistema';
-        $permission->save();
-        
-        $permission = new Permission();
-        $permission->name = 'Editar Ciudad';
-        $permission->slug = 'ciudades.edit';
-        $permission->description = 'Permite modificar los valores de un pais';
-        $permission->save();
-        
-        $permission = new Permission();
-        $permission->name = 'Listar Ciudades';
-        $permission->slug = 'ciudades.index';
-        $permission->description = 'Permite ver el listado de ciudades del sistema';
-        $permission->save();
-
         //PERMISOS PARA EL FORMULARIO DE LINEAS
         $permission = new Permission();
         $permission->name = 'Crear Linea';
@@ -597,6 +547,38 @@ class PermissionTableSeeder extends Seeder
         $permission->name = 'Listar Cajero';
         $permission->slug = 'cajeros.index';
         $permission->description = 'Permite ver el listado de cajeros';
+        $permission->save();
+
+        //Pedidos - Ventas
+        $permission = new Permission();
+        $permission->name = 'Cargar Pedido de Venta';
+        $permission->slug = 'pedidosVentas.create';
+        $permission->description = 'Permite la carga de un pedido de venta en el sistema';
+        $permission->save();
+
+        /*$permission = new Permission();
+        $permission->name = 'Borrar Pedido de Venta';
+        $permission->slug = 'pedidosVentas.destroy';
+        $permission->description = 'Permite la eliminación de un pedido de venta del sistema';
+        $permission->save();*/
+
+        $permission = new Permission();
+        $permission->name = 'Editar Pedido de Venta';
+        $permission->slug = 'pedidosVentas.edit';
+        $permission->description = 'Permite modificar los valores de un pedido del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Pedidos de Ventas';
+        $permission->slug = 'pedidosVentas.index';
+        $permission->description = 'Permite ver el listado de Pedidos de Ventas del sistema';
+        $permission->save();
+
+        
+        $permission = new Permission();
+        $permission->name = 'Ver Pedido de Venta';
+        $permission->slug = 'pedidosVentas.show';
+        $permission->description = 'Permite ver un Pedido de Venta del sistema';
         $permission->save();
     }
 }

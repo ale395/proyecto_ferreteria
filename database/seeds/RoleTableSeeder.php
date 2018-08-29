@@ -32,6 +32,12 @@ class RoleTableSeeder extends Seeder
         $permiso_eliminar_cliente = Permission::where('slug', 'clientes.destroy')->first();
         $permiso_ver_cliente = Permission::where('slug', 'clientes.show')->first();
 
+        //permisos para Pedido de Venta
+        $permiso_listar_pedido_venta = Permission::where('slug', 'pedidosVentas.index')->first();
+        $permiso_crear_pedido_venta = Permission::where('slug', 'pedidosVentas.create')->first();
+        $permiso_editar_pedido_venta = Permission::where('slug', 'pedidosVentas.edit')->first();
+        //$permiso_eliminar_pedido_venta = Permission::where('slug', 'pedidosVentas.destroy')->first();
+        $permiso_ver_pedido_venta = Permission::where('slug', 'pedidosVentas.show')->first();
 
         $permiso_listar_timb = Permission::where('slug', 'timbrados.index')->first();
         $permiso_crear_timb = Permission::where('slug', 'timbrados.create')->first();
@@ -90,18 +96,6 @@ class RoleTableSeeder extends Seeder
         $permiso_familia_editar = Permission::where('slug', 'familias.edit')->first();
         $permiso_familia_eliminar = Permission::where('slug', 'familias.destroy')->first();
 
-      //permisos de PAISES
-        $permiso_listar_pais = Permission::where('slug', 'paises.index')->first();
-        $permiso_crear_pais = Permission::where('slug', 'paises.create')->first();
-        $permiso_editar_pais = Permission::where('slug', 'paises.edit')->first();
-        $permiso_eliminar_pais = Permission::where('slug', 'paises.destroy')->first();
-
-    //permisos de CIUDADES
-        $permiso_listar_ciudad = Permission::where('slug', 'ciudades.index')->first();
-        $permiso_crear_ciudad = Permission::where('slug', 'ciudades.create')->first();
-        $permiso_editar_ciudad = Permission::where('slug', 'ciudades.edit')->first();
-        $permiso_eliminar_ciudad = Permission::where('slug', 'ciudades.destroy')->first();
-
         //permisos de Lineas
         $permiso_linea_listar = Permission::where('slug', 'lineas.index')->first();
         $permiso_linea_crear = Permission::where('slug', 'lineas.create')->first();
@@ -114,7 +108,7 @@ class RoleTableSeeder extends Seeder
         $permiso_rubro_editar = Permission::where('slug', 'rubros.edit')->first();
         $permiso_rubro_eliminar = Permission::where('slug', 'rubros.destroy')->first();
 
-        //permisos de Rubros
+        //permisos de unidades_medidas
         $permiso_unidadmedida_listar = Permission::where('slug', 'unidadesMedidas.index')->first();
         $permiso_unidadmedida_crear = Permission::where('slug', 'unidadesMedidas.create')->first();
         $permiso_unidadmedida_editar = Permission::where('slug', 'unidadesMedidas.edit')->first();
@@ -151,7 +145,6 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_familia_editar->id);
         $role->assignPermission($permiso_familia_eliminar->id);
 
-
         $role->assignPermission($permiso_listar_formaPago->id);
         $role->assignPermission($permiso_crear_formaPago->id);
         $role->assignPermission($permiso_editar_formaPago->id);
@@ -171,11 +164,6 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_user->id);
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
-
-        $role->assignPermission($permiso_listar_ciudad->id);
-        $role->assignPermission($permiso_crear_ciudad->id);
-        $role->assignPermission($permiso_editar_ciudad->id);
-        $role->assignPermission($permiso_eliminar_ciudad->id);
 
         $role->assignPermission($permiso_linea_listar->id);
         $role->assignPermission($permiso_linea_crear->id);
@@ -221,11 +209,16 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_banco->id);
         $role->assignPermission($permiso_eliminar_banco->id);
 
+        $role->assignPermission($permiso_listar_pedido_venta->id);
+        $role->assignPermission($permiso_crear_pedido_venta->id);
+        $role->assignPermission($permiso_editar_pedido_venta->id);
+        //$role->assignPermission($permiso_eliminar_pedido_venta->id);
+        $role->assignPermission($permiso_ver_pedido_venta->id);
+
         $role->assignPermission($permiso_listar_timb->id);
         $role->assignPermission($permiso_crear_timb->id);
         $role->assignPermission($permiso_editar_timb->id);
         $role->assignPermission($permiso_eliminar_timb->id);
-
 
         $role->assignPermission($permiso_listar_vend->id);
         $role->assignPermission($permiso_crear_vend->id);
@@ -244,6 +237,17 @@ class RoleTableSeeder extends Seeder
 
         $role->assignPermission($permiso_asignar_lprec->id);
         $role->assignPermission($permiso_eliminar_asignacion_lprec->id);
+
+        $role->assignPermission($permiso_listar_sucu->id);
+        $role->assignPermission($permiso_crear_sucu->id);
+        $role->assignPermission($permiso_editar_sucu->id);
+        $role->assignPermission($permiso_eliminar_sucu->id);
+
+        $role->assignPermission($permiso_listar_cliente->id);
+        $role->assignPermission($permiso_crear_cliente->id);
+        $role->assignPermission($permiso_editar_cliente->id);
+        $role->assignPermission($permiso_eliminar_cliente->id);
+        $role->assignPermission($permiso_ver_cliente->id);
 
         $role->save();
 
@@ -294,6 +298,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_cliente->id);
         $role->assignPermission($permiso_eliminar_cliente->id);
         $role->assignPermission($permiso_ver_cliente->id);
+
+        $role->assignPermission($permiso_listar_pedido_venta->id);
+        $role->assignPermission($permiso_crear_pedido_venta->id);
+        $role->assignPermission($permiso_editar_pedido_venta->id);
+        //$role->assignPermission($permiso_eliminar_pedido_venta->id);
+        $role->assignPermission($permiso_ver_pedido_venta->id);
 
         $role->assignPermission($permiso_listar_nume_series->id);
         $role->assignPermission($permiso_crear_nume_series->id);
