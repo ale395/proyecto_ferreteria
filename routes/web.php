@@ -100,4 +100,8 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('cajeros', 'CajeroController');
 	Route::get('api/cajeros', 'CajeroController@apiCajeros')->name('api.cajeros');
 
+	//Rutas para tipos proveedoress
+	Route::resource('tiposproveedores', 'TipoProveedorController');
+	Route::get('api/tiposproveedores', 'TipoProveedorController@apiTipoProveedor')->name('api.tiposproveedores');
+
 });

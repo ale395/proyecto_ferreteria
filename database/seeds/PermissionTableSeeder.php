@@ -580,5 +580,30 @@ class PermissionTableSeeder extends Seeder
         $permission->slug = 'pedidosVentas.show';
         $permission->description = 'Permite ver un Pedido de Venta del sistema';
         $permission->save();
+
+        //PERMISOS PARA EL FORMULARIO DE Tipo de Proveedor
+        $permission = new Permission();
+        $permission->name = 'Crear Tipo de Vendedor';
+        $permission->slug = 'tiposproveedores.create';
+        $permission->description = 'Permite la creación de nuevos tipos de vendedores en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Tipo de Vendedor';
+        $permission->slug = 'tiposproveedores.destroy';
+        $permission->description = 'Permite la eliminación de tipos de vendedores del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Tipo de Vendedor';
+        $permission->slug = 'tiposproveedores.edit';
+        $permission->description = 'Permite modificar los valores de un tipo de vendedor del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Tipo de Vendedor';
+        $permission->slug = 'tiposproveedores.index';
+        $permission->description = 'Permite ver el listado de tipos de vendedores del sistema';
+        $permission->save();
     }
 }
