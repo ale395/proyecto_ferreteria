@@ -57,7 +57,7 @@
 
         $('#modal-form form')[0].reset();
 
-        $('.modal-title').text('Nuevo Banco');
+        $('.modal-title').text('Nueva Forma de pago');
       }
 
       $(function(){

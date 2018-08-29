@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Validator;
+use App\Impuesto;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,7 +65,7 @@ class ImpuestoController extends Controller
      */
     public function edit(Impuesto $impuesto)
     {
-        dd($impuesto);
+        //dd($impuesto);
         return $impuesto;
 
     }

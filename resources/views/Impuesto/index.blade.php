@@ -111,7 +111,7 @@
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Banco');
+            $('.modal-title').text('Editar Impuesto');
 
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
