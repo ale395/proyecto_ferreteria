@@ -39,7 +39,7 @@ class TipoEmpleadoController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'codigo' => 'required|max:20|unique:tipos_empleados},codigo',
+            'codigo' => 'required|max:20|unique:tipos_empleados,codigo',
             'nombre' => 'required|max:100'
         ];
 

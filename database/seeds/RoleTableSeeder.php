@@ -76,16 +76,23 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_moneda = Permission::where('slug', 'monedas.edit')->first();
         $permiso_eliminar_moneda = Permission::where('slug', 'monedas.destroy')->first();
 
-         //permisos de Impuestos
-         $permiso_listar_formaPago = Permission::where('slug', 'formasPagos.index')->first();
-         $permiso_crear_formaPago = Permission::where('slug', 'formasPagos.create')->first();
-         $permiso_editar_formaPago = Permission::where('slug', 'formasPagos.edit')->first();
-         $permiso_eliminar_formaPago = Permission::where('slug', 'formasPagos.destroy')->first();
-        //permisos de Sucursales
+        //permisos de Impuestos
+        $permiso_listar_formaPago = Permission::where('slug', 'formasPagos.index')->first();
+        $permiso_crear_formaPago = Permission::where('slug', 'formasPagos.create')->first();
+        $permiso_editar_formaPago = Permission::where('slug', 'formasPagos.edit')->first();
+        $permiso_eliminar_formaPago = Permission::where('slug', 'formasPagos.destroy')->first();
+        
+        //permisos de Bancos
         $permiso_listar_banco = Permission::where('slug', 'bancos.index')->first();
         $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
         $permiso_editar_banco = Permission::where('slug', 'bancos.edit')->first();
         $permiso_eliminar_banco = Permission::where('slug', 'bancos.destroy')->first();
+
+        //permisos de Tipos Empleados
+        $permiso_listar_tipo_empleado = Permission::where('slug', 'tiposEmpleados.index')->first();
+        $permiso_crear_tipo_empleado = Permission::where('slug', 'tiposEmpleados.create')->first();
+        $permiso_editar_tipo_empleado = Permission::where('slug', 'tiposEmpleados.edit')->first();
+        $permiso_eliminar_tipo_empleado = Permission::where('slug', 'tiposEmpleados.destroy')->first();
 
         //permisos para Configuración de Empresa
         $permiso_listar_empresa = Permission::where('slug', 'empresas.index')->first();
@@ -222,12 +229,15 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_moneda->id);
         $role->assignPermission($permiso_eliminar_moneda->id);
 
-
-
         $role->assignPermission($permiso_listar_banco->id);
         $role->assignPermission($permiso_crear_banco->id);
         $role->assignPermission($permiso_editar_banco->id);
         $role->assignPermission($permiso_eliminar_banco->id);
+
+        $role->assignPermission($permiso_listar_tipo_empleado->id);
+        $role->assignPermission($permiso_crear_tipo_empleado->id);
+        $role->assignPermission($permiso_editar_tipo_empleado->id);
+        $role->assignPermission($permiso_eliminar_tipo_empleado->id);
 
         $role->assignPermission($permiso_listar_pedido_venta->id);
         $role->assignPermission($permiso_crear_pedido_venta->id);
