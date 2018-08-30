@@ -9,6 +9,7 @@ use App\ConceptoAjuste;
 use App\ClasificacionCliente;
 use App\Cajero;
 use App\User;
+use App\TipoProveedor;
 
 
 class DefaultSeeder extends Seeder
@@ -51,16 +52,22 @@ class DefaultSeeder extends Seeder
         $familia->descripcion = 'AJUSTE DE EXISTENCIA';
         $familia->save();
 
-        //Concepto ajuste por default - ajuste de existencia
+        //tipo cliente por default - ajuste de existencia
         $familia = new ClasificacionCliente();
         $familia->codigo = '001';
         $familia->nombre = 'Mayorista';
         $familia->save();
 
-        //Concepto ajuste por default - ajuste de existencia
+        //tipo cliente por default - ajuste de existencia
         $familia = new ClasificacionCliente();
         $familia->codigo = '002';
         $familia->nombre = 'Minorista';
+        $familia->save();
+
+        //tipo proveedor 
+        $familia = new TipoProveedor();
+        $familia->codigo = '001';
+        $familia->nombre = 'Proveedor Local';
         $familia->save();
 
         //traemos el usuario

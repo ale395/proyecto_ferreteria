@@ -132,6 +132,12 @@ class RoleTableSeeder extends Seeder
         $permiso_cajero_editar = Permission::where('slug', 'cajeros.edit')->first();
         $permiso_cajero_eliminar = Permission::where('slug', 'cajeros.destroy')->first();
 
+        //permisos de Tipo de Proveedor
+        $permiso_tproveedor_listar = Permission::where('slug', 'tiposproveedores.index')->first();
+        $permiso_tproveedor_crear = Permission::where('slug', 'tiposproveedores.create')->first();
+        $permiso_tproveedor_editar = Permission::where('slug', 'tiposproveedores.edit')->first();
+        $permiso_tproveedor_eliminar = Permission::where('slug', 'tiposproveedores.destroy')->first();
+
         $role = new Role();
         $role->name = 'Administrador';
         $role->slug = 'administrador';
@@ -242,6 +248,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_sucu->id);
         $role->assignPermission($permiso_editar_sucu->id);
         $role->assignPermission($permiso_eliminar_sucu->id);
+
+        $role->assignPermission($permiso_tproveedor_listar->id);
+        $role->assignPermission($permiso_tproveedor_crear->id);
+        $role->assignPermission($permiso_tproveedor_editar->id);
+        $role->assignPermission($permiso_tproveedor_eliminar->id);
 
         $role->assignPermission($permiso_listar_cliente->id);
         $role->assignPermission($permiso_crear_cliente->id);
