@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA BANCOS
 	Route::resource('bancos', 'BancoController');
 	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');
+	//RUTAS PARA TIMBRADOS
+	Route::resource('tiposEmpleados', 'TipoEmpleadoController');
+	Route::get('api/tiposEmpleados', 'TipoEmpleadoController@apiTiposEmpleados')->name('api.tiposEmpleados');
 
 	//RUTAS PARA VENDEDORES
 	Route::resource('vendedores', 'VendedorController');

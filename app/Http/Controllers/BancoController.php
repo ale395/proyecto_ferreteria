@@ -97,7 +97,7 @@ class BancoController extends Controller
         $banco = Banco::findOrFail($id);
 
         $rules = [
-            'codigo' => 'required|max:20|unique:banco,codigo,'.$banco->id,
+            'codigo' => 'required|max:20|unique:bancos,codigo,'.$banco->id,
             'nombre' => 'required|max:100',
             'activo' => 'required'
         ];

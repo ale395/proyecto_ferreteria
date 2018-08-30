@@ -101,6 +101,31 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de bancos del sistema';
         $permission->save();
 
+        //PERMISOS PARA EL FORMULARIO DE TIPOS DE EMPLEADOS
+        $permission = new Permission();
+        $permission->name = 'Crear Tipo Empleado';
+        $permission->slug = 'tiposEmpleados.create';
+        $permission->description = 'Permite la creación de un nuevo Tipo de Empleado en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Tipo de Empleado';
+        $permission->slug = 'tiposEmpleados.destroy';
+        $permission->description = 'Permite la eliminación de un Tipo de Empleado del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Tipo de Empleado';
+        $permission->slug = 'tiposEmpleados.edit';
+        $permission->description = 'Permite modificar los valores de un Tipo de Empleado del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Tipos de Empleados';
+        $permission->slug = 'tiposEmpleados.index';
+        $permission->description = 'Permite ver el listado de Tipos de Empleados del sistema';
+        $permission->save();
+
         //PERMISOS PARA EL FORMULARIO DE EMPRESA
         $permission = new Permission();
         $permission->name = 'Ver Configuración de Empresa';

@@ -131,6 +131,10 @@
                               <li class="sub_menu"><a href="{{route('empresa.index')}}">Empresa</a>
                               </li>
                             @endcan
+                            @can('tiposEmpleados.index')
+                              <li class="sub_menu"><a href="{{route('tiposEmpleados.index')}}">Tipos de Empleados</a>
+                              </li>
+                            @endcan
                             @can('monedas.index')
                               <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
                               </li>
