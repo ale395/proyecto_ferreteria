@@ -35,7 +35,7 @@
 
 @section('ajax_datatables')
   <script type="text/javascript">
-      var table = $('#forma-Pago-table').DataTable({
+      var table = $('#forma-pago-table').DataTable({
                       language: { url: 'datatables/translation/spanish'},
                       processing: true,
                       serverSide: true,

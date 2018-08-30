@@ -15,7 +15,7 @@ class CreateMonedasTable extends Migration
     {
         Schema::create('monedas', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('moneda', 4);
+            $table->string('codigo', 20)->unique();
             $table->string('descripcion', 50);
             $table->char('simbolo', 4)->nullable();
             $table->timestamps();
