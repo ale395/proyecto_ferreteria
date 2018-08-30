@@ -65,7 +65,6 @@ class MonedaController extends Controller
      */
     public function edit(Moneda $moneda)
     {
-        dd($moneda);
        // dd($moneda);
         return $moneda;
 
