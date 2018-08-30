@@ -17,18 +17,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="tipo_comprobante" class="col-md-3 control-label">Tipo Comprobante *</label>
-                        <div class="col-md-6">
-                            <input type="text" id="tipo_comprobante" name="tipo_comprobante" class="form-control" autofocus>
-                            <span class="help-block with-errors"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="serie" class="col-md-3 control-label">Serie *</label>
-                        <div class="col-md-6">
-                            <input type="text" id="serie" name="serie" class="form-control">
-                            <span class="help-block with-errors"></span>
-                        </div>
+                            <label for="tipo_comprobante" class="control-label col-md-3 col-sm-3 col-xs-12">Tipo Comprobante *</label>
+                          <div class="col-md-6">
+                            <select name="tipo_comprobante" id="select2-tipos" class="form-control" style="width: 100%">
+                                <option></option>
+                                <option value="F">Factura</option>
+                                <option value="N">Nota de Crédito</option>
+                            </select>
+                          </div>
                     </div>
                     <div class="form-group">
                             <label for="timbrado_id" class="control-label col-md-3 col-sm-3 col-xs-12">Nro Timbrado *</label>
@@ -37,6 +33,17 @@
                                 <option></option>
                                 @foreach($timbrados as $id => $timbrado)
                                   <option value="{{ $timbrado->id }}">{{ $timbrado->nro_timbrado }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                    </div>
+                    <div class="form-group">
+                            <label for="sucursal_id" class="control-label col-md-3 col-sm-3 col-xs-12">Sucursal *</label>
+                          <div class="col-md-6">
+                            <select name="sucursal_id" id="select2-sucursales" class="form-control" style="width: 100%">
+                                <option></option>
+                                @foreach($sucursales as $id => $sucursal)
+                                  <option value="{{ $sucursal->id }}">{{ $sucursal->nombre }}</option>
                                 @endforeach
                             </select>
                           </div>

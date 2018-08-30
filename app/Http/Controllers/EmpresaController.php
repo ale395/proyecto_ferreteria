@@ -50,12 +50,19 @@ class EmpresaController extends Controller
             'telefono' => 'required|max:20',
             'direccion' => 'required|max:100',
             'rubro' => 'required|max:100',
-            'sitio_web' => 'max:100',
+            'sitio_web' => 'bail|nullable|max:100',
             'eslogan' => 'max:100',
-            'correo_electronico' => 'required|max:100'
+            'correo_electronico' => 'bail|required|max:100|email',
+            'codigo_establecimiento' => 'bail|required|numeric|digits:3'
         ];
 
-        Validator::make($request->all(), $rules)->validate();
+        $mensajes = [
+            'codigo_establecimiento.required' => 'El campo Código de Establecimiento es obligatorio.',
+            'codigo_establecimiento.numeric' => 'El valor del Código de Establecimiento debe ser un número.',
+            'codigo_establecimiento.digits' => 'El valor del Código de Establecimiento debe tener :digits digitos.',
+        ];
+
+        Validator::make($request->all(), $rules, $mensajes)->validate();
 
         $empresa->razon_social = $request['razon_social'];
         $empresa->ruc = $request['ruc'];
@@ -65,6 +72,7 @@ class EmpresaController extends Controller
         $empresa->telefono = $request['telefono'];
         $empresa->eslogan = $request['eslogan'];
         $empresa->rubro = $request['rubro'];
+        $empresa->codigo_establecimiento = $request['codigo_establecimiento'];
 
         $empresa->save();
 
@@ -114,13 +122,19 @@ class EmpresaController extends Controller
             'telefono' => 'required|max:20',
             'direccion' => 'required|max:100',
             'rubro' => 'required|max:100',
-            'sitio_web' => 'max:100',
+            'sitio_web' => '|bail|nullable|max:100',
             'eslogan' => 'max:100',
-            'correo_electronico' => 'required|max:100'
+            'correo_electronico' => 'bail|required|max:100|email',
+            'codigo_establecimiento' => 'bail|required|numeric|digits:3'
         ];
 
+        $mensajes = [
+            'codigo_establecimiento.required' => 'El campo Código de Establecimiento es obligatorio.',
+            'codigo_establecimiento.numeric' => 'El valor del Código de Establecimiento debe ser un número.',
+            'codigo_establecimiento.digits' => 'El valor del Código de Establecimiento debe tener :digits digitos.',
+        ];
 
-        Validator::make($request->all(), $rules)->validate();
+        Validator::make($request->all(), $rules, $mensajes)->validate();
 
         $empresa->razon_social = $request['razon_social'];
         $empresa->ruc = $request['ruc'];
@@ -130,6 +144,7 @@ class EmpresaController extends Controller
         $empresa->telefono = $request['telefono'];
         $empresa->eslogan = $request['eslogan'];
         $empresa->rubro = $request['rubro'];
+        $empresa->codigo_establecimiento = $request['codigo_establecimiento'];
         
         $empresa->update();
 
@@ -144,6 +159,6 @@ class EmpresaController extends Controller
      */
     public function destroy(Empresa $empresa)
     {
-        //
+        //No se implementa el método porque no se debe poder borrar la configuración una vez cargada, solo puede ser modificada
     }
 }

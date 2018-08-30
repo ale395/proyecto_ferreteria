@@ -20,9 +20,10 @@
                             <tr>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
+                                <th>Punto Expedición</th>
                                 <th>Direccion</th>
                                 <th>Activo</th>
-                                <th width="150">Acciones</th>
+                                <th width="80">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -44,6 +45,7 @@
                       columns: [
                         {data: 'codigo', name: 'codigo'},
                         {data: 'nombre', name: 'nombre'},
+                        {data: 'codigo_punto_expedicion', name: 'codigo_punto_expedicion'},
                         {data: 'direccion', name: 'direccion'},
                         {data: 'activo', name: 'activo'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
@@ -54,12 +56,9 @@
         save_method = "add";
         $('#error-block').hide();
         $('#activo').attr('checked', true);
-        //$('#activo').attr('value', 1);
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
-
         $('#modal-form form')[0].reset();
-
         $('.modal-title').text('Nueva Sucursal');
       }
 
@@ -120,9 +119,9 @@
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
             $('#nombre').val(data.nombre);
+            $('#codigo_punto_expedicion').val(data.codigo_punto_expedicion);
             $('#direccion').val(data.direccion);
             if (data.activo) {
-              //$('#activo').val(data.activo);
               $('#activo').attr('checked', true);
             }else{
               $('#activo').attr('checked', false);

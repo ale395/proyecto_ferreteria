@@ -43,10 +43,18 @@ class SucursalController extends Controller
             'codigo' => 'required|max:20|unique:sucursales,codigo',
             'nombre' => 'required|max:100',
             'direccion' => 'max:100',
+            'codigo_punto_expedicion' => '|bail|required|numeric|digits:3|unique:sucursales,codigo_punto_expedicion',
             'activo' => 'required'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $mensajes = [
+            'codigo_punto_expedicion.required' => 'El campo Punto de Expedición es obligatorio.',
+            'codigo_punto_expedicion.unique' => 'El valor de Punto de Expedición ya existe.',
+            'codigo_punto_expedicion.numeric' => 'El valor de Punto de Expedición debe ser un número.',
+            'codigo_punto_expedicion.digits' => 'El valor de Punto de Expedición debe tener :digits digitos.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -59,6 +67,7 @@ class SucursalController extends Controller
             'codigo' => $request['codigo'],
             'nombre' => $request['nombre'],
             'direccion' => $request['direccion'],
+            'codigo_punto_expedicion' => $request['codigo_punto_expedicion'],
             'activo' => $request['activo']
         ];
 
@@ -103,10 +112,18 @@ class SucursalController extends Controller
             'codigo' => 'required|max:20|unique:sucursales,codigo,'.$sucursal->id,
             'nombre' => 'required|max:100',
             'direccion' => 'max:100',
+            'codigo_punto_expedicion' => '|bail|required|numeric|digits:3|unique:sucursales,codigo_punto_expedicion,'.$sucursal->id,
             'activo' => 'required'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $mensajes = [
+            'codigo_punto_expedicion.required' => 'El campo Punto de Expedición es obligatorio.',
+            'codigo_punto_expedicion.unique' => 'El valor de Punto de Expedición ya existe.',
+            'codigo_punto_expedicion.numeric' => 'El valor de Punto de Expedición debe ser un número.',
+            'codigo_punto_expedicion.digits' => 'El valor de Punto de Expedición debe tener :digits digitos.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -118,6 +135,7 @@ class SucursalController extends Controller
         $sucursal->codigo = $request['codigo'];
         $sucursal->nombre = $request['nombre'];
         $sucursal->direccion = $request['direccion'];
+        $sucursal->codigo_punto_expedicion = $request['codigo_punto_expedicion'];
         $sucursal->activo = $request['activo'];
         
         $sucursal->update();
@@ -153,8 +171,8 @@ class SucursalController extends Controller
                     }
                 })
                 ->addColumn('action', function($sucursales){
-                    return '<a onclick="editForm('. $sucursales->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $sucursales->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                    return '<a onclick="editForm('. $sucursales->id .')" class="btn btn-warning btn-sm" title="Editar Sucursal"><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a onclick="deleteData('. $sucursales->id .')" class="btn btn-danger btn-sm" title="Eliminar Sucursal"><i class="fa fa-trash-o"></i></a>';
                 })->make(true);
             } else {
                 return Datatables::of($sucursales)
@@ -166,8 +184,8 @@ class SucursalController extends Controller
                     }
                 })
                 ->addColumn('action', function($sucursales){
-                    return '<a onclick="editForm('. $sucursales->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                    return '<a onclick="editForm('. $sucursales->id .')" class="btn btn-warning btn-sm" title="Editar Sucursal"><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a class="btn btn-danger btn-sm" title="Eliminar Sucursal" disabled><i class="fa fa-trash-o"></i></a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
@@ -180,8 +198,8 @@ class SucursalController extends Controller
                     }
                 })
             ->addColumn('action', function($sucursales){
-                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a onclick="deleteData('. $sucursales->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                return '<a class="btn btn-warning btn-sm" title="Editar Sucursal" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                       '<a onclick="deleteData('. $sucursales->id .')" class="btn btn-danger btn-sm" title="Eliminar Sucursal"><i class="fa fa-trash-o"></i></a>';
             })->make(true);
         } else {
             return Datatables::of($sucursales)

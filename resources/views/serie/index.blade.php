@@ -19,13 +19,13 @@
                         <thead>
                             <tr>
                                 <th>Tipo Comprobante</th>
-                                <th>Serie</th>
                                 <th>Nro Timbrado</th>
+                                <th>Sucursal</th>
                                 <th>Nro Inicial</th>
                                 <th>Nro Final</th>
                                 <th>Nro Actual</th>
                                 <th>Activo</th>
-                                <th width="120">Acciones</th>
+                                <th width="80">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -46,8 +46,8 @@
                       ajax: "{{ route('api.series') }}",
                       columns: [
                         {data: 'tipo_comp', name: 'tipo_comp'},
-                        {data: 'serie', name: 'serie'},
                         {data: 'nro_timbrado', name: 'nro_timbrado'},
+                        {data: 'sucursal', name: 'sucursal'},
                         {data: 'nro_inicial', name: 'nro_inicial'},
                         {data: 'nro_final', name: 'nro_final'},
                         {data: 'nro_actual', name: 'nro_actual'},
@@ -69,6 +69,8 @@
         $('#modal-form form')[0].reset();
         $('.modal-title').text('Nueva Serie');
         $('#select2-timbrados').val("").change();
+        $('#select2-sucursales').val("").change();
+        $('#select2-tipos').val("F").change();
       }
 
       $(function(){
@@ -126,12 +128,15 @@
 
             $('#id').val(data.id);
             $('#tipo_comprobante').val(data.tipo_comprobante);
-            $('#serie').val(data.serie);
             $('#nro_inicial').val(data.nro_inicial);
             $('#nro_final').val(data.nro_final);
             $('#nro_actual').val(data.nro_actual);
             $("#select2-timbrados").select2("val", "");
             $('#select2-timbrados').val(data.timbrado_id).change();
+            $("#select2-sucursales").select2("val", "");
+            $('#select2-sucursales').val(data.sucursal_id).change();
+            $("#select2-tipos").select2("val", "");
+            $('#select2-tipos').val(data.tipo_comprobante).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -205,6 +210,30 @@
   <script type="text/javascript">
     $(document).ready(function(){
             $('#select2-timbrados').select2({
+                placeholder : 'Seleccione una de las opciones',
+                tags: false,
+                width: 'resolve',
+                dropdownParent: $('#modal-form'),
+                language: "es"
+            });
+        });
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+            $('#select2-sucursales').select2({
+                placeholder : 'Seleccione una de las opciones',
+                tags: false,
+                width: 'resolve',
+                dropdownParent: $('#modal-form'),
+                language: "es"
+            });
+        });
+  </script>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+            $('#select2-tipos').select2({
                 placeholder : 'Seleccione una de las opciones',
                 tags: false,
                 width: 'resolve',

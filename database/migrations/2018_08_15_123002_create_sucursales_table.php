@@ -18,6 +18,7 @@ class CreateSucursalesTable extends Migration
             $table->string('codigo', 20)->unique();
             $table->string('nombre', 100);
             $table->string('direccion', 100)->nullable();
+            $table->char('codigo_punto_expedicion', 3)->unique();
             $table->boolean('activo')->default(true);
             $table->timestamps();
         });

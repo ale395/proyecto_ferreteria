@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\Serie;
+use App\Sucursal;
 use App\Timbrado;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -18,8 +19,11 @@ class SerieController extends Controller
      */
     public function index()
     {
-        $timbrados = Timbrado::all();
-        return view('serie.index', compact('timbrados'));
+        //Recupera solamente los timbrados vigentes a la fecha de hoy
+        $timbrados = Timbrado::where('fecha_fin_vigencia', '>=', today())->get();
+        //Recupera solamente las sucursales activas
+        $sucursales = Sucursal::where('activo', true)->get();
+        return view('serie.index', compact('timbrados', 'sucursales'));
     }
 
     /**
@@ -42,14 +46,23 @@ class SerieController extends Controller
     {
         $rules = [
             'tipo_comprobante' => 'required',
-            'serie' => 'required|max:6',
             'timbrado_id' => 'required',
-            'nro_inicial' => 'required',
-            'nro_final' => 'required',
+            'sucursal_id' => 'required|exists:sucursales,id',
+            'nro_inicial' => 'bail|required|min:1|integer',
+            'nro_final' => 'bail|required|min:1|integer|gt:nro_inicial',
             'activo' => 'required'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $mensajes = [
+            'sucursal_id.required' => 'El campo Sucursal es obligatorio.',
+            'timbrado_id.required' => 'El campo Nro de Timbrado es obligatorio.',
+            //'nro_inicial.lt' => 'El Nro Inicial no puede ser mayor al Nro Final de la Serie.',
+            'nro_final.gt' => 'El Nro Final no puede ser menor al Nro Inicial de la Serie.',
+            'nro_inicial.min' => 'El Nro Inicial no puede ser menor o igual a 0.',
+            'nro_final.min' => 'El Nro Final no puede ser menor o igual a 0.'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -60,8 +73,8 @@ class SerieController extends Controller
 
         $data = [
             'tipo_comprobante' => $request['tipo_comprobante'],
-            'serie' => $request['serie'],
             'timbrado_id' => $request['timbrado_id'],
+            'sucursal_id' => $request['sucursal_id'],
             'nro_inicial' => $request['nro_inicial'],
             'nro_final' => $request['nro_final'],
             'activo' => $request['activo']
@@ -106,14 +119,23 @@ class SerieController extends Controller
 
         $rules = [
             'tipo_comprobante' => 'required',
-            'serie' => 'required|max:6',
             'timbrado_id' => 'required',
-            'nro_inicial' => 'required|min:1',
-            'nro_final' => 'required',
+            'sucursal_id' => 'required|exists:sucursales,id',
+            'nro_inicial' => 'bail|required|min:1|integer',
+            'nro_final' => 'bail|required|min:1|integer|gt:nro_inicial',
             'activo' => 'required'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $mensajes = [
+            'sucursal_id.required' => 'El campo Sucursal es obligatorio.',
+            'timbrado_id.required' => 'El campo Nro de Timbrado es obligatorio.',
+            //'nro_inicial.lt' => 'El Nro Inicial no puede ser mayor al Nro Final de la Serie.',
+            'nro_final.gt' => 'El Nro Final no puede ser menor al Nro Inicial de la Serie.',
+            'nro_inicial.min' => 'El Nro Inicial no puede ser menor o igual a 0.',
+            'nro_final.min' => 'El Nro Final no puede ser menor o igual a 0.'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -123,8 +145,8 @@ class SerieController extends Controller
         }
 
         $serie->tipo_comprobante = $request['tipo_comprobante'];
-        $serie->serie = $request['serie'];
         $serie->timbrado_id = $request['timbrado_id'];
+        $serie->sucursal_id = $request['sucursal_id'];
         $serie->nro_inicial = $request['nro_inicial'];
         $serie->nro_final = $request['nro_final'];
         $serie->activo = $request['activo'];
@@ -161,6 +183,13 @@ class SerieController extends Controller
                         return $series->timbrado->nro_timbrado;
                     }
                 })
+                ->addColumn('sucursal', function($series){
+                    if (empty($series->sucursal)) {
+                         return null;
+                     } else {
+                        return $series->sucursal->nombre;
+                    }
+                })
                 ->addColumn('tipo_comp', function($series){
                     if ($series->tipo_comprobante == 'F') {
                          return 'Factura';
@@ -176,7 +205,7 @@ class SerieController extends Controller
                     }
                 })
                 ->addColumn('action', function($series){
-                    return '<a onclick="addVendedor('. $series->id .')" class="btn btn-info btn-sm" title="Asignar Vendedor"><i class="fa fa-share-square-o" aria-hidden="true"></i></a> ' .'<a onclick="editForm('. $series->id .')" class="btn btn-warning btn-sm" title="Editar Serie"><i class="fa fa-pencil-square-o"></i></a> ' .
+                    return '<a onclick="editForm('. $series->id .')" class="btn btn-warning btn-sm" title="Editar Serie"><i class="fa fa-pencil-square-o"></i></a> ' .
                            '<a onclick="deleteData('. $series->id .')" class="btn btn-danger btn-sm" title="Eliminar Serie"><i class="fa fa-trash-o"></i></a>';
                 })->make(true);
             } else {
@@ -186,6 +215,13 @@ class SerieController extends Controller
                          return null;
                      } else {
                         return $series->timbrado->nro_timbrado;
+                    }
+                })
+                ->addColumn('sucursal', function($series){
+                    if (empty($series->sucursal)) {
+                         return null;
+                     } else {
+                        return $series->sucursal->nombre;
                     }
                 })
                 ->addColumn('tipo_comp', function($series){
@@ -216,6 +252,13 @@ class SerieController extends Controller
                     return $series->timbrado->nro_timbrado;
                 }
             })
+            ->addColumn('sucursal', function($series){
+                if (empty($series->sucursal)) {
+                    return null;
+                } else {
+                    return $series->sucursal->nombre;
+                }
+            })
             ->addColumn('tipo_comp', function($series){
                 if ($series->tipo_comprobante == 'F') {
                     return 'Factura';
@@ -241,6 +284,13 @@ class SerieController extends Controller
                     return null;
                 } else {
                     return $series->timbrado->nro_timbrado;
+                }
+            })
+            ->addColumn('sucursal', function($series){
+                if (empty($series->sucursal)) {
+                    return null;
+                } else {
+                    return $series->sucursal->nombre;
                 }
             })
             ->addColumn('tipo_comp', function($series){

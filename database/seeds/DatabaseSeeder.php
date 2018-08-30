@@ -28,7 +28,9 @@ class DatabaseSeeder extends Seeder
         //Carga los Conceptos del Sistema
         $this->call(ConceptoTableSeeder::class);
 
-        //$this->call(TimbradoTableSeeder::class);
+        $this->call(TimbradoTableSeeder::class);
+
+        $this->call(SucursalTableSeeder::class);
 
         //carga los datos de inicio
         $this->call(DefaultSeeder::class);
