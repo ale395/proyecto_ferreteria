@@ -57,12 +57,16 @@
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     @can('tiposproveedores.index')
-                                      <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
-                                      </li>
+                                        <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
+                                        </li>
                                     @endcan
                                     @can('monedas.index')
-                                       <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
-                                      </li>
+                                        <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
+                                        </li>
+                                    @endcan
+                                    @can('sucursales.index')
+                                        <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
+                                        </li>
                                     @endcan
                                     
                                 </ul>
