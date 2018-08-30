@@ -97,6 +97,7 @@
 
       function editForm(id) {
         save_method = 'edit';
+        $('#error-block').hide();
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
