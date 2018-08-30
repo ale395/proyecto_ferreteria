@@ -23,6 +23,9 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA IMPUESTOS
 	Route::resource('impuestos', 'ImpuestoController');
 	Route::get('api/impuestos', 'ImpuestoController@apiImpuestos')->name('api.impuestos');
+		//RUTAS PARA Monedas
+		Route::resource('monedas', 'MonedaController');
+		Route::get('api/monedas', 'MonedaController@apiMonedas')->name('api.monedas');
 	//RUTAS PARA BANCOS
 	Route::resource('bancos', 'BancoController');
 	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');

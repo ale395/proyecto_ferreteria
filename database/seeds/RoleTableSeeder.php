@@ -69,6 +69,13 @@ class RoleTableSeeder extends Seeder
         $permiso_crear_impuesto = Permission::where('slug', 'impuestos.create')->first();
         $permiso_editar_impuesto = Permission::where('slug', 'impuestos.edit')->first();
         $permiso_eliminar_impuesto = Permission::where('slug', 'impuestos.destroy')->first();
+
+        //permisos de Monedas
+        $permiso_listar_moneda = Permission::where('slug', 'monedas.index')->first();
+        $permiso_crear_moneda = Permission::where('slug', 'monedas.create')->first();
+        $permiso_editar_moneda = Permission::where('slug', 'monedas.edit')->first();
+        $permiso_eliminar_moneda = Permission::where('slug', 'monedas.destroy')->first();
+
          //permisos de Impuestos
          $permiso_listar_formaPago = Permission::where('slug', 'formasPagos.index')->first();
          $permiso_crear_formaPago = Permission::where('slug', 'formasPagos.create')->first();
@@ -209,6 +216,13 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_impuesto->id);
         $role->assignPermission($permiso_editar_impuesto->id);
         $role->assignPermission($permiso_eliminar_impuesto->id);
+
+        $role->assignPermission($permiso_listar_moneda->id);
+        $role->assignPermission($permiso_crear_moneda->id);
+        $role->assignPermission($permiso_editar_moneda->id);
+        $role->assignPermission($permiso_eliminar_moneda->id);
+
+
 
         $role->assignPermission($permiso_listar_banco->id);
         $role->assignPermission($permiso_crear_banco->id);

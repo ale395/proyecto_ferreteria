@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Moneda;
 use Illuminate\Http\Request;
+use Validator;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class MonedaController extends Controller
 {
@@ -63,6 +66,7 @@ class MonedaController extends Controller
     public function edit(Moneda $moneda)
     {
         dd($moneda);
+       // dd($moneda);
         return $moneda;
 
     }

@@ -139,7 +139,36 @@ class PermissionTableSeeder extends Seeder
          $permission->description = 'Permite ver el listado de impuestos del sistema';
          $permission->save();
 
-        //PERMISOS PARA EL FORMULARIO DE IMPUESTOS
+
+//PERMISOS PARA EL FORMULARIO DE MONEDAS
+$permission = new Permission();
+$permission->name = 'Crear Moneda';
+$permission->slug = 'monedas.create';
+$permission->description = 'Permite la creación de nuevos monedas en el sistema';
+$permission->save();
+
+$permission = new Permission();
+$permission->name = 'Borrar Moneda';
+$permission->slug = 'monedas.destroy';
+$permission->description = 'Permite la eliminación de mmonedas del sistema';
+$permission->save();
+
+$permission = new Permission();
+$permission->name = 'Editar Moneda';
+$permission->slug = 'monedas.edit';
+$permission->description = 'Permite modificar los valores de una moneda del sistema';
+$permission->save();
+
+$permission = new Permission();
+$permission->name = 'Listar Monedas';
+$permission->slug = 'monedas.index';
+$permission->description = 'Permite ver el listado de monedas del sistema';
+$permission->save();
+
+
+
+
+        //PERMISOS PARA EL FORMULARIO DE Formas de pagos
          $permission = new Permission();
          $permission->name = 'Crear Formas de pago';
          $permission->slug = 'formasPagos.create';

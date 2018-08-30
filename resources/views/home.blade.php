@@ -60,6 +60,10 @@
                                       <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
                                       </li>
                                     @endcan
+                                    @can('monedas.index')
+                                       <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
+                                      </li>
+                                    @endcan
                                     
                                 </ul>
                               </li>
@@ -121,6 +125,10 @@
                           <ul class="nav child_menu">
                             @can('empresas.index')
                               <li class="sub_menu"><a href="{{route('empresa.index')}}">Empresa</a>
+                              </li>
+                            @endcan
+                            @can('monedas.index')
+                              <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
                               </li>
                             @endcan
                             @can('timbrados.index')
