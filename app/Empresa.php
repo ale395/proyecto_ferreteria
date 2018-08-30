@@ -9,6 +9,6 @@ class Empresa extends Model
     protected $table = 'empresa';
 
     protected $fillable = [
-        'razon_social', 'ruc', 'direccion', 'correo_electronico', 'sitio_web', 'eslogan', 'telefono', 'rubro',
+        'razon_social', 'ruc', 'direccion', 'correo_electronico', 'sitio_web', 'eslogan', 'telefono', 'rubro', 'codigo_establecimiento',
     ];
 }

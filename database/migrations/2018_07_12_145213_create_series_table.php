@@ -16,8 +16,9 @@ class CreateSeriesTable extends Migration
         Schema::create('series', function (Blueprint $table) {
             $table->increments('id');
             $table->char('tipo_comprobante', 1);//(F) Factura - (N) Nota de Credito
-            $table->char('serie', 6);
+            //$table->char('serie', 6);
             $table->integer('timbrado_id')->unsigned();
+            $table->integer('sucursal_id')->unsigned();
             $table->integer('nro_inicial')->unsigned();
             $table->integer('nro_final')->unsigned();
             $table->integer('nro_actual')->unsigned()->default(0);
@@ -25,6 +26,7 @@ class CreateSeriesTable extends Migration
             $table->timestamps();
 
             $table->foreign('timbrado_id')->references('id')->on('timbrados');
+            //$table->foreign('sucursal_id')->references('id')->on('sucursales');
         });
     }
 

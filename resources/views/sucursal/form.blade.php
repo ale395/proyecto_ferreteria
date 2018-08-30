@@ -33,6 +33,14 @@
                     </div>
 
                     <div class="form-group">
+                      <label for="codigo_punto_expedicion" class="col-md-3 control-label">Punto de Expedición *</label>
+                      <div class="col-md-6">
+                          <input type="text" id="codigo_punto_expedicion" name="codigo_punto_expedicion" class="form-control">
+                          <span class="help-block with-errors"></span>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
                       <label for="direccion" class="col-md-3 control-label">Direccion</label>
                       <div class="col-md-6">
                           <input type="text" id="direccion" name="direccion" class="form-control">

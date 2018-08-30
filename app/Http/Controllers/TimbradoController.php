@@ -42,10 +42,8 @@ class TimbradoController extends Controller
         $rules = [
             'nro_timbrado' => 'required|unique:timbrados,nro_timbrado',
             'fecha_inicio_vigencia' => 'required|date_format:"d/m/Y"',
-            'fecha_fin_vigencia' => 'required|date_format:"d/m/Y"|after:fecha_inicio_vigencia'
+            'fecha_fin_vigencia' => 'required|date_format:"d/m/Y"|after:fecha_inicio_vigencia|after:today'
         ];
-        
-        /*$this->validate($request, $rules);*/
 
         $validator = Validator::make($request->all(), $rules);
 

@@ -8,6 +8,6 @@ class Sucursal extends Model
 {
     protected $table = 'sucursales';
 
-    protected $fillable = ['codigo', 'nombre', 'direccion', 'activo'];
+    protected $fillable = ['codigo', 'nombre', 'direccion', 'codigo_punto_expedicion','activo'];
 
 }

@@ -23,6 +23,7 @@ class CreateEmpresasTable extends Migration
             $table->string('eslogan', 100)->nullable();
             $table->string('telefono', 20);
             $table->string('rubro', 100);
+            $table->char('codigo_establecimiento', 3);
             $table->timestamps();
         });
     }
