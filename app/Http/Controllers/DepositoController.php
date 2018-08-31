@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
+use Validator;
+use App\Deposito;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class DepositoController extends Controller
 {
@@ -62,7 +67,7 @@ class DepositoController extends Controller
      */
     public function edit(Deposito $deposito)
     {
-        dd($deposito);
+        //dd($deposito);
         return $deposito;
 
     }

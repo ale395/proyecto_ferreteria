@@ -220,6 +220,10 @@
                               <!--<li><a href="#level1_1">Level One</a>-->
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
+                                @can('depositos.index')
+                                      <li class="sub_menu"><a href="{{route('depositos.index')}}">Depositos</a>
+                                      </li>
+                                    @endcan
                                     @can('familias.index')
                                       <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                                       </li>

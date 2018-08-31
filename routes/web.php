@@ -29,6 +29,9 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA BANCOS
 	Route::resource('bancos', 'BancoController');
 	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');
+	//RUTAS PARA DEPOSITO
+	Route::resource('depositos', 'DepositoController');
+	Route::get('api/deposito', 'DepositoController@apiDepositos')->name('api.depositos');
 	//RUTAS PARA TIMBRADOS
 	Route::resource('tiposEmpleados', 'TipoEmpleadoController');
 	Route::get('api/tiposEmpleados', 'TipoEmpleadoController@apiTiposEmpleados')->name('api.tiposEmpleados');

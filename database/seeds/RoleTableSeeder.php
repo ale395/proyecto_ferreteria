@@ -87,7 +87,11 @@ class RoleTableSeeder extends Seeder
         $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
         $permiso_editar_banco = Permission::where('slug', 'bancos.edit')->first();
         $permiso_eliminar_banco = Permission::where('slug', 'bancos.destroy')->first();
-
+        //permisos de Bancos
+        $permiso_listar_deposito = Permission::where('slug', 'depositos.index')->first();
+        $permiso_crear_deposito = Permission::where('slug', 'depositos.create')->first();
+        $permiso_editar_deposito = Permission::where('slug', 'depositos.edit')->first();
+        $permiso_eliminar_deposito = Permission::where('slug', 'depositos.destroy')->first();
         //permisos de Tipos Empleados
         $permiso_listar_tipo_empleado = Permission::where('slug', 'tiposEmpleados.index')->first();
         $permiso_crear_tipo_empleado = Permission::where('slug', 'tiposEmpleados.create')->first();
@@ -233,6 +237,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_banco->id);
         $role->assignPermission($permiso_editar_banco->id);
         $role->assignPermission($permiso_eliminar_banco->id);
+
+        $role->assignPermission($permiso_listar_deposito->id);
+        $role->assignPermission($permiso_crear_deposito->id);
+        $role->assignPermission($permiso_editar_deposito->id);
+        $role->assignPermission($permiso_eliminar_deposito->id);
 
         $role->assignPermission($permiso_listar_tipo_empleado->id);
         $role->assignPermission($permiso_crear_tipo_empleado->id);

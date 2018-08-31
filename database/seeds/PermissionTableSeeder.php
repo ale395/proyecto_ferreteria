@@ -101,6 +101,31 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de bancos del sistema';
         $permission->save();
 
+  //PERMISOS PARA EL FORMULARIO DE DEPOSITOS
+  $permission = new Permission();
+  $permission->name = 'Crear Deposito';
+  $permission->slug = 'depositos.create';
+  $permission->description = 'Permite la creación de nuevos depositos en el sistema';
+  $permission->save();
+
+  $permission = new Permission();
+  $permission->name = 'Borrar Deposito';
+  $permission->slug = 'depositos.destroy';
+  $permission->description = 'Permite la eliminación de depositos del sistema';
+  $permission->save();
+
+  $permission = new Permission();
+  $permission->name = 'Editar Deposito';
+  $permission->slug = 'depositos.edit';
+  $permission->description = 'Permite modificar los valores de un deposito del sistema';
+  $permission->save();
+
+  $permission = new Permission();
+  $permission->name = 'Listar Depositos';
+  $permission->slug = 'depositos.index';
+  $permission->description = 'Permite ver el listado de depositos del sistema';
+  $permission->save();
+
         //PERMISOS PARA EL FORMULARIO DE TIPOS DE EMPLEADOS
         $permission = new Permission();
         $permission->name = 'Crear Tipo Empleado';
