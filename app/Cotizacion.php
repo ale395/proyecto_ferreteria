@@ -9,7 +9,7 @@ class Cotizacion extends Model
     protected $table = 'cotizaciones';
     
     protected $fillable = [
-        'descripcion', 'moneda_id','fecha_cotizacion','cambio_compra','cambio_venta',
+        'descripcion', 'moneda_id','fecha_cotizacion','valor_compra','valor_venta',
     ];
 
     public function moneda()

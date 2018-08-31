@@ -110,26 +110,62 @@ class DepositoController extends Controller
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 return Datatables::of($deposito)
+                ->addColumn('activo', function($deposito){
+
+                    if ($deposito->activo) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('action', function($deposito){
+
                     return '<a onclick="editForm('. $deposito->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a onclick="deleteData('. $deposito->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
                 return Datatables::of($deposito)
+                ->addColumn('activo', function($deposito){
+
+                    if ($deposito->activo) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('action', function($deposito){
+
                     return '<a onclick="editForm('. $deposito->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
             return Datatables::of($deposito)
+            ->addColumn('activo', function($deposito){
+
+                if ($deposito->activo) {
+                    return 'Si';
+                }else{
+                    return 'No';
+                }
+            })
             ->addColumn('action', function($deposito){
+
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a onclick="deleteData('. $deposito->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         } else {
             return Datatables::of($deposito)
+            ->addColumn('activo', function($deposito){
+
+                if ($deposito->activo) {
+                    return 'Si';
+                }else{
+                    return 'No';
+                }
+            })
             ->addColumn('action', function($deposito){
+
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
