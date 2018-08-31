@@ -20,12 +20,15 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA TIMBRADOS
 	Route::resource('timbrados', 'TimbradoController');
 	Route::get('api/timbrados', 'TimbradoController@apiTimbrados')->name('api.timbrados');
+	
 	//RUTAS PARA IMPUESTOS
 	Route::resource('impuestos', 'ImpuestoController');
 	Route::get('api/impuestos', 'ImpuestoController@apiImpuestos')->name('api.impuestos');
+	
 		//RUTAS PARA Monedas
-		Route::resource('monedas', 'MonedaController');
-		Route::get('api/monedas', 'MonedaController@apiMonedas')->name('api.monedas');
+	Route::resource('monedas', 'MonedaController');
+	Route::get('api/monedas', 'MonedaController@apiMonedas')->name('api.monedas');
+	
 	//RUTAS PARA BANCOS
 	Route::resource('bancos', 'BancoController');
 	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');
@@ -47,9 +50,11 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA NUMERACION DE SERIES
 	Route::resource('series', 'SerieController');
 	Route::get('api/series', 'SerieController@apiSeries')->name('api.series');
+	
 	//RUTAS PARA FORMAS DE PAGO
 	Route::resource('formasPagos', 'FormaPagoController', ['parameters'=>['formasPagos'=>'formaPago']]);
 	Route::get('api/formasPagos', 'FormaPagoController@apiFormasPagos')->name('api.formasPagos');
+	
 	//RUTAS PARA NUMERACION DE SERIES
 	Route::resource('seriesVendedores', 'SerieVendedorController');
 	Route::get('api/seriesVendedores', 'SerieVendedorController@apiSeriesVendedores')->name('api.seriesVendedores');
@@ -112,5 +117,9 @@ Route::middleware(['auth'])->group(function() {
 	//Rutas para tipos proveedoress
 	Route::resource('tiposproveedores', 'TipoProveedorController');
 	Route::get('api/tiposproveedores', 'TipoProveedorController@apiTipoProveedor')->name('api.tiposproveedores');
+
+	//Rutas para proveedores
+	Route::resource('proveedores', 'ProveedorController');
+	Route::get('api/proveedores', 'ProveedorController@apiProveedor')->name('api.proveedores');
 
 });

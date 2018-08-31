@@ -17,7 +17,7 @@ class UnidadMedidaController extends Controller
      */
     public function index()
     {
-        return view('unidadMedida.index');
+        return view('unidadmedida.index');
     }
 
     /**
@@ -39,7 +39,7 @@ class UnidadMedidaController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'num_umedida' => 'required|max:20|unique:unidadmedida,num_umedida',
+            'num_umedida' => 'required|max:20|unique:unidad_medidas,num_umedida',
             'descripcion' => 'required|max:100'
         ];
 
@@ -78,9 +78,10 @@ class UnidadMedidaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(UnidadMedida $unidadmedida)
+    public function edit($id)
     {
-        return $unidadmedida;
+        $unidad_medida = UnidadMedida::findOrFail($id);
+        return $unidad_medida;
     }
 
     /**
@@ -93,7 +94,7 @@ class UnidadMedidaController extends Controller
     public function update(Request $request, UnidadMedida $unidadmedida)
     {
         $rules = [
-            'num_umedida' => 'required|max:20|unique:unidadmedida,num_umedida',
+            'num_umedida' => 'required|max:20|unique:unidad_medidas,num_umedida',
             'descripcion' => 'required|max:100'
         ];
 

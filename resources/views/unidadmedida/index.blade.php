@@ -59,8 +59,8 @@
             $('#modal-form form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('unidadmedidas') }}";
-                    else url = "{{ url('unidadmedidas') . '/' }}" + id;
+                    if (save_method == 'add') url = "{{ url('unidadesMedidas') }}";
+                    else url = "{{ url('unidadesMedidas') . '/' }}" + id;
 
                     $.ajax({
                         url : url,
@@ -97,10 +97,11 @@
 
       function editForm(id) {
         save_method = 'edit';
+        $('#error-block').hide();
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $.ajax({
-          url: "{{ url('unidadmedidas') }}" + '/' + id + "/edit",
+          url: "{{ url('unidadesMedidas') }}" + '/' + id + "/edit",
           type: "GET",
           dataType: "JSON",
           success: function(data) {
@@ -127,7 +128,7 @@
             var csrf_token = $('meta[name="csrf-token"]').attr('content');
             if (popup == true ){
                 $.ajax({
-                    url : "{{ url('unidadmedidas') }}" + '/' + id,
+                    url : "{{ url('unidadesMedidas') }}" + '/' + id,
                     type : "POST",
                     data : {'_method' : 'DELETE', '_token' : csrf_token},
                     success : function(data) {
