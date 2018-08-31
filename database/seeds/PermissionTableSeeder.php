@@ -139,84 +139,81 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite modificar los valores de la Configuración de Empresa del sistema';
         $permission->save();
 
-         //PERMISOS PARA EL FORMULARIO DE IMPUESTOS
-         $permission = new Permission();
-         $permission->name = 'Crear Impuesto';
-         $permission->slug = 'impuestos.create';
-         $permission->description = 'Permite la creación de nuevos impuestos en el sistema';
-         $permission->save();
- 
-         $permission = new Permission();
-         $permission->name = 'Borrar Impuesto';
-         $permission->slug = 'impuestos.destroy';
-         $permission->description = 'Permite la eliminación de impuestos del sistema';
-         $permission->save();
- 
-         $permission = new Permission();
-         $permission->name = 'Editar Impuesto';
-         $permission->slug = 'impuestos.edit';
-         $permission->description = 'Permite modificar los valores de un impuestos del sistema';
-         $permission->save();
- 
-         $permission = new Permission();
-         $permission->name = 'Listar Impuestos';
-         $permission->slug = 'impuestos.index';
-         $permission->description = 'Permite ver el listado de impuestos del sistema';
-         $permission->save();
+        //PERMISOS PARA EL FORMULARIO DE IMPUESTOS
+        $permission = new Permission();
+        $permission->name = 'Crear Impuesto';
+        $permission->slug = 'impuestos.create';
+        $permission->description = 'Permite la creación de nuevos impuestos en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Impuesto';
+        $permission->slug = 'impuestos.destroy';
+        $permission->description = 'Permite la eliminación de impuestos del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Impuesto';
+        $permission->slug = 'impuestos.edit';
+        $permission->description = 'Permite modificar los valores de un impuestos del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Impuestos';
+        $permission->slug = 'impuestos.index';
+        $permission->description = 'Permite ver el listado de impuestos del sistema';
+        $permission->save();
 
 
-//PERMISOS PARA EL FORMULARIO DE MONEDAS
-$permission = new Permission();
-$permission->name = 'Crear Moneda';
-$permission->slug = 'monedas.create';
-$permission->description = 'Permite la creación de nuevos monedas en el sistema';
-$permission->save();
+        //PERMISOS PARA EL FORMULARIO DE MONEDAS
+        $permission = new Permission();
+        $permission->name = 'Crear Moneda';
+        $permission->slug = 'monedas.create';
+        $permission->description = 'Permite la creación de nuevos monedas en el sistema';
+        $permission->save();
 
-$permission = new Permission();
-$permission->name = 'Borrar Moneda';
-$permission->slug = 'monedas.destroy';
-$permission->description = 'Permite la eliminación de mmonedas del sistema';
-$permission->save();
+        $permission = new Permission();
+        $permission->name = 'Borrar Moneda';
+        $permission->slug = 'monedas.destroy';
+        $permission->description = 'Permite la eliminación de mmonedas del sistema';
+        $permission->save();
 
-$permission = new Permission();
-$permission->name = 'Editar Moneda';
-$permission->slug = 'monedas.edit';
-$permission->description = 'Permite modificar los valores de una moneda del sistema';
-$permission->save();
+        $permission = new Permission();
+        $permission->name = 'Editar Moneda';
+        $permission->slug = 'monedas.edit';
+        $permission->description = 'Permite modificar los valores de una moneda del sistema';
+        $permission->save();
 
-$permission = new Permission();
-$permission->name = 'Listar Monedas';
-$permission->slug = 'monedas.index';
-$permission->description = 'Permite ver el listado de monedas del sistema';
-$permission->save();
-
-
-
+        $permission = new Permission();
+        $permission->name = 'Listar Monedas';
+        $permission->slug = 'monedas.index';
+        $permission->description = 'Permite ver el listado de monedas del sistema';
+        $permission->save();
 
         //PERMISOS PARA EL FORMULARIO DE Formas de pagos
-         $permission = new Permission();
-         $permission->name = 'Crear Formas de pago';
-         $permission->slug = 'formasPagos.create';
-         $permission->description = 'Permite la creación de nuevos formas pagos en el sistema';
-         $permission->save();
- 
-         $permission = new Permission();
-         $permission->name = 'Borrar Forma de pago';
-         $permission->slug = 'formasPagos.destroy';
-         $permission->description = 'Permite la eliminación de la forma de pago del sistema';
-         $permission->save();
- 
-         $permission = new Permission();
-         $permission->name = 'Editar Forma de pago';
-         $permission->slug = 'formasPagos.edit';
-         $permission->description = 'Permite modificar los valores de una forma de pago del sistema';
-         $permission->save();
- 
-         $permission = new Permission();
-         $permission->name = 'Listar forma de pago';
-         $permission->slug = 'formasPagos.index';
-         $permission->description = 'Permite ver el listado de formas de pago del sistema';
-         $permission->save();
+        $permission = new Permission();
+        $permission->name = 'Crear Formas de pago';
+        $permission->slug = 'formasPagos.create';
+        $permission->description = 'Permite la creación de nuevos formas pagos en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Forma de pago';
+        $permission->slug = 'formasPagos.destroy';
+        $permission->description = 'Permite la eliminación de la forma de pago del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Forma de pago';
+        $permission->slug = 'formasPagos.edit';
+        $permission->description = 'Permite modificar los valores de una forma de pago del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar forma de pago';
+        $permission->slug = 'formasPagos.index';
+        $permission->description = 'Permite ver el listado de formas de pago del sistema';
+        $permission->save();
 
         //Para tablas pequeñas no creo que haga falta
         /*$permission = new Permission();
@@ -637,27 +634,52 @@ $permission->save();
 
         //PERMISOS PARA EL FORMULARIO DE Tipo de Proveedor
         $permission = new Permission();
-        $permission->name = 'Crear Tipo de Vendedor';
+        $permission->name = 'Crear Tipo de Proveedor';
         $permission->slug = 'tiposproveedores.create';
-        $permission->description = 'Permite la creación de nuevos tipos de vendedores en el sistema';
+        $permission->description = 'Permite la creación de nuevos tipos de proveedores en el sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Borrar Tipo de Vendedor';
+        $permission->name = 'Borrar Tipo de Proveedor';
         $permission->slug = 'tiposproveedores.destroy';
-        $permission->description = 'Permite la eliminación de tipos de vendedores del sistema';
+        $permission->description = 'Permite la eliminación de tipos de proveedores del sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Editar Tipo de Vendedor';
+        $permission->name = 'Editar Tipo de Proveedor';
         $permission->slug = 'tiposproveedores.edit';
-        $permission->description = 'Permite modificar los valores de un tipo de vendedor del sistema';
+        $permission->description = 'Permite modificar los valores de un tipo de proveedor del sistema';
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Listar Tipo de Vendedor';
+        $permission->name = 'Listar Tipo de Proveedor';
         $permission->slug = 'tiposproveedores.index';
-        $permission->description = 'Permite ver el listado de tipos de vendedores del sistema';
+        $permission->description = 'Permite ver el listado de tipos de proveedores del sistema';
+        $permission->save();
+
+        //PERMISOS PARA EL FORMULARIO DE Proveedor
+        $permission = new Permission();
+        $permission->name = 'Crear Proveedor';
+        $permission->slug = 'proveedores.create';
+        $permission->description = 'Permite la creación de nuevos proveedores en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Proveedor';
+        $permission->slug = 'proveedores.destroy';
+        $permission->description = 'Permite la eliminación de proveedores del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Proveedor';
+        $permission->slug = 'proveedores.edit';
+        $permission->description = 'Permite modificar los datos de un proveedor';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Proveedores';
+        $permission->slug = 'proveedores.index';
+        $permission->description = 'Permite ver el listado de proveedores';
         $permission->save();
     }
 }

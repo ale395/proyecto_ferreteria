@@ -17,17 +17,17 @@ class CreateProveedoresTable extends Migration
             $table->increments('id');
             $table->string('codigo', 20)->unique();
             $table->string('nombre', 100);
-            $table->string('apellido', 100)->nullable();
+            $table->string('razon_social', 100)->nullable();
             $table->string('ruc', 20)->nullable();
             $table->integer('nro_documento')->nullable();
             $table->string('telefono', 20)->nullable();
             $table->string('direccion', 100)->nullable();
             $table->string('correo_electronico', 100)->nullable();
-            $table->integer('tipo_vendedor_id')->unsigned();
+            $table->integer('tipo_proveedor_id')->nullable()->unsigned();
             $table->boolean('activo')->default(true);
             $table->timestamps();
 
-            $table->foreign('tipo_cliente_id')->references('id')->on('tipos_clientes');
+            $table->foreign('tipo_proveedor_id')->references('id')->on('tipo_proveedores');
         });
     }
 

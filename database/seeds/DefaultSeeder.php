@@ -10,6 +10,7 @@ use App\ClasificacionCliente;
 use App\Cajero;
 use App\User;
 use App\TipoProveedor;
+use App\Proveedor;
 
 
 class DefaultSeeder extends Seeder
@@ -41,45 +42,54 @@ class DefaultSeeder extends Seeder
         $rubro->save();
 
     	//Unidad de medida por default - Unidad
-        $familia = new UnidadMedida();
-        $familia->num_umedida = 'UNI';
-        $familia->descripcion = 'UNIDAD';
-        $familia->save();
+        $unidadmedida = new UnidadMedida();
+        $unidadmedida->num_umedida = 'UNI';
+        $unidadmedida->descripcion = 'UNIDAD';
+        $unidadmedida->save();
 
        	//Concepto ajuste por default - ajuste de existencia
-        $familia = new ConceptoAjuste();
-        $familia->num_concepto = '001';
-        $familia->descripcion = 'AJUSTE DE EXISTENCIA';
-        $familia->save();
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '001';
+        $conceptoajuste->descripcion = 'AJUSTE DE EXISTENCIA';
+        $conceptoajuste->save();
 
         //tipo cliente por default - ajuste de existencia
-        $familia = new ClasificacionCliente();
-        $familia->codigo = '001';
-        $familia->nombre = 'Mayorista';
-        $familia->save();
+        $tipoclientemayo = new ClasificacionCliente();
+        $tipoclientemayo->codigo = '001';
+        $tipoclientemayo->nombre = 'Mayorista';
+        $tipoclientemayo->save();
 
         //tipo cliente por default - ajuste de existencia
-        $familia = new ClasificacionCliente();
-        $familia->codigo = '002';
-        $familia->nombre = 'Minorista';
-        $familia->save();
+        $tipoclientemino = new ClasificacionCliente();
+        $tipoclientemino->codigo = '002';
+        $tipoclientemino->nombre = 'Minorista';
+        $tipoclientemino->save();
 
         //tipo proveedor 
-        $familia = new TipoProveedor();
-        $familia->codigo = '001';
-        $familia->nombre = 'Proveedor Local';
-        $familia->save();
+        $tipoproveedor = new TipoProveedor();
+        $tipoproveedor->codigo = '001';
+        $tipoproveedor->nombre = 'Proveedor Local';
+        $tipoproveedor->save();
 
+        $proveedor = new Proveedor();
+        $proveedor->codigo = 'xxxxxxx-x';
+        $proveedor->nombre = 'Proveedor Generico';
+        $proveedor->razon_social = 'Proveedor Generico';
+        $proveedor->save();
+
+        /*
         //traemos el usuario
         $usuario = User::where('email', 'admin@ferregest.com')->first();
+
         //creamos el cajero
         $cajero = new Cajero();
         $cajero->num_cajero = '001';
         $cajero->descripcion = 'Administrador';
         $cajero->save();
+        
         //asignamos el usuario al cajeros
         $cajero->usuario()->associate($usuario);
         $cajero->save();
-
+        */
     }
 }
