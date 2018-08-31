@@ -113,7 +113,12 @@
             $('#descripcion').val(data.descripcion);
           },
           error : function() {
-              alert("Nothing Data");
+              $.alert({
+                title: 'Atención!',
+                content: 'No se encontraron datos!',
+                icon: 'fa fa-exclamation-circle',
+                type: 'orange',
+              });
           }
         });
       }
