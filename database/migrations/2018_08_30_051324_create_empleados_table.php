@@ -15,7 +15,25 @@ class CreateEmpleadosTable extends Migration
     {
         Schema::create('empleados', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('nro_cedula')->unsigned()->unique();
+            $table->string('nombre', 100);
+            $table->string('apellido', 100);
+            $table->string('direccion', 100);
+            $table->integer('zona_id')->unsigned();
+            $table->integer('telefono_celular')->unsigned();
+            $table->integer('telefono_linea_baja')->unsigned()->nullable();
+            $table->string('correo_electronico', 100);
+            $table->date('fecha_nacimiento');
+            $table->string('nombre_contacto1', 100);
+            $table->integer('telefono_contacto1')->unsigned();
+            $table->char('relacion_contacto1', 1);
+            $table->string('nombre_contacto2', 100)->nullable();
+            $table->integer('telefono_contacto2')->unsigned()->nullable();
+            $table->char('relacion_contacto2', 1)->nullable();
+            $table->boolean('activo')->default(true);
             $table->timestamps();
+
+            $table->foreign('zona_id')->references('id')->on('zonas');
         });
     }
 
