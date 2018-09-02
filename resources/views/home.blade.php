@@ -224,6 +224,14 @@
                                       <li class="sub_menu"><a href="{{route('depositos.index')}}">Depositos</a>
                                       </li>
                                     @endcan
+                                    @can('cotizaciones.index')
+                                      <li class="sub_menu"><a href="{{route('cotizaciones.index')}}">Cotizaciones</a>
+                                      </li>
+                                    @endcan
+                                    @can('articulos.index')
+                                      <li class="sub_menu"><a href="{{route('articulos.index')}}">Articulos</a>
+                                      </li>
+                                    @endcan
                                     @can('familias.index')
                                       <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
                                       </li>

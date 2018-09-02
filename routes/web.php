@@ -25,6 +25,13 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('impuestos', 'ImpuestoController');
 	Route::get('api/impuestos', 'ImpuestoController@apiImpuestos')->name('api.impuestos');
 	
+	//RUTAS PARA COTIZACIONES
+		Route::resource('cotizaciones', 'CotizacionController', ['parameters'=>['cotizaciones'=>'cotizacion']]);
+		Route::get('api/cotizaciones', 'CotizacionController@apiCotizaciones')->name('api.cotizaciones');
+	//RUTAS PARA IMPUESTOS
+	Route::resource('articulos', 'ArticuloController');
+	Route::get('api/articulos', 'ArticuloController@apiArticulos')->name('api.articulos');
+		
 		//RUTAS PARA Monedas
 	Route::resource('monedas', 'MonedaController');
 	Route::get('api/monedas', 'MonedaController@apiMonedas')->name('api.monedas');

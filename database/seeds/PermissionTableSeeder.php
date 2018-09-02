@@ -163,7 +163,54 @@ class PermissionTableSeeder extends Seeder
         $permission->slug = 'empresas.edit';
         $permission->description = 'Permite modificar los valores de la Configuración de Empresa del sistema';
         $permission->save();
+        //PERMISOS PARA EL FORMULARIO DE ARTICULOS
+        $permission = new Permission();
+        $permission->name = 'Crear Articulo';
+        $permission->slug = 'articulos.create';
+        $permission->description = 'Permite la creación de nuevos impuestos en el sistema';
+        $permission->save();
 
+        $permission = new Permission();
+        $permission->name = 'Borrar Articulo';
+        $permission->slug = 'articulos.destroy';
+        $permission->description = 'Permite la eliminación de impuestos del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Articulo';
+        $permission->slug = 'articulos.edit';
+        $permission->description = 'Permite modificar los valores de un impuestos del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Articulos';
+        $permission->slug = 'articulos.index';
+        $permission->description = 'Permite ver el listado de impuestos del sistema';
+        $permission->save();
+        //PERMISOS PARA EL FORMULARIO DE COTIZACIONES
+        $permission = new Permission();
+        $permission->name = 'Crear Cotizacion';
+        $permission->slug = 'cotizaciones.create';
+        $permission->description = 'Permite la creación de nuevos impuestos en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Cotizacion';
+        $permission->slug = 'cotizaciones.destroy';
+        $permission->description = 'Permite la eliminación de impuestos del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Cotizacion';
+        $permission->slug = 'cotizaciones.edit';
+        $permission->description = 'Permite modificar los valores de un impuestos del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Cotizaciones';
+        $permission->slug = 'cotizaciones.index';
+        $permission->description = 'Permite ver el listado de impuestos del sistema';
+        $permission->save();
         //PERMISOS PARA EL FORMULARIO DE IMPUESTOS
         $permission = new Permission();
         $permission->name = 'Crear Impuesto';

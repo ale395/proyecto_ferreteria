@@ -81,7 +81,16 @@ class RoleTableSeeder extends Seeder
         $permiso_crear_formaPago = Permission::where('slug', 'formasPagos.create')->first();
         $permiso_editar_formaPago = Permission::where('slug', 'formasPagos.edit')->first();
         $permiso_eliminar_formaPago = Permission::where('slug', 'formasPagos.destroy')->first();
-        
+        //permisos de Articulos
+        $permiso_listar_articulo = Permission::where('slug', 'articulos.index')->first();
+        $permiso_crear_articulo = Permission::where('slug', 'articulos.create')->first();
+        $permiso_editar_articulo = Permission::where('slug', 'articulos.edit')->first();
+        $permiso_eliminar_articulo = Permission::where('slug', 'articulos.destroy')->first();
+        //permisos de Cotizaciones
+        $permiso_listar_cotizacion = Permission::where('slug', 'cotizaciones.index')->first();
+        $permiso_crear_cotizacion = Permission::where('slug', 'cotizaciones.create')->first();
+        $permiso_editar_cotizacion = Permission::where('slug', 'cotizaciones.edit')->first();
+        $permiso_eliminar_cotizacion = Permission::where('slug', 'cotizaciones.destroy')->first();
         //permisos de Bancos
         $permiso_listar_banco = Permission::where('slug', 'bancos.index')->first();
         $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
@@ -175,6 +184,8 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_familia_editar->id);
         $role->assignPermission($permiso_familia_eliminar->id);
 
+
+        
         $role->assignPermission($permiso_listar_formaPago->id);
         $role->assignPermission($permiso_crear_formaPago->id);
         $role->assignPermission($permiso_editar_formaPago->id);
@@ -233,6 +244,16 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_impuesto->id);
         $role->assignPermission($permiso_editar_impuesto->id);
         $role->assignPermission($permiso_eliminar_impuesto->id);
+
+        $role->assignPermission($permiso_listar_cotizacion->id);
+        $role->assignPermission($permiso_crear_cotizacion->id);
+        $role->assignPermission($permiso_editar_cotizacion->id);
+        $role->assignPermission($permiso_eliminar_cotizacion->id);
+
+        $role->assignPermission($permiso_listar_articulo->id);
+        $role->assignPermission($permiso_crear_articulo->id);
+        $role->assignPermission($permiso_editar_articulo->id);
+        $role->assignPermission($permiso_eliminar_articulo->id);
 
         $role->assignPermission($permiso_listar_moneda->id);
         $role->assignPermission($permiso_crear_moneda->id);
