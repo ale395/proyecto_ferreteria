@@ -19,7 +19,7 @@ class ProveedorController extends Controller
     public function index()
     {
         $tipos_proveedores = TipoProveedor::all();
-        return view('proveedores.index', compact($tipos_proveedores));
+        return view('proveedores.index', compact('tipos_proveedores'));
     }
 
     /**

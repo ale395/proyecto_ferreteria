@@ -15,12 +15,12 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table id="cliente-table" class="table table-striped table-responsive">
+                    <table id="proveedor-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
                                 <th width="50">Codigo</th>
                                 <th>Nombre</th>
-                                <th>Apellido</th>
+                                <th>Apellido/Razón Social</th>
                                 <th width="80">Nro CI</th>
                                 <th>RUC</th>
                                 <th width="40">Activo</th>
@@ -33,20 +33,20 @@
             </div>
         </div>
 
-    @include('cliente.form')
+    @include('proveedores.form')
 @endsection
 
 @section('ajax_datatables')
   <script type="text/javascript">
-      var table = $('#cliente-table').DataTable({
+      var table = $('#proveedor-table').DataTable({
                       language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.clientes') }}",
+                      ajax: "{{ route('api.proveedores') }}",
                       columns: [
                         {data: 'codigo', name: 'codigo'},
                         {data: 'nombre', name: 'nombre'},
-                        {data: 'apellido', name: 'apellido'},
+                        {data: 'razon_social', name: 'razon_social'},
                         {data: 'nro_documento', name: 'nro_documento'},
                         {data: 'ruc', name: 'ruc'},
                         {data: 'activo', name: 'activo'},
@@ -59,27 +59,21 @@
         $('#error-block').hide();
         $('#activo').attr('checked', true);
         
-        $('#select2-zonas').val("").change();
         $('#select2-tipos').val("").change();
-        $('#select2-listas').val("").change();
-        $('#select2-vendedores').val("").change();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nuevo Cliente');
+        $('.modal-title').text('Nuevo Proveedor');
 
         $('#codigo').prop('readonly', false);
         $('#nombre').prop('readonly', false);
-        $('#apellido').prop('readonly', false);
+        $('#razon_social').prop('readonly', false);
         $('#direccion').prop('readonly', false);
         $('#telefono').prop('readonly', false);
         $('#nro_documento').prop('readonly', false);
         $('#ruc').prop('readonly', false);
         $('#correo_electronico').prop('readonly', false);
-        $('#select2-zonas').prop('disabled', false);
         $('#select2-tipos').prop('disabled', false);
-        $('#select2-listas').prop('disabled', false);
-        $('#select2-vendedores').prop('disabled', false);
         $('#activo').prop('disabled', false);
         $('#form-btn-guardar').prop('disabled', false);
       }
@@ -90,10 +84,10 @@
         $('input[name=_method]').val('GET');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Ver Cliente');
+        $('.modal-title').text('Ver Proveedor');
 
         $.ajax({
-          url: "{{ url('clientes') }}" + '/' + id,
+          url: "{{ url('proveedores') }}" + '/' + id,
           type: "GET",
           dataType: "JSON",
           success: function(data) {
@@ -102,20 +96,14 @@
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
             $('#nombre').val(data.nombre);
-            $('#apellido').val(data.apellido);
+            $('#razon_social').val(data.razon_social);
             $('#direccion').val(data.direccion);
             $('#telefono').val(data.telefono);
             $('#nro_documento').val(data.nro_documento);
             $('#ruc').val(data.ruc);
             $('#correo_electronico').val(data.correo_electronico);
-            $("#select2-zonas").select2("val", "");
-            $('#select2-zonas').val(data.zona_id).change();
             $("#select2-tipos").select2("val", "");
             $('#select2-tipos').val(data.tipo_cliente_id).change();
-            $("#select2-vendedores").select2("val", "");
-            $('#select2-vendedores').val(data.vendedor_id).change();
-            $("#select2-listas").select2("val", "");
-            $('#select2-listas').val(data.lista_precio_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -124,16 +112,13 @@
 
             $('#codigo').prop('readonly', true);
             $('#nombre').prop('readonly', true);
-            $('#apellido').prop('readonly', true);
+            $('#razon_social').prop('readonly', true);
             $('#direccion').prop('readonly', true);
             $('#telefono').prop('readonly', true);
             $('#nro_documento').prop('readonly', true);
             $('#ruc').prop('readonly', true);
             $('#correo_electronico').prop('readonly', true);
-            $('#select2-zonas').prop('disabled', true);
             $('#select2-tipos').prop('disabled', true);
-            $('#select2-listas').prop('disabled', true);
-            $('#select2-vendedores').prop('disabled', true);
             $('#activo').prop('disabled', true);
             $('#form-btn-guardar').prop('disabled', true);
           },
@@ -152,8 +137,8 @@
             $('#modal-form form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('clientes') }}";
-                    else url = "{{ url('clientes') . '/' }}" + id;
+                    if (save_method == 'add') url = "{{ url('proveedores') }}";
+                    else url = "{{ url('proveedores') . '/' }}" + id;
 
                     $.ajax({
                         url : url,
@@ -194,45 +179,36 @@
         $('#modal-form form')[0].reset();
         $('#error-block').hide();
         $.ajax({
-          url: "{{ url('clientes') }}" + '/' + id + "/edit",
+          url: "{{ url('proveedores') }}" + '/' + id + "/edit",
           type: "GET",
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Cliente');
+            $('.modal-title').text('Editar Proveedor');
 
             $('#codigo').prop('readonly', false);
             $('#nombre').prop('readonly', false);
-            $('#apellido').prop('readonly', false);
+            $('#razon_social').prop('readonly', false);
             $('#direccion').prop('readonly', false);
             $('#telefono').prop('readonly', false);
             $('#nro_documento').prop('readonly', false);
             $('#ruc').prop('readonly', false);
             $('#correo_electronico').prop('readonly', false);
-            $('#select2-zonas').prop('disabled', false);
             $('#select2-tipos').prop('disabled', false);
-            $('#select2-listas').prop('disabled', false);
-            $('#select2-vendedores').prop('disabled', false);
             $('#activo').prop('disabled', false);
             $('#form-btn-guardar').prop('disabled', false);
 
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
             $('#nombre').val(data.nombre);
-            $('#apellido').val(data.apellido);
+            $('#razon_social').val(data.razon_social);
             $('#direccion').val(data.direccion);
             $('#telefono').val(data.telefono);
             $('#nro_documento').val(data.nro_documento);
             $('#ruc').val(data.ruc);
             $('#correo_electronico').val(data.correo_electronico);
-            $("#select2-zonas").select2("val", "");
-            $('#select2-zonas').val(data.zona_id).change();
             $("#select2-tipos").select2("val", "");
             $('#select2-tipos').val(data.tipo_cliente_id).change();
-            $("#select2-vendedores").select2("val", "");
-            $('#select2-vendedores').val(data.vendedor_id).change();
-            $("#select2-listas").select2("val", "");
-            $('#select2-listas').val(data.lista_precio_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -264,7 +240,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('clientes') }}" + '/' + id,
+                                  url : "{{ url('proveedores') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {
@@ -303,18 +279,7 @@
     $('#cliente-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
 
-  <script type="text/javascript">
-    $(document).ready(function(){
-            $('#select2-zonas').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                dropdownParent: $('#modal-form'),
-                language: "es"
-            });
-        });
-  </script>
-
+  <!-- Comentamos esto porque no es obligatorio completar el campo
   <script type="text/javascript">
     $(document).ready(function(){
             $('#select2-tipos').select2({
@@ -326,28 +291,6 @@
             });
         });
   </script>
+-->
 
-  <script type="text/javascript">
-    $(document).ready(function(){
-            $('#select2-listas').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                dropdownParent: $('#modal-form'),
-                language: "es"
-            });
-        });
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-            $('#select2-vendedores').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                dropdownParent: $('#modal-form'),
-                language: "es"
-            });
-        });
-  </script>
 @endsection

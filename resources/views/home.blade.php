@@ -52,35 +52,35 @@
                 <ul class="nav side-menu">
                   
                   <li><a><i class="fa fa-shopping-basket"></i> Compras <span class="fa fa-chevron-down"></span></a>
-                          <ul class="nav child_menu">
-                              <!--<li><a href="#level1_1">Level One</a>-->
-                              <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    @can('tiposproveedores.index')
-                                        <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
-                                        </li>
-                                    @endcan
-                                    @can('tiposproveedores.index')
-                                        <li class="sub_menu"><a href="{{route('proveedores.index')}}">Proveedores</a>
-                                        </li>
-                                    @endcan
-                                    @can('monedas.index')
-                                        <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
-                                        </li>
-                                    @endcan
-                                    @can('sucursales.index')
-                                        <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
-                                        </li>
-                                    @endcan
-                                    
-                                </ul>
+                      <ul class="nav child_menu">
+                          <!--<li><a href="#level1_1">Level One</a>-->
+                          <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                @can('tiposproveedores.index')
+                                    <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
+                                    </li>
+                                @endcan
+                                @can('tiposproveedores.index')
+                                    <li class="sub_menu"><a href="{{route('proveedores.index')}}">Proveedores</a>
+                                    </li>
+                                @endcan
+                                @can('monedas.index')
+                                    <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
+                                    </li>
+                                @endcan
+                                @can('sucursales.index')
+                                    <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
+                                    </li>
+                                @endcan
+                                
+                            </ul>
+                          </li>
+                          <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                              <li class="sub_menu"><a href="#">Reporte 1</a>
                               </li>
-                              <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                  <li class="sub_menu"><a href="#">Reporte 1</a>
-                                  </li>
-                                </ul>
-                              </li>
+                            </ul>
+                          </li>
                     </ul>
                   </li>
 
