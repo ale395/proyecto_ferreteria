@@ -8,6 +8,11 @@ class Cotizacion extends Model
 {
     protected $table = 'cotizaciones';
     
+    protected $casts = [
+    	'created_at' => 'Y-m-d H:i:s',
+    	'updated_at' => 'Y-m-d H:i:s',
+    	'fecha_cotizacion' => 'date:d/m/Y',
+	];
     protected $fillable = [
         'descripcion', 'moneda_id','fecha_cotizacion','valor_compra','valor_venta',
     ];
