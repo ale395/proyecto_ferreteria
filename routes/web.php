@@ -120,6 +120,6 @@ Route::middleware(['auth'])->group(function() {
 
 	//Rutas para proveedores
 	Route::resource('proveedores', 'ProveedorController');
-	Route::get('api/proveedores', 'ProveedorController@apiProveedor')->name('api.proveedores');
+	Route::get('api/proveedores', 'ProveedorController@apiProveedores')->name('api.proveedores');
 
 });

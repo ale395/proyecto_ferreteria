@@ -60,6 +60,10 @@
                                         <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
                                         </li>
                                     @endcan
+                                    @can('tiposproveedores.index')
+                                        <li class="sub_menu"><a href="{{route('proveedores.index')}}">Proveedores</a>
+                                        </li>
+                                    @endcan
                                     @can('monedas.index')
                                         <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
                                         </li>
