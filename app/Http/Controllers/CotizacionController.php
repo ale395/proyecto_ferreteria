@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Validator;
 use App\Moneda;
 use App\Cotizacion;
 use Illuminate\Http\Request;
@@ -41,6 +42,8 @@ class CotizacionController extends Controller
         $rules = [
                    'fecha' => 'required|date_format:"d/m/Y"',
                'moneda_id' => 'required|unique:cotizaciones,moneda_id',
+                   'fecha_cotizacion' => 'required|date_format:"d/m/Y"',
+               'moneda_id' => 'required',
             'valor_compra' => 'required',
              'valor_venta' => 'required'
         ];
@@ -55,13 +58,15 @@ class CotizacionController extends Controller
         }
 
         $data = [
-            'fecha' => $request['fecha'],
+            'fecha_cotizacion' => date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_cotizacion']))),
             'moneda_id' => $request['moneda_id'],
             'valor_venta' => $request['valor_venta'],
             'valor_compra' => $request['valor_compra']
         ];
 
-        return Vendedor::create($data);
+        $cotizacion = Cotizacion::create($data);
+        return $cotizacion;
+        
     }
 
     /**
@@ -96,12 +101,13 @@ class CotizacionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $vendedor = Vendedor::findOrFail($id);
+        $cotizacion = Cotizacion::findOrFail($id);
 
         $rules = [
-            'codigo' => 'required|max:20|unique:vendedores,codigo,'.$vendedor->id,
-            'usuario_id' => 'required|unique:vendedores,usuario_id,'.$vendedor->id,
-            'activo' => 'required'
+            'fecha_cotizacion' => 'required|date_format:"d/m/Y"',
+            'moneda_id' => 'required',
+         'valor_compra' => 'required',
+          'valor_venta' => 'required'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -113,13 +119,15 @@ class CotizacionController extends Controller
             return response()->json(['errors' => $errors], 422); // Status code here
         }
 
-        $vendedor->codigo = $request['codigo'];
-        $vendedor->usuario_id = $request['usuario_id'];
-        $vendedor->activo = $request['activo'];
-        
-        $vendedor->update();
+        $cotizacion->fecha_cotizacion = date("Y-m-d",strtotime(str_replace('/', '-',$request['fecha_cotizacion'])));
+        $cotizacion->moneda_id = $request['moneda_id'];
+        $cotizacion->valor_compra = $request['valor_compra'];
+        $cotizacion->valor_venta = $request['valor_venta'];
 
-        return $vendedor;
+        
+        $cotizacion->update();
+
+        return $cotizacion;
     }
 
     /**
@@ -142,76 +150,57 @@ class CotizacionController extends Controller
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 return Datatables::of($cotizaciones)
-                ->addColumn('nombre_usuario', function($cotizaciones){
-                    if (empty($vendedores->usuario)) {
+                ->addColumn('moneda', function($cotizaciones){
+                    if (empty($cotizaciones->moneda)) {
                          return null;
                      } else {
-                        return $vendedores->usuario->name;
+                        return $cotizaciones->moneda->descripcion;
                     }
                 })
-                ->addColumn('activo', function($vendedores){
-                    if ($vendedores->activo) {
-                        return 'Si';
-                    }else{
-                        return 'No';
-                    }
-                })
-                ->addColumn('action', function($vendedores){
-                    return '<a onclick="editForm('. $vendedores->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $vendedores->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+
+                ->addColumn('action', function($cotizaciones){
+                    return '<a onclick="editForm('. $cotizaciones->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $cotizaciones->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else {
-                return Datatables::of($vendedores)
-                ->addColumn('nombre_usuario', function($vendedores){
-                    if (empty($vendedores->usuario)) {
+                return Datatables::of($cotizaciones)
+                ->addColumn('nombre_usuario', function($cotizaciones){
+                    if (empty($cotizaciones->moneda)) {
                          return null;
                      } else {
-                        return $vendedores->usuario->name;
+                        return $cotizaciones->moneda->descripcion;
                     }
                 })
-                ->addColumn('activo', function($vendedores){
-                    if ($vendedores->activo) {
-                        return 'Si';
-                    }else{
-                        return 'No';
-                    }
-                })
-                ->addColumn('action', function($vendedores){
-                    return '<a onclick="editForm('. $vendedores->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                ->addColumn('action', function($cotizaciones){
+                    return '<a onclick="editForm('. $cotizaciones->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } elseif ($permiso_eliminar) {
-            return Datatables::of($vendedores)
-            ->addColumn('nombre_usuario', function($vendedores){
-                if (empty($vendedores->usuario)) {
+            return Datatables::of($cotizaciones)
+            ->addColumn('nombre_usuario', function($cotizaciones){
+                if (empty($cotizaciones->moneda)) {
                     return null;
                 } else {
-                    return $vendedores->usuario->name;
-                }
-            })
-            ->addColumn('activo', function($vendedores){
-                if ($vendedores->activo) {
-                    return 'Si';
-                }else{
-                    return 'No';
-                }
-            })
-            ->addColumn('action', function($vendedores){
-                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                       '<a onclick="deleteData('. $vendedores->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
-            })->make(true);
-        } else {
-            return Datatables::of($vendedores)
-            ->addColumn('nombre_usuario', function($vendedores){
-                if (empty($cotizacioness->usuario)) {
-                    return null;
-                } else {
-                    return $cotizaciones->usuario->name;
+                    return $cotizaciones->moneda->descripicon;
                 }
             })
 
-            ->addColumn('action', function($cotizacioness){
+            ->addColumn('action', function($cotizaciones){
+                return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                       '<a onclick="deleteData('. $cotizaciones->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
+        } else {
+            return Datatables::of($cotizaciones)
+            ->addColumn('nombre_usuario', function($cotizaciones){
+                if (empty($cotizaciones->moneda)) {
+                    return null;
+                } else {
+                    return $cotizaciones->moneda->descripcion;
+                }
+            })
+
+            ->addColumn('action', function($cotizaciones){
                 return '<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                        '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);

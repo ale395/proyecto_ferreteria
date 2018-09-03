@@ -16,7 +16,7 @@ class CreateCotizacionesTable extends Migration
         Schema::create('cotizaciones', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->date('fecha')->unsigned();
+            $table->date('fecha_cotizacion');
             $table->integer('moneda_id')->unsigned();
             $table->decimal('valor_compra', 14, 4);
             $table->decimal('valor_venta', 14, 4);

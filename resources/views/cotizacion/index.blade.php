@@ -18,12 +18,10 @@
                     <table id="cotizacion-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th width="50">Codigo</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th width="80">Nro CI</th>
-                                <th>RUC</th>
-                                <th width="40">Activo</th>
+                                <th width="50">Fecha</th>
+                                <th>Valor de compra</th>
+                                <th>Valor de venta</th>
+                                <th>Moneda</th>
                                 <th width="110">Acciones</th>
                             </tr>
                         </thead>
@@ -44,12 +42,10 @@
                       serverSide: true,
                       ajax: "{{ route('api.cotizaciones') }}",
                       columns: [
-                        {data: 'codigo', name: 'codigo'},
-                        {data: 'nombre', name: 'nombre'},
-                        {data: 'apellido', name: 'apellido'},
-                        {data: 'nro_documento', name: 'nro_documento'},
-                        {data: 'ruc', name: 'ruc'},
-                        {data: 'activo', name: 'activo'},
+                        {data: 'fecha_cotizacion', name: 'fecha_cotizacion'},
+                        {data: 'valor_compra', name: 'valor_compra'},
+                        {data: 'valor_venta', name: 'valor_venta'},
+                        {data: 'moneda', name: 'moneda'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
@@ -57,30 +53,19 @@
       function addForm() {
         save_method = "add";
         $('#error-block').hide();
-        $('#activo').attr('checked', true);
+
         
-        $('#select2-zonas').val("").change();
-        $('#select2-tipos').val("").change();
-        $('#select2-listas').val("").change();
-        $('#select2-vendedores').val("").change();
+
+        $('#select2-monedas').val("").change();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
         $('.modal-title').text('Nueva Cotizacion');
 
-        $('#codigo').prop('readonly', false);
-        $('#nombre').prop('readonly', false);
-        $('#apellido').prop('readonly', false);
-        $('#direccion').prop('readonly', false);
-        $('#telefono').prop('readonly', false);
-        $('#nro_documento').prop('readonly', false);
-        $('#ruc').prop('readonly', false);
-        $('#correo_electronico').prop('readonly', false);
-        $('#select2-zonas').prop('disabled', false);
-        $('#select2-tipos').prop('disabled', false);
-        $('#select2-listas').prop('disabled', false);
-        $('#select2-vendedores').prop('disabled', false);
-        $('#activo').prop('disabled', false);
+        $('#fecha_cotizacion').prop('readonly', false);
+        $('#valor_venta').prop('readonly', false);
+        $('#valor_compra').prop('readonly', false);
+        $('#select2-monedas').prop('disabled', false);
         $('#form-btn-guardar').prop('disabled', false);
       }
 
@@ -100,41 +85,19 @@
             $('#modal-form').modal('show');
 
             $('#id').val(data.id);
-            $('#codigo').val(data.codigo);
-            $('#nombre').val(data.nombre);
-            $('#apellido').val(data.apellido);
-            $('#direccion').val(data.direccion);
-            $('#telefono').val(data.telefono);
-            $('#nro_documento').val(data.nro_documento);
-            $('#ruc').val(data.ruc);
-            $('#correo_electronico').val(data.correo_electronico);
-            $("#select2-zonas").select2("val", "");
-            $('#select2-zonas').val(data.zona_id).change();
-            $("#select2-tipos").select2("val", "");
-            $('#select2-tipos').val(data.tipo_cliente_id).change();
-            $("#select2-vendedores").select2("val", "");
-            $('#select2-vendedores').val(data.vendedor_id).change();
-            $("#select2-listas").select2("val", "");
-            $('#select2-listas').val(data.lista_precio_id).change();
-            if (data.activo) {
-              $('#activo').attr('checked', true);
-            }else{
-              $('#activo').attr('checked', false);
-            }
+            $('#fecha_cotizacion').val(data.fecha_cotizacion);
+            $('#valor_compra').val(data.valor_compra);
+            $('#valor_venta').val(data.valor_venta);
+            $("#select2-monedas").select2("val", "");
+            $('#select2-monedas').val(data.moneda_id).change();
+           
 
-            $('#codigo').prop('readonly', true);
-            $('#nombre').prop('readonly', true);
-            $('#apellido').prop('readonly', true);
-            $('#direccion').prop('readonly', true);
-            $('#telefono').prop('readonly', true);
-            $('#nro_documento').prop('readonly', true);
-            $('#ruc').prop('readonly', true);
-            $('#correo_electronico').prop('readonly', true);
-            $('#select2-zonas').prop('disabled', true);
-            $('#select2-tipos').prop('disabled', true);
-            $('#select2-listas').prop('disabled', true);
-            $('#select2-vendedores').prop('disabled', true);
-            $('#activo').prop('disabled', true);
+            $('#fecha_cotizacion').prop('readonly', true);
+            $('#valor_compra').prop('readonly', true);
+            $('#valor_venta').prop('readonly', true);
+
+            $('#select2-monedas').prop('disabled', true);
+
             $('#form-btn-guardar').prop('disabled', true);
           },
           error : function() {
@@ -201,27 +164,19 @@
             $('#modal-form').modal('show');
             $('.modal-title').text('Editar Cotizaciones');
 
-            $('#codigo').prop('readonly', false);
-            $('#nombre').prop('readonly', false);
-            $('#apellido').prop('readonly', false);
-            $('#direccion').prop('readonly', false);
-            $('#telefono').prop('readonly', false);
-            $('#nro_documento').prop('readonly', false);
-            $('#ruc').prop('readonly', false);
-            $('#correo_electronico').prop('readonly', false);
-            $('#select2-zonas').prop('disabled', false);
-            $('#select2-tipos').prop('disabled', false);
-            $('#select2-listas').prop('disabled', false);
-            $('#select2-vendedores').prop('disabled', false);
-            $('#activo').prop('disabled', false);
+            $('#fecha_cotizacion').prop('readonly', false);
+            $('#valor_compra').prop('readonly', false);
+            $('#valor_venta').prop('readonly', false);
+
+            $('#select2-monedas').prop('disabled', false);
+
             $('#form-btn-guardar').prop('disabled', false);
 
             $('#id').val(data.id);
-            $('#codigo').val(data.codigo);
-            $('#nombre').val(data.nombre);
-            $('#apellido').val(data.apellido);
-            $('#direccion').val(data.direccion);
-            $('#telefono').val(data.telefono);
+            $('#fecha_cotizacion').val(data.fecha_cotizacion);
+            $('#valor_compra').val(data.valor_compra);
+            $('#valor_venta').val(data.valor_venta);
+
 
             $("#select2-monedas").select2("val", "");
             $('#select2-monedas').val(data.moneda_id).change();
@@ -281,11 +236,6 @@
 @endsection
 
 @section('otros_scripts')
-  <script type="text/javascript">
-    $('#modal-form').on('shown.bs.modal', function() {
-      $("#codigo").focus();
-    });
-  </script>
   
   <script type="text/javascript">
     $('#cotizacion-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
@@ -293,7 +243,7 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-            $('#select2-zonas').select2({
+            $('#select2-monedas').select2({
                 placeholder : 'Seleccione una de las opciones',
                 tags: false,
                 width: 'resolve',
@@ -302,40 +252,19 @@
             });
         });
   </script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-            $('#select2-tipos').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                dropdownParent: $('#modal-form'),
-                language: "es"
-            });
-        });
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-            $('#select2-listas').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                dropdownParent: $('#modal-form'),
-                language: "es"
-            });
-        });
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-            $('#select2-vendedores').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                dropdownParent: $('#modal-form'),
-                language: "es"
-            });
-        });
+<script type="text/javascript">
+    $(function() {
+      $('.dpfechacotizacion').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        todayBtn: true,
+        todayHighlight: true,
+        autoclose: true
+      });
+      $('#fecha_cotizacion').click(function(e){
+                e.stopPropagation();
+                $('.dpfechacotizacion').datepicker('update');
+            });  
+    });
   </script>
 @endsection
