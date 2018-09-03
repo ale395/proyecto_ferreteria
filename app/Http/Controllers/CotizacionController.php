@@ -40,8 +40,6 @@ class CotizacionController extends Controller
     public function store(Request $request)
     {
         $rules = [
-                   'fecha' => 'required|date_format:"d/m/Y"',
-               'moneda_id' => 'required|unique:cotizaciones,moneda_id',
                    'fecha_cotizacion' => 'required|date_format:"d/m/Y"',
                'moneda_id' => 'required',
             'valor_compra' => 'required',
