@@ -139,6 +139,10 @@
                               <li class="sub_menu"><a href="{{route('tiposEmpleados.index')}}">Tipos de Empleados</a>
                               </li>
                             @endcan
+                            @can('empleados.index')
+                              <li class="sub_menu"><a href="{{route('empleados.index')}}">Empleados</a>
+                              </li>
+                            @endcan
                             @can('timbrados.index')
                               <li class="sub_menu"><a href="{{route('timbrados.index')}}">Timbrados</a>
                               </li>

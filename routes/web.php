@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA COTIZACIONES
 		Route::resource('cotizaciones', 'CotizacionController', ['parameters'=>['cotizaciones'=>'cotizacion']]);
 		Route::get('api/cotizaciones', 'CotizacionController@apiCotizaciones')->name('api.cotizaciones');
+
 	//RUTAS PARA IMPUESTOS
 	Route::resource('articulos', 'ArticuloController');
 	Route::get('api/articulos', 'ArticuloController@apiArticulos')->name('api.articulos');
@@ -39,12 +40,17 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA BANCOS
 	Route::resource('bancos', 'BancoController');
 	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');
+
 	//RUTAS PARA DEPOSITO
 	Route::resource('depositos', 'DepositoController');
 	Route::get('api/deposito', 'DepositoController@apiDepositos')->name('api.depositos');
-	//RUTAS PARA TIMBRADOS
+
+	//RUTAS PARA TIPOS DE EMPLEADOS
 	Route::resource('tiposEmpleados', 'TipoEmpleadoController');
 	Route::get('api/tiposEmpleados', 'TipoEmpleadoController@apiTiposEmpleados')->name('api.tiposEmpleados');
+
+	Route::resource('empleados', 'EmpleadoController');
+	Route::get('api/empleados', 'EmpleadoController@apiEmpleados')->name('api.empleados');
 
 	//RUTAS PARA VENDEDORES
 	Route::resource('vendedores', 'VendedorController');

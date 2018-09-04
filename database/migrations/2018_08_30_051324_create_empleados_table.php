@@ -24,12 +24,12 @@ class CreateEmpleadosTable extends Migration
             $table->integer('telefono_linea_baja')->unsigned()->nullable();
             $table->string('correo_electronico', 100);
             $table->date('fecha_nacimiento');
-            $table->string('nombre_contacto1', 100);
+            /*$table->string('nombre_contacto1', 100);
             $table->integer('telefono_contacto1')->unsigned();
             $table->char('relacion_contacto1', 1);
             $table->string('nombre_contacto2', 100)->nullable();
             $table->integer('telefono_contacto2')->unsigned()->nullable();
-            $table->char('relacion_contacto2', 1)->nullable();
+            $table->char('relacion_contacto2', 1)->nullable();*/
             $table->boolean('activo')->default(true);
             $table->timestamps();
 
