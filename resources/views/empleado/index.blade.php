@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     <h4>Lista de Empleados
                         @can('empleados.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                          <a onclick="window.location='{{route('empleados.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
@@ -262,7 +262,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('clientes') }}" + '/' + id,
+                                  url : "{{ url('empleados') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {

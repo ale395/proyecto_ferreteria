@@ -27,7 +27,7 @@ class EmpleadoController extends Controller
      */
     public function create()
     {
-        //
+        return "Hola";
     }
 
     /**
@@ -58,7 +58,7 @@ class EmpleadoController extends Controller
      * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function edit(Empleado $empleado)
+    public function edit($id)
     {
         //
     }
@@ -70,7 +70,7 @@ class EmpleadoController extends Controller
      * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Empleado $empleado)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -81,9 +81,9 @@ class EmpleadoController extends Controller
      * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Empleado $empleado)
+    public function destroy($id)
     {
-        //
+        return Empleado::destroy($id);
     }
 
     public function apiEmpleados()
