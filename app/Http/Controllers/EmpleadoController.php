@@ -97,6 +97,12 @@ class EmpleadoController extends Controller
             if ($permiso_eliminar) {
                 if ($permiso_ver) {
                     return Datatables::of($empleados)
+                    ->addColumn('nro_cedula', function($empleados){
+                        return $empleados->getNroCedula();
+                    })
+                    ->addColumn('telefono_celular', function($empleados){
+                        return $empleados->getTelefonoCelular();
+                    })
                     ->addColumn('activo', function($empleados){
                         if ($empleados->activo) {
                             return 'Si';
@@ -105,11 +111,17 @@ class EmpleadoController extends Controller
                         }
                     })
                     ->addColumn('action', function($empleados){
-                        return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a onclick="deleteData('. $empleados->id .')" class="btn btn-danger btn-sm" title="Eliminar Cliente"><i class="fa fa-trash-o"></i></a>';
+                        return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm" title="Editar Empleado"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a onclick="deleteData('. $empleados->id .')" class="btn btn-danger btn-sm" title="Eliminar Empleado"><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 } else{
                     return Datatables::of($empleados)
+                    ->addColumn('nro_cedula', function($empleados){
+                        return $empleados->getNroCedula();
+                    })
+                    ->addColumn('telefono_celular', function($empleados){
+                        return $empleados->getTelefonoCelular();
+                    })
                     ->addColumn('activo', function($empleados){
                         if ($empleados->activo) {
                             return 'Si';
@@ -118,13 +130,19 @@ class EmpleadoController extends Controller
                         }
                     })
                     ->addColumn('action', function($empleados){
-                        return '<a class="btn btn-primary btn-sm" title="Ver Cliente"  disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a onclick="deleteData('. $empleados->id .')" class="btn btn-danger btn-sm" title="Eliminar Cliente"><i class="fa fa-trash-o"></i></a>';
+                        return '<a class="btn btn-primary btn-sm" title="Ver Empleado"  disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm" title="Editar Empleado"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a onclick="deleteData('. $empleados->id .')" class="btn btn-danger btn-sm" title="Eliminar Empleado"><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 }
             } else {
                 if ($permiso_ver) {
                     return Datatables::of($empleados)
+                    ->addColumn('nro_cedula', function($empleados){
+                        return $empleados->getNroCedula();
+                    })
+                    ->addColumn('telefono_celular', function($empleados){
+                        return $empleados->getTelefonoCelular();
+                    })
                     ->addColumn('activo', function($empleados){
                         if ($empleados->activo) {
                             return 'Si';
@@ -133,11 +151,17 @@ class EmpleadoController extends Controller
                         }
                     })
                     ->addColumn('action', function($empleados){
-                        return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                        return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                                '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                     })->make(true);
                 } else{
                     return Datatables::of($empleados)
+                    ->addColumn('nro_cedula', function($empleados){
+                        return $empleados->getNroCedula();
+                    })
+                    ->addColumn('telefono_celular', function($empleados){
+                        return $empleados->getTelefonoCelular();
+                    })
                     ->addColumn('activo', function($empleados){
                         if ($empleados->activo) {
                             return 'Si';
@@ -146,64 +170,88 @@ class EmpleadoController extends Controller
                         }
                     })
                     ->addColumn('action', function($empleados){
-                        return '<a class="btn btn-primary btn-sm" title="Ver Cliente" disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a class="btn btn-danger btn-sm" title="Eliminar Cliente" disabled><i class="fa fa-trash-o"></i></a>';
+                        return '<a class="btn btn-primary btn-sm" title="Ver Empleado" disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm" title="Editar Empleado"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a class="btn btn-danger btn-sm" title="Eliminar Empleado" disabled><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 }
             }
         } elseif ($permiso_eliminar) {
             if ($permiso_ver) {
                 return Datatables::of($empleados)
+                ->addColumn('nro_cedula', function($empleados){
+                    return $empleados->getNroCedula();
+                })
+                ->addColumn('telefono_celular', function($empleados){
+                    return $empleados->getTelefonoCelular();
+                })
                 ->addColumn('activo', function($empleados){
-                        if ($empleados->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
+                    if ($empleados->activo) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('action', function($empleados){
-                    return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                    return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a onclick="deleteData('. $empleados->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else{
                 return Datatables::of($empleados)
+                ->addColumn('nro_cedula', function($empleados){
+                    return $empleados->getNroCedula();
+                })
+                ->addColumn('telefono_celular', function($empleados){
+                    return $empleados->getTelefonoCelular();
+                })
                 ->addColumn('activo', function($empleados){
-                        if ($empleados->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
+                    if ($empleados->activo) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('action', function($empleados){
-                    return '<a class="btn btn-primary btn-sm" title="Ver Cliente" disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                    return '<a class="btn btn-primary btn-sm" title="Ver Empleado" disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a onclick="deleteData('. $empleados->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
         } else {
             if ($permiso_ver) {
                 return Datatables::of($empleados)
+                ->addColumn('nro_cedula', function($empleados){
+                    return $empleados->getNroCedula();
+                })
+                ->addColumn('telefono_celular', function($empleados){
+                    return $empleados->getTelefonoCelular();
+                })
                 ->addColumn('activo', function($empleados){
-                        if ($empleados->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
+                    if ($empleados->activo) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('action', function($empleados){
-                    return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                    return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else{
                 return Datatables::of($empleados)
+                ->addColumn('nro_cedula', function($empleados){
+                    return $empleados->getNroCedula();
+                })
+                ->addColumn('telefono_celular', function($empleados){
+                    return $empleados->getTelefonoCelular();
+                })
                 ->addColumn('activo', function($empleados){
-                        if ($empleados->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
+                    if ($empleados->activo) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('action', function($empleados){
-                    return '<a class="btn btn-primary btn-sm" title="Ver Cliente"  disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                    return '<a class="btn btn-primary btn-sm" title="Ver Empleado"  disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             }
