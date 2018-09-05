@@ -34,9 +34,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="apellido" class="col-md-2 control-label">Apellido</label>
+                        <label for="razon_social" class="col-md-2 control-label">Apellido/Razón Social</label>
                         <div class="col-md-9">
-                            <input type="text" id="apellido" name="apellido" class="form-control">
+                            <input type="text" id="razon_social" name="razon_social" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -78,44 +78,12 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="tipo_cliente_id" class="control-label col-md-2">Tipo de Cliente *</label>
+                        <label for="tipo_cliente_id" class="control-label col-md-2">Tipo de Proveedor</label>
                         <div class="col-md-4">
-                            <select name="tipo_cliente_id" id="select2-tipos" class="form-control" style="width: 100%">
+                            <select name="tipo_proveedor_id" id="select2-tipos" class="form-control" style="width: 100%">
                                 <option></option>
-                                @foreach($tipos_clientes as $id => $tipo_cliente)
-                                  <option value="{{ $tipo_cliente->id }}">{{ $tipo_cliente->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <label for="zona_id" class="control-label col-md-1">Zona *</label>
-                        <div class="col-md-4">
-                            <select name="zona_id" id="select2-zonas" class="form-control" style="width: 100%">
-                                <option></option>
-                                @foreach($zonas as $id => $zona)
-                                  <option value="{{ $zona->id }}">{{ $zona->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="lista_precio_id" class="control-label col-md-2">Lista de Precio</label>
-                        <div class="col-md-4">
-                            <select name="lista_precio_id" id="select2-listas" class="form-control" style="width: 100%">
-                                <option></option>
-                                @foreach($lista_precios as $id => $lista)
-                                  <option value="{{ $lista->id }}">{{ $lista->descripcion }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <label for="vendedor_id" class="control-label col-md-1">Vendedor</label>
-                        <div class="col-md-4">
-                            <select name="vendedor_id" id="select2-vendedores" class="form-control" style="width: 100%">
-                                <option></option>
-                                @foreach($vendedores as $id => $vendedor)
-                                  <option value="{{ $vendedor->id }}">{{ $vendedor->usuario->name }}</option>
+                                @foreach($tipos_proveedores as $id => $tipo_proveedor)
+                                  <option value="{{ $tipo_proveedor->id }}">{{ $tipo_proveedor->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -127,7 +95,7 @@
                             <input type="hidden" name="activo" value="false">
                             <input id="activo" type="checkbox" class="custom-control-input" name="activo" value="true">
                         </div>
-                      </div>
+                    </div>
 
                 </div>
 

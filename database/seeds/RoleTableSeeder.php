@@ -44,11 +44,18 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_timb = Permission::where('slug', 'timbrados.edit')->first();
         $permiso_eliminar_timb = Permission::where('slug', 'timbrados.destroy')->first();
 
-        //permisos de NUMERACION DE SERIES
+        //permisos de SERIES
         $permiso_listar_nume_series = Permission::where('slug', 'series.index')->first();
         $permiso_crear_nume_series = Permission::where('slug', 'series.create')->first();
         $permiso_editar_nume_series = Permission::where('slug', 'series.edit')->first();
         $permiso_eliminar_nume_series = Permission::where('slug', 'series.destroy')->first();
+
+        //permisos de Empleados
+        $permiso_listar_empleados = Permission::where('slug', 'empleados.index')->first();
+        $permiso_crear_empleados = Permission::where('slug', 'empleados.create')->first();
+        $permiso_editar_empleados = Permission::where('slug', 'empleados.edit')->first();
+        $permiso_eliminar_empleados = Permission::where('slug', 'empleados.destroy')->first();
+        $permiso_ver_empleados = Permission::where('slug', 'empleados.show')->first();
 
         //permisos de Listas de Precios
         $permiso_listar_lprec = Permission::where('slug', 'listaprecio.index')->first();
@@ -96,11 +103,13 @@ class RoleTableSeeder extends Seeder
         $permiso_crear_banco = Permission::where('slug', 'bancos.create')->first();
         $permiso_editar_banco = Permission::where('slug', 'bancos.edit')->first();
         $permiso_eliminar_banco = Permission::where('slug', 'bancos.destroy')->first();
+
         //permisos de Bancos
         $permiso_listar_deposito = Permission::where('slug', 'depositos.index')->first();
         $permiso_crear_deposito = Permission::where('slug', 'depositos.create')->first();
         $permiso_editar_deposito = Permission::where('slug', 'depositos.edit')->first();
         $permiso_eliminar_deposito = Permission::where('slug', 'depositos.destroy')->first();
+
         //permisos de Tipos Empleados
         $permiso_listar_tipo_empleado = Permission::where('slug', 'tiposEmpleados.index')->first();
         $permiso_crear_tipo_empleado = Permission::where('slug', 'tiposEmpleados.create')->first();
@@ -183,8 +192,6 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_familia_crear->id);
         $role->assignPermission($permiso_familia_editar->id);
         $role->assignPermission($permiso_familia_eliminar->id);
-
-
         
         $role->assignPermission($permiso_listar_formaPago->id);
         $role->assignPermission($permiso_crear_formaPago->id);
@@ -205,6 +212,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_user->id);
         $role->assignPermission($permiso_editar_user->id);
         $role->assignPermission($permiso_eliminar_user->id);
+
+        $role->assignPermission($permiso_listar_empleados->id);
+        $role->assignPermission($permiso_crear_empleados->id);
+        $role->assignPermission($permiso_editar_empleados->id);
+        $role->assignPermission($permiso_eliminar_empleados->id);
+        $role->assignPermission($permiso_ver_empleados->id);
 
         $role->assignPermission($permiso_linea_listar->id);
         $role->assignPermission($permiso_linea_crear->id);

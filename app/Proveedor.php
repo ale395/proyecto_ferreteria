@@ -12,4 +12,8 @@ class Proveedor extends Model
     ['codigo', 'nombre','razon_social','ruc','nro_documento',
     'telefono','direccion','correo','tipo_vendedor_id','activo'];
     
+    public function tipoProveedor()
+    {
+        return $this->belongsTo('App\TipoProveedor');
+    }
 }

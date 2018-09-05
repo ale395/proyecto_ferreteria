@@ -83,7 +83,35 @@
                                   <li class="sub_menu"><a href="#">Reporte 1</a>
                                   </li>
                                 </ul>
+                      <ul class="nav child_menu">
+                          <!--<li><a href="#level1_1">Level One</a>-->
+                          <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                @can('tiposproveedores.index')
+                                    <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
+                                    </li>
+                                @endcan
+                                @can('tiposproveedores.index')
+                                    <li class="sub_menu"><a href="{{route('proveedores.index')}}">Proveedores</a>
+                                    </li>
+                                @endcan
+                                @can('monedas.index')
+                                    <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
+                                    </li>
+                                @endcan
+                                @can('sucursales.index')
+                                    <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
+                                    </li>
+                                @endcan
+                                
+                            </ul>
+                          </li>
+                          <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                              <li class="sub_menu"><a href="#">Reporte 1</a>
                               </li>
+                            </ul>
+                          </li>
                     </ul>
                   </li>
 
@@ -176,20 +204,28 @@
                               <li class="sub_menu"><a href="{{route('tiposEmpleados.index')}}">Tipos de Empleados</a>
                               </li>
                             @endcan
-                            @can('monedas.index')
-                              <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
+                            @can('empleados.index')
+                              <li class="sub_menu"><a href="{{route('empleados.index')}}">Empleados</a>
                               </li>
                             @endcan
                             @can('timbrados.index')
                               <li class="sub_menu"><a href="{{route('timbrados.index')}}">Timbrados</a>
                               </li>
                             @endcan
-                            @can('formasPagos.index')
-                              <li class="sub_menu"><a href="{{route('formasPagos.index')}}">Formas de Pago</a>
-                              </li>
-                            @endcan
                             @can('series.index')
                               <li class="sub_menu"><a href="{{route('series.index')}}">Series</a>
+                              </li>
+                            @endcan
+                            @can('monedas.index')
+                              <li class="sub_menu"><a href="{{route('monedas.index')}}">Monedas</a>
+                              </li>
+                            @endcan
+                            @can('cotizaciones.index')
+                                <li class="sub_menu"><a href="{{route('cotizaciones.index')}}">Cotizaciones</a>
+                                </li>
+                            @endcan
+                            @can('formasPagos.index')
+                              <li class="sub_menu"><a href="{{route('formasPagos.index')}}">Formas de Pago</a>
                               </li>
                             @endcan
                             @can('bancos.index')
@@ -202,21 +238,6 @@
                             @endcan
                             @can('sucursales.index')
                               <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
-                              </li>
-                            @endcan
-                            @can('familias.index')
-                              <li class="sub_menu"><a href="{{route('familias.index')}}">Familias</a>
-                              </li>
-                            @endcan
-                            @can('lineas.index')
-                              <li class="sub_menu"><a href="{{route('lineas.index')}}">Lineas</a>
-                              </li>
-                            @endcan
-                            @can('rubros.index')
-                              <li class="sub_menu"><a href="{{route('rubros.index')}}">Rubros</a>
-                            @endcan
-                            @can('cajeros.index')
-                              <li class="sub_menu"><a href="{{route('cajeros.index')}}">Cajeros</a>
                               </li>
                             @endcan
                           </ul>
@@ -265,10 +286,7 @@
                                       <li class="sub_menu"><a href="{{route('depositos.index')}}">Depositos</a>
                                       </li>
                                     @endcan
-                                    @can('cotizaciones.index')
-                                      <li class="sub_menu"><a href="{{route('cotizaciones.index')}}">Cotizaciones</a>
-                                      </li>
-                                    @endcan
+                                    
                                     @can('articulos.index')
                                       <li class="sub_menu"><a href="{{route('articulos.index')}}">Articulos</a>
                                       </li>
@@ -290,7 +308,7 @@
                                       </li>
                                     @endcan
                                     @can('conceptoajuste.index')
-                                      <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajuste</a>
+                                      <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajustes</a>
                                       </li>
                                     @endcan
                                 </ul>
