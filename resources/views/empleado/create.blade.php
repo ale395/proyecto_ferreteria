@@ -28,7 +28,7 @@
                     <div class="form-group">
                         <label for="nro_cedula" class="col-md-2 control-label">Nro CI*</label>
                         <div class="col-md-3">
-                            <input type="text" id="nro_cedula" name="nro_cedula" class="form-control" value="{{old('nro_cedula')}}" placeholder="Nro de Cedula de Identidad" autofocus>
+                            <input type="text" id="nro_cedula" name="nro_cedula" class="form-control number" value="{{old('nro_cedula')}}" placeholder="Nro de Cedula de Identidad" autofocus>
                         </div>
                     </div>
                     <div class="form-group">
@@ -90,6 +90,20 @@
                     e.stopPropagation();
                     $('.dpfechanacimiento').datepicker('update');
                 });  
+        });
+    </script>
+    <script type="text/javascript">
+        $("#nro_cedula").on({
+            "focus": function (event) {
+                $(event.target).select();
+            },
+            "keyup": function (event) {
+                $(event.target).val(function (index, value ) {
+                    return value.replace(/\D/g, "")
+                                //.replace(/([0-9])([0-9]{2})$/, '$1.$2')
+                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                });
+            }
         });
     </script>
 @endsection

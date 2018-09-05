@@ -38,7 +38,43 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $empleado = new Empleado();
+
+        if (!empty($request['nro_cedula'])) {
+            $request['nro_cedula'] = (integer) str_replace('.', '',$request['nro_cedula']);
+        }
+        if (!empty($request['telefono_celular'])) {
+            $request['telefono_celular'] = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono_celular']))));
+        }
+
+        $rules = [
+            'nro_cedula' => 'required|numeric|unique:empleados,nro_cedula',
+            'nombre' => 'required|max:100',
+            'apellido' => 'required|max:100',
+            'direccion' => 'required|max:100',
+            'correo_electronico' => 'required|max:100|email',
+            'telefono_celular' => 'required|numeric|digits:9',
+            'fecha_nacimiento' => 'required|date_format:d/m/Y'
+        ];
+
+        $mensajes = [
+            'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
+        ];
+
+        Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        $empleado->nro_cedula = str_replace(".", "",$request['nro_cedula']);
+        $empleado->nombre = $request['nombre'];
+        $empleado->apellido = $request['apellido'];
+        $empleado->direccion = $request['direccion'];
+        $empleado->correo_electronico = $request['correo_electronico'];
+        $empleado->telefono_celular = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono_celular']))));
+        $empleado->fecha_nacimiento = $request['fecha_nacimiento'];
+
+        
+        $empleado->save();
+
+        return redirect('/empleados')->with('status', 'Datos guardados correctamente!');
     }
 
     /**
