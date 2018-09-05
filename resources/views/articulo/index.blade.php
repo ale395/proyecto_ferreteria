@@ -19,10 +19,12 @@
                         <thead>
                             <tr>
                                 <th width="50">Codigo</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th width="80">Nro CI</th>
-                                <th>RUC</th>
+                                <th>descripcion</th>
+                                <th>codigo de barras</th>
+                                <th width="80">costo</th>
+                                <th>porcentaje ganancia</th>
+                                <th>comentario</th>
+                                <th>vendible</th>
                                 <th width="40">Activo</th>
                                 <th width="110">Acciones</th>
                             </tr>

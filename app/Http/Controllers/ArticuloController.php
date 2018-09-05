@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Validator;
 use App\Articulo;
 use App\Impuesto;
 use App\Grupo;
@@ -78,10 +78,11 @@ class ArticuloController extends Controller
             'descripcion' => $request['descripcion'],
             'codigo_barra' => $request['codigo_barra'],
             'costo' => $request['costo'],
-            'impuesto_id' => $request['impuesto_id'],
+            'porcentaje_ganancia' => $request['porcentaje_ganancia'],
             'control_existencia' => $request['control_existencia'],
             'vendible' => $request['vendible'],
             'activo' => $request['activo'],
+            'impuesto_id' => $request['impuesto_id'],
             'grupo_id' => $request['grupo_id'],
             'familia_id' => $request['familia_id'],
             'linea_id' => $request['linea_id'],
@@ -154,6 +155,8 @@ class ArticuloController extends Controller
         $articulo->descripcion = $request['descripcion'];
         $articulo->codigo_barra = $request['codigo_barra'];
         $articulo->costo = $request['costo'];
+        $articulo->comentario = $request['comentario'];
+        $articulo->porcentaje_ganancia = $request['porcentaje_ganancia'];
         $articulo->impuesto_id = $request['impuesto_id'];
         $articulo->grupo_id = $request['grupo_id'];
         $articulo->familia_id = $request['familia_id'];
@@ -182,7 +185,7 @@ class ArticuloController extends Controller
     {
         $permiso_editar = Auth::user()->can('articulos.edit');
         $permiso_eliminar = Auth::user()->can('articulos.destroy');
-        $permiso_ver = Auth::user()->can('articulos.show');
+        //$permiso_ver = Auth::user()->can('articulos.show');
         $articulos = Articulo::all();
 
         if ($permiso_editar) {

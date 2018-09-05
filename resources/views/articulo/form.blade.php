@@ -24,103 +24,101 @@
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label for="nombre" class="col-md-2 control-label">Nombre *</label>
+                        <label for="codigo_barra" class="col-md-2 control-label">Código de barras*</label>
+                        <div class="col-md-3">
+                            <input type="text" id="codigo_barra" name="codigo_barra" class="form-control" autofocus>
+                            <span class="help-block with-errors"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion" class="col-md-2 control-label">Descripcion *</label>
                         <div class="col-md-9">
-                            <input type="text" id="nombre" name="nombre" class="form-control">
+                            <input type="text" id="descripcion" name="descripcion" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="apellido" class="col-md-2 control-label">Apellido</label>
-                        <div class="col-md-9">
-                            <input type="text" id="apellido" name="apellido" class="form-control">
-                            <span class="help-block with-errors"></span>
-                        </div>
-                    </div>
 
                     <div class="form-group">
-                        <label for="nro_documento" class="col-md-2 control-label">Nro Cédula</label>
+                        <label for="costo" class="col-md-2 control-label">Costo</label>
                         <div class="col-md-4">
-                            <input type="number" id="nro_documento" name="nro_documento" class="form-control">
+                            <input type="number" id="costo" name="costo" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
 
-                        <label for="ruc" class="col-md-1 control-label">RUC</label>
+                        <label for="porcentaje_ganancia" class="col-md-1 control-label">Porcentaje ganancia</label>
                         <div class="col-md-4">
-                            <input type="text" id="ruc" name="ruc" class="form-control">
-                            <span class="help-block with-errors"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="direccion" class="col-md-2 control-label">Dirección</label>
-                        <div class="col-md-9">
-                            <input type="text" id="direccion" name="direccion" class="form-control">
-                            <span class="help-block with-errors"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="telefono" class="col-md-2 control-label">Nro Teléfono</label>
-                        <div class="col-md-4">
-                            <input type="text" id="telefono" name="telefono" class="form-control">
-                            <span class="help-block with-errors"></span>
-                        </div>
-
-                        <label for="correo_electronico" class="col-md-1 control-label">Email</label>
-                        <div class="col-md-4">
-                            <input type="email" id="correo_electronico" name="correo_electronico" class="form-control">
+                            <input type="text" id="porcentaje_ganancia" name="porcentaje_ganancia" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="tipo_cliente_id" class="control-label col-md-2">Tipo de Cliente *</label>
+                        <label for="impuesto_id" class="control-label col-md-2">Impuesto *</label>
                         <div class="col-md-4">
-                            <select name="tipo_cliente_id" id="select2-tipos" class="form-control" style="width: 100%">
+                            <select name="impuesto_id" id="select2-impuestos" class="form-control" style="width: 100%">
                                 <option></option>
-                                @foreach($tipos_clientes as $id => $tipo_cliente)
-                                  <option value="{{ $tipo_cliente->id }}">{{ $tipo_cliente->nombre }}</option>
+                                @foreach($impuestos as $id => $impuesto)
+                                  <option value="{{ $impuesto->id }}">{{ $impuesto->descripcion }}</option>
                                 @endforeach
                             </select>
                         </div>
-
-                        <label for="zona_id" class="control-label col-md-1">Zona *</label>
+                        <label for="familia_id" class="control-label col-md-2">Familia *</label>
                         <div class="col-md-4">
-                            <select name="zona_id" id="select2-zonas" class="form-control" style="width: 100%">
+                            <select name="famila_id" id="select2-familias" class="form-control" style="width: 100%">
                                 <option></option>
-                                @foreach($zonas as $id => $zona)
-                                  <option value="{{ $zona->id }}">{{ $zona->nombre }}</option>
+                                @foreach($familias as $id => $familia)
+                                  <option value="{{ $familia->id }}">{{ $familia->descripcion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <label for="grupo_id" class="control-label col-md-1">Grupo *</label>
+                        <div class="col-md-4">
+                            <select name="grupo_id" id="select2-grupos" class="form-control" style="width: 100%">
+                                <option></option>
+                                @foreach($grupos as $id => $grupo)
+                                  <option value="{{ $grupo->id }}">{{ $grupo->descripcion }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="lista_precio_id" class="control-label col-md-2">Lista de Precio</label>
+                        <label for="linea_id" class="control-label col-md-2">Linea</label>
                         <div class="col-md-4">
-                            <select name="lista_precio_id" id="select2-listas" class="form-control" style="width: 100%">
+                            <select name="linea_id" id="select2-lineas" class="form-control" style="width: 100%">
                                 <option></option>
-                                @foreach($lista_precios as $id => $lista)
-                                  <option value="{{ $lista->id }}">{{ $lista->descripcion }}</option>
+                                @foreach($lineas as $id => $linea)
+                                  <option value="{{ $lineas->id }}">{{ $lineas->descripcion }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <label for="vendedor_id" class="control-label col-md-1">Vendedor</label>
+                        <label for="unidad_mediad_id" class="control-label col-md-1">Vendedor</label>
                         <div class="col-md-4">
-                            <select name="vendedor_id" id="select2-vendedores" class="form-control" style="width: 100%">
+                            <select name="unidad_medida_id" id="select2-undades" class="form-control" style="width: 100%">
                                 <option></option>
-                                @foreach($vendedores as $id => $vendedor)
-                                  <option value="{{ $vendedor->id }}">{{ $vendedor->usuario->name }}</option>
+                                @foreach($unidadesmedidas as $id => $unidad_medida)
+                                  <option value="{{ $unidad_medida->id }}">{{ $unidad_medida->descripcion }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Vendible *</label>
+                        <div class="col-md-1 custom-control custom-checkbox">
+                            <input type="hidden" name="vendible" value="false">
+                            <input id="vendible" type="checkbox" class="custom-control-input" name="vendible" value="true">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-2">Existencias *</label>
+                        <div class="col-md-1 custom-control custom-checkbox">
+                            <input type="hidden" name="control_existencia" value="false">
+                            <input id="control_existencia" type="checkbox" class="custom-control-input" name="control_existencia" value="true">
+                        </div>
+                      </div>
                     <div class="form-group">
                         <label class="control-label col-md-2">Activo *</label>
                         <div class="col-md-1 custom-control custom-checkbox">
