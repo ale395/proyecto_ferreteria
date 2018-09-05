@@ -13,12 +13,12 @@ class CreateTableEmpleadosTiposEmpleados extends Migration
      */
     public function up()
     {
-        Schema::create('empleados_tipos_empleados', function (Blueprint $table) {
+        Schema::create('empleado_tipo_empleado', function (Blueprint $table) {
             $table->integer('empleado_id');
             $table->integer('tipo_empleado_id');
             $table->timestamps();
 
-            $table->primary('empleado_id', 'tipo_empleado_id');
+            $table->primary(['empleado_id', 'tipo_empleado_id']);
             $table->foreign('empleado_id')->references('id')->on('empleados');
             $table->foreign('tipo_empleado_id')->references('id')->on('tipos_empleados');
         });
@@ -31,6 +31,6 @@ class CreateTableEmpleadosTiposEmpleados extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('empleados_tipos_empleados');
+        Schema::dropIfExists('empleado_tipo_empleado');
     }
 }

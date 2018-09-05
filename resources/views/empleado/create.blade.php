@@ -66,6 +66,17 @@
                             <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control dpfechanacimiento" value="{{old('fecha_nacimiento')}}" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="tipo_empleado" class="col-md-2 control-label">Tipo de Empleado*</label>
+                        <div class="col-md-5">
+                            <select name="tipos_empleados[]" id="select2-tipos-empleados" class="form-control" style="width: 100%" multiple="multiple">
+                                <option></option>
+                                @foreach($tipos_empleados as $id => $tipo_empleado)
+                                  <option value="{{ $tipo_empleado->id }}">({{ $tipo_empleado->codigo}}) {{ $tipo_empleado->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="modal-footer">
                             <button type="submit" class="btn btn-primary btn-save">Guardar</button>
                             <a href="{{route('empleados.index')}}" type="button" class="btn btn-default">Cancelar</a>
@@ -100,10 +111,20 @@
             "keyup": function (event) {
                 $(event.target).val(function (index, value ) {
                     return value.replace(/\D/g, "")
-                                //.replace(/([0-9])([0-9]{2})$/, '$1.$2')
+                                //.replace(/([0-9])([0-9]{2})$/, '$1.$2') //genera 2 posiciones decimales
                                 .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                 });
             }
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#select2-tipos-empleados').select2({
+                placeholder : 'Seleccione una o varias opciones',
+                tags: false,
+                width: 'resolve',
+                language: "es"
+            });
         });
     </script>
 @endsection

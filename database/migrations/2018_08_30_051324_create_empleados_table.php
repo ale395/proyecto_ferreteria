@@ -19,11 +19,9 @@ class CreateEmpleadosTable extends Migration
             $table->string('nombre', 100);
             $table->string('apellido', 100);
             $table->string('direccion', 100);
-            $table->integer('zona_id')->unsigned()->nullable();
             $table->integer('telefono_celular')->unsigned();
-            $table->integer('telefono_linea_baja')->unsigned()->nullable();
             $table->string('correo_electronico', 100);
-            $table->date('fecha_nacimiento')->default(today());
+            $table->date('fecha_nacimiento');
             /*$table->string('nombre_contacto1', 100);
             $table->integer('telefono_contacto1')->unsigned();
             $table->char('relacion_contacto1', 1);
@@ -32,8 +30,6 @@ class CreateEmpleadosTable extends Migration
             $table->char('relacion_contacto2', 1)->nullable();*/
             $table->boolean('activo')->default(true);
             $table->timestamps();
-
-            $table->foreign('zona_id')->references('id')->on('zonas');
         });
     }
 

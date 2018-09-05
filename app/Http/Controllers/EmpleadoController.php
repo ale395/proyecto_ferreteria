@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\Empleado;
+use App\TipoEmpleado;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,8 @@ class EmpleadoController extends Controller
      */
     public function create()
     {
-        return view('empleado.create');
+        $tipos_empleados = TipoEmpleado::all();
+        return view('empleado.create', compact('tipos_empleados'));
     }
 
     /**
@@ -38,6 +40,7 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
+        
         $empleado = new Empleado();
 
         if (!empty($request['nro_cedula'])) {
@@ -71,8 +74,13 @@ class EmpleadoController extends Controller
         $empleado->telefono_celular = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono_celular']))));
         $empleado->fecha_nacimiento = $request['fecha_nacimiento'];
 
-        
+        $tipo1 = TipoEmpleado::findOrFail(1);
+        $tipo2 = TipoEmpleado::findOrFail(3);
+
         $empleado->save();
+
+        $empleado->tiposEmpleados()->attach($tipo1->id);
+        $empleado->tiposEmpleados()->attach($tipo2->id);
 
         return redirect('/empleados')->with('status', 'Datos guardados correctamente!');
     }

@@ -34,5 +34,10 @@ class Empleado extends Model
     {
         return $this->belongsTo('App\Zona');
     }
+
+    public function tiposEmpleados()
+    {
+    	return $this->belongsToMany('App\TipoEmpleado')->withTimestamps();
+    }
     
 }
