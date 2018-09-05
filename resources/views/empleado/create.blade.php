@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('EmpleadoController@store')}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('EmpleadoController@store')}}" class="form-horizontal form-label-left" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Nuevo Empleado</h4>
@@ -51,22 +51,19 @@
                     </div>
                     <div class="form-group">
                         <label for="correo_electronico" class="col-md-2 control-label">Correo Electrónico*</label>
-                        <div class="col-md-4">
-                            <input type="text" id="correo_electronico" name="correo_electronico" class="form-control" value="{{old('correo_electronico')}}" placeholder="Email del Empleado">
-                        </div>
-                        <label for="fecha_nacimiento" class="col-md-2 control-label">Fecha Nacimiento*</label>
-                        <div class="col-md-3">
-                            <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control" value="{{old('fecha_nacimiento')}}" placeholder="dd/mm/aaaa">
+                        <div class="col-md-5">
+                            <input type="text" id="correo_electronico" name="correo_electronico" class="form-control" value="{{old('correo_electronico')}}" placeholder="empleado@email.com">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="telefono_celular" class="col-md-2 control-label">Tel. Celular*</label>
                         <div class="col-md-4">
-                            <input type="text" id="telefono_celular" name="telefono_celular" class="form-control" value="{{old('telefono_celular')}}" placeholder="Telefono Celular del Empleado">
+                            <input type="text" id="telefono_celular" name="telefono_celular" class="form-control has-feedback-left" value="{{old('telefono_celular')}}" placeholder="(981) 999-999 sin el 0 inicial" data-inputmask="'mask' : '(999) 999-999'">
+                            <span class="form-control-feedback left" aria-hidden="true">595</span>
                         </div>
-                        <label for="telefono_linea_baja" class="col-md-2 control-label">Tel. Linea Baja</label>
+                        <label for="fecha_nacimiento" class="col-md-2 control-label">Fecha Nacimiento*</label>
                         <div class="col-md-3">
-                            <input type="text" id="telefono_linea_baja" name="telefono_linea_baja" class="form-control" value="{{old('telefono_linea_baja')}}" placeholder="Telefono fijo del Empleado">
+                            <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control dpfechanacimiento" value="{{old('fecha_nacimiento')}}" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -78,4 +75,21 @@
         </form>
     </div>
 </div>
+@endsection
+@section('otros_scripts')
+    <script type="text/javascript">
+        $(function() {
+          $('.dpfechanacimiento').datepicker({
+            format: 'dd/mm/yyyy',
+            language: 'es',
+            todayBtn: true,
+            todayHighlight: true,
+            autoclose: true
+          });
+          $('#fecha_nacimiento').click(function(e){
+                    e.stopPropagation();
+                    $('.dpfechanacimiento').datepicker('update');
+                });  
+        });
+    </script>
 @endsection
