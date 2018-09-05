@@ -26,51 +26,47 @@
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
-                        <label for="codigo_establecimiento" class="col-md-2 control-label">Código Establecimiento*</label>
+                        <label for="nro_cedula" class="col-md-2 control-label">Nro CI*</label>
                         <div class="col-md-3">
-                            <input type="text" id="codigo_establecimiento" name="codigo_establecimiento" class="form-control" value="{{old('codigo_establecimiento')}}" placeholder="Código asignado por la SET" autofocus>
+                            <input type="text" id="nro_cedula" name="nro_cedula" class="form-control" value="{{old('nro_cedula')}}" placeholder="Nro de Cedula de Identidad" autofocus>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="razon_social" class="col-md-2 control-label">Razon Social *</label>
+                        <label for="nombre" class="col-md-2 control-label">Nombre*</label>
                         <div class="col-md-5">
-                            <input type="text" id="razon_social" name="razon_social" class="form-control" value="{{old('razon_social')}}" placeholder="Denominación de la Empresa">
+                            <input type="text" id="nombre" name="nombre" class="form-control" value="{{old('nombre')}}" placeholder="Nombre(s) del Empleado">
                         </div>
-                        <label for="ruc" class="col-md-1 control-label">RUC *</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido" class="col-md-2 control-label">Apellido*</label>
+                        <div class="col-md-5">
+                            <input type="text" id="apellido" name="apellido" class="form-control" value="{{old('apellido')}}" placeholder="Apellido(s) del Empleado">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion" class="col-md-2 control-label">Dirección*</label>
+                        <div class="col-md-5">
+                            <input type="text" id="direccion" name="direccion" class="form-control" value="{{old('direccion')}}" placeholder="Domicilio del Empleado">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="correo_electronico" class="col-md-2 control-label">Correo Electrónico*</label>
+                        <div class="col-md-4">
+                            <input type="text" id="correo_electronico" name="correo_electronico" class="form-control" value="{{old('correo_electronico')}}" placeholder="Email del Empleado">
+                        </div>
+                        <label for="fecha_nacimiento" class="col-md-2 control-label">Fecha Nacimiento*</label>
                         <div class="col-md-3">
-                            <input type="text" id="ruc" name="ruc" class="form-control" value="{{old('ruc')}}">
+                            <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control" value="{{old('fecha_nacimiento')}}" placeholder="dd/mm/aaaa">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="direccion" class="col-md-2 control-label">Dirección *</label>
-                        <div class="col-md-5">
-                            <input type="text" id="direccion" name="direccion" class="form-control" value="{{old('direccion')}}" placeholder="Dirección de la Casa Central">
+                        <label for="telefono_celular" class="col-md-2 control-label">Tel. Celular*</label>
+                        <div class="col-md-4">
+                            <input type="text" id="telefono_celular" name="telefono_celular" class="form-control" value="{{old('telefono_celular')}}" placeholder="Telefono Celular del Empleado">
                         </div>
-                        <label for="telefono" class="col-md-1 control-label">Telefono *</label>
+                        <label for="telefono_linea_baja" class="col-md-2 control-label">Tel. Linea Baja</label>
                         <div class="col-md-3">
-                            <input type="text" id="telefono" name="telefono" class="form-control" value="{{old('telefono')}}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="sitio_web" class="col-md-2 control-label">Sitio Web</label>
-                        <div class="col-md-5">
-                            <input type="text" id="sitio_web" name="sitio_web" class="form-control" value="{{old('sitio_web')}}" placeholder="www.sitioweb.com.py">
-                        </div>
-                        <label for="correo_electronico" class="col-md-1 control-label">Correo *</label>
-                        <div class="col-md-3">
-                            <input type="text" id="correo_electronico" name="correo_electronico" class="form-control" value="{{old('correo_electronico')}}" placeholder="correo@email.com">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="eslogan" class="col-md-2 control-label">Eslogan</label>
-                        <div class="col-md-5">
-                            <input type="text" id="eslogan" name="eslogan" class="form-control" value="{{old('eslogan')}}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="rubro" class="col-md-2 control-label">Rubro *</label>
-                        <div class="col-md-5">
-                            <input type="text" id="rubro" name="rubro" class="form-control" value="{{old('rubro')}}" placeholder="Rubro o Sector al que se dedica la empresa">
+                            <input type="text" id="telefono_linea_baja" name="telefono_linea_baja" class="form-control" value="{{old('telefono_linea_baja')}}" placeholder="Telefono fijo del Empleado">
                         </div>
                     </div>
                     <div class="modal-footer">
