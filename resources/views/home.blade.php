@@ -83,6 +83,9 @@
                                   <li class="sub_menu"><a href="#">Reporte 1</a>
                                   </li>
                                 </ul>
+
+                                    </ul>
+                  </li>
                       <ul class="nav child_menu">
                           <!--<li><a href="#level1_1">Level One</a>-->
                           <li><a>Formularios<span class="fa fa-chevron-down"></span></a>

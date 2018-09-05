@@ -21,7 +21,7 @@ class CreateArticulosTable extends Migration
                 $table->decimal('codigo_barra', 14, 2)->default(0);
                 $table->decimal('costo', 14, 2)->default(0);
                 $table->decimal('porcentaje ganancia', 14, 2)->default(0);
-                $table->string('comentario', 100);
+                $table->string('comentario', 100)->nullable();
                 
                 $table->integer('impuesto_id')->unsigned()->nullable();
                 $table->integer('grupo_id')->unsigned()->nullable();
