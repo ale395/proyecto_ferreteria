@@ -9,13 +9,14 @@ class Articulo extends Model
     protected $table = 'articulos';
 
     protected $fillable = 
-    ['codigo','descripcion','codigo_barra','impuesto_id','costo',
-    'control_existencia','vendible','activo','grupo_id','familia_id','unidad_medida_id'];
+    ['codigo','descripcion','codigo_barra','porcentaje_ganancia',
+    'comentario','costo','control_existencia','vendible','activo',
+   'impuesto_id','grupo_id','familia_id','unidad_medida_id'];
 
 
     public function impuesto()
     {
-        return $this->belongsTo('App\impuestos');
+        return $this->belongsTo('App\Impuesto');
     }
     public function grupo()
     {
@@ -24,6 +25,10 @@ class Articulo extends Model
     public function familia()
     {
         return $this->belongsTo('App\Familia');
+    }
+    public function linea()
+    {
+        return $this->belongsTo('App\Linea');
     }
     public function unidadMedida()
     {
