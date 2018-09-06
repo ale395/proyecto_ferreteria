@@ -187,65 +187,7 @@
         });
 
       function editForm(id) {
-        save_method = 'edit';
-        $('input[name=_method]').val('PATCH');
-        $('#modal-form form')[0].reset();
-        $('#error-block').hide();
-        $.ajax({
-          url: "{{ url('clientes') }}" + '/' + id + "/edit",
-          type: "GET",
-          dataType: "JSON",
-          success: function(data) {
-            $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Cliente');
-
-            $('#codigo').prop('readonly', false);
-            $('#nombre').prop('readonly', false);
-            $('#apellido').prop('readonly', false);
-            $('#direccion').prop('readonly', false);
-            $('#telefono').prop('readonly', false);
-            $('#nro_documento').prop('readonly', false);
-            $('#ruc').prop('readonly', false);
-            $('#correo_electronico').prop('readonly', false);
-            $('#select2-zonas').prop('disabled', false);
-            $('#select2-tipos').prop('disabled', false);
-            $('#select2-listas').prop('disabled', false);
-            $('#select2-vendedores').prop('disabled', false);
-            $('#activo').prop('disabled', false);
-            $('#form-btn-guardar').prop('disabled', false);
-
-            $('#id').val(data.id);
-            $('#codigo').val(data.codigo);
-            $('#nombre').val(data.nombre);
-            $('#apellido').val(data.apellido);
-            $('#direccion').val(data.direccion);
-            $('#telefono').val(data.telefono);
-            $('#nro_documento').val(data.nro_documento);
-            $('#ruc').val(data.ruc);
-            $('#correo_electronico').val(data.correo_electronico);
-            $("#select2-zonas").select2("val", "");
-            $('#select2-zonas').val(data.zona_id).change();
-            $("#select2-tipos").select2("val", "");
-            $('#select2-tipos').val(data.tipo_cliente_id).change();
-            $("#select2-vendedores").select2("val", "");
-            $('#select2-vendedores').val(data.vendedor_id).change();
-            $("#select2-listas").select2("val", "");
-            $('#select2-listas').val(data.lista_precio_id).change();
-            if (data.activo) {
-              $('#activo').attr('checked', true);
-            }else{
-              $('#activo').attr('checked', false);
-            }
-          },
-          error : function() {
-              $.alert({
-                title: 'Atención!',
-                content: 'No se encontraron datos!',
-                icon: 'fa fa-exclamation-circle',
-                type: 'orange',
-              });
-          }
-        });
+        window.location="{{ url('empleados') }}" + '/' + id +'/edit';
       }
 
       function deleteData(id){

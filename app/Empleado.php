@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Empleado extends Model
 {
     protected $table = 'empleados';
-    protected $codigo_pais = '+595';
+    protected $codigo_pais = '0';
 
     protected $fillable = [
         'nro_cedula', 'nombre', 'apellido', 'direccion', 'zona_id', 'telefono_celular', 'telefono_linea_baja', 'correo_electronico', 'fecha_nacimiento', 'activo',
@@ -18,7 +18,7 @@ class Empleado extends Model
     }
 
     public function setNroCedula($nro_cedula){
-    	$this->nro_decula = (integer) str_replace('.', '', $nro_cedula);
+    	$this->nro_cedula = (integer) str_replace('.', '', $nro_cedula);
     }
 
     public function getTelefonoCelular(){
@@ -27,7 +27,7 @@ class Empleado extends Model
     }
 
     public function setTelefonoCelular($telefono_celular){
-    	$this->telefono_celular = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono_celular']))));
+    	$this->telefono_celular = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$telefono_celular))));
     }
 
     public function getNombre(){
@@ -63,7 +63,7 @@ class Empleado extends Model
     }
 
     public function getFechaNacimiento(){
-    	return $this->fecha_nacimiento;
+    	return date("d-m-Y", strtotime($this->fecha_nacimiento));
     }
 
     public function setFechaNacimiento($fecha_nacimiento){

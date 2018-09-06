@@ -78,9 +78,7 @@ class EmpleadoController extends Controller
         
         $empleado->save();
 
-        foreach ($request['tipos_empleados'] as $id => $tipo_empleado_id) {
-            $empleado->tiposEmpleados()->attach($tipo_empleado_id);
-        }
+        $empleado->tiposEmpleados()->sync($request->get('tipos_empleados'));
 
         return redirect('/empleados')->with('status', 'Datos guardados correctamente!');
     }
@@ -104,7 +102,9 @@ class EmpleadoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $empleado = Empleado::findOrFail($id);
+        $tipos_empleados = TipoEmpleado::all();
+        return view('empleado.edit', compact('empleado', 'tipos_empleados'));
     }
 
     /**
@@ -116,7 +116,39 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $empleado = Empleado::findOrFail($id);
+
+        $rules = [
+            'nro_cedula' => 'required|numeric|unique:empleados,nro_cedula,'.$empleado->id,
+            'nombre' => 'required|max:100',
+            'apellido' => 'required|max:100',
+            'direccion' => 'required|max:100',
+            'correo_electronico' => 'required|max:100|email',
+            'telefono_celular' => 'required|numeric|digits:9',
+            'fecha_nacimiento' => 'required|date_format:d/m/Y',
+            'tipos_empleados' => 'required|array|min:1',
+        ];
+
+        $mensajes = [
+            'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
+            'tipos_empleados.min' => 'Como mínimo se debe asignar :min tipo(s) de empleado(s)!',
+        ];
+
+        Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        $empleado->setNroCedula($request['nro_cedula']);
+        $empleado->setNombre($request['nombre']);
+        $empleado->setApellido($request['apellido']);
+        $empleado->setDireccion($request['direccion']);
+        $empleado->setCorreoElectronico($request['correo_electronico']);
+        $empleado->setTelefonoCelular($request['telefono_celular']);
+        $empleado->setFechaNacimiento($request['fecha_nacimiento']);
+        
+        $empleado->update();
+
+        $empleado->tiposEmpleados()->sync($request->get('tipos_empleados'));
+
+        return redirect('/empleados')->with('status', 'Datos guardados correctamente!');
     }
 
     /**
