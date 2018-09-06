@@ -27,7 +27,47 @@ class Empleado extends Model
     }
 
     public function setTelefonoCelular($telefono_celular){
-    	//
+    	$this->telefono_celular = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono_celular']))));
+    }
+
+    public function getNombre(){
+    	return $this->nombre;
+    }
+
+    public function setNombre($nombre){
+    	$this->nombre = $nombre;
+    }
+
+    public function getApellido(){
+    	return $this->apellido;
+    }
+
+    public function setApellido($apellido){
+    	$this->apellido = $apellido;
+    }
+
+    public function getDireccion(){
+    	return $this->direccion;
+    }
+
+    public function setDireccion($direccion){
+    	$this->direccion = $direccion;
+    }
+
+    public function getCorreoElectronico(){
+    	return $this->correo_electronico;
+    }
+
+    public function setCorreoElectronico($correo_electronico){
+    	$this->correo_electronico = $correo_electronico;
+    }
+
+    public function getFechaNacimiento(){
+    	return $this->fecha_nacimiento;
+    }
+
+    public function setFechaNacimiento($fecha_nacimiento){
+    	$this->fecha_nacimiento = $fecha_nacimiento;
     }
 
     public function zona()

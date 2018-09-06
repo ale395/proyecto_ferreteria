@@ -57,30 +57,30 @@ class EmpleadoController extends Controller
             'direccion' => 'required|max:100',
             'correo_electronico' => 'required|max:100|email',
             'telefono_celular' => 'required|numeric|digits:9',
-            'fecha_nacimiento' => 'required|date_format:d/m/Y'
+            'fecha_nacimiento' => 'required|date_format:d/m/Y',
+            'tipos_empleados' => 'required|array|min:1',
         ];
 
         $mensajes = [
             'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
+            'tipos_empleados.min' => 'Como mínimo se debe asignar :min tipo(s) de empleado(s)!',
         ];
 
         Validator::make($request->all(), $rules, $mensajes)->validate();
 
-        $empleado->nro_cedula = str_replace(".", "",$request['nro_cedula']);
-        $empleado->nombre = $request['nombre'];
-        $empleado->apellido = $request['apellido'];
-        $empleado->direccion = $request['direccion'];
-        $empleado->correo_electronico = $request['correo_electronico'];
-        $empleado->telefono_celular = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono_celular']))));
-        $empleado->fecha_nacimiento = $request['fecha_nacimiento'];
-
-        $tipo1 = TipoEmpleado::findOrFail(1);
-        $tipo2 = TipoEmpleado::findOrFail(3);
-
+        $empleado->setNroCedula($request['nro_cedula']);
+        $empleado->setNombre($request['nombre']);
+        $empleado->setApellido($request['apellido']);
+        $empleado->setDireccion($request['direccion']);
+        $empleado->setCorreoElectronico($request['correo_electronico']);
+        $empleado->setTelefonoCelular($request['telefono_celular']);
+        $empleado->setFechaNacimiento($request['fecha_nacimiento']);
+        
         $empleado->save();
 
-        $empleado->tiposEmpleados()->attach($tipo1->id);
-        $empleado->tiposEmpleados()->attach($tipo2->id);
+        foreach ($request['tipos_empleados'] as $id => $tipo_empleado_id) {
+            $empleado->tiposEmpleados()->attach($tipo_empleado_id);
+        }
 
         return redirect('/empleados')->with('status', 'Datos guardados correctamente!');
     }
@@ -91,7 +91,7 @@ class EmpleadoController extends Controller
      * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function show(Empleado $empleado)
+    public function show($id)
     {
         //
     }
