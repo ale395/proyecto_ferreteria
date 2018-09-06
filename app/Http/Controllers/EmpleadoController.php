@@ -104,7 +104,13 @@ class EmpleadoController extends Controller
     {
         $empleado = Empleado::findOrFail($id);
         $tipos_empleados = TipoEmpleado::all();
-        return view('empleado.edit', compact('empleado', 'tipos_empleados'));
+        $tipos_empleados_seleccionados = array();
+
+        foreach ($empleado->tiposEmpleados as $key => $tipo_empleado) {
+            array_push($tipos_empleados_seleccionados, $tipo_empleado->id);
+        }
+        
+        return view('empleado.edit', compact('empleado', 'tipos_empleados', 'tipos_empleados_seleccionados'));
     }
 
     /**
@@ -117,6 +123,13 @@ class EmpleadoController extends Controller
     public function update(Request $request, $id)
     {
         $empleado = Empleado::findOrFail($id);
+
+        if (!empty($request['nro_cedula'])) {
+            $request['nro_cedula'] = (integer) str_replace('.', '',$request['nro_cedula']);
+        }
+        if (!empty($request['telefono_celular'])) {
+            $request['telefono_celular'] = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono_celular']))));
+        }
 
         $rules = [
             'nro_cedula' => 'required|numeric|unique:empleados,nro_cedula,'.$empleado->id,

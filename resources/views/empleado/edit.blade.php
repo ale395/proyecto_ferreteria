@@ -22,44 +22,43 @@
                             </div>
                         @endif
                     </div>
-                    <input name="_method" type="hidden" value="POST">
+                    <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
-                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="id" name="id" value="{{$empleado->id}}">
                     <div class="form-group">
                         <label for="nro_cedula" class="col-md-2 control-label">Nro CI*</label>
                         <div class="col-md-3">
-                            <input type="text" id="nro_cedula" name="nro_cedula" class="form-control number" value="{{old('nro_cedula', $empleado->nro_cedula)}}" placeholder="Nro de Cedula de Identidad" autofocus>
+                            <input type="text" id="nro_cedula" name="nro_cedula" class="form-control number" value="{{old('nro_cedula', $empleado->getNroCedula())}}" placeholder="Nro de Cedula de Identidad" autofocus>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="nombre" class="col-md-2 control-label">Nombre*</label>
                         <div class="col-md-5">
-                            <input type="text" id="nombre" name="nombre" class="form-control" value="{{old('nombre', $empleado->nombre)}}" placeholder="Nombre(s) del Empleado">
+                            <input type="text" id="nombre" name="nombre" class="form-control" value="{{old('nombre', $empleado->getNombre())}}" placeholder="Nombre(s) del Empleado">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="apellido" class="col-md-2 control-label">Apellido*</label>
                         <div class="col-md-5">
-                            <input type="text" id="apellido" name="apellido" class="form-control" value="{{old('apellido', $empleado->apellido)}}" placeholder="Apellido(s) del Empleado">
+                            <input type="text" id="apellido" name="apellido" class="form-control" value="{{old('apellido', $empleado->getApellido())}}" placeholder="Apellido(s) del Empleado">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="direccion" class="col-md-2 control-label">Dirección*</label>
                         <div class="col-md-5">
-                            <input type="text" id="direccion" name="direccion" class="form-control" value="{{old('direccion', $empleado->direccion)}}" placeholder="Domicilio del Empleado">
+                            <input type="text" id="direccion" name="direccion" class="form-control" value="{{old('direccion', $empleado->getDireccion())}}" placeholder="Domicilio del Empleado">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="correo_electronico" class="col-md-2 control-label">Correo Electrónico*</label>
                         <div class="col-md-5">
-                            <input type="text" id="correo_electronico" name="correo_electronico" class="form-control" value="{{old('correo_electronico', $empleado->correo_electronico)}}" placeholder="empleado@email.com">
+                            <input type="text" id="correo_electronico" name="correo_electronico" class="form-control" value="{{old('correo_electronico', $empleado->getCorreoElectronico())}}" placeholder="empleado@email.com">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="telefono_celular" class="col-md-2 control-label">Tel. Celular*</label>
                         <div class="col-md-4">
-                            <input type="text" id="telefono_celular" name="telefono_celular" class="form-control has-feedback-left" value="{{old('telefono_celular', $empleado->telefono_celular)}}" placeholder="(981) 999-999 sin el 0 inicial" data-inputmask="'mask' : '(999) 999-999'">
-                            <span class="form-control-feedback left" aria-hidden="true">595</span>
+                            <input type="text" id="telefono_celular" name="telefono_celular" class="form-control" value="{{old('telefono_celular', $empleado->getTelefonoCelularNumber())}}" placeholder="(0999) 999-999" data-inputmask="'mask' : '(0999) 999-999'">
                         </div>
                         <label for="fecha_nacimiento" class="col-md-2 control-label">Fecha Nacimiento*</label>
                         <div class="col-md-3">
@@ -72,7 +71,11 @@
                             <select name="tipos_empleados[]" id="select2-tipos-empleados" class="form-control" style="width: 100%" multiple="multiple">
                                 <option></option>
                                 @foreach($tipos_empleados as $id => $tipo_empleado)
-                                  <option value="{{ $tipo_empleado->id }}">({{ $tipo_empleado->codigo}}) {{ $tipo_empleado->nombre }}</option>
+                                  @if(in_array($tipo_empleado->id, $tipos_empleados_seleccionados))
+                                    <option value="{{ $tipo_empleado->id }}" selected="selected">({{ $tipo_empleado->codigo}}) {{ $tipo_empleado->nombre }}</option>
+                                  @else
+                                    <option value="{{ $tipo_empleado->id }}">({{ $tipo_empleado->codigo}}) {{ $tipo_empleado->nombre }}</option>
+                                  @endif
                                 @endforeach
                             </select>
                         </div>

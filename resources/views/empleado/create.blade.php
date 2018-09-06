@@ -58,8 +58,7 @@
                     <div class="form-group">
                         <label for="telefono_celular" class="col-md-2 control-label">Tel. Celular*</label>
                         <div class="col-md-4">
-                            <input type="text" id="telefono_celular" name="telefono_celular" class="form-control has-feedback-left" value="{{old('telefono_celular')}}" placeholder="(981) 999-999 sin el 0 inicial" data-inputmask="'mask' : '(999) 999-999'">
-                            <span class="form-control-feedback left" aria-hidden="true">595</span>
+                            <input type="text" id="telefono_celular" name="telefono_celular" class="form-control" value="{{old('telefono_celular')}}" placeholder="(0999) 999-999" data-inputmask="'mask' : '(0999) 999-999'">
                         </div>
                         <label for="fecha_nacimiento" class="col-md-2 control-label">Fecha Nacimiento*</label>
                         <div class="col-md-3">

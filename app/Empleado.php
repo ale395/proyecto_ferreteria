@@ -26,6 +26,10 @@ class Empleado extends Model
 		return '(' . $this->codigo_pais . $telefono_celular;
     }
 
+    public function getTelefonoCelularNumber(){
+    	return $this->telefono_celular;
+    }
+
     public function setTelefonoCelular($telefono_celular){
     	$this->telefono_celular = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$telefono_celular))));
     }
