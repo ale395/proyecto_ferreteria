@@ -191,6 +191,8 @@ class EmpleadoController extends Controller
      */
     public function destroy($id)
     {
+        $empleado = Empleado::findOrFail($id);
+        $empleado->tiposEmpleados()->detach();
         return Empleado::destroy($id);
     }
 
