@@ -22,6 +22,7 @@ class CreateEmpleadosTable extends Migration
             $table->integer('telefono_celular')->unsigned();
             $table->string('correo_electronico', 100);
             $table->date('fecha_nacimiento');
+            $table->string('avatar')->default('default-avatar.jpg');
             /*$table->string('nombre_contacto1', 100);
             $table->integer('telefono_contacto1')->unsigned();
             $table->char('relacion_contacto1', 1);

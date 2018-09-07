@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Image;
 use Validator;
 use App\Empleado;
 use App\TipoEmpleado;
@@ -67,6 +68,15 @@ class EmpleadoController extends Controller
         ];
 
         Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        if($request->hasFile('avatar')){
+            
+            $avatar = $request->file('avatar');
+            $filename = $request['nro_cedula']/*.'-'.time()*/.'.'.$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300, 300)->save( public_path('/images/empleados/' . $filename ) );
+            $empleado->avatar = $filename;
+            
+        }
 
         $empleado->setNroCedula($request['nro_cedula']);
         $empleado->setNombre($request['nombre']);
@@ -148,6 +158,15 @@ class EmpleadoController extends Controller
         ];
 
         Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        if($request->hasFile('avatar')){
+            
+            $avatar = $request->file('avatar');
+            $filename = $request['nro_cedula']/*.'-'.time()*/.'.'.$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300, 300)->save( public_path('/images/empleados/' . $filename ) );
+            $empleado->avatar = $filename;
+            
+        }
 
         $empleado->setNroCedula($request['nro_cedula']);
         $empleado->setNombre($request['nombre']);

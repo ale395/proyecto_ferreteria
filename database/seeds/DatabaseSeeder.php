@@ -42,5 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ZonaTableSeeder::class);
 
         $this->call(ClienteTableSeeder::class);
+
+        $this->call(TipoEmpleadoTableSeeder::class);
     }
 }
