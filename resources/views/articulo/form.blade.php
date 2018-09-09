@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-form" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="cliente-form" method="post" class="form-horizontal" data-toggle="validator">
+            <form id="articulo-form" method="post" class="form-horizontal" data-toggle="validator">
                 {{ csrf_field() }} {{ method_field('POST') }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <input type="hidden" id="id" name="id">
+                <input type="hidden" id="id" name="id">
                     <div class="form-group">
                         <div id="error-block" class="alert alert-danger">
                         </div>
@@ -49,7 +49,7 @@
 
                         <label for="porcentaje_ganancia" class="col-md-1 control-label">Porcentaje ganancia</label>
                         <div class="col-md-4">
-                            <input type="text" id="porcentaje_ganancia" name="porcentaje_ganancia" class="form-control">
+                            <input type="number" id="porcentaje_ganancia" name="porcentaje_ganancia" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -73,12 +73,12 @@
                                 @endforeach
                             </select>
                         </div>
-                        <label for="grupo_id" class="control-label col-md-1">Grupo *</label>
+                        <label for="rubro_id" class="control-label col-md-1">Rubro *</label>
                         <div class="col-md-4">
-                            <select name="grupo_id" id="select2-grupos" class="form-control" style="width: 100%">
+                            <select name="rubro_id" id="select2-rubros" class="form-control" style="width: 100%">
                                 <option></option>
-                                @foreach($grupos as $id => $grupo)
-                                  <option value="{{ $grupo->id }}">{{ $grupo->descripcion }}</option>
+                                @foreach($rubros as $id => $rubro)
+                                  <option value="{{ $rubro->id }}">{{ $rubro->descripcion }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -90,16 +90,16 @@
                             <select name="linea_id" id="select2-lineas" class="form-control" style="width: 100%">
                                 <option></option>
                                 @foreach($lineas as $id => $linea)
-                                  <option value="{{ $lineas->id }}">{{ $lineas->descripcion }}</option>
+                                  <option value="{{ $linea->id }}">{{ $linea->descripcion }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <label for="unidad_mediad_id" class="control-label col-md-1">Vendedor</label>
+                      <label for="unidad_medida_id" class="control-label col-md-1">Unidad de medida</label>
                         <div class="col-md-4">
-                            <select name="unidad_medida_id" id="select2-undades" class="form-control" style="width: 100%">
+                            <select name="unidad_medida_id" id="select2-unidades" class="form-control" style="width: 100%">
                                 <option></option>
-                                @foreach($unidadesmedidas as $id => $unidad_medida)
+                                @foreach($unidadesMedidas as $id => $unidad_medida)
                                   <option value="{{ $unidad_medida->id }}">{{ $unidad_medida->descripcion }}</option>
                                 @endforeach
                             </select>
@@ -126,7 +126,13 @@
                             <input id="activo" type="checkbox" class="custom-control-input" name="activo" value="true">
                         </div>
                       </div>
-
+                      <div class="form-group">
+                      <label for="comentario" class="col-md-2 control-label">Comentario *</label>
+                        <div class="col-md-9">
+                            <input type="text" id="comentario" name="comentario" class="form-control">
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        </div>
                 </div>
 
                 <div class="modal-footer">

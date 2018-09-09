@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Articulo;
 use App\Impuesto;
-use App\Grupo;
+use App\Rubro;
 use App\Familia;
 use App\Linea;
 use App\UnidadMedida;
@@ -23,13 +23,13 @@ class ArticuloController extends Controller
     public function index()
     {
         $impuestos = Impuesto::all();
-        $grupos = Grupo::all();
+        $rubros = Rubro::all();
         $familias = Familia::all();
         $lineas = Linea::all();
         $unidadesMedidas = UnidadMedida::all();
 
-        return view('articulos.index', 
-        compact('impuestos', 'grupos', 'familias', 'lineas','unidadesMedidas'));
+        return view('articulo.index', 
+        compact('impuestos', 'rubros', 'familias', 'lineas','unidadesMedidas'));
     }
 
     /**
@@ -56,7 +56,7 @@ class ArticuloController extends Controller
             'vendible' => 'required',
             'activo' => 'required',
             'impuesto_id' => 'max:20',
-            'grupo_id' => 'max:100',
+            'rubro_id' => 'max:100',
             'familia_id' => 'max:100',
             'linea_id' => 'required',
             'unidad_medida_id' => 'required',
@@ -83,7 +83,7 @@ class ArticuloController extends Controller
             'vendible' => $request['vendible'],
             'activo' => $request['activo'],
             'impuesto_id' => $request['impuesto_id'],
-            'grupo_id' => $request['grupo_id'],
+            'rubro_id' => $request['rubro_id'],
             'familia_id' => $request['familia_id'],
             'linea_id' => $request['linea_id'],
             'unidad_medida_id' => $request['unidad_medida_id']
@@ -158,7 +158,7 @@ class ArticuloController extends Controller
         $articulo->comentario = $request['comentario'];
         $articulo->porcentaje_ganancia = $request['porcentaje_ganancia'];
         $articulo->impuesto_id = $request['impuesto_id'];
-        $articulo->grupo_id = $request['grupo_id'];
+        $articulo->rubro_id = $request['rubro_id'];
         $articulo->familia_id = $request['familia_id'];
         $articulo->linea_id = $request['linea_id'];
         $articulo->undad_medida_id = $request['unidad_medida_id'];
@@ -185,13 +185,20 @@ class ArticuloController extends Controller
     {
         $permiso_editar = Auth::user()->can('articulos.edit');
         $permiso_eliminar = Auth::user()->can('articulos.destroy');
-        //$permiso_ver = Auth::user()->can('articulos.show');
+        $permiso_ver = Auth::user()->can('articulos.show');
         $articulos = Articulo::all();
 
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 if ($permiso_ver) {
                     return Datatables::of($articulos)
+                    ->addColumn('vendible', function($articulos){
+                        if ($articulos->vendible) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
                     ->addColumn('activo', function($articulos){
                         if ($articulos->activo) {
                             return 'Si';
@@ -205,6 +212,13 @@ class ArticuloController extends Controller
                     })->make(true);
                 } else{
                     return Datatables::of($articulos)
+                    ->addColumn('vendible', function($articulos){
+                        if ($articulos->vendible) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
                     ->addColumn('activo', function($articulos){
                         if ($articulos->activo) {
                             return 'Si';
@@ -220,6 +234,13 @@ class ArticuloController extends Controller
             } else {
                 if ($permiso_ver) {
                     return Datatables::of($articulos)
+                    ->addColumn('vendible', function($articulos){
+                        if ($articulos->vendible) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
                     ->addColumn('activo', function($articulos){
                         if ($articulos->activo) {
                             return 'Si';
@@ -233,6 +254,13 @@ class ArticuloController extends Controller
                     })->make(true);
                 } else{
                     return Datatables::of($articulos)
+                    ->addColumn('vendible', function($articulos){
+                        if ($articulos->vendible) {
+                            return 'Si';
+                        }else{
+                            return 'No';
+                        }
+                    })
                     ->addColumn('activo', function($articulos){
                         if ($articulos->activo) {
                             return 'Si';
@@ -249,6 +277,13 @@ class ArticuloController extends Controller
         } elseif ($permiso_eliminar) {
             if ($permiso_ver) {
                 return Datatables::of($articulos)
+                ->addColumn('vendible', function($articulos){
+                    if ($articulos->vendible) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('activo', function($articulos){
                         if ($articulos->activo) {
                             return 'Si';
@@ -262,6 +297,13 @@ class ArticuloController extends Controller
                 })->make(true);
             } else{
                 return Datatables::of($articulos)
+                ->addColumn('vendible', function($articulos){
+                    if ($articulos->vendible) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('activo', function($articulos){
                         if ($articulos->activo) {
                             return 'Si';
@@ -277,6 +319,13 @@ class ArticuloController extends Controller
         } else {
             if ($permiso_ver) {
                 return Datatables::of($articulos)
+                ->addColumn('vendible', function($articulos){
+                    if ($articulos->vendible) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('activo', function($articulos){
                         if ($articulos->activo) {
                             return 'Si';
@@ -290,6 +339,13 @@ class ArticuloController extends Controller
                 })->make(true);
             } else{
                 return Datatables::of($articulos)
+                ->addColumn('vendible', function($articulos){
+                    if ($articulos->vendible) {
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    }
+                })
                 ->addColumn('activo', function($articulos){
                         if ($articulos->activo) {
                             return 'Si';

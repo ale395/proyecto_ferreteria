@@ -16,7 +16,7 @@ class AlterArticulosTable extends Migration
         {
             Schema::table('articulos', function (Blueprint $table) {
                 $table->foreign('impuesto_id')->references('id')->on('impuestos');
-                $table->foreign('grupo_id')->references('id')->on('grupos');
+                $table->foreign('rubro_id')->references('id')->on('rubros');
                 $table->foreign('familia_id')->references('id')->on('familias');
                 $table->foreign('linea_id')->references('id')->on('lineas');
                 $table->foreign('unidad_medida_id')->references('id')->on('unidad_medidas');
@@ -32,7 +32,7 @@ class AlterArticulosTable extends Migration
         {
             Schema::table('articulos', function (Blueprint $table) {
                 $table->dropForeign('articulos_impuesto_id_foreign');
-                $table->dropForeign('articulos_grupo_id_foreign');
+                $table->dropForeign('articulos_rubro_id_foreign');
                 $table->dropForeign('articulos_familia_id_foreign');
                 $table->dropForeign('articulos_linea_id_foreign');
                 $table->dropForeign('articulos_unidad_medida_id_foreign');
