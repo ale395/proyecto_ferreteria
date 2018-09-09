@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Image;
 use Validator;
 use App\Empleado;
+use App\TipoEmpleado;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +29,8 @@ class EmpleadoController extends Controller
      */
     public function create()
     {
-        return view('empleado.create');
+        $tipos_empleados = TipoEmpleado::all();
+        return view('empleado.create', compact('tipos_empleados'));
     }
 
     /**
@@ -38,7 +41,56 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $empleado = new Empleado();
+
+        if (!empty($request['nro_cedula'])) {
+            $request['nro_cedula'] = (integer) str_replace('.', '',$request['nro_cedula']);
+        }
+        if (!empty($request['telefono_celular'])) {
+            $request['telefono_celular'] = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono_celular']))));
+        }
+
+        $rules = [
+            'nro_cedula' => 'required|numeric|unique:empleados,nro_cedula',
+            'nombre' => 'required|max:100',
+            'apellido' => 'required|max:100',
+            'direccion' => 'required|max:100',
+            'correo_electronico' => 'required|max:100|email',
+            'telefono_celular' => 'required|numeric|digits:9',
+            'fecha_nacimiento' => 'required|date_format:d/m/Y',
+            'tipos_empleados' => 'required|array|min:1',
+        ];
+
+        $mensajes = [
+            'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
+            'tipos_empleados.min' => 'Como mínimo se debe asignar :min tipo(s) de empleado(s)!',
+        ];
+
+        Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        if($request->hasFile('avatar')){
+            
+            $avatar = $request->file('avatar');
+            $filename = $request['nro_cedula']/*.'-'.time()*/.'.'.$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300, 300)->save( public_path('/images/empleados/' . $filename ) );
+            $empleado->avatar = $filename;
+            
+        }
+
+        $empleado->setNroCedula($request['nro_cedula']);
+        $empleado->setNombre($request['nombre']);
+        $empleado->setApellido($request['apellido']);
+        $empleado->setDireccion($request['direccion']);
+        $empleado->setCorreoElectronico($request['correo_electronico']);
+        $empleado->setTelefonoCelular($request['telefono_celular']);
+        $empleado->setFechaNacimiento($request['fecha_nacimiento']);
+        
+        $empleado->save();
+
+        $empleado->tiposEmpleados()->sync($request->get('tipos_empleados'));
+
+        return redirect('/empleados')->with('status', 'Datos guardados correctamente!');
     }
 
     /**
@@ -47,7 +99,7 @@ class EmpleadoController extends Controller
      * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function show(Empleado $empleado)
+    public function show($id)
     {
         //
     }
@@ -60,7 +112,15 @@ class EmpleadoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $empleado = Empleado::findOrFail($id);
+        $tipos_empleados = TipoEmpleado::all();
+        $tipos_empleados_seleccionados = array();
+
+        foreach ($empleado->tiposEmpleados as $key => $tipo_empleado) {
+            array_push($tipos_empleados_seleccionados, $tipo_empleado->id);
+        }
+        
+        return view('empleado.edit', compact('empleado', 'tipos_empleados', 'tipos_empleados_seleccionados'));
     }
 
     /**
@@ -72,7 +132,55 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $empleado = Empleado::findOrFail($id);
+
+        if (!empty($request['nro_cedula'])) {
+            $request['nro_cedula'] = (integer) str_replace('.', '',$request['nro_cedula']);
+        }
+        if (!empty($request['telefono_celular'])) {
+            $request['telefono_celular'] = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono_celular']))));
+        }
+
+        $rules = [
+            'nro_cedula' => 'required|numeric|unique:empleados,nro_cedula,'.$empleado->id,
+            'nombre' => 'required|max:100',
+            'apellido' => 'required|max:100',
+            'direccion' => 'required|max:100',
+            'correo_electronico' => 'required|max:100|email',
+            'telefono_celular' => 'required|numeric|digits:9',
+            'fecha_nacimiento' => 'required|date_format:d/m/Y',
+            'tipos_empleados' => 'required|array|min:1',
+        ];
+
+        $mensajes = [
+            'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
+            'tipos_empleados.min' => 'Como mínimo se debe asignar :min tipo(s) de empleado(s)!',
+        ];
+
+        Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        if($request->hasFile('avatar')){
+            
+            $avatar = $request->file('avatar');
+            $filename = $request['nro_cedula']/*.'-'.time()*/.'.'.$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(300, 300)->save( public_path('/images/empleados/' . $filename ) );
+            $empleado->avatar = $filename;
+            
+        }
+
+        $empleado->setNroCedula($request['nro_cedula']);
+        $empleado->setNombre($request['nombre']);
+        $empleado->setApellido($request['apellido']);
+        $empleado->setDireccion($request['direccion']);
+        $empleado->setCorreoElectronico($request['correo_electronico']);
+        $empleado->setTelefonoCelular($request['telefono_celular']);
+        $empleado->setFechaNacimiento($request['fecha_nacimiento']);
+        
+        $empleado->update();
+
+        $empleado->tiposEmpleados()->sync($request->get('tipos_empleados'));
+
+        return redirect('/empleados')->with('status', 'Datos guardados correctamente!');
     }
 
     /**
@@ -83,6 +191,8 @@ class EmpleadoController extends Controller
      */
     public function destroy($id)
     {
+        $empleado = Empleado::findOrFail($id);
+        $empleado->tiposEmpleados()->detach();
         return Empleado::destroy($id);
     }
 

@@ -22,13 +22,11 @@ class CreateArticulosTable extends Migration
                 $table->decimal('costo', 14, 2)->default(0);
                 $table->decimal('porcentaje ganancia', 14, 2)->default(0);
                 $table->string('comentario', 100)->nullable();
-                
                 $table->integer('impuesto_id')->unsigned()->nullable();
                 $table->integer('grupo_id')->unsigned()->nullable();
                 $table->integer('familia_id')->unsigned()->nullable();
                 $table->integer('linea_id')->unsigned()->nullable();
                 $table->integer('unidad_medida_id')->unsigned()->nullable();
-
                 $table->boolean('control_existencia')->default(true);
                 $table->boolean('vendible')->default(true);
                 $table->boolean('activo')->default(true);
