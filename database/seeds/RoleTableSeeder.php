@@ -179,6 +179,8 @@ class RoleTableSeeder extends Seeder
         $permiso_crear_proveedor = Permission::where('slug', 'proveedores.create')->first();
         $permiso_editar_proveedor = Permission::where('slug', 'proveedores.edit')->first();
         $permiso_eliminar_proveedor = Permission::where('slug', 'proveedores.destroy')->first();
+        $permiso_ver_proveedor = Permission::where('slug', 'proveedores.show')->first();
+
 
         $role = new Role();
         $role->name = 'Administrador';
@@ -331,6 +333,7 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_crear_proveedor->id);
         $role->assignPermission($permiso_editar_proveedor->id);
         $role->assignPermission($permiso_eliminar_proveedor->id);
+        $role->assignPermission($permiso_ver_proveedor->id);
 
         $role->assignPermission($permiso_listar_cliente->id);
         $role->assignPermission($permiso_crear_cliente->id);

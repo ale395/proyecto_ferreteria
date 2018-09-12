@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label for="codigo" class="col-md-2 control-label">Código *</label>
                         <div class="col-md-3">
-                            <input type="text" id="codigo" name="codigo" class="form-control" autofocus>
+                            <input type="text" id="codigo" name="codigo" class="form-control" onkeypress="return validar_formato_codigo(event);" autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -101,10 +101,38 @@
 
                 <div class="modal-footer">
                     <button id="form-btn-guardar" type="submit" class="btn btn-primary btn-save">Guardar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button id="form-btn-cancelar" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
 
             </form>
         </div>
     </div>
 </div>
+@section('otros_scripts')
+    </script>
+    <script type="text/javascript">
+        $("#nro_documento").on({
+            "focus": function (event) {
+                $(event.target).select();
+            },
+            "keyup": function (event) {
+                $(event.target).val(function (index, value ) {
+                    return value.replace(/\D/g, "")
+                                //.replace(/([0-9])([0-9]{2})$/, '$1.$2') //genera 2 posiciones decimales
+                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                });
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        function validar_formato_codigo(e,args)
+        {       
+            if (document.all){var evt=event.keyCode;} // caso seja IE
+            else{var evt = e.charCode;} // do contrário deve ser Mozilla
+            var valid_chars = '0123456789abcdefghijlmnopqrstuvxzwykABCDEFGHIJLMNOPQRSTUVXZWYK-'+args; // criando a lista de teclas permitidas
+            var chr= String.fromCharCode(evt);  // pegando a tecla digitada
+            if (valid_chars.indexOf(chr)>-1){return true;}
+            return false;   // do contrário nega
+        }
+    </script>
+@endsection
