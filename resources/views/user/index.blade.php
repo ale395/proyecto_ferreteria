@@ -123,6 +123,7 @@
             $('#id').val(data.id);
             $('#name').val(data.name);
             $('#email').val(data.email);
+            $('#password').val(data.password);
             $('#role_id').val(data.role_id);
           },
           error : function() {

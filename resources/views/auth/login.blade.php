@@ -11,6 +11,21 @@
     <title>Iniciar Sesión</title>
 
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
+    <style>
+    .login{
+   
+  background-image:linear-gradient(rgba(200,200,200,0.7),rgba(200,200,200,0.75)), url('/images/Home-common-tools_1920x1080.jpg');
+padding-left: 11em;
+padding-right: 20em;
+font-family:
+Georgia, "Times New Roman",
+Times, serif; 
+color:#14589D;
+text-decoration:none;
+-webkit-text-shadow: none;
+}
+    </style>
+
   </head>
 
   <body class="login">
@@ -21,9 +36,9 @@
             <section class="login_content">
               <form method="POST" action="{{ route('login') }}">
                 @csrf
-                <h1>Inicio de Sesión</h1>
+                <h1 style='text-shadow:none'>Inicio de Sesión</h1>
                   <div class="form-group row">
-                    <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Usuario') }}</label>
+                    <label for="email" style='text-shadow:none' class="col-md-4 col-form-label text-md-right">{{ __('Usuario') }}</label>
                       <div class="col-md-8">
                         <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus placeholder="usuario@email.com">
 
@@ -36,7 +51,7 @@
                     </div>
 
                     <div class="form-group row">
-                      <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
+                      <label for="password" style='text-shadow:none'class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
 
                       <div class="col-md-8">
                         <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
