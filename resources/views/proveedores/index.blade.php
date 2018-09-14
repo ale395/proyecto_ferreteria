@@ -178,6 +178,8 @@
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $('#error-block').hide();
+        $('#codigo').prop('readonly', true);
+
         $.ajax({
           url: "{{ url('proveedores') }}" + '/' + id + "/edit",
           type: "GET",
@@ -271,7 +273,7 @@
 @section('otros_scripts')
   <script type="text/javascript">
     $('#modal-form').on('shown.bs.modal', function() {
-      $("#codigo").focus();
+      $('#codigo').focus();
     });
   </script>
   

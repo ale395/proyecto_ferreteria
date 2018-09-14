@@ -40,7 +40,15 @@ class ProveedorController extends Controller
      */
     public function store(Request $request)
     {
-      $rules = [
+        if (!empty($request['nro_documento'])) {
+            $request['nro_documento'] = (integer) str_replace('.', '',$request['nro_documento']);
+        }
+        
+        if (!empty($request['telefono'])) {
+            $request['telefono'] = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$request['telefono']))));
+        }
+
+        $rules = [
             'codigo' => 'required|max:20|unique:proveedores,codigo',
             'nombre' => 'required|max:100',
             'razon_social' => 'max:100',
@@ -113,11 +121,11 @@ class ProveedorController extends Controller
         $proveedor = Proveedor::findOrFail($id);
 
         $rules = [
-            'codigo' => 'required|max:20|unique:proveedores,codigo',
+            'codigo' => 'required|max:20|unique:proveedores,codigo,'.$proveedor->id,
             'nombre' => 'required|max:100',
             'razon_social' => 'max:100',
-            'ruc' => 'max:20|unique:proveedores,codigo',
-            'nro_documento' => 'unique:proveedores,nro_documento',
+            'ruc' => 'max:20|unique:proveedores,codigo,'.$proveedor->id,
+            'nro_documento' => 'unique:proveedores,nro_documento,'.$proveedor->id,
             'telefono' => 'max:20',
             'direccion' => 'max:100',
             'correo_electronico' => 'max:30',
