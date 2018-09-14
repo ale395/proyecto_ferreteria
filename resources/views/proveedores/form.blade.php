@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label for="codigo" class="col-md-2 control-label">Código *</label>
                         <div class="col-md-3">
-                            <input type="text" id="codigo" name="codigo" class="form-control" onKeyUp="this.value=this.value.toUpperCase();" onkeypress="return validar_formato_codigo(event);" autofocus>
+                            <input type="text" id="codigo" name="codigo" class="form-control" onKeyUp="this.value=this.value.toUpperCase();" onkeypress="return validar_formato_codigo(event);" placeholder="Cédula o RUC" autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                     <div class="form-group">
                         <label for="nombre" class="col-md-2 control-label">Nombre *</label>
                         <div class="col-md-9">
-                            <input type="text" id="nombre" name="nombre" class="form-control">
+                            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre(s) del Proveedor">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <label for="razon_social" class="col-md-2 control-label">Apellido/Razón Social</label>
                         <div class="col-md-9">
-                            <input type="text" id="razon_social" name="razon_social" class="form-control">
+                            <input type="text" id="razon_social" name="razon_social" class="form-control" placeholder="Apellido(s) o Razón Social del Proveedor">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -44,13 +44,13 @@
                     <div class="form-group">
                         <label for="nro_documento" class="col-md-2 control-label">Nro Cédula</label>
                         <div class="col-md-4">
-                            <input type="text" id="nro_documento" name="nro_documento" class="form-control" onKeyUp="this.value=this.value.toUpperCase();" onkeypress="return validar_formato_cedula(event);">
+                            <input type="text" id="nro_documento" name="nro_documento" class="form-control" onKeyUp="this.value=this.value.toUpperCase();" onkeypress="return validar_formato_cedula(event);" placeholder="Nro. de Cédula">
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <label for="ruc" class="col-md-1 control-label">RUC</label>
                         <div class="col-md-4">
-                            <input type="text" id="ruc" name="ruc" class="form-control" onKeyUp="this.value=this.value.toUpperCase();" onkeypress="return validar_formato_ruc(event);">
+                            <input type="text" id="ruc" name="ruc" class="form-control" onKeyUp="this.value=this.value.toUpperCase();" onkeypress="return validar_formato_ruc(event);" placeholder="xxxxxxxx-xx">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
 
                         <label for="correo_electronico" class="col-md-1 control-label">Email</label>
                         <div class="col-md-4">
-                            <input type="email" id="correo_electronico" name="correo_electronico" class="form-control">
+                            <input type="email" id="correo_electronico" name="correo_electronico" class="form-control" placeholder="proveedor@email.com">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
             // 38 - arriba
             // 39 - derecha
             // 40 - abajo
-            allowedKeys = [8, 127, 37, 38, 39, 40];
+            allowedKeys = [8, 127, 37, 38, 39, 40, 9];
              
             //si es un comando permitido, pasamos  
             if(allowedKeys.indexOf(code) > -1) {
@@ -172,7 +172,7 @@
             // 38 - arriba
             // 39 - derecha
             // 40 - abajo
-            allowedKeys = [8, 127, 37, 38, 39, 40];
+            allowedKeys = [8, 127, 37, 38, 39, 40, 9];
              
             //si es un comando permitido, pasamos  
             if(allowedKeys.indexOf(code) > -1) {
@@ -209,7 +209,7 @@
             // 38 - arriba
             // 39 - derecha
             // 40 - abajo
-            allowedKeys = [8, 127, 37, 38, 39, 40];
+            allowedKeys = [8, 127, 37, 38, 39, 40, 9];
              
             //si es un comando permitido, pasamos  
             if(allowedKeys.indexOf(code) > -1) {
@@ -224,7 +224,7 @@
                 var evt = e.charCode;
             } // do contrário deve ser Mozilla
 
-            var valid_chars = '0123456789abcdefghijlmnopqrstuvxzwykABCDEFGHIJLMNOPQRSTUVXZWYK'+args; // criando a lista de teclas permitidas
+            var valid_chars = '0123456789abcdefghijlmnopqrstuvxzwykABCDEFGHIJLMNOPQRSTUVXZWYK-'+args; // criando a lista de teclas permitidas
             
             var chr= String.fromCharCode(evt);  // pegando a tecla digitada
             

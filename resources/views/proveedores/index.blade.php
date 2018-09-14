@@ -103,7 +103,7 @@
             $('#ruc').val(data.ruc);
             $('#correo_electronico').val(data.correo_electronico);
             $("#select2-tipos").select2("val", "");
-            $('#select2-tipos').val(data.tipo_cliente_id).change();
+            $('#select2-tipos').val(data.tipo_proveedor_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -178,6 +178,8 @@
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
         $('#error-block').hide();
+        $('#codigo').prop('readonly', true);
+
         $.ajax({
           url: "{{ url('proveedores') }}" + '/' + id + "/edit",
           type: "GET",
@@ -208,7 +210,7 @@
             $('#ruc').val(data.ruc);
             $('#correo_electronico').val(data.correo_electronico);
             $("#select2-tipos").select2("val", "");
-            $('#select2-tipos').val(data.tipo_cliente_id).change();
+            $('#select2-tipos').val(data.tipo_proveedor_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -271,7 +273,7 @@
 @section('otros_scripts')
   <script type="text/javascript">
     $('#modal-form').on('shown.bs.modal', function() {
-      $("#codigo").focus();
+      $('#codigo').focus();
     });
   </script>
   
