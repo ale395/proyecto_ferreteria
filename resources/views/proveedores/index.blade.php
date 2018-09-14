@@ -103,7 +103,7 @@
             $('#ruc').val(data.ruc);
             $('#correo_electronico').val(data.correo_electronico);
             $("#select2-tipos").select2("val", "");
-            $('#select2-tipos').val(data.tipo_cliente_id).change();
+            $('#select2-tipos').val(data.tipo_proveedor_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -210,7 +210,7 @@
             $('#ruc').val(data.ruc);
             $('#correo_electronico').val(data.correo_electronico);
             $("#select2-tipos").select2("val", "");
-            $('#select2-tipos').val(data.tipo_cliente_id).change();
+            $('#select2-tipos').val(data.tipo_proveedor_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{

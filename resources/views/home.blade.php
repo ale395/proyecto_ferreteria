@@ -60,10 +60,6 @@
                                     <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
                                     </li>
                                 @endcan
-                                @can('tiposproveedores.index')
-                                    <li class="sub_menu"><a href="{{route('proveedores.index')}}">Proveedores</a>
-                                    </li>
-                                @endcan
                                 @can('monedas.index')
                                     <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
                                     </li>
@@ -113,7 +109,11 @@
                               <!--<li><a href="#level1_1">Level One</a>-->
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li class="sub_menu"><a href="#">Formulario 1</a>
+                                    @can('tiposproveedores.index')
+                                      <li class="sub_menu">
+                                        <a href="{{route('proveedores.index')}}">Proveedores</a>
+                                      </li>
+                                    @endcan
                                     </li>
                                 </ul>
                               </li>
