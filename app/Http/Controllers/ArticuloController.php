@@ -130,16 +130,15 @@ class ArticuloController extends Controller
 
         $rules = [
             'codigo' => 'required|max:20|unique:articulos,codigo,'.$articulo->id,
-            'nombre' => 'required|max:100',
-            'apellido' => 'max:100',
-            'ruc' => 'max:20',
-            'nro_documento' => 'unique:articulos,nro_documento,'.$articulo->id,
-            'telefono' => 'max:20',
-            'direccion' => 'max:100',
-            'correo_electronico' => 'max:100',
-            'zona_id' => 'required',
-            'tipo_articulo_id' => 'required',
-            'activo' => 'required'
+            'control_existencia' => 'required',
+            'vendible' => 'required',
+            'activo' => 'required',
+            'impuesto_id' => 'max:20',
+            'rubro_id' => 'max:100',
+            'familia_id' => 'max:100',
+            'linea_id' => 'required',
+            'unidad_medida_id' => 'required',
+            
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -161,7 +160,7 @@ class ArticuloController extends Controller
         $articulo->rubro_id = $request['rubro_id'];
         $articulo->familia_id = $request['familia_id'];
         $articulo->linea_id = $request['linea_id'];
-        $articulo->undad_medida_id = $request['unidad_medida_id'];
+        $articulo->unidad_medida_id = $request['unidad_medida_id'];
         $articulo->control_existencia = $request['control_existencia'];
         $articulo->vendible = $request['vendible'];
         $articulo->activo = $request['activo'];

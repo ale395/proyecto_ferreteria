@@ -41,22 +41,19 @@
 
 
                     <div class="form-group">
-                        <label for="costo" class="col-md-2 control-label">Costo</label>
+                        <label for="costo" class="col-md-1 control-label">Costo</label>
                         <div class="col-md-4">
                             <input type="number" id="costo" name="costo" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
 
                         <label for="porcentaje_ganancia" class="col-md-1 control-label">Porcentaje ganancia</label>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <input type="number" id="porcentaje_ganancia" name="porcentaje_ganancia" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="impuesto_id" class="control-label col-md-2">Impuesto *</label>
-                        <div class="col-md-4">
+                        <label for="impuesto_id" class="control-label col-md-1">Impuesto *</label>
+                        <div class="col-md-2">
                             <select name="impuesto_id" id="select2-impuestos" class="form-control" style="width: 100%">
                                 <option></option>
                                 @foreach($impuestos as $id => $impuesto)
@@ -64,9 +61,14 @@
                                 @endforeach
                             </select>
                         </div>
+
+                    </div>
+                    
+                    <div class="form-group">
+
                         <label for="familia_id" class="control-label col-md-2">Familia *</label>
                         <div class="col-md-4">
-                            <select name="famila_id" id="select2-familias" class="form-control" style="width: 100%">
+                            <select name="familia_id" id="select2-familias" class="form-control" style="width: 100%">
                                 <option></option>
                                 @foreach($familias as $id => $familia)
                                   <option value="{{ $familia->id }}">{{ $familia->descripcion }}</option>
@@ -96,7 +98,7 @@
                         </div>
 
                       <label for="unidad_medida_id" class="control-label col-md-1">Unidad de medida</label>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <select name="unidad_medida_id" id="select2-unidades" class="form-control" style="width: 100%">
                                 <option></option>
                                 @foreach($unidadesMedidas as $id => $unidad_medida)
@@ -111,15 +113,13 @@
                             <input type="hidden" name="vendible" value="false">
                             <input id="vendible" type="checkbox" class="custom-control-input" name="vendible" value="true">
                         </div>
-                      </div>
-                      <div class="form-group">
+
                         <label class="control-label col-md-2">Existencias *</label>
                         <div class="col-md-1 custom-control custom-checkbox">
                             <input type="hidden" name="control_existencia" value="false">
                             <input id="control_existencia" type="checkbox" class="custom-control-input" name="control_existencia" value="true">
                         </div>
-                      </div>
-                    <div class="form-group">
+                     
                         <label class="control-label col-md-2">Activo *</label>
                         <div class="col-md-1 custom-control custom-checkbox">
                             <input type="hidden" name="activo" value="false">

@@ -110,7 +110,7 @@
             $('#descripcion').val(data.descripcion);
             $('#costo').val(data.costo);
             $('#porcentaje_ganancia').val(data.porcentaje_ganancia);
-            $('#nro_comentario').val(data.comentario);
+            $('#comentario').val(data.comentario);
 
             $("#select2-impuestos").select2("val", "");
             $('#select2-impuestos').val(data.impuesto_id).change();
@@ -206,43 +206,59 @@
           success: function(data) {
             $('#modal-form').modal('show');
             $('.modal-title').text('Editar Articulo');
-
             $('#codigo').prop('readonly', false);
-            $('#nombre').prop('readonly', false);
-            $('#apellido').prop('readonly', false);
-            $('#direccion').prop('readonly', false);
-            $('#telefono').prop('readonly', false);
-            $('#nro_documento').prop('readonly', false);
-            $('#ruc').prop('readonly', false);
-            $('#correo_electronico').prop('readonly', false);
-            $('#select2-zonas').prop('disabled', false);
-            $('#select2-tipos').prop('disabled', false);
-            $('#select2-listas').prop('disabled', false);
-            $('#select2-vendedores').prop('disabled', false);
-            $('#activo').prop('disabled', false);
-            $('#form-btn-guardar').prop('disabled', false);
+
+        $('#descripcion').prop('readonly', false);
+        $('#costo').prop('readonly', false);
+        $('#codigo_barra').prop('readonly', false);
+        $('#porcentaje_ganancia').prop('readonly', false);
+        $('#comentario').prop('readonly', false);
+ 
+        $('#select2-grupos').prop('readonly', false);
+        $('#select2-impuestos').prop('disabled', false);
+        $('#select2-familias').prop('disabled', false);
+        $('#select2-lineas').prop('disabled', false);
+        $('#select2-unidades').prop('disabled', false);
+        $('#activo').prop('disabled', false);
+        $('#vendible').prop('disabled', false);
+        $('#control_existencia').prop('disabled',false);
+        $('#form-btn-guardar').prop('disabled', false);
+
+        
+
 
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
-            $('#nombre').val(data.nombre);
-            $('#apellido').val(data.apellido);
-            $('#direccion').val(data.direccion);
-            $('#telefono').val(data.telefono);
-            $('#nro_documento').val(data.nro_documento);
-            $('#ruc').val(data.ruc);
-            $('#correo_electronico').val(data.correo_electronico);
-            $("#select2-zonas").select2("val", "");
-            $('#select2-zonas').val(data.zona_id).change();
-            $("#select2-tipos").select2("val", "");
-            $('#select2-tipos').val(data.tipo_cliente_id).change();
-            $("#select2-vendedores").select2("val", "");
-            $('#select2-vendedores').val(data.vendedor_id).change();
-            $("#select2-listas").select2("val", "");
-            $('#select2-listas').val(data.lista_precio_id).change();
+            $('#codigo_barra').val(data.codigo_barra);
+            $('#descripcion').val(data.descripcion);
+            $('#costo').val(data.costo);
+            $('#porcentaje_ganancia').val(data.porcentaje_ganancia);
+            $('#comentario').val(data.comentario);
+
+            $("#select2-impuestos").select2("val", "");
+            $('#select2-impuestos').val(data.impuesto_id).change();
+            $("#select2-familias").select2("val", "");
+            $('#select2-familias').val(data.familia_id).change();
+            $("#select2-rubros").select2("val", "");
+            $('#select2-rubros').val(data.rubro_id).change();
+            $("#select2-lineas").select2("val", "");
+            $('#select2-lineas').val(data.linea_id).change();
+            $("#select2-unidades").select2("val", "");
+            $('#select2-unidades').val(data.linea_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
               $('#activo').attr('checked', false);
+            }
+            if (data.vendible) {
+              $('#vendible').attr('checked', true);
+            }else{
+              $('#vendible').attr('checked', false);
+            }
+            if (data.control_existencia) {
+              $('#control_existencia').attr('checked', true);
+            }else{
+              $('#control_existencia').attr('checked', false);
             }
           },
           error : function() {
