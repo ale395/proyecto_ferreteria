@@ -27,6 +27,13 @@
                           <span class="help-block with-errors"></span>
                       </div>
                     </div>
+                    <div class="form-group">
+                      <label for="name" class="col-md-3 control-label">Password</label>
+                      <div class="col-md-6">
+                          <input type="password" id="password" name="password" class="form-control" required>
+                          <span class="help-block with-errors"></span>
+                      </div>
+                    </div>
 
                     <div class="form-group">
                       <label for="name" class="col-md-3 control-label">Rol</label>
