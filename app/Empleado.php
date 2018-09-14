@@ -10,7 +10,7 @@ class Empleado extends Model
     protected $codigo_pais = '0';
 
     protected $fillable = [
-        'nro_cedula', 'nombre', 'apellido', 'direccion', 'zona_id', 'telefono_celular', 'telefono_linea_baja', 'correo_electronico', 'fecha_nacimiento', 'activo',
+        'nro_cedula', 'nombre', 'apellido', 'direccion', 'zona_id', 'telefono_celular', 'telefono_linea_baja', 'correo_electronico', 'fecha_nacimiento', 'activo', 'avatar',
     ];
 
     public function getNroCedula(){
