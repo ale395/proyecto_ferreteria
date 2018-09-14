@@ -24,6 +24,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->setNroCedula(5568434);
         $empleado->setFechaNacimiento('28/03/1995');
         $empleado->setCorreoElectronico('alexis.fernandez.rc@gmail.com');
+        $empleado->avatar = '5568434.jpg';
         $empleado->save();
         $empleado->tiposEmpleados()->sync($vendedor->id);
 

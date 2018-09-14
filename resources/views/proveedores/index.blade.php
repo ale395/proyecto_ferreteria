@@ -91,8 +91,8 @@
           type: "GET",
           dataType: "JSON",
           success: function(data) {
-            $('#modal-form').modal('show');
-
+            $('#modal-form').modal('show');            
+  
             $('#id').val(data.id);
             $('#codigo').val(data.codigo);
             $('#nombre').val(data.nombre);

@@ -135,14 +135,7 @@
                               <li class="sub_menu"><a href="{{route('empresa.index')}}">Empresa</a>
                               </li>
                             @endcan
-                            @can('tiposEmpleados.index')
-                              <li class="sub_menu"><a href="{{route('tiposEmpleados.index')}}">Tipos de Empleados</a>
-                              </li>
-                            @endcan
-                            @can('empleados.index')
-                              <li class="sub_menu"><a href="{{route('empleados.index')}}">Empleados</a>
-                              </li>
-                            @endcan
+                            
                             @can('timbrados.index')
                               <li class="sub_menu"><a href="{{route('timbrados.index')}}">Timbrados</a>
                               </li>
@@ -186,13 +179,19 @@
                         </ul>
                         </li>
 
-                  <li><a><i class="fa fa-shield"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-shield"></i> Gestión de Accesos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <!--<li><a href="#level1_1">Level One</a>-->
                         <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                           <ul class="nav child_menu">
-                              <li class="sub_menu"><a href="{{route('gestionpermisos.index')}}">Permisos por Rol</a>
+                            @can('tiposEmpleados.index')
+                              <li class="sub_menu"><a href="{{route('tiposEmpleados.index')}}">Tipos de Empleados</a>
                               </li>
+                            @endcan
+                            @can('empleados.index')
+                              <li class="sub_menu"><a href="{{route('empleados.index')}}">Empleados</a>
+                              </li>
+                            @endcan
                             @can('roles.index')
                               <li class="sub_menu"><a href="{{route('roles.index')}}">Roles</a>
                               </li>
@@ -201,6 +200,8 @@
                               <li class="sub_menu"><a href="{{route('users.index')}}">Usuarios</a>
                               </li>
                             @endcan
+                            <li class="sub_menu"><a href="{{route('gestionpermisos.index')}}">Permisos por Rol</a>
+                              </li>
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -305,7 +306,7 @@
                   @csrf
               </form>
               
-              <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+              <a class="dropdown-item" href="{{ route('logout') }}" data-toggle="tooltip" data-placement="top" title="Cerrar Sesión" onclick="event.preventDefault();
               document.getElementById('logout-form').submit();">
                 <span class="fa fa-power-off" aria-hidden="true"></span>
               </a>

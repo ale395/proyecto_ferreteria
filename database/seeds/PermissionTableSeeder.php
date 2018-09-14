@@ -784,5 +784,11 @@ class PermissionTableSeeder extends Seeder
         $permission->slug = 'proveedores.index';
         $permission->description = 'Permite ver el listado de proveedores';
         $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Pedido de Venta';
+        $permission->slug = 'proveedores.show';
+        $permission->description = 'Permite ver detalles del proveedor';
+        $permission->save();
     }
 }
