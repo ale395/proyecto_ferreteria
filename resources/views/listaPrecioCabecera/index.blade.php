@@ -21,7 +21,7 @@
 																<th>Código</th>
 																<th>Nombre</th>
 																<th>Moneda</th>
-																<th width="310">Acciones</th>
+																<th width="300">Acciones</th>
 														</tr>
 												</thead>
 												<tbody>
@@ -30,7 +30,12 @@
 																<td>{{$lista_precio->codigo}}</td>
 																<td>{{$lista_precio->nombre}}</td>
 																<td>{{$lista_precio->moneda->descripcion}}</td>
-																<td width="310">
+																<td width="300">
+																	 @can('listapreciodet.asignar')
+																				<a href="{{route('listaPreciosDet.show', ['id' => $lista_precio->id])}}" class="btn btn-info btn-sm"><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
+																		@else
+																				<a class="btn btn-info btn-sm" disabled><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
+																		@endcan
 																	 @can('listaprecio.edit')
 																				<a onclick="editForm('{{$lista_precio->id}}')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
 																		@else
@@ -40,11 +45,6 @@
 																				<a onclick="deleteData('{{$lista_precio->id}}')" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
 																		@else
 																				<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
-																		@endcan
-																		@can('listapreciodet.asignar')
-																				<a href="{{route('listaPreciosDet.show', ['id' => $lista_precio->id])}}" class="btn btn-info btn-sm"><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
-																		@else
-																				<a class="btn btn-info btn-sm" disabled><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
 																		@endcan
 																</td>
 															</tr>
@@ -61,18 +61,9 @@
 
 @section('ajax_datatables')
 	<script type="text/javascript">
-			var table = $('#listaprecio-table')/*.DataTable({
-											language: { url: 'datatables/translation/spanish' },
-											processing: true,
-											serverSide: true,
-											ajax: "{{ route('api.rolepermission') }}",
-											columns: [
-												//{data: 'slug', name: 'slug'},
-												{data: 'name', name: 'name'},
-												{data: 'description', name: 'description'},
-												{data: 'action', name: 'action', orderable: false, searchable: false}
-											]
-										})*/;
+			var table = $('#listaprecio-table').DataTable({
+											language: { url: 'datatables/translation/spanish' }
+										});
 
 			function addForm() {
 				save_method = "add";

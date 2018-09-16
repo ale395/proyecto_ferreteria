@@ -14,4 +14,9 @@ class ListaPrecioCabecera extends Model
     {
         return $this->belongsTo('App\Moneda');
     }
+
+    public function listaPrecioDetalle()
+    {
+    	return $this->hasMany('App\ListaPrecioDetalle');
+    }
 }

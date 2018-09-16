@@ -18,6 +18,7 @@ class CreateMonedasTable extends Migration
             $table->string('codigo', 20)->unique();
             $table->string('descripcion', 50);
             $table->char('simbolo', 4)->nullable();
+            $table->boolean('maneja_decimal')->default(true);
             $table->timestamps();
         });
     }

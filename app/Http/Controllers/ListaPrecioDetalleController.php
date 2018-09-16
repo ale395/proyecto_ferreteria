@@ -41,11 +41,17 @@ class ListaPrecioDetalleController extends Controller
      */
     public function store(Request $request)
     {
+        $lista_precio_det = new ListaPrecioDetalle();
+
+        if (!empty($request['precio'])) {
+            $request['precio'] = str_replace(',', '.', str_replace('.', '',$request['precio']));
+        }
+
         $rules = [
             'lista_precio_id' => 'required',
             'articulo_id' => 'required',
-            'fecha_vigencia' => 'required',
-            'precio' => 'required'
+            'fecha_vigencia' => 'required|date_format:d/m/Y',
+            'precio' => 'required|numeric|min:0'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -53,20 +59,17 @@ class ListaPrecioDetalleController extends Controller
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errors =  json_decode($errors);
-
-            return response()->json(['errors' => $errors], 422); // Status code here
+            return response()->json(['errors' => $errors], 422);
         }
 
-        $data = [
-            'lista_precio_id' => $request['lista_precio_id'],
-            'articulo_id' => $request['articulo_id'],
-            'fecha_vigencia' => $request['fecha_vigencia'],
-            'precio' => $request['precio']
-        ];
+        $lista_precio_det->setListaPrecioId($request['lista_precio_id']);
+        $lista_precio_det->setArticuloId($request['articulo_id']);
+        $lista_precio_det->setFechaVigencia($request['fecha_vigencia']);
+        $lista_precio_det->setPrecio($request['precio']);
 
-        $lista_precio_detalle = ListaPrecioDetalle::create($data);
+        $lista_precio_det->save();
 
-        return $lista_precio_detalle;
+        return $lista_precio_det;
     }
 
     /**
@@ -124,47 +127,53 @@ class ListaPrecioDetalleController extends Controller
         $lista_precios_detalle = ListaPrecioDetalle::where('lista_precio_id', $list_prec_id)->get();
 
         if ($permiso_eliminar) {
-                return Datatables::of($lista_precios_detalle)
-                ->addColumn('fecha_cast', function($lista_precios_detalle){
-                    return $lista_precios_detalle->formatoFecha();
-                })
-                ->addColumn('articulo', function($lista_precios_detalle){
-                    if (empty($lista_precios_detalle->articulo)) {
-                         return null;
-                     } else {
-                        return $lista_precios_detalle->articulo->articulo;
-                    }
-                })
-                ->addColumn('descripcion', function($lista_precios_detalle){
-                    if (empty($lista_precios_detalle->articulo)) {
-                         return null;
-                     } else {
-                        return $lista_precios_detalle->articulo->descripcion;
-                    }
-                })
-                ->addColumn('action', function($lista_precios_detalle){
-                    return '<a onclick="deleteData('. $lista_precios_detalle->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
-                })->make(true);
-        } else {
             return Datatables::of($lista_precios_detalle)
-            ->addColumn('fecha_cast', function($lista_precios_detalle){
-                return $lista_precios_detalle->formatoFecha();
+            ->addColumn('fecha_vigencia', function($lista_precios_detalle){
+                return $lista_precios_detalle->getFechaVigencia();
             })
             ->addColumn('articulo', function($lista_precios_detalle){
-                 if (empty($lista_precios_detalle->articulo)) {
-                     return null;
-                 } else {
-                     return $lista_precios_detalle->articulo->articulo;
-                 }
+                if (empty($lista_precios_detalle->articulo)) {
+                    return null;
+                } else {
+                    return $lista_precios_detalle->articulo->codigo;
+                }
             })
             ->addColumn('descripcion', function($lista_precios_detalle){
                 if (empty($lista_precios_detalle->articulo)) {
-                     return null;
-                 } else {
-                     return $lista_precios_detalle->articulo->descripcion;
-                 }
+                    return null;
+                } else {
+                    return $lista_precios_detalle->articulo->descripcion;
+                }
             })
-            ->addColumn('action', function($nume_series){
+            ->addColumn('precio', function($lista_precios_detalle){
+                return $lista_precios_detalle->getPrecio();
+            })
+            ->addColumn('action', function($lista_precios_detalle){
+                return '<a onclick="deleteData('. $lista_precios_detalle->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+            })->make(true);
+        } else {
+            return Datatables::of($lista_precios_detalle)
+            ->addColumn('fecha_vigencia', function($lista_precios_detalle){
+                return $lista_precios_detalle->getFechaVigencia();
+            })
+            ->addColumn('articulo', function($lista_precios_detalle){
+                if (empty($lista_precios_detalle->articulo)) {
+                    return null;
+                } else {
+                    return $lista_precios_detalle->articulo->codigo;
+                }
+            })
+            ->addColumn('descripcion', function($lista_precios_detalle){
+                if (empty($lista_precios_detalle->articulo)) {
+                    return null;
+                } else {
+                    return $lista_precios_detalle->articulo->descripcion;
+                }
+            })
+            ->addColumn('precio', function($lista_precios_detalle){
+                return $lista_precios_detalle->getPrecio();
+            })
+            ->addColumn('action', function($lista_precios_detalle){
                 return '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
             })->make(true);
         }

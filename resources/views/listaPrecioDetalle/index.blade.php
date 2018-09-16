@@ -8,7 +8,7 @@
 								<div class="panel-heading">
 										<h4>Lista de Precios <b>{{$lista_precio_cab->nombre}}</b>
 												@can('listapreciodet.asignar')
-														<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+														<a onclick="addForm({{$lista_precio_cab->moneda->getManejaDecimal()}})" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
 												@else
 														<a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
 												@endcan
@@ -46,20 +46,48 @@
 											columns: [
 												{data: 'articulo', name: 'articulo'},
 												{data: 'descripcion', name: 'descripcion'},
-												{data: 'fecha_cast', name: 'fecha_cast'},
+												{data: 'fecha_vigencia', name: 'fecha_vigencia'},
 												{data: 'precio', name: 'precio'},
 												{data: 'action', name: 'action', orderable: false, searchable: false}
 											]
 										});
 
-			function addForm() {
+			function addForm(manejaDecimal) {
 				save_method = "add";
 				$('input[name=_method]').val('POST');
 				$('#modal-form').modal('show');
 				$('#modal-form form')[0].reset();
 				$('#error-block').hide();
         $('#select2-articulos').val("").change();
-				$('.modal-title').text('Agregar Artículo');
+        $("#fecha_vigencia").datepicker().datepicker("setDate", new Date());
+        if (manejaDecimal) {
+            $("#precio").on({
+		            "focus": function (event) {
+		                $(event.target).select();
+		            },
+		            "keyup": function (event) {
+		                $(event.target).val(function (index, value ) {
+		                    return value.replace(/\D/g, "")
+		                                .replace(/([0-9])([0-9]{2})$/, '$1,$2')//genera 2 posiciones decimales
+		                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+		                });
+		            }
+		        });
+        } else {
+        		$("#precio").on({
+		            "focus": function (event) {
+		                $(event.target).select();
+		            },
+		            "keyup": function (event) {
+		                $(event.target).val(function (index, value ) {
+		                    return value.replace(/\D/g, "")
+		                                //.replace(/([0-9])([0-9]{2})$/, '$1,$2')//genera 2 posiciones decimales
+		                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+		                });
+		            }
+		        });
+        }
+				$('.modal-title').text('Agregar Artículo a lista de precios');
 			}
 
 			$(function(){
@@ -196,9 +224,10 @@
       $('#fecha_vigencia').click(function(e){
           e.stopPropagation();
           $('.dpvigencia').datepicker('update');
-          });  
+          });
    		});
 		</script>
+
 		<script type="text/javascript">
     	$(document).ready(function(){
         $('#select2-articulos').select2({
@@ -210,5 +239,36 @@
         });
     	});
   </script>
+  <script type="text/javascript">
+        $(document).ready(function(){
+        $(".precio-decimal").on({
+            "focus": function (event) {
+                $(event.target).select();
+            },
+            "keyup": function (event) {
+                $(event.target).val(function (index, value ) {
+                    return value.replace(/\D/g, "")
+                                .replace(/([0-9])([0-9]{2})$/, '$1,$2')//genera 2 posiciones decimales
+                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                });
+            }
+        });
+        });
+
+        $(document).ready(function(){
+        $(".precio-sin-decimal").on({
+            "focus": function (event) {
+                $(event.target).select();
+            },
+            "keyup": function (event) {
+                $(event.target).val(function (index, value ) {
+                    return value.replace(/\D/g, "")
+                                //.replace(/([0-9])([0-9]{2})$/, '$1,$2')//genera 2 posiciones decimales
+                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                });
+            }
+        });
+        });
+    </script>
 
 @endsection
