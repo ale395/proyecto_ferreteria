@@ -75,8 +75,24 @@
                             $('#modal-form-create').modal('hide');
                             table.ajax.reload();
                         },
-                        error : function(){
-                            alert('Oops! Something Error!');
+                        error : function(data){
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += '<li>' + value + '</li>';
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
+                          }
+                            
                         }
                     });
                     return false;
@@ -86,6 +102,7 @@
 
       $(function(){
             $('#modal-form-edit form').validator().on('submit', function (e) {
+                
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
                     if (save_method == 'add') url = "{{ url('users') }}";
@@ -99,8 +116,24 @@
                             $('#modal-form-edit').modal('hide');
                             table.ajax.reload();
                         },
-                        error : function(){
-                            alert('Oops! Something Error!');
+                        error : function(data){
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += '<li>' + value + '</li>';
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
+                          }
+                            
                         }
                     });
                     return false;
@@ -111,6 +144,7 @@
       function editForm(id) {
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
+        $('#error-block').hide();
         $('#modal-form-edit form')[0].reset();
         $.ajax({
           url: "{{ url('users') }}" + '/' + id + "/edit",
@@ -125,6 +159,7 @@
             $('#email').val(data.email);
             $('#password').val(data.password);
             $('#role_id').val(data.role_id);
+            $('#empleado_id').val(data.empleado_id);
           },
           error : function() {
               alert("Nothing Data");
