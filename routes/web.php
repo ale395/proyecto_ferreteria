@@ -82,7 +82,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA MODELO LISTA PRECIOS CABECERA
 	Route::resource('listaPrecios', 'ListaPrecioCabeceraController');
 	Route::get('api/listaPrecios', 'ListaPrecioCabeceraController@apiListaPrecios')->name('api.listaPrecios');
-	Route::get('listaPrecios/actualizarPrecios', 'ListaPrecioCabeceraController@actualizarPrecios')->name('listaPrecios.actualizarPrecios');
+	Route::post('listaPrecios/actualizar', 'ListaPrecioCabeceraController@actualizar')->name('listaPrecios.actualizar');
 
 	//RUTAS PARA MODELO LISTA PRECIOS DETALLE
 	Route::resource('listaPreciosDet', 'ListaPrecioDetalleController');

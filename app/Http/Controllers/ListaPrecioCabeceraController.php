@@ -135,7 +135,8 @@ class ListaPrecioCabeceraController extends Controller
         return ListaPrecioCabecera::destroy($id);
     }
 
-    public function actualizarPrecios(){
-        //
+    public function actualizarPrecios()
+    {
+        return view('listaPrecioCabecera.actualizar');
     }
 }
