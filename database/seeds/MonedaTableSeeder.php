@@ -14,13 +14,14 @@ class MonedaTableSeeder extends Seeder
     {
         $moneda = new Moneda();
         $moneda->codigo = 'GS';
-        $moneda->descripcion = 'Guaraní';
+        $moneda->descripcion = 'Guaraníes';
         $moneda->simbolo = 'Gs';
+        $moneda->maneja_decimal = false;
         $moneda->save();
 
         $moneda = new Moneda();
         $moneda->codigo = 'US';
-        $moneda->descripcion = 'Dólar';
+        $moneda->descripcion = 'Dólar Americano';
         $moneda->simbolo = 'USD';
         $moneda->save();
 
@@ -34,6 +35,12 @@ class MonedaTableSeeder extends Seeder
         $moneda->codigo = 'RE';
         $moneda->descripcion = 'Real';
         $moneda->simbolo = 'R$';
+        $moneda->save();
+
+        $moneda = new Moneda();
+        $moneda->codigo = 'EU';
+        $moneda->descripcion = 'Euro';
+        $moneda->simbolo = 'E';
         $moneda->save();
     }
 }

@@ -23,7 +23,7 @@
                       <div class="col-md-6">
                           <select id="select2-articulos" class="form-control" name="articulo_id" style="width: 100%">
                             @foreach($articulos as $articulo)
-                              <option value="{{$articulo->id}}">{{$articulo->articulo}} - {{$articulo->descripcion}}</option>
+                              <option value="{{$articulo->id}}">{{$articulo->codigo}} - {{$articulo->descripcion}}</option>
                             @endforeach
                           </select>
                       </div>

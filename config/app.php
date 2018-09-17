@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => 'Ferretería',//env('APP_NAME', 'FerreGest'),
+    'name' => 'FerreGest',//env('APP_NAME', 'FerreGest'),
 
     /*
     |--------------------------------------------------------------------------

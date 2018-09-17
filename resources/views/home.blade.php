@@ -26,7 +26,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="{{route('home')}}" class="site_title"><i class="fa fa-recycle"></i> <span> {{ config('app.name') }} </span></a>
+              <a href="{{route('home')}}" class="site_title"> <span> {{ config('app.name') }} </span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -267,6 +267,7 @@
                                         <li class="sub_menu"><a href="{{route('listaPrecios.index')}}">Lista de Precios</a>
                                         </li>
                                     @endcan
+                                    <li class="sub_menu"><a href="{{route('listaPrecios.actualizar')}}">Actualizar Precios</a></li>
                                     @can('pedidosVentas.create')
                                         <li class="sub_menu"><a href="{{route('pedidosVentas.create')}}">Toma de Pedido</a>
                                         </li>
@@ -292,14 +293,14 @@
 
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="Settings">
-                <span class="fa fa-cog" aria-hidden="true"></span>
+              <a data-toggle="tooltip" data-placement="top" title="Cambiar Sucursal">
+                <span class="fa fa-home" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                <span class="fa fa-arrows-alt" aria-hidden="true"></span>
+              <a data-toggle="tooltip" data-placement="top" title="Consulta de artículo">
+                <span class="fa fa-search" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Lock">
-                <span class="fa fa-eye-slash" aria-hidden="true"></span>
+              <a data-toggle="tooltip" data-placement="top" title="Facturación">
+                <span class="fa fa-shopping-cart" aria-hidden="true"></span>
               </a>
 
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
