@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\Linea;
+use App\Rubro;
 use App\Moneda;
+use App\Articulo;
+use App\Familia;
 use App\ListaPrecioCabecera;
 use Illuminate\Http\Request;
 
@@ -135,8 +139,14 @@ class ListaPrecioCabeceraController extends Controller
         return ListaPrecioCabecera::destroy($id);
     }
 
-    public function actualizarPrecios()
+    public function actualizar()
     {
-        return view('listaPrecioCabecera.actualizar');
+        $lista_precios = ListaPrecioCabecera::all();
+        $familias = Familia::all();
+        $lineas = Linea::all();
+        $rubros = Rubro::all();
+        $articulos = Articulo::where('activo', true)->where('vendible', true)->get();
+
+        return view('listaPrecioCabecera.actualizar', compact('lista_precios', 'familias', 'lineas', 'rubros', 'articulos'));
     }
 }

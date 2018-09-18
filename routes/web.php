@@ -80,9 +80,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/roles', 'RoleController@apiRole')->name('api.roles');
 
 	//RUTAS PARA MODELO LISTA PRECIOS CABECERA
+	Route::get('listaPrecios/actualizar', 'ListaPrecioCabeceraController@actualizar')->name('listaPrecios.actualizar');
 	Route::resource('listaPrecios', 'ListaPrecioCabeceraController');
 	Route::get('api/listaPrecios', 'ListaPrecioCabeceraController@apiListaPrecios')->name('api.listaPrecios');
-	Route::post('listaPrecios/actualizar', 'ListaPrecioCabeceraController@actualizar')->name('listaPrecios.actualizar');
+	
 
 	//RUTAS PARA MODELO LISTA PRECIOS DETALLE
 	Route::resource('listaPreciosDet', 'ListaPrecioDetalleController');
