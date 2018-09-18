@@ -8,17 +8,28 @@
                     <h4>Actualización de Precios</h4>
                 </div>
                 <div class="panel-body">
-                    <form action="{{route('gestionpermisos.store')}}" method="post" class="form-horizontal" data-toggle="validator">
+                    <form id="form-actualizar" action="{{route('listaPrecios.actualizarPrecios')}}" method="post" class="form-horizontal" data-toggle="validator">
                         {{ csrf_field() }} {{ method_field('POST') }}
-
-                        <div class="modal-body">
+                          <div class="modal-body">
+                            <div class="form-group">
+                              @if ($errors->any())
+                                  <div class="alert alert-danger alert-dismissible">
+                                      <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                      <ul>
+                                          @foreach ($errors->all() as $error)
+                                              <li>{{ $error }}</li>
+                                          @endforeach
+                                      </ul>
+                                  </div>
+                              @endif
+                          </div>
                             <div class="form-group">
                               <label for="lista_precios" class="col-md-3 control-label">Lista de Precios</label>
                               <div class="col-md-6">
                                   <select name="lista_precios[]" id="select2-listas-precios" class="form-control" style="width: 100%" multiple="multiple">
                                     <option></option>
                                     @foreach($lista_precios as $lista)
-                                      <option value="{{$lista->id}}">{{$lista->nombre}}</option>
+                                      <option value="{{$lista->id}}">({{$lista->codigo}}) {{$lista->nombre}}</option>
                                     @endforeach
                                   </select>
                               </div>
@@ -29,7 +40,7 @@
                                   <select name="articulos[]" id="select2-articulos" class="form-control" style="width: 100%" multiple="multiple">
                                     <option></option>
                                     @foreach($articulos as $articulo)
-                                      <option value="{{$articulo->id}}">{{$articulo->descripcion}}</option>
+                                      <option value="{{$articulo->id}}">({{$articulo->codigo}}) {{$articulo->descripcion}}</option>
                                     @endforeach
                                   </select>
                               </div>
@@ -40,7 +51,7 @@
                                   <select name="familias[]" id="select2-familias" class="form-control" style="width: 100%" multiple="multiple">
                                     <option></option>
                                     @foreach($familias as $familia)
-                                      <option value="{{$familia->id}}">{{$familia->descripcion}}</option>
+                                      <option value="{{$familia->id}}">({{$familia->num_familia}}) {{$familia->descripcion}}</option>
                                     @endforeach
                                   </select>
                               </div>
@@ -51,7 +62,7 @@
                                   <select name="lineas[]" id="select2-lineas" class="form-control" style="width: 100%" multiple="multiple">
                                     <option></option>
                                     @foreach($lineas as $linea)
-                                      <option value="{{$linea->id}}">{{$linea->descripcion}}</option>
+                                      <option value="{{$linea->id}}">({{$linea->num_linea}}) {{$linea->descripcion}}</option>
                                     @endforeach
                                   </select>
                               </div>
@@ -62,15 +73,21 @@
                                   <select name="rubros[]" id="select2-rubros" class="form-control" style="width: 100%" multiple="multiple">
                                     <option></option>
                                     @foreach($rubros as $rubro)
-                                      <option value="{{$rubro->id}}">{{$rubro->descripcion}}</option>
+                                      <option value="{{$rubro->id}}">({{$rubro->num_rubro}}) {{$rubro->descripcion}}</option>
                                     @endforeach
                                   </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="porcentaje" class="col-md-3 control-label">Porcentaje de ajuste*</label>
+                              <div class="col-md-3">
+                                <input type="number" name="porcentaje" class="form-control" placeholder="Ingrese valor en %">
                               </div>
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-warning btn-save"><i class="fa fa-refresh" aria-hidden="true"></i> Actualizar</button>
+                            <button id="btn-actualizar" class="btn btn-info btn-save"><i class="fa fa-refresh"></i> Actualizar</button>
                             <a href="{{route('listaPrecios.actualizar')}}" type="button" class="btn btn-default">Cancelar</a>
                         </div>
 
@@ -117,7 +134,35 @@
                 width: 'resolve',
                 language: "es"
             });
+
         });
+    </script>
+    <script type="text/javascript">
+      var askConfirmation = true;
+      $("#form-actualizar").submit(function(e){
+        if(askConfirmation){
+          e.preventDefault();
+          $.confirm({
+            title: '¿Está seguro de que desea continuar?',
+            content: 'Los precios de ventas serán actualizados según los parámetros establecidos',
+            type: 'blue',
+            buttons: {
+              confirm: {
+              text: "Actualizar",
+              btnClass: 'btn-info',
+              action: function(){
+                askConfirmation = false;
+                $('#form-actualizar').submit();
+              }
+              },
+              cancel: {
+                text: "Cancelar",
+                btnClass: 'btn-default'
+              }
+            }
+          });
+        }
+      });
     </script>
 
 @endsection

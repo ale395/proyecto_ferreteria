@@ -149,4 +149,9 @@ class ListaPrecioCabeceraController extends Controller
 
         return view('listaPrecioCabecera.actualizar', compact('lista_precios', 'familias', 'lineas', 'rubros', 'articulos'));
     }
+
+    public function actualizarPrecios(Request $request)
+    {
+        return $request;
+    }
 }
