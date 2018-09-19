@@ -11,7 +11,7 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-striped table-responsive">
+                    <table id="showPermission-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
                                 <th>Código</th>
@@ -33,4 +33,11 @@
             </div>
         </div>
     
+@endsection
+@section('otros_scripts')
+    <script type="text/javascript">
+        var table = $('#showPermission-table').DataTable({
+                language: { url: '/datatables/translation/spanish' }
+            });
+    </script>
 @endsection

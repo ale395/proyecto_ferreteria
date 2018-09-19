@@ -8,6 +8,7 @@ use App\Rubro;
 use App\Moneda;
 use App\Articulo;
 use App\Familia;
+use App\ListaPrecioDetalle;
 use App\ListaPrecioCabecera;
 use Illuminate\Http\Request;
 
@@ -152,6 +153,8 @@ class ListaPrecioCabeceraController extends Controller
 
     public function actualizarPrecios(Request $request)
     {
-        return $request;
+        //$lista_precio_det = ListaPrecioDetalle::all()->articulo;
+        //dd($lista_precio_det);
+        return;
     }
 }

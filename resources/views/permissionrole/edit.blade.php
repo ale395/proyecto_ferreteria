@@ -48,9 +48,10 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-striped table-responsive">
+                    <table id="editPermission-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
+                                <th>Código</th>
                                 <th>Nombre</th>
                                 <th>Descripción</th>
                                 <th width="150">Acciones</th>
@@ -59,6 +60,7 @@
                         <tbody>
                             @foreach($permisos as $permiso)
                               <tr>
+                                <td>{{$permiso->permiso->slug}}</td>
                                 <td>{{$permiso->permiso->name}}</td>
                                 <td>{{$permiso->permiso->description}}</td>
                                 <td width="150">
@@ -81,6 +83,10 @@
 
 @section('otros_scripts')
     <script type="text/javascript">
+        var table = $('#editPermission-table').DataTable({
+                language: { url: '/datatables/translation/spanish' }
+            });
+
         $(document).ready(function() {
             $('.js-permisos').select2();
         });
