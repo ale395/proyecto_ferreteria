@@ -79,6 +79,25 @@
                               </div>
                             </div>
                             <div class="form-group">
+                              <label for="base_calculo" class="col-md-3 control-label">Base de Cálculo*</label>
+                              <div class="col-md-6">
+                                  <select name="base_calculo" id="select2-base-calculo" class="form-control" style="width: 100%">
+                                    <option value="UC" selected="selected">Último Costo</option>
+                                    <option value="CP" disabled="disabled">Costo Promedio</option>
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="redondeo" class="col-md-3 control-label">Redondeo*</label>
+                              <div class="col-md-6">
+                                  <select name="redondeo" id="select2-redondeo" class="form-control" style="width: 100%">
+                                    <option value="2">Decena</option>
+                                    <option value="3">Centena</option>
+                                    <option value="4" selected="selected">Unidad de mil</option>
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
                               <label for="porcentaje" class="col-md-3 control-label">Porcentaje de ajuste*</label>
                               <div class="col-md-3">
                                 <input type="number" name="porcentaje" class="form-control" placeholder="Ingrese valor en %">
@@ -129,6 +148,20 @@
             });
 
             $('#select2-rubros').select2({
+                placeholder : 'Seleccione una o varias opciones',
+                tags: false,
+                width: 'resolve',
+                language: "es"
+            });
+
+            $('#select2-base-calculo').select2({
+                placeholder : 'Seleccione una o varias opciones',
+                tags: false,
+                width: 'resolve',
+                language: "es"
+            });
+
+            $('#select2-redondeo').select2({
                 placeholder : 'Seleccione una o varias opciones',
                 tags: false,
                 width: 'resolve',

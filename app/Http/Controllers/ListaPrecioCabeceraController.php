@@ -11,6 +11,7 @@ use App\Familia;
 use App\ListaPrecioDetalle;
 use App\ListaPrecioCabecera;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ListaPrecioCabeceraController extends Controller
 {
@@ -153,8 +154,22 @@ class ListaPrecioCabeceraController extends Controller
 
     public function actualizarPrecios(Request $request)
     {
-        //$lista_precio_det = ListaPrecioDetalle::all()->articulo;
-        //dd($lista_precio_det);
-        return;
+        $rules = [
+            'base_calculo' => 'required',
+            'redondeo' => 'required',
+            'porcentaje' => 'required|numeric|different:0'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return back()->withErrors($errors);
+        }
+
+        //$articulos = Articulo::whereIn('id', array($request['familia_id']))->get();
+        $articulos = DB::table('articulos')->get();
+
+        return $articulos;
     }
 }
