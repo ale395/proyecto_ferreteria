@@ -9,6 +9,7 @@ use App\Moneda;
 use App\Familia;
 use App\Empresa;
 use App\Articulo;
+use App\Cotizacion;
 use App\ListaPrecioDetalle;
 use App\ListaPrecioCabecera;
 use Illuminate\Http\Request;
@@ -210,15 +211,16 @@ class ListaPrecioCabeceraController extends Controller
                 $precio_final = 0;
 
                 if ($empresa->moneda == $lista->moneda) {
-                    if ($request['base_calculo'] == 'UC') {
-                        $precio_final = round($articulo->getUltimoCosto() + $articulo->getUltimoCosto()*($request['porcentaje']/100), -$request['redondeo']);
-                        $lista_precio_detalle->setPrecio($precio_final);
-                    } elseif ($request['base_calculo'] == 'CP') {
-                        $precio_final = round($articulo->getCostoPromedio() + $articulo->getCostoPromedio()*($request['porcentaje']/100), -$request['redondeo']);
-                        $lista_precio_detalle->setPrecio($precio_final);
-                    }
+                    $lista_precio_detalle->setPrecio($this->calcularPrecio($articulo, $request['base_calculo'], $request['porcentaje'], -$request['redondeo']));
                 } else {
-                    //Recuperar la última cotización de la moneda de la lista de precios y dividir el valor segun lo que se obtenga en GS
+                    $ultima_cotizacion = Cotizacion::where('moneda_id', $lista->moneda->getId())->orderBy('fecha_cotizacion', 'desc')->first();
+                    
+                    if (empty($ultima_cotizacion)) {
+                        return back()->withErrors('No existe cotización para la moneda '.$lista->moneda->getDescripcion().'!');
+                    } else {
+                        $precio_local = $this->calcularPrecio($articulo, $request['base_calculo'], $request['porcentaje'], -$request['redondeo']);
+                        $lista_precio_detalle->setPrecio(round($precio_local/$ultima_cotizacion->getValorVenta(), 2));
+                    }
                 }
                 
                 $lista_precio_detalle->save();
@@ -226,5 +228,15 @@ class ListaPrecioCabeceraController extends Controller
         }
 
         return redirect()->back()->with('status', 'Precios actualizados correctamente!');
+    }
+
+    public function calcularPrecio(Articulo $articulo, $base_calculo, $porcentaje, $redondeo){
+        $precio = 0;
+        if ($base_calculo == 'UC') {
+            $precio = round($articulo->getUltimoCosto() + $articulo->getUltimoCosto()*($porcentaje/100), $redondeo);
+        } elseif ($base_calculo == 'CP') {
+            $precio = round($articulo->getCostoPromedio() + $articulo->getCostoPromedio()*($porcentaje/100), $redondeo);
+        }
+        return $precio;
     }
 }

@@ -21,4 +21,12 @@ class Cotizacion extends Model
     {
         return $this->belongsTo(Moneda::class);
     }
+
+    public function getValorVenta(){
+        return $this->valor_venta;
+    }
+
+    public function getValorCompra(){
+        return $this->valor_compra;
+    }
 }
