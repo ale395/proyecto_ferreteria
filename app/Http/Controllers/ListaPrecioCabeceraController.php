@@ -160,7 +160,13 @@ class ListaPrecioCabeceraController extends Controller
             'porcentaje' => 'required|numeric|different:0'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $mensajes = [
+            'porcentaje.different' => 'El porcentaje no puede ser 0 (Cero)!',
+            'base_calculo.required' => 'Debe seleccionar una base de cálculo!',
+            'redondeo' => 'Debe seleccionar un valor de redondeo!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
