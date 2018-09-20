@@ -157,7 +157,7 @@ class ListaPrecioCabeceraController extends Controller
         $rules = [
             'base_calculo' => 'required',
             'redondeo' => 'required',
-            'porcentaje' => 'required|numeric|different:0'
+            'porcentaje' => 'required|numeric'
         ];
 
         $mensajes = [
@@ -173,9 +173,54 @@ class ListaPrecioCabeceraController extends Controller
             return back()->withErrors($errors);
         }
 
-        //$articulos = Articulo::whereIn('id', array($request['familia_id']))->get();
-        $articulos = DB::table('articulos')->get();
+        $articulos = Articulo::where('activo', true);
+        
+        if ($request->has('articulos')) {
+            $articulos = $articulos->whereIn('id', array($request['articulos']));
+        }
 
-        return $articulos;
+        if ($request->has('familias')) {
+            $articulos = $articulos->whereIn('familia_id', array($request['familias']));
+        }
+
+        if ($request->has('lineas')) {
+            $articulos = $articulos->whereIn('linea_id', array($request['lineas']));
+        }
+
+        if ($request->has('rubros')) {
+            $articulos = $articulos->whereIn('rubro_id', array($request['rubros']));
+        }
+
+        if ($request->has('lista_precios')) {
+            $listas_precios = ListaPrecioCabecera::whereIn('id', array($request['lista_precios']))->get();
+        } else {
+            $listas_precios = ListaPrecioCabecera::all();
+        }
+
+        $articulos = $articulos->get();
+
+        foreach ($listas_precios as $lista) {
+            foreach ($articulos as $articulo) {
+                $lista_precio_detalle = new ListaPrecioDetalle();
+                $lista_precio_detalle->setListaPrecioId($lista->id);
+                $lista_precio_detalle->setArticuloId($articulo->id);
+                $lista_precio_detalle->setFechaVigencia(date('d/m/Y'));
+                $precio_final = 0;
+
+                //Si es la moneda local queda así tal cual
+                //Caso contrario debe buscar la cotización y cambiar de moneda
+                if ($request['base_calculo'] == 'UC') {
+                    $precio_final = round($articulo->getUltimoCosto() + $articulo->getUltimoCosto()*($request['porcentaje']/100), -$request['redondeo']);
+                    $lista_precio_detalle->setPrecio($precio_final);
+                } elseif ($request['base_calculo'] == 'CP') {
+                    $precio_final = round($articulo->getCostoPromedio() + $articulo->getCostoPromedio()*($request['porcentaje']/100), -$request['redondeo']);
+                    $lista_precio_detalle->setPrecio($precio_final);
+                }
+
+                $lista_precio_detalle->save();
+            }
+        }
+
+        return;
     }
 }

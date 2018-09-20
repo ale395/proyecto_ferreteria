@@ -91,9 +91,9 @@
                               <label for="redondeo" class="col-md-3 control-label">Redondeo*</label>
                               <div class="col-md-6">
                                   <select name="redondeo" id="select2-redondeo" class="form-control" style="width: 100%">
-                                    <option value="2">Decena</option>
-                                    <option value="3">Centena</option>
-                                    <option value="4" selected="selected">Unidad de mil</option>
+                                    <option value="1">Decena</option>
+                                    <option value="2">Centena</option>
+                                    <option value="3" selected="selected">Unidad de mil</option>
                                   </select>
                               </div>
                             </div>
