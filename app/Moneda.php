@@ -16,4 +16,5 @@ class Moneda extends Model
     {
     	return $this->maneja_decimal;
     }
+
 }

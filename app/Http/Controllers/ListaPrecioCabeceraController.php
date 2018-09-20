@@ -6,8 +6,9 @@ use Validator;
 use App\Linea;
 use App\Rubro;
 use App\Moneda;
-use App\Articulo;
 use App\Familia;
+use App\Empresa;
+use App\Articulo;
 use App\ListaPrecioDetalle;
 use App\ListaPrecioCabecera;
 use Illuminate\Http\Request;
@@ -173,6 +174,7 @@ class ListaPrecioCabeceraController extends Controller
             return back()->withErrors($errors);
         }
 
+        $empresa = Empresa::first();
         $articulos = Articulo::where('activo', true);
         
         if ($request->has('articulos')) {
@@ -207,20 +209,22 @@ class ListaPrecioCabeceraController extends Controller
                 $lista_precio_detalle->setFechaVigencia(date('d/m/Y'));
                 $precio_final = 0;
 
-                //Si es la moneda local queda así tal cual
-                //Caso contrario debe buscar la cotización y cambiar de moneda
-                if ($request['base_calculo'] == 'UC') {
-                    $precio_final = round($articulo->getUltimoCosto() + $articulo->getUltimoCosto()*($request['porcentaje']/100), -$request['redondeo']);
-                    $lista_precio_detalle->setPrecio($precio_final);
-                } elseif ($request['base_calculo'] == 'CP') {
-                    $precio_final = round($articulo->getCostoPromedio() + $articulo->getCostoPromedio()*($request['porcentaje']/100), -$request['redondeo']);
-                    $lista_precio_detalle->setPrecio($precio_final);
+                if ($empresa->moneda == $lista->moneda) {
+                    if ($request['base_calculo'] == 'UC') {
+                        $precio_final = round($articulo->getUltimoCosto() + $articulo->getUltimoCosto()*($request['porcentaje']/100), -$request['redondeo']);
+                        $lista_precio_detalle->setPrecio($precio_final);
+                    } elseif ($request['base_calculo'] == 'CP') {
+                        $precio_final = round($articulo->getCostoPromedio() + $articulo->getCostoPromedio()*($request['porcentaje']/100), -$request['redondeo']);
+                        $lista_precio_detalle->setPrecio($precio_final);
+                    }
+                } else {
+                    //Recuperar la última cotización de la moneda de la lista de precios y dividir el valor segun lo que se obtenga en GS
                 }
-
+                
                 $lista_precio_detalle->save();
             }
         }
 
-        return;
+        return redirect()->back()->with('status', 'Precios actualizados correctamente!');
     }
 }

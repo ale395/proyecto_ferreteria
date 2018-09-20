@@ -341,6 +341,9 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_eliminar_cliente->id);
         $role->assignPermission($permiso_ver_cliente->id);
 
+        $role->assignPermission($permiso_listar_empresa->id);
+        $role->assignPermission($permiso_editar_empresa->id);
+
         $role->save();
 
         $role = new Role();
