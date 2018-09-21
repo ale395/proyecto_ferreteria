@@ -16,4 +16,12 @@ class Moneda extends Model
     {
     	return $this->maneja_decimal;
     }
+
+    public function getId(){
+    	return $this->id;
+    }
+
+    public function getDescripcion(){
+        return $this->descripcion;
+    }
 }

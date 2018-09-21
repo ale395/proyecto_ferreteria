@@ -10,7 +10,7 @@
 										</h4>
 								</div>
 								<div class="panel-body">
-										<table class="table table-striped table-responsive">
+										<table id="rolepermission-table" class="table table-striped table-responsive">
 												<thead>
 														<tr>
 																<th>Nombre</th>
@@ -42,17 +42,8 @@
 @section('ajax_datatables')
 	<script type="text/javascript">
 			var table = $('#rolepermission-table').DataTable({
-											language: { url: 'datatables/translation/spanish' },
-											processing: true,
-											serverSide: true,
-											ajax: "{{ route('api.rolepermission') }}",
-											columns: [
-												//{data: 'slug', name: 'slug'},
-												{data: 'name', name: 'name'},
-												{data: 'description', name: 'description'},
-												{data: 'action', name: 'action', orderable: false, searchable: false}
-											]
-										});
+				language: { url: 'datatables/translation/spanish' }
+			});
 
 			function addForm() {
 				save_method = "add";

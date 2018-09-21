@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="razon_social" class="col-md-2 control-label">Razon Social *</label>
+                        <label for="razon_social" class="col-md-2 control-label">Razon Social*</label>
                         <div class="col-md-5">
                             <input type="text" id="razon_social" name="razon_social" class="form-control" value="{{old('razon_social')}}" placeholder="Denominación de la Empresa">
                         </div>
@@ -42,11 +42,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="direccion" class="col-md-2 control-label">Dirección *</label>
+                        <label for="direccion" class="col-md-2 control-label">Dirección*</label>
                         <div class="col-md-5">
                             <input type="text" id="direccion" name="direccion" class="form-control" value="{{old('direccion')}}" placeholder="Dirección de la Casa Central">
                         </div>
-                        <label for="telefono" class="col-md-1 control-label">Telefono *</label>
+                        <label for="telefono" class="col-md-1 control-label">Telefono*</label>
                         <div class="col-md-3">
                             <input type="text" id="telefono" name="telefono" class="form-control" value="{{old('telefono')}}">
                         </div>
@@ -68,9 +68,20 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="rubro" class="col-md-2 control-label">Rubro *</label>
+                        <label for="rubro" class="col-md-2 control-label">Rubro*</label>
                         <div class="col-md-5">
                             <input type="text" id="rubro" name="rubro" class="form-control" value="{{old('rubro')}}" placeholder="Rubro o Sector al que se dedica la empresa">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="moneda_nacional_id" class="col-md-2 control-label">Moneda Nacional*</label>
+                        <div class="col-md-5">
+                            <select name="moneda_nacional_id" id="select2-monedas" class="form-control" style="width: 100%">
+                                <option></option>
+                                @foreach($monedas as $moneda)
+                                    <option value="{{$moneda->id}}">({{$moneda->codigo}}) {{$moneda->descripcion}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -82,4 +93,16 @@
         </form>
     </div>
 </div>
+@endsection
+@section('otros_scripts')
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#select2-monedas').select2({
+                placeholder : 'Seleccione una opción',
+                tags: false,
+                width: 'resolve',
+                language: "es"
+            });
+        });
+    </script>
 @endsection

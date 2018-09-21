@@ -34,4 +34,12 @@ class Articulo extends Model
     {
         return $this->belongsTo('App\UnidadMedida');
     }
+
+    public function getUltimoCosto(){
+        return $this->ultimo_costo;
+    }
+
+    public function getCostoPromedio(){
+        return $this->costo_promedio;
+    }
 }

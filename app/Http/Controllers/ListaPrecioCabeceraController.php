@@ -3,9 +3,17 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\Linea;
+use App\Rubro;
 use App\Moneda;
+use App\Familia;
+use App\Empresa;
+use App\Articulo;
+use App\Cotizacion;
+use App\ListaPrecioDetalle;
 use App\ListaPrecioCabecera;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ListaPrecioCabeceraController extends Controller
 {
@@ -135,8 +143,100 @@ class ListaPrecioCabeceraController extends Controller
         return ListaPrecioCabecera::destroy($id);
     }
 
-    public function actualizarPrecios()
+    public function actualizar()
     {
-        return view('listaPrecioCabecera.actualizar');
+        $lista_precios = ListaPrecioCabecera::all();
+        $familias = Familia::all();
+        $lineas = Linea::all();
+        $rubros = Rubro::all();
+        $articulos = Articulo::where('activo', true)->where('vendible', true)->get();
+
+        return view('listaPrecioCabecera.actualizar', compact('lista_precios', 'familias', 'lineas', 'rubros', 'articulos'));
+    }
+
+    public function actualizarPrecios(Request $request)
+    {
+        $rules = [
+            'base_calculo' => 'required',
+            'redondeo' => 'required',
+            'porcentaje' => 'required|numeric'
+        ];
+
+        $mensajes = [
+            'porcentaje.different' => 'El porcentaje no puede ser 0 (Cero)!',
+            'base_calculo.required' => 'Debe seleccionar una base de cálculo!',
+            'redondeo' => 'Debe seleccionar un valor de redondeo!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return back()->withErrors($errors);
+        }
+
+        $empresa = Empresa::first();
+        $articulos = Articulo::where('activo', true);
+        
+        if ($request->has('articulos')) {
+            $articulos = $articulos->whereIn('id', array($request['articulos']));
+        }
+
+        if ($request->has('familias')) {
+            $articulos = $articulos->whereIn('familia_id', array($request['familias']));
+        }
+
+        if ($request->has('lineas')) {
+            $articulos = $articulos->whereIn('linea_id', array($request['lineas']));
+        }
+
+        if ($request->has('rubros')) {
+            $articulos = $articulos->whereIn('rubro_id', array($request['rubros']));
+        }
+
+        if ($request->has('lista_precios')) {
+            $listas_precios = ListaPrecioCabecera::whereIn('id', array($request['lista_precios']))->get();
+        } else {
+            $listas_precios = ListaPrecioCabecera::all();
+        }
+
+        $articulos = $articulos->get();
+
+        foreach ($listas_precios as $lista) {
+            foreach ($articulos as $articulo) {
+                $lista_precio_detalle = new ListaPrecioDetalle();
+                $lista_precio_detalle->setListaPrecioId($lista->id);
+                $lista_precio_detalle->setArticuloId($articulo->id);
+                $lista_precio_detalle->setFechaVigencia(date('d/m/Y'));
+                $precio_final = 0;
+
+                if ($empresa->moneda == $lista->moneda) {
+                    $lista_precio_detalle->setPrecio($this->calcularPrecio($articulo, $request['base_calculo'], $request['porcentaje'], -$request['redondeo']));
+                } else {
+                    $ultima_cotizacion = Cotizacion::where('moneda_id', $lista->moneda->getId())->orderBy('fecha_cotizacion', 'desc')->first();
+                    
+                    if (empty($ultima_cotizacion)) {
+                        return back()->withErrors('No existe cotización para la moneda '.$lista->moneda->getDescripcion().'!');
+                    } else {
+                        $precio_local = $this->calcularPrecio($articulo, $request['base_calculo'], $request['porcentaje'], -$request['redondeo']);
+                        $lista_precio_detalle->setPrecio(round($precio_local/$ultima_cotizacion->getValorVenta(), 2));
+                    }
+                }
+                
+                $lista_precio_detalle->save();
+            }
+        }
+
+        return redirect()->back()->with('status', 'Precios actualizados correctamente!');
+    }
+
+    public function calcularPrecio(Articulo $articulo, $base_calculo, $porcentaje, $redondeo){
+        $precio = 0;
+        if ($base_calculo == 'UC') {
+            $precio = round($articulo->getUltimoCosto() + $articulo->getUltimoCosto()*($porcentaje/100), $redondeo);
+        } elseif ($base_calculo == 'CP') {
+            $precio = round($articulo->getCostoPromedio() + $articulo->getCostoPromedio()*($porcentaje/100), $redondeo);
+        }
+        return $precio;
     }
 }

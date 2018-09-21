@@ -29,16 +29,51 @@ class DefaultSeeder extends Seeder
         $familia->descripcion = 'GENERICO';
         $familia->save();
 
+        $familia = new Familia();
+        $familia->num_familia = '002';
+        $familia->descripcion = 'Duchas';
+        $familia->save();
+
+        $familia = new Familia();
+        $familia->num_familia = '005';
+        $familia->descripcion = 'Máquinas';
+        $familia->save();
+
         //Linea de producto por default - Generico
         $linea = new Linea();
         $linea->num_linea = '001';
         $linea->descripcion = 'GENERICO';
         $linea->save();
 
+        $linea = new Linea();
+        $linea->num_linea = '004';
+        $linea->descripcion = 'Tokyo';
+        $linea->save();
+
+        $linea = new Linea();
+        $linea->num_linea = '005';
+        $linea->descripcion = 'Speed';
+        $linea->save();
+
+        $linea = new Linea();
+        $linea->num_linea = '008';
+        $linea->descripcion = 'Amanecer';
+        $linea->save();
+
     	//Rubro de producto por default - Generico
         $rubro = new Rubro();
         $rubro->num_rubro = '001';
         $rubro->descripcion = 'GENERICO';
+        $rubro->save();
+
+        $rubro = new Rubro();
+        $rubro->num_rubro = '003';
+        $rubro->descripcion = 'Pinturas';
+        $rubro->save();
+
+        $rubro = new Rubro();
+        $rubro->num_rubro = '006';
+        $rubro->descripcion = 'Baño';
         $rubro->save();
 
     	//Unidad de medida por default - Unidad

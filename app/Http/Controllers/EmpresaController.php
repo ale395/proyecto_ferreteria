@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\Moneda;
 use App\Empresa;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,8 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        return view('empresa.create');
+        $monedas = Moneda::all();
+        return view('empresa.create', compact('monedas'));
     }
 
     /**
@@ -53,13 +55,15 @@ class EmpresaController extends Controller
             'sitio_web' => 'bail|nullable|max:100',
             'eslogan' => 'max:100',
             'correo_electronico' => 'bail|required|max:100|email',
-            'codigo_establecimiento' => 'bail|required|numeric|digits:3'
+            'codigo_establecimiento' => 'bail|required|numeric|digits:3',
+            'moneda_nacional_id' => 'required'
         ];
 
         $mensajes = [
             'codigo_establecimiento.required' => 'El campo Código de Establecimiento es obligatorio.',
             'codigo_establecimiento.numeric' => 'El valor del Código de Establecimiento debe ser un número.',
             'codigo_establecimiento.digits' => 'El valor del Código de Establecimiento debe tener :digits digitos.',
+            'moneda_nacional_id.required' => 'Debe seleccionar la moneda nacional!',
         ];
 
         Validator::make($request->all(), $rules, $mensajes)->validate();
@@ -73,6 +77,7 @@ class EmpresaController extends Controller
         $empresa->eslogan = $request['eslogan'];
         $empresa->rubro = $request['rubro'];
         $empresa->codigo_establecimiento = $request['codigo_establecimiento'];
+        $empresa->moneda_nacional_id = $request['moneda_nacional_id'];
 
         $empresa->save();
 
@@ -102,7 +107,8 @@ class EmpresaController extends Controller
     public function edit($id)
     {
         $empresa = Empresa::findOrFail($id);
-        return view('empresa.edit', compact('empresa'));
+        $monedas = Moneda::all();
+        return view('empresa.edit', compact('empresa', 'monedas'));
     }
 
     /**
@@ -125,13 +131,15 @@ class EmpresaController extends Controller
             'sitio_web' => '|bail|nullable|max:100',
             'eslogan' => 'max:100',
             'correo_electronico' => 'bail|required|max:100|email',
-            'codigo_establecimiento' => 'bail|required|numeric|digits:3'
+            'codigo_establecimiento' => 'bail|required|numeric|digits:3',
+            'moneda_nacional_id' => 'required'
         ];
 
         $mensajes = [
             'codigo_establecimiento.required' => 'El campo Código de Establecimiento es obligatorio.',
             'codigo_establecimiento.numeric' => 'El valor del Código de Establecimiento debe ser un número.',
             'codigo_establecimiento.digits' => 'El valor del Código de Establecimiento debe tener :digits digitos.',
+            'moneda_nacional_id.required' => 'Debe seleccionar la moneda nacional!',
         ];
 
         Validator::make($request->all(), $rules, $mensajes)->validate();
@@ -145,6 +153,7 @@ class EmpresaController extends Controller
         $empresa->eslogan = $request['eslogan'];
         $empresa->rubro = $request['rubro'];
         $empresa->codigo_establecimiento = $request['codigo_establecimiento'];
+        $empresa->moneda_nacional_id = $request['moneda_nacional_id'];
         
         $empresa->update();
 
