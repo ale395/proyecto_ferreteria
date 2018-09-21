@@ -35,7 +35,7 @@
                                 <select name="lista_precios[]" id="select2-listas-precios" class="form-control" style="width: 100%" multiple="multiple">
                                 <option></option>
                                 @foreach($lista_precios as $lista)
-                                    <option value="{{$lista->id}}">({{$lista->codigo}}) {{$lista->nombre}}</option>
+                                    <option value="{{$lista->id}}" {{ (collect(old('lista_precios'))->contains($lista->id)) ? 'selected':'' }}>({{$lista->codigo}}) {{$lista->nombre}}</option>
                                 @endforeach
                                 </select>
                             </div>
@@ -46,7 +46,7 @@
                                 <select name="articulos[]" id="select2-articulos" class="form-control" style="width: 100%" multiple="multiple">
                                 <option></option>
                                 @foreach($articulos as $articulo)
-                                    <option value="{{$articulo->id}}">({{$articulo->codigo}}) {{$articulo->descripcion}}</option>
+                                    <option value="{{$articulo->id}}" {{ (collect(old('articulos'))->contains($articulo->id)) ? 'selected':'' }}>({{$articulo->codigo}}) {{$articulo->descripcion}}</option>
                                 @endforeach
                                 </select>
                             </div>
@@ -57,7 +57,7 @@
                                 <select name="familias[]" id="select2-familias" class="form-control" style="width: 100%" multiple="multiple">
                                 <option></option>
                                 @foreach($familias as $familia)
-                                    <option value="{{$familia->id}}">({{$familia->num_familia}}) {{$familia->descripcion}}</option>
+                                    <option value="{{$familia->id}}" {{ (collect(old('familias'))->contains($familia->id)) ? 'selected':'' }}>({{$familia->num_familia}}) {{$familia->descripcion}}</option>
                                 @endforeach
                                 </select>
                             </div>
@@ -68,7 +68,7 @@
                                 <select name="lineas[]" id="select2-lineas" class="form-control" style="width: 100%" multiple="multiple">
                                 <option></option>
                                 @foreach($lineas as $linea)
-                                    <option value="{{$linea->id}}">({{$linea->num_linea}}) {{$linea->descripcion}}</option>
+                                    <option value="{{$linea->id}}" {{ (collect(old('lineas'))->contains($linea->id)) ? 'selected':'' }}>({{$linea->num_linea}}) {{$linea->descripcion}}</option>
                                 @endforeach
                                 </select>
                             </div>
@@ -79,7 +79,7 @@
                                 <select name="rubros[]" id="select2-rubros" class="form-control" style="width: 100%" multiple="multiple">
                                 <option></option>
                                 @foreach($rubros as $rubro)
-                                    <option value="{{$rubro->id}}">({{$rubro->num_rubro}}) {{$rubro->descripcion}}</option>
+                                    <option value="{{$rubro->id}}" {{ (collect(old('rubros'))->contains($rubro->id)) ? 'selected':'' }}>({{$rubro->num_rubro}}) {{$rubro->descripcion}}</option>
                                 @endforeach
                                 </select>
                             </div>
@@ -89,7 +89,7 @@
                             <div class="col-md-6">
                                 <select name="base_calculo" id="select2-base-calculo" class="form-control" style="width: 100%">
                                 <option value="UC" selected="selected">Último Costo</option>
-                                <option value="CP" disabled="disabled">Costo Promedio</option>
+                                <option value="CP">Costo Promedio</option>
                                 </select>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                         <div class="form-group">
                             <label for="porcentaje" class="col-md-3 control-label">Porcentaje de ajuste*</label>
                             <div class="col-md-3">
-                            <input type="number" name="porcentaje" class="form-control" placeholder="Ingrese valor en %">
+                            <input type="number" name="porcentaje" class="form-control" placeholder="Ingrese valor en %" value="value="{{old('porcentaje')}}">
                             </div>
                         </div>
                     </div>
@@ -129,35 +129,45 @@
                 placeholder : 'Seleccione una o varias opciones',
                 tags: false,
                 width: 'resolve',
-                language: "es"
+                language: "es",
+                multiple: true,
+                tokenSeparators: [',']
             });
 
             $('#select2-articulos').select2({
                 placeholder : 'Seleccione una o varias opciones',
                 tags: false,
                 width: 'resolve',
-                language: "es"
+                language: "es",
+                multiple: true,
+                tokenSeparators: [',']
             });
 
             $('#select2-familias').select2({
                 placeholder : 'Seleccione una o varias opciones',
                 tags: false,
                 width: 'resolve',
-                language: "es"
+                language: "es",
+                multiple: true,
+                tokenSeparators: [',']
             });
 
             $('#select2-lineas').select2({
                 placeholder : 'Seleccione una o varias opciones',
                 tags: false,
                 width: 'resolve',
-                language: "es"
+                language: "es",
+                multiple: true,
+                tokenSeparators: [',']
             });
 
             $('#select2-rubros').select2({
                 placeholder : 'Seleccione una o varias opciones',
                 tags: false,
                 width: 'resolve',
-                language: "es"
+                language: "es",
+                multiple: true,
+                tokenSeparators: [',']
             });
 
             $('#select2-base-calculo').select2({

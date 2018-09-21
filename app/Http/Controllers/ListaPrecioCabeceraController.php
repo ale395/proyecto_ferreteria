@@ -172,7 +172,7 @@ class ListaPrecioCabeceraController extends Controller
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return back()->withErrors($errors);
+            return redirect()->back()->withInput()->withErrors($errors);
         }
 
         $empresa = Empresa::first();
@@ -216,7 +216,7 @@ class ListaPrecioCabeceraController extends Controller
                     $ultima_cotizacion = Cotizacion::where('moneda_id', $lista->moneda->getId())->orderBy('fecha_cotizacion', 'desc')->first();
                     
                     if (empty($ultima_cotizacion)) {
-                        return back()->withErrors('No existe cotización para la moneda '.$lista->moneda->getDescripcion().'!');
+                        return redirect()->back()->withInput()->withErrors('No existe cotización para la moneda '.$lista->moneda->getDescripcion().'!');
                     } else {
                         $precio_local = $this->calcularPrecio($articulo, $request['base_calculo'], $request['porcentaje'], -$request['redondeo']);
                         $lista_precio_detalle->setPrecio(round($precio_local/$ultima_cotizacion->getValorVenta(), 2));
