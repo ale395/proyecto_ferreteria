@@ -56,15 +56,19 @@
         save_method = "add";
         $('input[name=_method]').val('POST');
         $('#modal-form-create').modal('show');
+        $('#error-block').hide();
         $('#modal-form-create form')[0].reset();
         $('.modal-title').text('Nuevo Usuario');
       }
 
       $(function(){
             $('#modal-form-create form').validator().on('submit', function (e) {
+           
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
+                  
                     if (save_method == 'add') url = "{{ url('users') }}";
+                 
                     else url = "{{ url('users') . '/' }}" + id;
 
                     $.ajax({

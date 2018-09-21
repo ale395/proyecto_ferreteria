@@ -11,6 +11,16 @@
                 </div>
 
                 <div class="modal-body">
+
+
+   <input type="hidden" id="id" name="id">
+
+                    <div class="form-group">
+                        <div id="error-block" class="alert alert-danger">
+                        </div>
+                    </div>
+
+
                     <input type="hidden" id="id-create" name="id">
                     <div class="form-group">
                         <label for="name" class="col-md-3 control-label">Nombre</label>
@@ -46,6 +56,19 @@
                           </select>
                       </div>
                     </div>
+
+                    <div class="form-group">
+                      <label for="name" class="col-md-3 control-label">Asignado a: </label>
+                      <div class="col-md-6">
+                          <select class="form-control" name="empleado_id" id="empleado_id" style="width: 100%">
+                            @foreach($empleados as $empleado)
+                              <option value="{{$empleado->id}}">{{$empleado->nombre}}</option>
+                            @endforeach
+                          </select>
+                      </div>
+                    </div>
+
+                
 
                 </div>
 
