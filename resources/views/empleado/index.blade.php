@@ -23,7 +23,7 @@
                                 <th>Apellido</th>
                                 <th>Tel. Celular</th>
                                 <th>Activo</th>
-                                <th width="110">Acciones</th>
+                                <th width="150">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

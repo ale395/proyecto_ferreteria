@@ -85,6 +85,36 @@
                             </select>
                         </div>
                     </div>
+                    <br>
+                    <h4>Sucursales donde puede operar:</h4>
+                    <div class="form-group">
+                        <div class="col-md-9">
+                            <!--<a class="btn btn-primary">Agregar Sucursal</a>-->
+                            <a onclick="window.location='{{route('empleados.create')}}'" class="btn btn-primary pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-9">
+                        <table id="empleado-sucursal-table" class="table table-striped table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th width="30">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($empleado->sucursales as $id => $sucursal)
+                                    <tr>
+                                        <td>{{$sucursal->codigo}}</td>
+                                        <td>{{$sucursal->nombre}}</td>
+                                        <td><a onclick="deleteSucursalData(' {{$empleado->id}}','{{$sucursal->id}}')" class="btn btn-danger btn-sm" title="Eliminar Empleado"><i class="fa fa-trash-o"></i></a></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-2">
                     <h5></h5>
@@ -154,5 +184,44 @@
           }
           
         });
+    </script>
+    <script type="text/javascript">
+        function deleteSucursalData(empleado_id, sucursal_id){
+        $.confirm({
+            title: '¿De verdad lo quieres eliminar?',
+            content: 'No podrás volver atras',
+            type: 'red',
+            buttons: {   
+                ok: {
+                    text: "Eliminar",
+                    btnClass: 'btn-danger',
+                    keys: ['enter'],
+                    action: function(){
+                          var csrf_token = $('meta[name="csrf-token"]').attr('content');
+                          
+                              $.ajax({
+                                  url : "{{ url('empleados') }}" + '/' + empleado_id + '/' + sucursal_id,
+                                  type : "POST",
+                                  data : {'_method' : 'POST', '_token' : csrf_token},
+                                  success : function(data) {
+                                      location.reload();
+                                  },
+                                  error : function () {
+                                          $.alert({
+                                              title: 'Atención!',
+                                              content: 'Ocurrió un error durante el proceso!',
+                                              icon: 'fa fa-times-circle-o',
+                                              type: 'red',
+                                          });
+                                  }
+                              })
+                    }
+                },
+                cancel: function(){
+                        console.log('Cancel');
+                }
+            }
+          });
+        }
     </script>
 @endsection

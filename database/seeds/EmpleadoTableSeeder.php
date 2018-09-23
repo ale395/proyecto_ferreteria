@@ -1,6 +1,7 @@
 <?php
 
 use App\Empleado;
+use App\Sucursal;
 use APP\TipoEmpleado;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +16,8 @@ class EmpleadoTableSeeder extends Seeder
     {
         $vendedor = TipoEmpleado::where('codigo', 'VEND')->first();
         $cajero = TipoEmpleado::where('codigo', 'CAJE')->first();
+        $sucursal_central = Sucursal::where('codigo', 'S001')->first();
+        $sucursal_sanber = Sucursal::where('codigo', 'S003')->first();
 
         $empleado = new Empleado();
         $empleado->setNombre('Alexis Ramón');
@@ -27,6 +30,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->avatar = '5568434.jpg';
         $empleado->save();
         $empleado->tiposEmpleados()->sync($vendedor->id);
+        $empleado->sucursales()->sync([$sucursal_central->id, $sucursal_sanber->id]);
 
         $empleado = new Empleado();
         $empleado->setNombre('Usuario');

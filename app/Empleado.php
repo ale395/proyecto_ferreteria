@@ -83,5 +83,10 @@ class Empleado extends Model
     {
     	return $this->belongsToMany('App\TipoEmpleado')->withTimestamps();
     }
+
+    public function sucursales()
+    {
+        return $this->belongsToMany('App\Sucursal')->withTimestamps();
+    }
     
 }

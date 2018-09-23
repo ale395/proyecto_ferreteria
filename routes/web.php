@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/tiposEmpleados', 'TipoEmpleadoController@apiTiposEmpleados')->name('api.tiposEmpleados');
 
 	Route::resource('empleados', 'EmpleadoController');
+	Route::post('empleados/{empleado_id}/{sucursal_id}', 'EmpleadoController@deleteSucursal')->name('empleados.sucursal');
 	Route::get('api/empleados', 'EmpleadoController@apiEmpleados')->name('api.empleados');
 
 	//RUTAS PARA VENDEDORES

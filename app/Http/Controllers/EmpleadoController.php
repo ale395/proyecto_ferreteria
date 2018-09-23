@@ -185,7 +185,7 @@ class EmpleadoController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
+     * 
      * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
@@ -194,6 +194,13 @@ class EmpleadoController extends Controller
         $empleado = Empleado::findOrFail($id);
         $empleado->tiposEmpleados()->detach();
         return Empleado::destroy($id);
+    }
+
+    public function deleteSucursal($empleado_id, $sucursal_id){
+        $empleado = Empleado::findOrFail($empleado_id);
+        $empleado->sucursales()->detach($sucursal_id);
+        $empleado->update();
+        return;
     }
 
     public function apiEmpleados()
@@ -221,7 +228,7 @@ class EmpleadoController extends Controller
                         }
                     })
                     ->addColumn('action', function($empleados){
-                        return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm" title="Editar Empleado"><i class="fa fa-pencil-square-o"></i></a> ' .
+                        return '<a onclick="showForm('. $empleados->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $empleados->id .')" class="btn btn-warning btn-sm" title="Editar Empleado"><i class="fa fa-pencil-square-o"></i></a> ' .'<a onclick="editSucursal('. $empleados->id .')" class="btn btn-info btn-sm" title="Editar Sucursales"><i class="fa fa-home"></i></a> ' .
                                '<a onclick="deleteData('. $empleados->id .')" class="btn btn-danger btn-sm" title="Eliminar Empleado"><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 } else{
