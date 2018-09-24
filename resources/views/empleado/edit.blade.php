@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="row">
+<div id="editDiv" class="row">
     <div class="col-md-12">
         <form method="post" action="{{action('EmpleadoController@update', $empleado->id)}}" class="form-horizontal form-label-left" data-toggle="validator" enctype="multipart/form-data">
             <div class="panel panel-default">
@@ -173,7 +173,7 @@
     <script type="text/javascript">
         $("#avatar").change(function(){
           var fichero_seleccionado = $(this).val();
-          var nombre_fichero_seleccionado = fichero_seleccionado.replace(/.*[\/\\]/, ''); //Eliminamos el path hasta el fichero seleccionado
+          var nombre_fichero_seleccionado = fichero_seleccionado.replace(/.*[\/\\]/, '');//Eliminamos el path hasta el fichero seleccionado
           if (fichero_seleccionado != nombre_fichero_seleccionado) {
             $("#label-avatar").text(nombre_fichero_seleccionado);
           }
@@ -181,6 +181,7 @@
         });
     </script>
     <script type="text/javascript">
+        window.scrollTo(0, 0);
         var empleado = document.getElementById('id').value;
         var table = $('#empleado-sucursal-table').DataTable( {
             "paging":   false,
