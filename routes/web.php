@@ -50,8 +50,16 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/tiposEmpleados', 'TipoEmpleadoController@apiTiposEmpleados')->name('api.tiposEmpleados');
 
 	Route::resource('empleados', 'EmpleadoController');
+	//Para eliminar sucursales dentro de la vista EDIT
 	Route::post('empleados/{empleado_id}/{sucursal_id}', 'EmpleadoController@deleteSucursal')->name('empleados.sucursal');
+	//Listado de Empleados para la vista INDEX
 	Route::get('api/empleados', 'EmpleadoController@apiEmpleados')->name('api.empleados');
+	//Listado de sucursales a la que el empleado ya tiene acceso para la vista EDIT
+	Route::get('api/empleados-sucursales/{empleado_id}', 'EmpleadoController@apiEmpleadosSucursales')->name('api.empleados-sucursales');
+	//Listado de Sucursales para el Select2 en la vista AGREGARSUCURSAL
+	Route::get('api/empleados/sucursales', 'EmpleadoController@apiSucursales')->name('api.empleados.sucursales');
+	//Para agregar una sucursal al empleado en la vista AGREGARSUCURSAL
+	Route::post('empleados/sucursales', 'EmpleadoController@agregarSucursal')->name('empleados.agregar.sucursal');
 
 	//RUTAS PARA VENDEDORES
 	Route::resource('vendedores', 'VendedorController');

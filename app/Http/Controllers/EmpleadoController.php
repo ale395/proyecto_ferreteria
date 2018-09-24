@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Image;
 use Validator;
 use App\Empleado;
+use App\Sucursal;
 use App\TipoEmpleado;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -196,11 +197,48 @@ class EmpleadoController extends Controller
         return Empleado::destroy($id);
     }
 
+    public function agregarSucursal(Request $request){
+        $empleado = Empleado::findOrFail($request['empleado_id']);
+        $empleado->sucursales()->attach($request['sucursal']);
+        $empleado->save();
+        return $empleado;
+    }
+
     public function deleteSucursal($empleado_id, $sucursal_id){
         $empleado = Empleado::findOrFail($empleado_id);
         $empleado->sucursales()->detach($sucursal_id);
         $empleado->update();
         return;
+    }
+
+    public function apiEmpleadosSucursales($empleado_id){
+        $empleados = Empleado::findOrFail($empleado_id);
+        $sucursales_array = [];
+        $sucursales = $empleados->sucursales;
+
+        foreach ($empleados->sucursales->toArray() as $sucursal) {
+            $sucursales_array[] = $sucursal['id'];
+        }
+        
+        return Datatables::of($sucursales)
+                ->addColumn('codigo', function($sucursales){
+                    return $sucursales->codigo;
+                })
+                ->addColumn('nombre', function($sucursales){
+                    return $sucursales->nombre;
+                })
+                ->addColumn('action', function($sucursales){
+                    return '<a onclick="deleteSucursalData('.$sucursales->pivot->empleado_id.','.$sucursales->id.')" class="btn btn-danger btn-sm" title="Eliminar Empleado"><i class="fa fa-trash-o"></i></a>';
+                })->make(true);
+    }
+
+    public function apiSucursales(/*$empleado_id*/){
+        $sucursales_array = [];
+        $sucursales = Sucursal::where('activo', true)->get();
+        foreach ($sucursales as $sucursal) {
+            $sucursales_array[] = ['id'=> $sucursal->getId(), 'text'=> $sucursal->getNombre()];
+        }
+        return json_encode($sucursales_array);
     }
 
     public function apiEmpleados()

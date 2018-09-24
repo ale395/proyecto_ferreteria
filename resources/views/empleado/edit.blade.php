@@ -90,7 +90,7 @@
                     <div class="form-group">
                         <div class="col-md-9">
                             <!--<a class="btn btn-primary">Agregar Sucursal</a>-->
-                            <a onclick="window.location='{{route('empleados.create')}}'" class="btn btn-primary pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                            <a onclick="addForm()" class="btn btn-primary pull-right"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         </div>
                     </div>
                     <div class="form-group">
@@ -104,13 +104,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($empleado->sucursales as $id => $sucursal)
-                                    <tr>
-                                        <td>{{$sucursal->codigo}}</td>
-                                        <td>{{$sucursal->nombre}}</td>
-                                        <td><a onclick="deleteSucursalData(' {{$empleado->id}}','{{$sucursal->id}}')" class="btn btn-danger btn-sm" title="Eliminar Empleado"><i class="fa fa-trash-o"></i></a></td>
-                                    </tr>
-                                @endforeach
+                                
                             </tbody>
                         </table>
                         </div>
@@ -132,6 +126,7 @@
             </div>
         </div>
         </form>
+        @include('empleado.agregarsucursal')
     </div>
 </div>
 @endsection
@@ -186,6 +181,62 @@
         });
     </script>
     <script type="text/javascript">
+        var empleado = document.getElementById('id').value;
+        var table = $('#empleado-sucursal-table').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            "info":     false,
+            "searching": false,
+            language: { url: '/datatables/translation/spanish' },
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('api.empleados') }}"+"-sucursales/"+empleado,
+            columns: [
+                {data: 'codigo', name: 'codigo'},
+                {data: 'nombre', name: 'nombre'},
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+
+        function addForm() {
+            save_method = "add";
+            $('#error-block').hide();
+            $('input[name=_method]').val('POST');
+            $('#modal-form').modal('show');
+            $('#modal-form form')[0].reset();
+            $('#select2-sucursales').val("").change();
+            $('#empleado_id').val(empleado);
+            $('.modal-title').text('Agregar Sucursal');
+        }
+
+        $(function(){
+            $('#modal-form form').validator().on('submit', function (e) {
+                if (!e.isDefaultPrevented()){
+                    var id = $('#id').val();
+                    url = "{{ url('empleados') . '/sucursales' }}";
+
+                    $.ajax({
+                        url : url,
+                        type : "POST",
+                        data : $('#modal-form form').serialize(),
+                        success : function($data) {
+                            $('#modal-form').modal('hide');
+                            table.ajax.reload();
+                        },
+                        error : function(data){
+                            $.alert({
+                            title: 'Atención!',
+                            content: 'Ocurrió un error durante el proceso!',
+                            icon: 'fa fa-times-circle-o',
+                            type: 'red',
+                            });  
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+
         function deleteSucursalData(empleado_id, sucursal_id){
         $.confirm({
             title: '¿De verdad lo quieres eliminar?',
@@ -204,7 +255,7 @@
                                   type : "POST",
                                   data : {'_method' : 'POST', '_token' : csrf_token},
                                   success : function(data) {
-                                      location.reload();
+                                      table.ajax.reload();
                                   },
                                   error : function () {
                                           $.alert({
@@ -223,5 +274,21 @@
             }
           });
         }
+    </script>
+    <script type="text/javascript">
+        $('#select2-sucursales').select2({
+            placeholder: 'Seleccione una sucursal',
+            language: "es",
+            ajax: {
+                url: "{{ route('api.empleados.sucursales') }}",
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
     </script>
 @endsection
