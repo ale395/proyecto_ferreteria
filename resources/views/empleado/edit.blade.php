@@ -276,11 +276,12 @@
         }
     </script>
     <script type="text/javascript">
+        var empleado = document.getElementById('id').value;
         $('#select2-sucursales').select2({
             placeholder: 'Seleccione una sucursal',
             language: "es",
             ajax: {
-                url: "{{ route('api.empleados.sucursales') }}",
+                url: "{{ route('api.empleados') }}"+"/sucursales/"+empleado,
                 dataType: 'json',
                 processResults: function (data) {
                     return {

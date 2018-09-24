@@ -57,7 +57,7 @@ Route::middleware(['auth'])->group(function() {
 	//Listado de sucursales a la que el empleado ya tiene acceso para la vista EDIT
 	Route::get('api/empleados-sucursales/{empleado_id}', 'EmpleadoController@apiEmpleadosSucursales')->name('api.empleados-sucursales');
 	//Listado de Sucursales para el Select2 en la vista AGREGARSUCURSAL
-	Route::get('api/empleados/sucursales', 'EmpleadoController@apiSucursales')->name('api.empleados.sucursales');
+	Route::get('api/empleados/sucursales/{empleado_id}', 'EmpleadoController@apiSucursales')->name('api.empleados.sucursales');
 	//Para agregar una sucursal al empleado en la vista AGREGARSUCURSAL
 	Route::post('empleados/sucursales', 'EmpleadoController@agregarSucursal')->name('empleados.agregar.sucursal');
 

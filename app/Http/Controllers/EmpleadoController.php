@@ -232,9 +232,17 @@ class EmpleadoController extends Controller
                 })->make(true);
     }
 
-    public function apiSucursales(/*$empleado_id*/){
+    public function apiSucursales($empleado_id){
+        $empleado = Empleado::findOrFail($empleado_id);
+        $sucursales_con_acceso = [];
         $sucursales_array = [];
-        $sucursales = Sucursal::where('activo', true)->get();
+
+        foreach ($empleado->sucursales->toArray() as $sucursal) {
+            $sucursales_con_acceso[] = $sucursal['id'];
+        }
+
+        $sucursales = Sucursal::whereNotIn('id', $sucursales_con_acceso)->where('activo', true)->get();
+
         foreach ($sucursales as $sucursal) {
             $sucursales_array[] = ['id'=> $sucursal->getId(), 'text'=> $sucursal->getNombre()];
         }
