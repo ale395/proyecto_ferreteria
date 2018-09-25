@@ -18,11 +18,9 @@
                     <table id="cliente-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th width="50">Codigo</th>
+                                <th width="100">Tipo Persona</th>
                                 <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th width="80">Nro CI</th>
-                                <th>RUC</th>
+                                <th>Nro Doc. Identificador</th>
                                 <th width="40">Activo</th>
                                 <th width="110">Acciones</th>
                             </tr>
@@ -33,7 +31,8 @@
             </div>
         </div>
 
-    @include('cliente.form')
+    @include('cliente.create-persona-fisica')
+    @include('cliente.create-persona-juridica')
 @endsection
 
 @section('ajax_datatables')
@@ -44,47 +43,53 @@
                       serverSide: true,
                       ajax: "{{ route('api.clientes') }}",
                       columns: [
-                        {data: 'codigo', name: 'codigo'},
+                        {data: 'tipo_persona', name: 'tipo_persona'},
                         {data: 'nombre', name: 'nombre'},
-                        {data: 'apellido', name: 'apellido'},
-                        {data: 'nro_documento', name: 'nro_documento'},
-                        {data: 'ruc', name: 'ruc'},
+                        {data: 'nro_doc_identificador', name: 'nro_doc_identificador'},
                         {data: 'activo', name: 'activo'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
 
-      function addForm() {
-        save_method = "add";
-        $('#error-block').hide();
-        $('#activo').attr('checked', true);
-        
-        $('#select2-zonas').val("").change();
-        $('#select2-tipos').val("").change();
-        $('#select2-listas').val("").change();
-        $('#select2-vendedores').val("").change();
-        $('input[name=_method]').val('POST');
-        $('#modal-form').modal('show');
-        $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nuevo Cliente');
+    function addForm() {
+        $.confirm({
+            title: 'Tipo de Persona',
+            content: 'Por favor seleccione el tipo de persona a registrar',
+            type: 'blue',
+            backgroundDismiss: true,
+            theme: 'modern',
+            buttons: {
+                confirm: {
+                    text: "Física",
+                    btnClass: 'btn-blue',
+                    action: function(){
+                        save_method = "add";
+                        $('#error-block').hide();
+                        $('input[name=_method]').val('POST');
+                        $('#tipo_persona_fisica').val('F');
+                        $('#modal-form-fisica').modal('show');
+                        $('#modal-form-fisica form')[0].reset();
+                        $('.modal-title').text('Nuevo Cliente - Persona Física');
+                    }
+                },
+                cancel: {
+                    text: "Jurídica",
+                    btnClass: 'btn-default',
+                    action: function(){
+                        save_method = "add";
+                        $('#error-block-juridica').hide();
+                        $('input[name=_method]').val('POST');
+                        $('#tipo_persona_juridica').val('J');
+                        $('#modal-form-juridica').modal('show');
+                        $('#modal-form-juridica form')[0].reset();
+                        $('.modal-title').text('Nuevo Cliente - Persona Jurídica');
+                    }
+                }
+            }
+        });
+    }
 
-        $('#codigo').prop('readonly', false);
-        $('#nombre').prop('readonly', false);
-        $('#apellido').prop('readonly', false);
-        $('#direccion').prop('readonly', false);
-        $('#telefono').prop('readonly', false);
-        $('#nro_documento').prop('readonly', false);
-        $('#ruc').prop('readonly', false);
-        $('#correo_electronico').prop('readonly', false);
-        $('#select2-zonas').prop('disabled', false);
-        $('#select2-tipos').prop('disabled', false);
-        $('#select2-listas').prop('disabled', false);
-        $('#select2-vendedores').prop('disabled', false);
-        $('#activo').prop('disabled', false);
-        $('#form-btn-guardar').prop('disabled', false);
-      }
-
-      function showForm(id) {
+    function showForm(id) {
         save_method = "add";
         $('#error-block').hide();
         $('input[name=_method]').val('GET');
@@ -149,7 +154,7 @@
       }
 
       $(function(){
-            $('#modal-form form').validator().on('submit', function (e) {
+            $('#modal-form-fisica form').validator().on('submit', function (e) {
                 if (!e.isDefaultPrevented()){
                     var id = $('#id').val();
                     if (save_method == 'add') url = "{{ url('clientes') }}";
@@ -158,9 +163,9 @@
                     $.ajax({
                         url : url,
                         type : "POST",
-                        data : $('#modal-form form').serialize(),
+                        data : $('#modal-form-fisica form').serialize(),
                         success : function($data) {
-                            $('#modal-form').modal('hide');
+                            $('#modal-form-fisica').modal('hide');
                             table.ajax.reload();
                         },
                         error : function(data){
@@ -172,6 +177,46 @@
                                     errores += '<li>' + value + '</li>';
                                 });
                                 $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                            });
+                          }
+                            
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+
+      $(function(){
+            $('#modal-form-juridica form').validator().on('submit', function (e) {
+                if (!e.isDefaultPrevented()){
+                    var id = $('#id').val();
+                    if (save_method == 'add') url = "{{ url('clientes') }}";
+                    else url = "{{ url('clientes') . '/' }}" + id;
+
+                    $.ajax({
+                        url : url,
+                        type : "POST",
+                        data : $('#modal-form-juridica form').serialize(),
+                        success : function($data) {
+                            $('#modal-form-juridica').modal('hide');
+                            table.ajax.reload();
+                        },
+                        error : function(data){
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += '<li>' + value + '</li>';
+                                });
+                                $('#error-block-juridica').show().html(errores);
                             }else{
                               $.alert({
                               title: 'Atención!',

@@ -16,44 +16,112 @@ class Cliente extends Model
         return $this->tipo_persona;
     }
 
+    public function getTipoPersonaIndex(){
+        if ($this->tipo_persona == 'F') {
+            return 'Física';
+        } elseif ($this->tipo_persona == 'J') {
+            return 'Jurídica';
+        }
+    }
+
+    public function setTipoPersona($tipo_persona){
+        $this->tipo_persona = $tipo_persona;
+    }
+
     public function getNombre(){
         return $this->nombre;
+    }
+
+    public function getNombreIndex(){
+        if ($this->tipo_persona == 'F') {
+            return $this->nombre . ', '.$this->apellido;
+        } elseif ($this->tipo_persona == 'J') {
+            return $this->razon_social;
+        }
+    }
+
+    public function setNombre($nombre){
+        $this->nombre = $nombre;
     }
 
     public function getApellido(){
         return $this->apellido;
     }
 
+    public function setApellido($apellido){
+        $this->apellido = $apellido;
+    }
+
     public function getRazonSocial(){
         return $this->razon_social;
+    }
+
+    public function setRazonSocial($razon_social){
+        $this->razon_social = $razon_social;
+    }
+
+    public function getNroDocumentoIndex(){
+        if (is_null($this->ruc)) {
+            return $this->nro_cedula;
+        } else {
+            return $this->ruc;
+        }
     }
 
     public function getRuc(){
         return $this->ruc;
     }
 
+    public function setRuc($ruc){
+        $this->ruc = $ruc;
+    }
+
     public function getNroCedula(){
-        return $this->nro_cedula;
+        return number_format($this->nro_cedula, 0, ',', '.');
+    }
+
+    public function setNroCedula($nro_cedula){
+        $this->nro_cedula = $nro_cedula;
     }
 
     public function getTelefonoCelular(){
         return $this->telefono_celular;
     }
 
+    public function setTelefonoCelular($telefono_celular){
+        $this->telefono_celular = $telefono_celular;
+    }
+
     public function getTelefonoLineaBaja(){
         return $this->telefono_linea_baja;
+    }
+
+    public function setTelefonoLineaBaja($telefono_linea_baja){
+        $this->telefono_linea_baja = $telefono_linea_baja;
     }
 
     public function getDireccion(){
         return $this->direccion;
     }
 
+    public function setDireccion($direccion){
+        $this->direccion = $direccion;
+    }
+
     public function getCorreoElectronico(){
         return $this->correo_electronico;
     }
 
+    public function setCorreoElectronico($correo_electronico){
+        $this->correo_electronico = $correo_electronico;
+    }
+
     public function getActivo(){
         return $this->activo;
+    }
+
+    public function setActivo($activo){
+        $this->activo = $activo;
     }
 
     public function zona()

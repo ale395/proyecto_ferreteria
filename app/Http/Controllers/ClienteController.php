@@ -47,17 +47,12 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'codigo' => 'required|max:20|unique:clientes,codigo',
-            'nombre' => 'required|max:100',
-            'apellido' => 'max:100',
-            'ruc' => 'max:20',
-            'nro_documento' => 'unique:clientes,nro_documento',
-            'telefono' => 'max:20',
-            'direccion' => 'max:100',
-            'correo_electronico' => 'max:100',
-            'zona_id' => 'required',
-            'tipo_cliente_id' => 'required',
-            'activo' => 'required'
+            'tipo_persona' => 'required',
+            'razon_social' => 'required_if:tipo_persona,J|max:100',
+            'nombre' => 'required_if:tipo_persona,F|max:100',
+            'apellido' => 'required_if:tipo_persona,F|max:100',
+            'ruc' => 'required_if:tipo_persona,J|nullable|unique:clientes,ruc|max:20',
+            'nro_cedula' => 'required_if:tipo_persona,F|nullable|unique:clientes,nro_cedula'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -70,19 +65,12 @@ class ClienteController extends Controller
         }
 
         $data = [
-            'codigo' => $request['codigo'],
+            'tipo_persona' => $request['tipo_persona'],
+            'razon_social' => $request['razon_social'],
             'nombre' => $request['nombre'],
             'apellido' => $request['apellido'],
             'ruc' => $request['ruc'],
-            'nro_documento' => $request['nro_documento'],
-            'telefono' => $request['telefono'],
-            'direccion' => $request['direccion'],
-            'correo_electronico' => $request['correo_electronico'],
-            'zona_id' => $request['zona_id'],
-            'tipo_cliente_id' => $request['tipo_cliente_id'],
-            'lista_precio_id' => $request['lista_precio_id'],
-            'vendedor_id' => $request['vendedor_id'],
-            'activo' => $request['activo']
+            'nro_cedula' => $request['nro_cedula']
         ];
 
         return Cliente::create($data);
@@ -187,6 +175,15 @@ class ClienteController extends Controller
             if ($permiso_eliminar) {
                 if ($permiso_ver) {
                     return Datatables::of($clientes)
+                    ->addColumn('tipo_persona', function($clientes){
+                        return $clientes->getTipoPersonaIndex();
+                    })
+                    ->addColumn('nombre', function($clientes){
+                        return $clientes->getNombreIndex();
+                    })
+                    ->addColumn('nro_doc_identificador', function($clientes){
+                        return $clientes->getNroDocumentoIndex();
+                    })
                     ->addColumn('activo', function($clientes){
                         if ($clientes->activo) {
                             return 'Si';
