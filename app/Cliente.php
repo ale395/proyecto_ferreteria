@@ -68,6 +68,14 @@ class Cliente extends Model
         }
     }
 
+    public function getTipoDocumentoIndex(){
+        if (is_null($this->ruc)) {
+            return 'Cédula';
+        } else {
+            return 'RUC';
+        }
+    }
+
     public function getRuc(){
         return $this->ruc;
     }

@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-form-juridica" tabindex="1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="cliente-form" method="post" class="form-horizontal" data-toggle="validator">
+            <form id="cliente-form-juridica" method="post" class="form-horizontal" data-toggle="validator">
                 {{ csrf_field() }} {{ method_field('POST') }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -21,7 +21,7 @@
                     <div class="form-group">
                         <label for="ruc" class="col-md-2 control-label">RUC*</label>
                         <div class="col-md-3">
-                            <input type="text" id="ruc" name="ruc" class="form-control" autofocus>
+                            <input type="text" id="ruc_juridica" name="ruc" class="form-control" autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>

@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     <h4>Lista de Clientes
                         @can('clientes.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                          <a data-toggle="tooltip" data-placement="top" title="Nuevo cliente" onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
@@ -20,7 +20,8 @@
                             <tr>
                                 <th width="100">Tipo Persona</th>
                                 <th>Nombre</th>
-                                <th>Nro Doc. Identificador</th>
+                                <th>Tipo Documento</th>
+                                <th>Nro Documento</th>
                                 <th width="40">Activo</th>
                                 <th width="110">Acciones</th>
                             </tr>
@@ -37,19 +38,24 @@
 
 @section('ajax_datatables')
   <script type="text/javascript">
-      var table = $('#cliente-table').DataTable({
-                      language: { url: 'datatables/translation/spanish' },
-                      processing: true,
-                      serverSide: true,
-                      ajax: "{{ route('api.clientes') }}",
-                      columns: [
-                        {data: 'tipo_persona', name: 'tipo_persona'},
-                        {data: 'nombre', name: 'nombre'},
-                        {data: 'nro_doc_identificador', name: 'nro_doc_identificador'},
-                        {data: 'activo', name: 'activo'},
-                        {data: 'action', name: 'action', orderable: false, searchable: false}
-                      ]
-                    });
+    var table = $('#cliente-table').DataTable({
+        language: { url: '/datatables/translation/spanish' },
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('api.clientes') }}",
+        columns: [
+            {data: 'tipo_persona', name: 'tipo_persona'},
+            {data: 'nombre', name: 'nombre'},
+            {data: 'tipo_documento', name: 'tipo_documento'},
+            {data: 'nro_documento', name: 'nro_documento'},
+            {data: 'activo', name: 'activo'},
+            {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+
+    $('#cliente-table').on('draw.dt', function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    })
 
     function addForm() {
         $.confirm({
@@ -339,13 +345,18 @@
 
 @section('otros_scripts')
   <script type="text/javascript">
-    $('#modal-form').on('shown.bs.modal', function() {
-      $("#codigo").focus();
+    $('#modal-form-fisica').on('shown.bs.modal', function() {
+      $("#nro_cedula").focus();
+    });
+
+    $('#modal-form-juridica').on('shown.bs.modal', function() {
+      $("#ruc_juridica").focus();
     });
   </script>
   
   <script type="text/javascript">
     $('#cliente-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+    $('#cliente-form-juridica').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
 
   <script type="text/javascript">

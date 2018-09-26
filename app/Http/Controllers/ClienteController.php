@@ -22,8 +22,6 @@ class ClienteController extends Controller
     public function index()
     {
         $zonas = Zona::all();
-        $vendedores = Vendedor::all();
-        $lista_precios = ListaPrecioCabecera::all();
         $tipos_clientes = ClasificacionCliente::all();
         return view('cliente.index', compact('zonas', 'vendedores', 'lista_precios', 'tipos_clientes'));
     }
@@ -61,7 +59,7 @@ class ClienteController extends Controller
             $errors = $validator->errors();
             $errors =  json_decode($errors);
 
-            return response()->json(['errors' => $errors], 422); // Status code here
+            return response()->json(['errors' => $errors], 422);
         }
 
         $data = [
@@ -96,8 +94,11 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
+        $zonas = Zona::all();
+        $tipos_clientes = ClasificacionCliente::all();
         $cliente = Cliente::findOrFail($id);
-        return $cliente;
+        //return $cliente;
+        return view('cliente.edit', compact('zonas', 'tipos_clientes', 'cliente'));
     }
 
     /**
@@ -181,7 +182,10 @@ class ClienteController extends Controller
                     ->addColumn('nombre', function($clientes){
                         return $clientes->getNombreIndex();
                     })
-                    ->addColumn('nro_doc_identificador', function($clientes){
+                    ->addColumn('tipo_documento', function($clientes){
+                        return $clientes->getTipoDocumentoIndex();
+                    })
+                    ->addColumn('nro_documento', function($clientes){
                         return $clientes->getNroDocumentoIndex();
                     })
                     ->addColumn('activo', function($clientes){
@@ -192,8 +196,8 @@ class ClienteController extends Controller
                         }
                     })
                     ->addColumn('action', function($clientes){
-                        return '<a onclick="showForm('. $clientes->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $clientes->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a onclick="deleteData('. $clientes->id .')" class="btn btn-danger btn-sm" title="Eliminar Cliente"><i class="fa fa-trash-o"></i></a>';
+                        return '<a data-toggle="tooltip" data-placement="top" title="Ver mas datos del cliente" onclick="showForm('. $clientes->id .')" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $clientes->id .')" class="btn btn-warning btn-sm" title="Editar datos del Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $clientes->id .')" class="btn btn-danger btn-sm" title="Eliminar Cliente"><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 } else{
                     return Datatables::of($clientes)
