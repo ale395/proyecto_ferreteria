@@ -365,7 +365,7 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-            $('#select2-zonas').select2({
+        $('#select2-zonas').select2({
                 placeholder : 'Seleccione una de las opciones',
                 tags: false,
                 width: 'resolve',
@@ -378,30 +378,6 @@
   <script type="text/javascript">
     $(document).ready(function(){
             $('#select2-tipos').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                dropdownParent: $('#modal-form'),
-                language: "es"
-            });
-        });
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-            $('#select2-listas').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                dropdownParent: $('#modal-form'),
-                language: "es"
-            });
-        });
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-            $('#select2-vendedores').select2({
                 placeholder : 'Seleccione una de las opciones',
                 tags: false,
                 width: 'resolve',
