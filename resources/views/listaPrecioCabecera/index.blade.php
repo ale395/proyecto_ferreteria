@@ -3,67 +3,67 @@
 @section('content')
 
 	<div class="row">
-				<div class="col-md-12">
-						<div class="panel panel-default">
-								<div class="panel-heading">
-										<h4>Lista de Precios
-												@can('listaprecio.create')
-														<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
-												@else
-														<a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
-												@endcan
-										</h4>
-								</div>
-								<div class="panel-body">
-										<table id="listaprecio-table" class="table table-striped table-responsive">
-												<thead>
-														<tr>
-																<th>Código</th>
-																<th>Nombre</th>
-																<th>Moneda</th>
-																<th width="300">Acciones</th>
-														</tr>
-												</thead>
-												<tbody>
-														@foreach($lista_precios as $lista_precio)
-															<tr>
-																<td>{{$lista_precio->codigo}}</td>
-																<td>{{$lista_precio->nombre}}</td>
-																<td>{{$lista_precio->moneda->descripcion}}</td>
-																<td width="300">
-																	 @can('listapreciodet.asignar')
-																				<a href="{{route('listaPreciosDet.show', ['id' => $lista_precio->id])}}" class="btn btn-info btn-sm"><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
-																		@else
-																				<a class="btn btn-info btn-sm" disabled><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
-																		@endcan
-																	 @can('listaprecio.edit')
-																				<a onclick="editForm('{{$lista_precio->id}}')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
-																		@else
-																				<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
-																		@endcan
-																		@can('listaprecio.destroy')
-																				<a onclick="deleteData('{{$lista_precio->id}}')" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
-																		@else
-																				<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
-																		@endcan
-																</td>
-															</tr>
-														@endforeach
-												</tbody>
-										</table>
-								</div>
-						</div>
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4>Lista de Precios
+					@can('listaprecio.create')
+						<a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+					@else
+						<a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+					@endcan
+					</h4>
 				</div>
+				<div class="panel-body">
+					<table id="listaprecio-table" class="table table-striped table-responsive">
+						<thead>
+							<tr>
+								<th>Código</th>
+								<th>Nombre</th>
+								<th>Moneda</th>
+								<th width="300">Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($lista_precios as $lista_precio)
+								<tr>
+									<td>{{$lista_precio->codigo}}</td>
+									<td>{{$lista_precio->nombre}}</td>
+									<td>{{$lista_precio->moneda->descripcion}}</td>
+									<td width="300">
+										@can('listapreciodet.asignar')
+											<a href="{{route('listaPreciosDet.show', ['id' => $lista_precio->id])}}" class="btn btn-info btn-sm"><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
+										@else
+											<a class="btn btn-info btn-sm" disabled><i class="fa fa-share-square-o" aria-hidden="true"></i> Asignar Precios</a>
+										@endcan
+										@can('listaprecio.edit')
+											<a onclick="editForm('{{$lista_precio->id}}')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
+										@else
+											<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
+										@endcan
+										@can('listaprecio.destroy')
+											<a onclick="deleteData('{{$lista_precio->id}}')" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
+										@else
+											<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash" aria-hidden="true"></i> Eliminar</a>
+										@endcan
+									</td>
+								</tr>
+							@endforeach
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 
-		@include('listaPrecioCabecera.form')
+	@include('listaPrecioCabecera.form')
 		
 @endsection
 
 @section('ajax_datatables')
 	<script type="text/javascript">
-			var table = $('#listaprecio-table').DataTable({
-											language: { url: 'datatables/translation/spanish' }
-										});
+		var table = $('#listaprecio-table').DataTable({
+				language: { url: 'datatables/translation/spanish' }
+			});
 
 			function addForm() {
 				save_method = "add";

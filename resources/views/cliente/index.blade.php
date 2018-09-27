@@ -239,7 +239,11 @@
             });
         });
 
-      function editForm(id) {
+    function editForm(id){
+        var edit_page = '/clientes/' + id + '/edit';
+        window.location.href = edit_page;
+    }
+      /*function editForm(id) {
         save_method = 'edit';
         $('input[name=_method]').val('PATCH');
         $('#modal-form form')[0].reset();
@@ -299,7 +303,7 @@
               });
           }
         });
-      }
+      }*/
 
       function deleteData(id){
         $.confirm({

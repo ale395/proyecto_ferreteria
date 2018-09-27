@@ -97,7 +97,6 @@ class ClienteController extends Controller
         $zonas = Zona::all();
         $tipos_clientes = ClasificacionCliente::all();
         $cliente = Cliente::findOrFail($id);
-        //return $cliente;
         return view('cliente.edit', compact('zonas', 'tipos_clientes', 'cliente'));
     }
 
