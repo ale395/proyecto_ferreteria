@@ -281,6 +281,7 @@
         $('#select2-sucursales').select2({
             placeholder: 'Seleccione una sucursal',
             language: "es",
+            dropdownParent: $("#modal-form"),
             ajax: {
                 url: "{{ route('api.empleados') }}"+"/sucursales/"+empleado,
                 dataType: 'json',

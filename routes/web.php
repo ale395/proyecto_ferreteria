@@ -67,7 +67,9 @@ Route::middleware(['auth'])->group(function() {
 
 	//RUTAS PARA CLIENTES
 	Route::resource('clientes', 'ClienteController');
-	Route::get('api/clientes', 'ClienteController@apiClientes')->name('api.clientes');//seriesVendedores
+	Route::get('api/clientes', 'ClienteController@apiClientes')->name('api.clientes');
+
+	Route::get('api/zonas/select', 'ZonaController@apiZonasSelect')->name('api.zonas.select');
 
 	//RUTAS PARA NUMERACION DE SERIES
 	Route::resource('series', 'SerieController');
@@ -134,6 +136,7 @@ Route::middleware(['auth'])->group(function() {
 	//rutas para modelo 'clasificacioncliente'
 	Route::resource('clasificacionclientes', 'ClasificacionClienteController');
 	Route::get('api/clasificacionclientes', 'ClasificacionClienteController@apiClasifClientes')->name('api.clasificacionclientes');
+	Route::get('api/clasificacionclientes/select', 'ClasificacionClienteController@apiTiposClientesSelect')->name('api.tipos.clientes.select');
 
 	//Rutas para modelo Cajeros
 	Route::resource('cajeros', 'CajeroController');

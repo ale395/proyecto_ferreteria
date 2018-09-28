@@ -127,6 +127,23 @@ class ClasificacionClienteController extends Controller
         return ClasificacionCliente::destroy($id);
     }
 
+    public function apiTiposClientesSelect(Request $request){
+        $tipos_array = [];
+        
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $tipos = ClasificacionCliente::where('nombre', 'ilike', "%$search%")->get();
+        } else {
+            $tipos = ClasificacionCliente::all();
+        }
+
+        foreach ($tipos as $tipo) {
+            $tipos_array[] = ['id'=> $tipo->getId(), 'text'=> $tipo->getNombre()];
+        }
+
+        return json_encode($tipos_array);
+    }
+
       //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
     public function apiClasifClientes()
     {

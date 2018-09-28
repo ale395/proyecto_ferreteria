@@ -94,10 +94,9 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        $zonas = Zona::all();
         $tipos_clientes = ClasificacionCliente::all();
         $cliente = Cliente::findOrFail($id);
-        return view('cliente.edit', compact('zonas', 'tipos_clientes', 'cliente'));
+        return view('cliente.edit', compact('tipos_clientes', 'cliente'));
     }
 
     /**
@@ -111,7 +110,23 @@ class ClienteController extends Controller
     {
         $cliente = Cliente::findOrFail($id);
 
+        if (!empty($request['nro_cedula'])) {
+            $request['nro_cedula'] = (integer) str_replace('.', '',$request['nro_cedula']);
+        }
+
         $rules = [
+            'tipo_persona' => 'required',
+            'razon_social' => 'required_if:tipo_persona,J|max:100',
+            'nombre' => 'required_if:tipo_persona,F|max:100',
+            'apellido' => 'required_if:tipo_persona,F|max:100',
+            'ruc' => 'required_if:tipo_persona,J|nullable|max:20|unique:clientes,ruc,'.$cliente->id,
+            'nro_cedula' => 'required_if:tipo_persona,F|nullable|unique:clientes,nro_cedula,'.$cliente->id,
+            'telefono' => 'max:20',
+            'direccion' => 'max:100',
+            'correo_electronico' => 'max:100',
+        ];
+
+        /*$rules = [
             'codigo' => 'required|max:20|unique:clientes,codigo,'.$cliente->id,
             'nombre' => 'required|max:100',
             'apellido' => 'max:100',
@@ -123,34 +138,36 @@ class ClienteController extends Controller
             'zona_id' => 'required',
             'tipo_cliente_id' => 'required',
             'activo' => 'required'
-        ];
+        ];*/
 
-        $validator = Validator::make($request->all(), $rules);
+        Validator::make($request->all(), $rules)->validate();
+        
+        /*$validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errors =  json_decode($errors);
 
             return response()->json(['errors' => $errors], 422); // Status code here
-        }
+        }*/
 
-        $cliente->codigo = $request['codigo'];
+        $cliente->tipo_persona = $request['tipo_persona'];
         $cliente->nombre = $request['nombre'];
         $cliente->apellido = $request['apellido'];
+        $cliente->razon_social = $request['razon_social'];
         $cliente->ruc = $request['ruc'];
-        $cliente->nro_documento = $request['nro_documento'];
-        $cliente->telefono = $request['telefono'];
+        $cliente->nro_cedula = $request['nro_cedula'];
+        $cliente->telefono_celular = $request['telefono_celular'];
+        $cliente->telefono_linea_baja = $request['telefono_linea_baja'];
         $cliente->direccion = $request['direccion'];
         $cliente->correo_electronico = $request['correo_electronico'];
         $cliente->zona_id = $request['zona_id'];
         $cliente->tipo_cliente_id = $request['tipo_cliente_id'];
-        $cliente->lista_precio_id = $request['lista_precio_id'];
-        $cliente->vendedor_id = $request['vendedor_id'];
         $cliente->activo = $request['activo'];
         
         $cliente->update();
 
-        return $cliente;
+        return redirect('/clientes')->with('status', 'Datos guardados correctamente!');;
     }
 
     /**

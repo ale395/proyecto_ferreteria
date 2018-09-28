@@ -82,4 +82,22 @@ class ZonaController extends Controller
     {
         //
     }
+
+    public function apiZonasSelect(Request $request){
+        $zonas_array = [];
+        
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $zonas = Zona::where('nombre', 'ilike', "%$search%")->get();
+        } else {
+            $zonas = Zona::all();
+        }
+
+        foreach ($zonas as $zona) {
+            $descripcion = '(' . $zona->getCodigo() . ') ' . $zona->getNombre();
+            $zonas_array[] = ['id'=> $zona->getId(), 'text'=> $zona->getNombre()];
+        }
+
+        return json_encode($zonas_array);
+    }
 }

@@ -62,7 +62,7 @@ class Cliente extends Model
 
     public function getNroDocumentoIndex(){
         if (is_null($this->ruc)) {
-            return $this->nro_cedula;
+            return number_format($this->nro_cedula, 0, ',', '.');
         } else {
             return $this->ruc;
         }
@@ -89,7 +89,7 @@ class Cliente extends Model
     }
 
     public function setNroCedula($nro_cedula){
-        $this->nro_cedula = $nro_cedula;
+        $this->nro_cedula = (integer) str_replace('.', '', $nro_cedula);
     }
 
     public function getTelefonoCelular(){

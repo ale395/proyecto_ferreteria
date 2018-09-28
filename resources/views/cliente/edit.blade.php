@@ -133,11 +133,7 @@
 
                         <label for="zona_id" class="control-label col-md-1">Zona</label>
                         <div class="col-md-4">
-                            <select name="zona_id" id="select2-zonas" class="form-control" style="width: 100%">
-                                <option></option>
-                                @foreach($zonas as $id => $zona)
-                                  <option value="{{ $zona->id }}">{{ $zona->nombre }}</option>
-                                @endforeach
+                            <select name="zona_id" id="select2-zonas" class="select2-input select2" style="width: 100%">
                             </select>
                         </div>
                     </div>
@@ -167,6 +163,18 @@
 
 @section('otros_scripts')
 <script type="text/javascript">
+	$("#nro_cedula").on({
+            "focus": function (event) {
+                $(event.target).select();
+            },
+            "keyup": function (event) {
+                $(event.target).val(function (index, value ) {
+                    return value.replace(/\D/g, "")
+                                //.replace(/([0-9])([0-9]{2})$/, '$1.$2') //genera 2 posiciones decimales
+                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                });
+            }
+    });
 
 	function validarTipoPersona(){
 		var tipo_persona = $("input[name='tipo_persona']:checked").val();
@@ -198,23 +206,51 @@
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#select2-zonas').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                language: "es"
-            });
-        });
-</script>
+	    $('#select2-zonas').select2({
+	        placeholder: 'Seleccione una opción',
+	        language: "es",
+	        ajax: {
+	            url: "{{ route('api.zonas.select') }}",
+	            delay: 250,
+	            data: function (params) {
+				    var queryParameters = {
+				      q: params.term
+				    }
 
-<script type="text/javascript">
-    $(document).ready(function(){
-            $('#select2-tipos').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                language: "es"
-            });
-        });
+				    return queryParameters;
+				  },
+	            dataType: 'json',
+	            processResults: function (data) {
+	                return {
+	                    results: data
+	                };
+	            },
+	            cache: true
+	        }
+	    });
+
+	    $('#select2-tipos').select2({
+	        placeholder: 'Seleccione una opción',
+	        language: "es",
+	        ajax: {
+	            url: "{{ route('api.tipos.clientes.select') }}",
+	            delay: 250,
+	            data: function (params) {
+				    var queryParameters = {
+				      q: params.term
+				    }
+
+				    return queryParameters;
+				  },
+	            dataType: 'json',
+	            processResults: function (data) {
+	                return {
+	                    results: data
+	                };
+	            },
+	            cache: true
+	        }
+	    });
+    });
 </script>
 @endsection
