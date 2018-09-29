@@ -24,9 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        //dd($user->empleado->sucursales->first());
-        $sucursal = $user->empleado->sucursales->first();
         return view('home');
     }
 }

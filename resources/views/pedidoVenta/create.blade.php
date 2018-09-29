@@ -32,19 +32,23 @@
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
-                        <label for="nro_pedido" class="col-md-1 control-label">Numero</label>
+                        <label for="nro_pedido" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
                             <input type="number" id="nro_pedido" name="nro_pedido" class="form-control" readonly="readonly">
                         </div>
-                        <label for="fecha_emision" class="col-md-3 control-label">Fecha *</label>
-                        <div class="col-md-3">
-                            <input type="date" id="fecha_emision" name="fecha_emision" class="form-control" value="{{old('fecha_emision')}}">
+                        <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control" value="{{old('fecha_emision')}}" placeholder="dd/mm/aaaa">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
-                        <div class="col-md-5">
-                            <input type="text" id="cliente_id" name="cliente_id" class="form-control" value="{{old('cliente_id')}}">
+                        <div class="col-md-6">
+                            <input type="text" id="cliente_id" name="cliente_id" class="form-control" value="{{old('cliente_id')}}" autofocus>
+                        </div>
+                        <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
+                        <div class="col-md-3">
+                            <input type="text" id="lista_precio_id" name="lista_precio_id" class="form-control" value="{{old('sucursal_id')}}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -52,15 +56,31 @@
                         <div class="col-md-3">
                             <input type="text" id="moneda_id" name="moneda_id" class="form-control" value="{{old('moneda_id')}}">
                         </div>
-                        <label for="valor_cambio" class="col-md-2 control-label">Valor Cambio *</label>
+                        <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
                             <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio')}}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="sucursal_id" class="col-md-1 control-label">Sucursal *</label>
-                        <div class="col-md-3">
-                            <input type="text" id="sucursal_id" name="sucursal_id" class="form-control" value="{{old('sucursal_id')}}">
+                        
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
+                        <div class="col-md-4">
+                            <input type="text" id="articulo_id" name="articulo_id" class="form-control" placeholder="Artículo">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Subtotal">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" id="Subtotal" name="Subtotal" class="form-control" placeholder="Subtotal" readonly>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                         </div>
                     </div>
                     <table id="pedido-detalle" class="table table-striped table-responsive">
