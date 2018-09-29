@@ -39,8 +39,11 @@
               <div class="profile_info">
                 <span>Bienvenido/a</span>
                 <h2>{{ Auth::user()->name }}</h2>
+
               </div>
+
             </div>
+            
             <!-- /menu profile quick info -->
 
             <br />
@@ -346,7 +349,9 @@
 
         <!-- footer content -->
         <footer>
-          <div class="line"></div>
+          <div class="pull-right">
+            <h2><strong>Sucursal:</strong> {{Auth::user()->empleado->sucursales->first()->getNombre()}}</h2>
+          </div>
         </footer>
         <!-- /footer content -->
 
