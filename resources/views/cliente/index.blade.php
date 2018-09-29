@@ -96,68 +96,9 @@
     }
 
     function showForm(id) {
-        save_method = "add";
-        $('#error-block').hide();
-        $('input[name=_method]').val('GET');
-        $('#modal-form').modal('show');
-        $('#modal-form form')[0].reset();
-        $('.modal-title').text('Ver Cliente');
-
-        $.ajax({
-          url: "{{ url('clientes') }}" + '/' + id,
-          type: "GET",
-          dataType: "JSON",
-          success: function(data) {
-            $('#modal-form').modal('show');
-
-            $('#id').val(data.id);
-            $('#codigo').val(data.codigo);
-            $('#nombre').val(data.nombre);
-            $('#apellido').val(data.apellido);
-            $('#direccion').val(data.direccion);
-            $('#telefono').val(data.telefono);
-            $('#nro_documento').val(data.nro_documento);
-            $('#ruc').val(data.ruc);
-            $('#correo_electronico').val(data.correo_electronico);
-            $("#select2-zonas").select2("val", "");
-            $('#select2-zonas').val(data.zona_id).change();
-            $("#select2-tipos").select2("val", "");
-            $('#select2-tipos').val(data.tipo_cliente_id).change();
-            $("#select2-vendedores").select2("val", "");
-            $('#select2-vendedores').val(data.vendedor_id).change();
-            $("#select2-listas").select2("val", "");
-            $('#select2-listas').val(data.lista_precio_id).change();
-            if (data.activo) {
-              $('#activo').attr('checked', true);
-            }else{
-              $('#activo').attr('checked', false);
-            }
-
-            $('#codigo').prop('readonly', true);
-            $('#nombre').prop('readonly', true);
-            $('#apellido').prop('readonly', true);
-            $('#direccion').prop('readonly', true);
-            $('#telefono').prop('readonly', true);
-            $('#nro_documento').prop('readonly', true);
-            $('#ruc').prop('readonly', true);
-            $('#correo_electronico').prop('readonly', true);
-            $('#select2-zonas').prop('disabled', true);
-            $('#select2-tipos').prop('disabled', true);
-            $('#select2-listas').prop('disabled', true);
-            $('#select2-vendedores').prop('disabled', true);
-            $('#activo').prop('disabled', true);
-            $('#form-btn-guardar').prop('disabled', true);
-          },
-          error : function() {
-              $.alert({
-                title: 'Atención!',
-                content: 'No se encontraron datos!',
-                icon: 'fa fa-exclamation-circle',
-                type: 'orange',
-              });
-          }
-        });
-      }
+        var show_page = '/clientes/' + id;
+        window.location.href = show_page;
+    }
 
       $(function(){
             $('#modal-form-fisica form').validator().on('submit', function (e) {
@@ -173,6 +114,17 @@
                         success : function($data) {
                             $('#modal-form-fisica').modal('hide');
                             table.ajax.reload();
+                            var obj = $.alert({
+                                title: 'Información',
+                                content: 'Cliente guardado correctamente!',
+                                icon: 'fa fa-check',
+                                type: 'green',
+                                backgroundDismiss: true,
+                                theme: 'modern',
+                            });
+                            setTimeout(function(){
+                                obj.close();
+                            },4000); 
                         },
                         error : function(data){
                             var errors = '';
@@ -189,6 +141,7 @@
                               content: 'Ocurrió un error durante el proceso!',
                               icon: 'fa fa-times-circle-o',
                               type: 'red',
+                              theme: 'modern',
                             });
                           }
                             
@@ -213,6 +166,17 @@
                         success : function($data) {
                             $('#modal-form-juridica').modal('hide');
                             table.ajax.reload();
+                            var obj = $.alert({
+                                title: 'Información',
+                                content: 'Cliente guardado correctamente!',
+                                icon: 'fa fa-check',
+                                type: 'green',
+                                backgroundDismiss: true,
+                                theme: 'modern',
+                            });
+                            setTimeout(function(){
+                                obj.close();
+                            },4000);
                         },
                         error : function(data){
                             var errors = '';
@@ -224,12 +188,13 @@
                                 });
                                 $('#error-block-juridica').show().html(errores);
                             }else{
-                              $.alert({
-                              title: 'Atención!',
-                              content: 'Ocurrió un error durante el proceso!',
-                              icon: 'fa fa-times-circle-o',
-                              type: 'red',
-                            });
+                                $.alert({
+                                  title: 'Atención!',
+                                  content: 'Ocurrió un error durante el proceso!',
+                                  icon: 'fa fa-times-circle-o',
+                                  type: 'red',
+                                  theme: 'modern',
+                                });
                           }
                             
                         }
@@ -249,6 +214,7 @@
             title: '¿De verdad lo quieres eliminar?',
             content: 'No podrás volver atras',
             type: 'red',
+            theme: 'modern',
             buttons: {   
                 ok: {
                     text: "Eliminar",
@@ -270,6 +236,7 @@
                                               content: 'Ocurrió un error durante el proceso!',
                                               icon: 'fa fa-times-circle-o',
                                               type: 'red',
+                                              theme: 'modern',
                                           });
                                   }
                               })

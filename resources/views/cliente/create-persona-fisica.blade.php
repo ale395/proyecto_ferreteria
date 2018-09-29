@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="apellido" class="col-md-2 control-label">Apellido</label>
+                        <label for="apellido" class="col-md-2 control-label">Apellido*</label>
                         <div class="col-md-9">
                             <input type="text" id="apellido" name="apellido" class="form-control">
                             <span class="help-block with-errors"></span>

@@ -21,9 +21,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $zonas = Zona::all();
-        $tipos_clientes = ClasificacionCliente::all();
-        return view('cliente.index', compact('zonas', 'vendedores', 'lista_precios', 'tipos_clientes'));
+        return view('cliente.index');
     }
 
     /**
@@ -59,7 +57,17 @@ class ClienteController extends Controller
             'nro_cedula' => 'required_if:tipo_persona,F|nullable|unique:clientes,nro_cedula'
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $mensajes = [
+            'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
+            'ruc.unique' => 'El RUC ingresado ya existe!',
+            'razon_social.required_if' => 'El campo Razón Social es requerido cuando el tipo de persona es Jurídica!',
+            'ruc.required_if' => 'El campo RUC es requerido cuando el tipo de persona es Jurídica!',
+            'nro_cedula.required_if' => 'El campo Nro Cédula es requerido cuando el tipo de persona es Física!',
+            'nombre.required_if' => 'El campo Nombre es requerido cuando el tipo de persona es Física!',
+            'apellido.required_if' => 'El campo Apellido es requerido cuando el tipo de persona es Física!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -97,7 +105,9 @@ class ClienteController extends Controller
     public function show($id)
     {
         $cliente = Cliente::findOrFail($id);
-        return $cliente;
+        $zona = $cliente->zona;
+        $tipo_cliente = $cliente->tipoCliente;
+        return view('cliente.show', compact('cliente', 'tipo_cliente', 'zona'));
     }
 
     /**
@@ -159,7 +169,7 @@ class ClienteController extends Controller
         
         $cliente->update();
 
-        return redirect('/clientes')->with('status', 'Datos guardados correctamente!');;
+        return redirect()->back()->with('status', 'Datos guardados correctamente!');
     }
 
     /**
