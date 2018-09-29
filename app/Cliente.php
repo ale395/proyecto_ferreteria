@@ -12,6 +12,10 @@ class Cliente extends Model
         'tipo_persona', 'nombre', 'apellido', 'razon_social', 'ruc', 'nro_cedula', 'telefono_celular', 'telefono_linea_baja', 'direccion', 'correo_electronico', 'zona_id','tipo_cliente_id', 'activo',
     ];
 
+    public function getId(){
+        return $this->id;
+    }
+
     public function getTipoPersona(){
         return $this->tipo_persona;
     }
@@ -139,7 +143,7 @@ class Cliente extends Model
 
     public function tipoCliente()
     {
-        return $this->belongsTo('App\CategoriaCliente');
+        return $this->belongsTo('App\ClasificacionCliente');
     }
 
 }

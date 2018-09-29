@@ -94,9 +94,10 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        $tipos_clientes = ClasificacionCliente::all();
         $cliente = Cliente::findOrFail($id);
-        return view('cliente.edit', compact('tipos_clientes', 'cliente'));
+        $zona = $cliente->zona;
+        $tipo_cliente = $cliente->tipoCliente;
+        return view('cliente.edit', compact('cliente', 'tipo_cliente', 'zona'));
     }
 
     /**
@@ -109,7 +110,7 @@ class ClienteController extends Controller
     public function update(Request $request, $id)
     {
         $cliente = Cliente::findOrFail($id);
-
+        return $request;
         if (!empty($request['nro_cedula'])) {
             $request['nro_cedula'] = (integer) str_replace('.', '',$request['nro_cedula']);
         }
@@ -126,44 +127,21 @@ class ClienteController extends Controller
             'correo_electronico' => 'max:100',
         ];
 
-        /*$rules = [
-            'codigo' => 'required|max:20|unique:clientes,codigo,'.$cliente->id,
-            'nombre' => 'required|max:100',
-            'apellido' => 'max:100',
-            'ruc' => 'max:20',
-            'nro_documento' => 'unique:clientes,nro_documento,'.$cliente->id,
-            'telefono' => 'max:20',
-            'direccion' => 'max:100',
-            'correo_electronico' => 'max:100',
-            'zona_id' => 'required',
-            'tipo_cliente_id' => 'required',
-            'activo' => 'required'
-        ];*/
-
         Validator::make($request->all(), $rules)->validate();
-        
-        /*$validator = Validator::make($request->all(), $rules);
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            $errors =  json_decode($errors);
-
-            return response()->json(['errors' => $errors], 422); // Status code here
-        }*/
-
-        $cliente->tipo_persona = $request['tipo_persona'];
-        $cliente->nombre = $request['nombre'];
-        $cliente->apellido = $request['apellido'];
-        $cliente->razon_social = $request['razon_social'];
-        $cliente->ruc = $request['ruc'];
-        $cliente->nro_cedula = $request['nro_cedula'];
-        $cliente->telefono_celular = $request['telefono_celular'];
-        $cliente->telefono_linea_baja = $request['telefono_linea_baja'];
-        $cliente->direccion = $request['direccion'];
-        $cliente->correo_electronico = $request['correo_electronico'];
-        $cliente->zona_id = $request['zona_id'];
-        $cliente->tipo_cliente_id = $request['tipo_cliente_id'];
-        $cliente->activo = $request['activo'];
+        $cliente->setTipoPersona($request['tipo_persona']);// = $request['tipo_persona'];
+        $cliente->setNombre($request['nombre']);// = $request['nombre'];
+        $cliente->setApellido($request['apellido']);//apellido = $request['apellido'];
+        $cliente->setRazonSocial($request['razon_social']);//razon_social = $request['razon_social'];
+        $cliente->setRuc($request['ruc']);//ruc = $request['ruc'];
+        $cliente->setNroCedula($request['nro_cedula']);// = $request['nro_cedula'];
+        $cliente->setTelefonoCelular($request['telefono_celular']);// = $request['telefono_celular'];
+        $cliente->setTelefonoLineaBaja($request['telefono_linea_baja']);// = $request['telefono_linea_baja'];
+        $cliente->setDireccion($request['direccion']);// = $request['direccion'];
+        $cliente->setCorreoElectronico($request['correo_electronico']);// = $request['correo_electronico'];
+        $cliente->setZonaId($request['zona_id']);// = $request['zona_id'];
+        $cliente->setTipoClienteId($request['tipo_cliente_id']);// = $request['tipo_cliente_id'];
+        $cliente->setActivo($request['activo']);// = $request['activo'];
         
         $cliente->update();
 

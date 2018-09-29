@@ -27,7 +27,7 @@
                     @endif
                     <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
-                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="id" name="id" value="{{$cliente->getId()}}">
 
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-2 col-xs-12">Tipo persona</label>
@@ -124,16 +124,18 @@
                         <label for="tipo_cliente_id" class="control-label col-md-2">Tipo de Cliente</label>
                         <div class="col-md-4">
                             <select name="tipo_cliente_id" id="select2-tipos" class="form-control" style="width: 100%">
-                                <option></option>
-                                @foreach($tipos_clientes as $id => $tipo_cliente)
-                                  <option value="{{ $tipo_cliente->id }}">{{ $tipo_cliente->nombre }}</option>
-                                @endforeach
+                                @if(!empty($tipo_cliente))
+                                	<option value="{{ $tipo_cliente->id }}">{{ $tipo_cliente->nombre }}</option>
+                                @endif
                             </select>
                         </div>
 
                         <label for="zona_id" class="control-label col-md-1">Zona</label>
                         <div class="col-md-4">
                             <select name="zona_id" id="select2-zonas" class="select2-input select2" style="width: 100%">
+                            	@if(!empty($zona))
+                                	<option value="{{ $zona->id }}">{{ $zona->nombre }}</option>
+                                @endif
                             </select>
                         </div>
                     </div>
@@ -163,6 +165,16 @@
 
 @section('otros_scripts')
 <script type="text/javascript">
+
+	function personaFisicaAction() {
+		$("#radioPersonaFisica").prop('checked', true);
+		$('#divRazonSocial').hide();
+		$('#divNombre').show();
+		$('#divApellido').show();
+		$('#labelNroCedula').show();
+		$('#divNroCedula').show();
+	};
+
 	$("#nro_cedula").on({
             "focus": function (event) {
                 $(event.target).select();
@@ -170,7 +182,6 @@
             "keyup": function (event) {
                 $(event.target).val(function (index, value ) {
                     return value.replace(/\D/g, "")
-                                //.replace(/([0-9])([0-9]{2})$/, '$1.$2') //genera 2 posiciones decimales
                                 .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                 });
             }
@@ -186,15 +197,6 @@
 		}
 	};
 
-	function personaFisicaAction() {
-		$("#radioPersonaFisica").prop('checked', true);
-		$('#divRazonSocial').hide();
-		$('#divNombre').show();
-		$('#divApellido').show();
-		$('#labelNroCedula').show();
-		$('#divNroCedula').show();
-	}
-
 	function personaJuridicaAction() {
 		$("#radioPersonaJuridica").prop('checked', true);
 		$('#divRazonSocial').show();
@@ -202,7 +204,7 @@
 		$('#divApellido').hide();
 		$('#labelNroCedula').hide();
 		$('#divNroCedula').hide();
-	}
+	};
 </script>
 <script type="text/javascript">
     $(document).ready(function(){

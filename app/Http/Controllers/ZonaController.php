@@ -94,10 +94,10 @@ class ZonaController extends Controller
         }
 
         foreach ($zonas as $zona) {
-            $descripcion = '(' . $zona->getCodigo() . ') ' . $zona->getNombre();
             $zonas_array[] = ['id'=> $zona->getId(), 'text'=> $zona->getNombre()];
         }
 
         return json_encode($zonas_array);
     }
+
 }
