@@ -101,7 +101,7 @@
                     <div class="form-group">
                         <label for="telefono_celular" class="col-md-2 control-label">Teléfono Celular</label>
                         <div class="col-md-3">
-                            <input type="text" id="telefono_celular" name="telefono_celular" class="form-control" value="{{old('telefono_celular',$cliente->getTelefonoCelular())}}">
+                            <input type="text" id="telefono_celular" name="telefono_celular" class="form-control" value="{{old('telefono_celular',$cliente->getTelefonoCelular())}}" placeholder="(0999) 999-999" data-inputmask="'mask' : '(0999) 999-999'">
                             <span class="help-block with-errors"></span>
                         </div>
 
@@ -115,7 +115,7 @@
                     <div class="form-group">
                         <label for="telefono_linea_baja" class="col-md-2 control-label">Teléfono Línea Baja</label>
                         <div class="col-md-3">
-                            <input type="text" id="telefono_linea_baja" name="telefono_linea_baja" class="form-control" value="{{old('telefono_linea_baja',$cliente->getTelefonoLineaBaja())}}">
+                            <input type="text" id="telefono_linea_baja" name="telefono_linea_baja" class="form-control" value="{{old('telefono_linea_baja',$cliente->getTelefonoLineaBaja())}}" placeholder="(021) 999-999" data-inputmask="'mask' : '(099) 999-999'">
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -185,6 +185,18 @@
                                 .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                 });
             }
+    });
+
+    $("#ruc").on({
+        "focus": function (event) {
+            $(event.target).select();
+        },
+        "keyup": function (event) {
+            $(event.target).val(function (index, value ) {
+                return value.replace(/\D/g, "")
+                            .replace(/([0-9])([0-9]{1})$/, '$1-$2');
+            });
+        }
     });
 
 	function validarTipoPersona(){

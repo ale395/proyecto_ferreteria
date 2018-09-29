@@ -44,6 +44,12 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
+        $cliente = new Cliente;
+
+        if (!empty($request['nro_cedula'])) {
+            $request['nro_cedula'] = (integer) str_replace('.', '',$request['nro_cedula']);
+        }
+
         $rules = [
             'tipo_persona' => 'required',
             'razon_social' => 'required_if:tipo_persona,J|max:100',
@@ -62,16 +68,24 @@ class ClienteController extends Controller
             return response()->json(['errors' => $errors], 422);
         }
 
-        $data = [
+        $cliente->setTipoPersona($request['tipo_persona']);
+        $cliente->setRazonSocial($request['razon_social']);
+        $cliente->setNombre($request['nombre']);
+        $cliente->setApellido($request['apellido']);
+        $cliente->setRuc($request['ruc']);
+        $cliente->setNroCedula($request['nro_cedula']);
+        $cliente->save();
+
+        /*$data = [
             'tipo_persona' => $request['tipo_persona'],
             'razon_social' => $request['razon_social'],
             'nombre' => $request['nombre'],
             'apellido' => $request['apellido'],
             'ruc' => $request['ruc'],
             'nro_cedula' => $request['nro_cedula']
-        ];
+        ];*/
 
-        return Cliente::create($data);
+        return $cliente;
     }
 
     /**
@@ -110,7 +124,7 @@ class ClienteController extends Controller
     public function update(Request $request, $id)
     {
         $cliente = Cliente::findOrFail($id);
-        return $request;
+        
         if (!empty($request['nro_cedula'])) {
             $request['nro_cedula'] = (integer) str_replace('.', '',$request['nro_cedula']);
         }
@@ -129,19 +143,19 @@ class ClienteController extends Controller
 
         Validator::make($request->all(), $rules)->validate();
 
-        $cliente->setTipoPersona($request['tipo_persona']);// = $request['tipo_persona'];
-        $cliente->setNombre($request['nombre']);// = $request['nombre'];
-        $cliente->setApellido($request['apellido']);//apellido = $request['apellido'];
-        $cliente->setRazonSocial($request['razon_social']);//razon_social = $request['razon_social'];
-        $cliente->setRuc($request['ruc']);//ruc = $request['ruc'];
-        $cliente->setNroCedula($request['nro_cedula']);// = $request['nro_cedula'];
-        $cliente->setTelefonoCelular($request['telefono_celular']);// = $request['telefono_celular'];
-        $cliente->setTelefonoLineaBaja($request['telefono_linea_baja']);// = $request['telefono_linea_baja'];
-        $cliente->setDireccion($request['direccion']);// = $request['direccion'];
-        $cliente->setCorreoElectronico($request['correo_electronico']);// = $request['correo_electronico'];
-        $cliente->setZonaId($request['zona_id']);// = $request['zona_id'];
-        $cliente->setTipoClienteId($request['tipo_cliente_id']);// = $request['tipo_cliente_id'];
-        $cliente->setActivo($request['activo']);// = $request['activo'];
+        $cliente->setTipoPersona($request['tipo_persona']);
+        $cliente->setNombre($request['nombre']);
+        $cliente->setApellido($request['apellido']);
+        $cliente->setRazonSocial($request['razon_social']);
+        $cliente->setRuc($request['ruc']);
+        $cliente->setNroCedula($request['nro_cedula']);
+        $cliente->setTelefonoCelular($request['telefono_celular']);
+        $cliente->setTelefonoLineaBaja($request['telefono_linea_baja']);
+        $cliente->setDireccion($request['direccion']);
+        $cliente->setCorreoElectronico($request['correo_electronico']);
+        $cliente->setZonaId($request['zona_id']);
+        $cliente->setTipoClienteId($request['tipo_cliente_id']);
+        $cliente->setActivo($request['activo']);
         
         $cliente->update();
 

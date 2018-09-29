@@ -93,7 +93,10 @@ class Cliente extends Model
     }
 
     public function setNroCedula($nro_cedula){
-        $this->nro_cedula = (integer) str_replace('.', '', $nro_cedula);
+        $numero_entero = (integer) str_replace('.', '', $nro_cedula);
+        if ($numero_entero != 0) {
+            $this->nro_cedula = $numero_entero;
+        }
     }
 
     public function getTelefonoCelular(){
@@ -101,7 +104,10 @@ class Cliente extends Model
     }
 
     public function setTelefonoCelular($telefono_celular){
-        $this->telefono_celular = $telefono_celular;
+        $numero_entero = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$telefono_celular))));
+        if ($numero_entero != 0) {
+            $this->telefono_celular = $numero_entero;
+        }
     }
 
     public function getTelefonoLineaBaja(){
@@ -109,7 +115,10 @@ class Cliente extends Model
     }
 
     public function setTelefonoLineaBaja($telefono_linea_baja){
-        $this->telefono_linea_baja = $telefono_linea_baja;
+        $numero_entero = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$telefono_linea_baja))));
+        if ($numero_entero != 0) {
+            $this->telefono_linea_baja = $numero_entero;
+        }
     }
 
     public function getDireccion(){
@@ -134,6 +143,14 @@ class Cliente extends Model
 
     public function setActivo($activo){
         $this->activo = $activo;
+    }
+
+    public function setZonaId($zona_id){
+        $this->zona_id = $zona_id;
+    }
+
+    public function setTipoClienteId($tipo_cliente_id){
+        $this->tipo_cliente_id = $tipo_cliente_id;
     }
 
     public function zona()

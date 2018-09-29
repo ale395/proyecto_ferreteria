@@ -23,7 +23,7 @@ class ClienteTableSeeder extends Seeder
         $cliente->apellido = 'Fernandez Cantero';
         $cliente->ruc = '5568434-3';
         $cliente->nro_cedula = 5568434;
-        $cliente->telefono_celular = '0973582620';
+        $cliente->telefono_celular = 973582620;
         $cliente->direccion = 'Manuel Ortiz Guerrero 1024';
         $cliente->correo_electronico = 'alexis.fernandez.rc@gmail.com';
         $cliente->zona_id = $zona->id;
