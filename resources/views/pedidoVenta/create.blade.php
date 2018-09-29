@@ -48,13 +48,17 @@
                         </div>
                         <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
                         <div class="col-md-3">
-                            <input type="text" id="lista_precio_id" name="lista_precio_id" class="form-control" value="{{old('sucursal_id')}}">
+                            <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%">
+                                
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
-                            <input type="text" id="moneda_id" name="moneda_id" class="form-control" value="{{old('moneda_id')}}">
+                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
+                                
+                            </select>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
@@ -74,7 +78,7 @@
                             <input type="number" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Subtotal">
+                            <input type="number" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario">
                         </div>
                         <div class="col-md-2">
                             <input type="number" id="Subtotal" name="Subtotal" class="form-control" placeholder="Subtotal" readonly>
@@ -111,4 +115,55 @@
     </div>
 </div>
 
+@endsection
+@section('otros_scripts')
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#select2-monedas').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            ajax: {
+                url: "{{ route('api.zonas.select') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('#select2-lista-precios').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            ajax: {
+                url: "{{ route('api.tipos.clientes.select') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+    });
+</script>
 @endsection
