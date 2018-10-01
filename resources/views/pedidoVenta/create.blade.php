@@ -84,7 +84,7 @@
                             <input type="number" id="Subtotal" name="Subtotal" class="form-control" placeholder="Subtotal" readonly>
                         </div>
                         <div class="col-md-1">
-                            <button class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                         </div>
                     </div>
                     <table id="pedido-detalle" class="table table-striped table-responsive">

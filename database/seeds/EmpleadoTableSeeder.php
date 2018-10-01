@@ -42,6 +42,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->setCorreoElectronico('usuario@ferregest.com');
         $empleado->save();
         $empleado->tiposEmpleados()->sync($vendedor->id);
+        $empleado->sucursales()->sync([$sucursal_central->id]);
 
         $empleado = new Empleado();
         $empleado->setNombre('Administrador');
@@ -53,6 +54,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->setCorreoElectronico('admin@ferregest.com');
         $empleado->save();
         $empleado->tiposEmpleados()->sync([$vendedor->id, $cajero->id]);
+        $empleado->sucursales()->sync([$sucursal_central->id]);
 
         $empleado = new Empleado();
         $empleado->setNombre('Yanina');
@@ -64,5 +66,6 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->setCorreoElectronico('yani_rsc@hotmail.com');
         $empleado->save();
         $empleado->tiposEmpleados()->sync($vendedor->id);
+        $empleado->sucursales()->sync([$sucursal_central->id]);
     }
 }
