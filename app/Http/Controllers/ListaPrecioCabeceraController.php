@@ -143,6 +143,23 @@ class ListaPrecioCabeceraController extends Controller
         return ListaPrecioCabecera::destroy($id);
     }
 
+    public function apiListaPreciosSelect(Request $request){
+        $lista_precio_array = [];
+        
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $lista_precios = ListaPrecioCabecera::where('descripcion', 'ilike', "%$search%")->get();
+        } else {
+            $lista_precios = ListaPrecioCabecera::all();
+        }
+
+        foreach ($lista_precios as $lista) {
+            $lista_precio_array[] = ['id'=> $lista->getId(), 'text'=> $lista->getNombre()];
+        }
+
+        return json_encode($lista_precio_array);
+    }
+
     public function actualizar()
     {
         $lista_precios = ListaPrecioCabecera::all();

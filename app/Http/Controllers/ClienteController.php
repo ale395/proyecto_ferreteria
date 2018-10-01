@@ -183,6 +183,25 @@ class ClienteController extends Controller
         return Cliente::destroy($id);
     }
 
+    public function apiClientesVentas(Request $request){
+        $clientes_array = [];
+        if($request->has('term')){
+            $search = strtolower($request->term);
+            $clientes = Cliente::where('nombre', 'ilike', "%$search%")
+                ->orWhere('apellido', 'ilike', "%$search%")
+                ->orWhere('razon_social', 'ilike', "%$search%")
+                ->orWhere('ruc', 'ilike', "%$search%")
+                //->orWhere('nro_cedula', 'ilike', "%$search%")
+                ->get();
+            foreach ($clientes as $cliente) {
+                $clientes_array[] = array('id'=> $cliente->getId(), 'value'=> $cliente->getNombreSelect());
+            }
+
+            return json_encode($clientes_array);
+        }
+        return;
+    }
+
     public function apiClientes()
     {
         $permiso_editar = Auth::user()->can('clientes.edit');

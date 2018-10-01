@@ -98,6 +98,23 @@ class MonedaController extends Controller
         return Moneda::destroy($id);
     }
 
+    public function apiMonedasSelect(Request $request){
+        $monedas_array = [];
+        
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $monedas = Moneda::where('descripcion', 'ilike', "%$search%")->get();
+        } else {
+            $monedas = Moneda::all();
+        }
+
+        foreach ($monedas as $moneda) {
+            $monedas_array[] = ['id'=> $moneda->getId(), 'text'=> $moneda->getDescripcion()];
+        }
+
+        return json_encode($monedas_array);
+    }
+
     //Función que retorna un JSON con todos los módulos para que los maneje AJAX del lado del servidor
     public function apiMonedas()
     {

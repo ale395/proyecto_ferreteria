@@ -23,7 +23,8 @@ class PedidoVentaController extends Controller
      */
     public function create()
     {
-        return view('pedidoVenta.create');
+        $fecha_actual = date("d/m/Y");
+        return view('pedidoVenta.create', compact('fecha_actual'));
     }
 
     /**

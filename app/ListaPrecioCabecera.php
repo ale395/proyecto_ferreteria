@@ -10,6 +10,18 @@ class ListaPrecioCabecera extends Model
 
     protected $fillable = ['codigo', 'nombre', 'moneda_id'];
 
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getCodigo(){
+        return $this->codigo;
+    }
+
+    public function getNombre(){
+        return $this->nombre;
+    }
+
     public function moneda()
     {
         return $this->belongsTo('App\Moneda');

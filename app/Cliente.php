@@ -44,6 +44,14 @@ class Cliente extends Model
         }
     }
 
+    public function getNombreSelect(){
+        if ($this->tipo_persona == 'F') {
+            return $this->nro_cedula.' - '.$this->nombre . ', '.$this->apellido;
+        } elseif ($this->tipo_persona == 'J') {
+            return $this->ruc.' - '.$this->razon_social;
+        }
+    }
+
     public function setNombre($nombre){
         $this->nombre = $nombre;
     }

@@ -38,13 +38,13 @@
                         </div>
                         <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision')}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
                         <div class="col-md-6">
-                            <input type="text" id="cliente_id" name="cliente_id" class="form-control" value="{{old('cliente_id')}}" autofocus>
+                            <input type="text" id="cliente_id" name="cliente_id" class="form-control" value="{{old('cliente_id')}}" autofocus placeholder="Ingrese alguna identificación del cliente (Nombre, RUC, CI)">
                         </div>
                         <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
                         <div class="col-md-3">
@@ -119,33 +119,22 @@
 @section('otros_scripts')
 <script type="text/javascript">
     $( function() {
-    var availableTags = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ];
-    $( "#cliente_id" ).autocomplete({
-      source: availableTags
-    });
+        $( "#cliente_id" ).autocomplete({
+          source: function( request, response ) {
+            $.ajax( {
+              url: "/api/clientes/ventas",
+              dataType: "json",
+              data: {
+                term: request.term
+              },
+              success: function( data ) {
+                response( data );
+              }
+            } );
+          },
+          minLength: 2,
+          autoFocus:true
+        });
   } );
 </script>
 <script type="text/javascript">
@@ -154,7 +143,7 @@
             placeholder: 'Seleccione una opción',
             language: "es",
             ajax: {
-                url: "{{ route('api.zonas.select') }}",
+                url: "{{ route('api.monedas.select') }}",
                 delay: 250,
                 data: function (params) {
                     var queryParameters = {
@@ -177,7 +166,7 @@
             placeholder: 'Seleccione una opción',
             language: "es",
             ajax: {
-                url: "{{ route('api.tipos.clientes.select') }}",
+                url: "{{ route('api.listaPrecios.select') }}",
                 delay: 250,
                 data: function (params) {
                     var queryParameters = {

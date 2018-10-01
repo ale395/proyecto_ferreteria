@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function() {
 		//RUTAS PARA Monedas
 	Route::resource('monedas', 'MonedaController');
 	Route::get('api/monedas', 'MonedaController@apiMonedas')->name('api.monedas');
+	Route::get('api/monedas/select', 'MonedaController@apiMonedasSelect')->name('api.monedas.select');
 	
 	//RUTAS PARA BANCOS
 	Route::resource('bancos', 'BancoController');
@@ -68,6 +69,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA CLIENTES
 	Route::resource('clientes', 'ClienteController');
 	Route::get('api/clientes', 'ClienteController@apiClientes')->name('api.clientes');
+	Route::get('api/clientes/ventas', 'ClienteController@apiClientesVentas')->name('api.clientes.ventas');
 
 	Route::get('api/zonas/select', 'ZonaController@apiZonasSelect')->name('api.zonas.select');
 
@@ -95,6 +97,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::post('listaPrecios/actualizarPrecios', 'ListaPrecioCabeceraController@actualizarPrecios')->name('listaPrecios.actualizarPrecios');
 	Route::resource('listaPrecios', 'ListaPrecioCabeceraController');
 	Route::get('api/listaPrecios', 'ListaPrecioCabeceraController@apiListaPrecios')->name('api.listaPrecios');
+	Route::get('api/listaPrecios/select', 'ListaPrecioCabeceraController@apiListaPreciosSelect')->name('api.listaPrecios.select');
 	
 
 	//RUTAS PARA MODELO LISTA PRECIOS DETALLE
