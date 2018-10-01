@@ -38,7 +38,7 @@
                         </div>
                         <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control" value="{{old('fecha_emision')}}" placeholder="dd/mm/aaaa">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision')}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
                     </div>
                     <div class="form-group">
@@ -117,8 +117,6 @@
 
 @endsection
 @section('otros_scripts')
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
     $( function() {
     var availableTags = [
@@ -197,6 +195,20 @@
                 cache: true
             }
         });
+    });
+
+    $(function() {
+      $('.dpfecha').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        todayBtn: true,
+        todayHighlight: true,
+        autoclose: true
+      });
+      $('#fecha_emision').click(function(e){
+                e.stopPropagation();
+                $('.dpfecha').datepicker('update');
+            });  
     });
 </script>
 @endsection
