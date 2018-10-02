@@ -132,8 +132,11 @@
               }
             } );
           },
-          minLength: 2,
-          autoFocus:true
+          minLength: 4,
+          autoFocus:true,
+          select: function( event, ui ) {
+            document.getElementById("articulo_id").focus();
+          }
         });
     });
 </script>
@@ -152,8 +155,12 @@
               }
             } );
           },
-          minLength: 2,
-          autoFocus:true
+          minLength: 4,
+          autoFocus:true,
+          select: function( event, ui ) {
+            document.getElementById("cantidad").value = 1;
+            document.getElementById("cantidad").focus();
+          }
         });
     });
 </script>

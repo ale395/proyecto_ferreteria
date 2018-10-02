@@ -189,7 +189,9 @@ class ArticuloController extends Controller
                 ->orWhere('codigo', 'ilike', "%$search%")
                 ->get();
             foreach ($articulos as $articulo) {
-                $articulos_array[] = array('id'=> $articulo->getId(), 'value'=> $articulo->getNombreSelect());
+                if ($articulo->getActivo()) {
+                    $articulos_array[] = array('id'=> $articulo->getId(), 'value'=> $articulo->getNombreSelect());
+                }
             }
 
             return json_encode($articulos_array);

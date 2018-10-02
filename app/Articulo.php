@@ -29,6 +29,10 @@ class Articulo extends Model
         return $this->codigo_barra;
     }
 
+    public function getActivo(){
+        return $this->activo;
+    }
+
     public function getNombreSelect(){
         if (is_null($this->codigo_barra) || $this->codigo_barra == 0) {
             return '('.$this->codigo.') '.$this->descripcion;
