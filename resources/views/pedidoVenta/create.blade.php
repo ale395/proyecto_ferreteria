@@ -43,8 +43,11 @@
                     </div>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
-                        <div class="col-md-6">
-                            <input type="text" id="cliente_id" name="cliente_id" class="form-control" value="{{old('cliente_id')}}" autofocus placeholder="Ingrese alguna identificación del cliente (Nombre, RUC, CI)">
+                        <div class="col-md-5">
+                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%"></select>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
                         </div>
                         <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
                         <div class="col-md-3">
@@ -72,7 +75,9 @@
                     <div class="form-group">
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
-                            <input type="text" id="articulo_id" name="articulo_id" class="form-control" placeholder="Artículo">
+                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
+
+                            </select>
                         </div>
                         <div class="col-md-2">
                             <input type="number" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad">
@@ -141,7 +146,7 @@
     });
 </script>
 <script type="text/javascript">
-    $(function() {
+    /*$(function() {
         $( "#articulo_id" ).autocomplete({
           source: function( request, response ) {
             $.ajax( {
@@ -162,10 +167,56 @@
             document.getElementById("cantidad").focus();
           }
         });
-    });
+    });*/
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
+        $('#select2-clientes').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            minimumInputLength: 4,
+            ajax: {
+                url: "{{ route('api.clientes.ventas') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+        $('#select2-articulos').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            minimumInputLength: 4,
+            ajax: {
+                url: "{{ route('api.articulos.ventas') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
         $('#select2-monedas').select2({
             placeholder: 'Seleccione una opción',
             language: "es",

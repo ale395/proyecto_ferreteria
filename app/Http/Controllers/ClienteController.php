@@ -185,21 +185,26 @@ class ClienteController extends Controller
 
     public function apiClientesVentas(Request $request){
         $clientes_array = [];
-        if($request->has('term')){
-            $search = strtolower($request->term);
+
+        if($request->has('q')){
+            $search = strtolower($request->q);
             $clientes = Cliente::where('nombre', 'ilike', "%$search%")
                 ->orWhere('apellido', 'ilike', "%$search%")
                 ->orWhere('razon_social', 'ilike', "%$search%")
                 ->orWhere('ruc', 'ilike', "%$search%")
-                //->orWhere('nro_cedula', 'ilike', "%$search%")
+                //->orWhere('nro_cedula', 'LIKE', "%$search%")
                 ->get();
-            foreach ($clientes as $cliente) {
-                $clientes_array[] = array('id'=> $cliente->getId(), 'value'=> $cliente->getNombreSelect());
-            }
-
-            return json_encode($clientes_array);
+        } else {
+            $clientes = Cliente::all();
         }
-        return;
+
+        foreach ($clientes as $cliente) {
+            if ($cliente->getActivo()) {
+                $clientes_array[] = ['id'=> $cliente->getId(), 'text'=> $cliente->getNombreSelect()];
+            }
+        }
+
+        return json_encode($clientes_array);
     }
 
     public function apiClientes()

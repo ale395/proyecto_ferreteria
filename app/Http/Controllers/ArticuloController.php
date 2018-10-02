@@ -182,21 +182,24 @@ class ArticuloController extends Controller
 
     public function apiArticulosVentas(Request $request){
         $articulos_array = [];
-        if($request->has('term')){
-            $search = strtolower($request->term);
-            $articulos = Articulo::where('descripcion', 'ilike', "%$search%")
-                //->orWhere('codigo_barra', 'ilike', "%$search%")
-                ->orWhere('codigo', 'ilike', "%$search%")
-                ->get();
-            foreach ($articulos as $articulo) {
-                if ($articulo->getActivo()) {
-                    $articulos_array[] = array('id'=> $articulo->getId(), 'value'=> $articulo->getNombreSelect());
-                }
-            }
 
-            return json_encode($articulos_array);
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $articulos = Articulo::where('descripcion', 'ilike', "%$search%")
+                ->orWhere('codigo', 'ilike', "%$search%")
+                //->orWhere('codigo_barra', 'ilike', "%$search%")
+                ->get();
+        } else {
+            $articulos = Articulo::all();
         }
-        return;
+
+        foreach ($articulos as $articulo) {
+            if ($articulo->getActivo()) {
+                $articulos_array[] = array('id'=> $articulo->getId(), 'text'=> $articulo->getNombreSelect());
+            }
+        }
+
+        return json_encode($articulos_array);
     }
 
     public function apiArticulos()
