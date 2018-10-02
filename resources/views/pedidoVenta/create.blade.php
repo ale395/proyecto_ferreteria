@@ -118,7 +118,7 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
-    $( function() {
+    $(function() {
         $( "#cliente_id" ).autocomplete({
           source: function( request, response ) {
             $.ajax( {
@@ -135,7 +135,27 @@
           minLength: 2,
           autoFocus:true
         });
-  } );
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        $( "#articulo_id" ).autocomplete({
+          source: function( request, response ) {
+            $.ajax( {
+              url: "/api/articulos/ventas",
+              dataType: "json",
+              data: {
+                term: request.term
+              },
+              success: function( data ) {
+                response( data );
+              }
+            } );
+          },
+          minLength: 2,
+          autoFocus:true
+        });
+    });
 </script>
 <script type="text/javascript">
     $(document).ready(function(){

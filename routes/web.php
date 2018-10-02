@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('clientes', 'ClienteController');
 	Route::get('api/clientes', 'ClienteController@apiClientes')->name('api.clientes');
 	Route::get('api/clientes/ventas', 'ClienteController@apiClientesVentas')->name('api.clientes.ventas');
+	Route::get('api/articulos/ventas', 'ArticuloController@apiArticulosVentas')->name('api.articulos.ventas');
 
 	Route::get('api/zonas/select', 'ZonaController@apiZonasSelect')->name('api.zonas.select');
 

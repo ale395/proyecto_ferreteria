@@ -180,6 +180,23 @@ class ArticuloController extends Controller
         return Articulo::destroy($id);
     }
 
+    public function apiArticulosVentas(Request $request){
+        $articulos_array = [];
+        if($request->has('term')){
+            $search = strtolower($request->term);
+            $articulos = Articulo::where('descripcion', 'ilike', "%$search%")
+                //->orWhere('codigo_barra', 'ilike', "%$search%")
+                ->orWhere('codigo', 'ilike', "%$search%")
+                ->get();
+            foreach ($articulos as $articulo) {
+                $articulos_array[] = array('id'=> $articulo->getId(), 'value'=> $articulo->getNombreSelect());
+            }
+
+            return json_encode($articulos_array);
+        }
+        return;
+    }
+
     public function apiArticulos()
     {
         $permiso_editar = Auth::user()->can('articulos.edit');
