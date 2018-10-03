@@ -52,7 +52,7 @@
                         <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
                         <div class="col-md-3">
                             <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%">
-                                
+                                <option value="{{$lista_precio->getId()}}">{{$lista_precio->getNombre()}}</option>
                             </select>
                         </div>
                     </div>
@@ -60,12 +60,12 @@
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
                             <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
-                                
+                                <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
                             </select>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio')}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -75,18 +75,18 @@
                     <div class="form-group">
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
-                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
+                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" onchange="setCantidadPrecioUnitario()">
 
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad">
+                            <input type="number" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario">
+                            <input type="number" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="Subtotal" name="Subtotal" class="form-control" placeholder="Subtotal" readonly>
+                            <input type="number" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
                         </div>
                         <div class="col-md-1">
                             <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
@@ -123,7 +123,36 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
-    $(function() {
+    function setCantidadPrecioUnitario() {
+        var articulo_id = $("#select2-articulos" ).val();
+        var result;
+        $.ajax({
+          type: "GET",
+          url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id,
+          datatype: "json",
+          //async: false,
+          success: function(data){
+            $("#precio_unitario" ).val(data).change();
+          }
+        });
+
+        if($("#cantidad" ).val().length === 0){
+            $("#cantidad" ).val(1).change();
+        }
+    };
+
+    function calcularSubtotal() {
+        var calculo = $("#cantidad" ).val() * $("#precio_unitario" ).val();
+        $("#subtotal" ).val(calculo).change();
+        /*if($("#cantidad" ).val().length != 0){
+            var calculo = $("#cantidad" ).val() * $("#precio_unitario" ).val();
+            $("#subtotal" ).val(calculo).change();
+        } else {
+            $("#subtotal" ).val(0).change();
+        }*/
+        //document.getElementById("subtotal").value = 0;
+    };
+    /*$(function() {
         $( "#cliente_id" ).autocomplete({
           source: function( request, response ) {
             $.ajax( {
@@ -143,7 +172,7 @@
             document.getElementById("articulo_id").focus();
           }
         });
-    });
+    });*/
 </script>
 <script type="text/javascript">
     /*$(function() {

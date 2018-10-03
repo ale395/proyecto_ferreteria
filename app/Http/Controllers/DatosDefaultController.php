@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DatosDefault;
 use Illuminate\Http\Request;
 
-class PedidoVentaController extends Controller
+class DatosDefaultController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,12 +24,7 @@ class PedidoVentaController extends Controller
      */
     public function create()
     {
-        $fecha_actual = date("d/m/Y");
-        $datos_default = DatosDefault::get()->first();
-        $lista_precio = $datos_default->listaPrecio;
-        $moneda = $datos_default->moneda;
-        $cambio = 1;
-        return view('pedidoVenta.create', compact('fecha_actual', 'moneda', 'lista_precio', 'cambio'));
+        //
     }
 
     /**
@@ -46,10 +41,10 @@ class PedidoVentaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\DatosDefault  $datosDefault
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(DatosDefault $datosDefault)
     {
         //
     }
@@ -57,10 +52,10 @@ class PedidoVentaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\DatosDefault  $datosDefault
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(DatosDefault $datosDefault)
     {
         //
     }
@@ -69,10 +64,10 @@ class PedidoVentaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\DatosDefault  $datosDefault
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, DatosDefault $datosDefault)
     {
         //
     }
@@ -80,10 +75,10 @@ class PedidoVentaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\DatosDefault  $datosDefault
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DatosDefault $datosDefault)
     {
         //
     }

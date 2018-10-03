@@ -8,6 +8,5 @@ class Deposito extends Model
 {
     protected $table = 'depositos';
     
-    protected $fillable = 
-    ['codigo','descripcion','activo'];
+    protected $fillable = ['codigo','descripcion','activo'];
 }

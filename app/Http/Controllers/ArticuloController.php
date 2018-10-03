@@ -202,6 +202,10 @@ class ArticuloController extends Controller
         return json_encode($articulos_array);
     }
 
+    public function apiArticulosCotizacion($articulo_id){
+        return 12000;
+    }
+
     public function apiArticulos()
     {
         $permiso_editar = Auth::user()->can('articulos.edit');
