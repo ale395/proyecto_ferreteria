@@ -47,7 +47,7 @@
                             <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%"></select>
                         </div>
                         <div class="col-md-1">
-                            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
+                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true" onclick="addForm()"></i></a>
                         </div>
                         <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
                         <div class="col-md-3">
@@ -80,7 +80,7 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()">
+                            <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
                             <input type="number" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()">
@@ -119,13 +119,163 @@
         </form>
     </div>
 </div>
+@include('cliente.create-persona-fisica')
+@include('cliente.create-persona-juridica')
 
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
+    function addForm() {
+        $.confirm({
+            title: 'Tipo de Persona',
+            content: 'Por favor seleccione el tipo de persona a registrar',
+            type: 'blue',
+            backgroundDismiss: true,
+            theme: 'modern',
+            buttons: {
+                confirm: {
+                    text: "Física",
+                    btnClass: 'btn-blue',
+                    action: function(){
+                        save_method = "add";
+                        $('#error-block').hide();
+                        $('input[name=_method]').val('POST');
+                        $('#tipo_persona_fisica').val('F');
+                        $('#modal-form-fisica').modal('show');
+                        $('#modal-form-fisica form')[0].reset();
+                        $('.modal-title').text('Nuevo Cliente - Persona Física');
+                    }
+                },
+                cancel: {
+                    text: "Jurídica",
+                    btnClass: 'btn-default',
+                    action: function(){
+                        save_method = "add";
+                        $('#error-block-juridica').hide();
+                        $('input[name=_method]').val('POST');
+                        $('#tipo_persona_juridica').val('J');
+                        $('#modal-form-juridica').modal('show');
+                        $('#modal-form-juridica form')[0].reset();
+                        $('.modal-title').text('Nuevo Cliente - Persona Jurídica');
+                    }
+                }
+            }
+        });
+    }
+
+    $(function(){
+            $('#modal-form-fisica form').validator().on('submit', function (e) {
+                if (!e.isDefaultPrevented()){
+                    var id = $('#id').val();
+                    if (save_method == 'add') url = "{{ url('clientes') }}";
+                    else url = "{{ url('clientes') . '/' }}" + id;
+
+                    $.ajax({
+                        url : url,
+                        type : "POST",
+                        data : $('#modal-form-fisica form').serialize(),
+                        success : function($data) {
+                            $('#modal-form-fisica').modal('hide');
+                            //table.ajax.reload();
+                            console.log($data);
+                            $("#select2-clientes").select2('data', { id: $data.id, text: $data.nombre + ', ' + $data.apellido});
+                            var obj = $.alert({
+                                title: 'Información',
+                                content: 'Cliente guardado correctamente!',
+                                icon: 'fa fa-check',
+                                type: 'green',
+                                backgroundDismiss: true,
+                                theme: 'modern',
+                            });
+                            setTimeout(function(){
+                                obj.close();
+                            },4000); 
+                        },
+                        error : function(data){
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += '<li>' + value + '</li>';
+                                });
+                                $('#error-block').show().html(errores);
+                            }else{
+                              $.alert({
+                              title: 'Atención!',
+                              content: 'Ocurrió un error durante el proceso!',
+                              icon: 'fa fa-times-circle-o',
+                              type: 'red',
+                              theme: 'modern',
+                            });
+                          }
+                            
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+
+    $(function(){
+            $('#modal-form-juridica form').validator().on('submit', function (e) {
+                if (!e.isDefaultPrevented()){
+                    var id = $('#id').val();
+                    if (save_method == 'add') url = "{{ url('clientes') }}";
+                    else url = "{{ url('clientes') . '/' }}" + id;
+
+                    $.ajax({
+                        url : url,
+                        type : "POST",
+                        data : $('#modal-form-juridica form').serialize(),
+                        success : function($data) {
+                            $('#modal-form-juridica').modal('hide');
+                            //table.ajax.reload();
+                            console.log($data);
+                            console.log($data.id);
+                            console.log($data.razon_social);
+                            //$("#select2-clientes").select2('data', { id: $data.id, text: $data.razon_social});
+                            $('#select2-clientes').val($data.id).trigger('change');
+                            var obj = $.alert({
+                                title: 'Información',
+                                content: 'Cliente guardado correctamente!',
+                                icon: 'fa fa-check',
+                                type: 'green',
+                                backgroundDismiss: true,
+                                theme: 'modern',
+                            });
+                            setTimeout(function(){
+                                obj.close();
+                            },4000);
+                        },
+                        error : function(data){
+                            var errors = '';
+                            var errores = '';
+                            if(data.status === 422) {
+                                var errors = data.responseJSON;
+                                $.each(data.responseJSON.errors, function (key, value) {
+                                    errores += '<li>' + value + '</li>';
+                                });
+                                $('#error-block-juridica').show().html(errores);
+                            }else{
+                                $.alert({
+                                  title: 'Atención!',
+                                  content: 'Ocurrió un error durante el proceso!',
+                                  icon: 'fa fa-times-circle-o',
+                                  type: 'red',
+                                  theme: 'modern',
+                                });
+                          }
+                            
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+
     function setCantidadPrecioUnitario() {
         var articulo_id = $("#select2-articulos" ).val();
-        var result;
         $.ajax({
           type: "GET",
           url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id,
@@ -144,13 +294,6 @@
     function calcularSubtotal() {
         var calculo = $("#cantidad" ).val() * $("#precio_unitario" ).val();
         $("#subtotal" ).val(calculo).change();
-        /*if($("#cantidad" ).val().length != 0){
-            var calculo = $("#cantidad" ).val() * $("#precio_unitario" ).val();
-            $("#subtotal" ).val(calculo).change();
-        } else {
-            $("#subtotal" ).val(0).change();
-        }*/
-        //document.getElementById("subtotal").value = 0;
     };
     /*$(function() {
         $( "#cliente_id" ).autocomplete({
@@ -175,6 +318,48 @@
     });*/
 </script>
 <script type="text/javascript">
+    $('#modal-form-fisica').on('shown.bs.modal', function() {
+      $("#nro_cedula").focus();
+    });
+
+    $('#modal-form-juridica').on('shown.bs.modal', function() {
+      $("#ruc_juridica").focus();
+    });
+    $('#cliente-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+    $('#cliente-form-juridica').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
+    $("#nro_cedula").on({
+            "focus": function (event) {
+                $(event.target).select();
+            },
+            "keyup": function (event) {
+                $(event.target).val(function (index, value ) {
+                    return value.replace(/\D/g, "")
+                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                });
+            }
+    });
+    $("#ruc").on({
+        "focus": function (event) {
+            $(event.target).select();
+        },
+        "keyup": function (event) {
+            $(event.target).val(function (index, value ) {
+                return value.replace(/\D/g, "")
+                            .replace(/([0-9])([0-9]{1})$/, '$1-$2');
+            });
+        }
+    });
+    $("#ruc_juridica").on({
+        "focus": function (event) {
+            $(event.target).select();
+        },
+        "keyup": function (event) {
+            $(event.target).val(function (index, value ) {
+                return value.replace(/\D/g, "")
+                            .replace(/([0-9])([0-9]{1})$/, '$1-$2');
+            });
+        }
+    });
     /*$(function() {
         $( "#articulo_id" ).autocomplete({
           source: function( request, response ) {
