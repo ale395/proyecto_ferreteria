@@ -302,7 +302,7 @@
         var cantidad = $("#cantidad" ).val();
         cantidad = cantidad.replace(".", "");
         var calculo = cantidad * $("#precio_unitario" ).val();
-        if($("#cantidad" ).val().length === 0 && $("#precio_unitario" ).val().length === 0){
+        if($("#cantidad" ).val().length != 0 && $("#precio_unitario" ).val().length != 0){
             $("#subtotal" ).val(calculo).change();
         }
     };

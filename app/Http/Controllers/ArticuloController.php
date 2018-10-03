@@ -203,7 +203,9 @@ class ArticuloController extends Controller
     }
 
     public function apiArticulosCotizacion($articulo_id){
-        return 12000;
+        if (!empty($articulo_id)) {
+            return 12000;
+        };
     }
 
     public function apiArticulos()
