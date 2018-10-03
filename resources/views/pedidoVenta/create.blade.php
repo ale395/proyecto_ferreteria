@@ -86,17 +86,17 @@
                             <input type="number" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
+                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
                         </div>
                         <div class="col-md-1">
-                            <button class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <table id="pedido-detalle" class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th>Código Artículo</th>
-                                <th>Descripcion</th>
+                                <th width="10%">Acción</th>
+                                <th>Artículo</th>
                                 <th>Cantidad</th>
                                 <th>Precio Unitario</th>
                                 <th>Subtotal</th>
@@ -110,7 +110,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>Total</th>
-                                <th>0</th>
+                                <th id="total-th">0</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -176,9 +176,13 @@
                         data : $('#modal-form-fisica form').serialize(),
                         success : function($data) {
                             $('#modal-form-fisica').modal('hide');
-                            //table.ajax.reload();
-                            console.log($data);
-                            $("#select2-clientes").select2('data', { id: $data.id, text: $data.nombre + ', ' + $data.apellido});
+                            var data = {
+                                id: $data.id,
+                                text: $data.nro_cedula + ' - ' + $data.nombre + ', ' + $data.apellido
+                            };
+
+                            var newOption = new Option(data.text, data.id, false, false);
+                            $('#select2-clientes').append(newOption).trigger('change');
                             var obj = $.alert({
                                 title: 'Información',
                                 content: 'Cliente guardado correctamente!',
@@ -230,12 +234,14 @@
                         data : $('#modal-form-juridica form').serialize(),
                         success : function($data) {
                             $('#modal-form-juridica').modal('hide');
-                            //table.ajax.reload();
-                            console.log($data);
-                            console.log($data.id);
-                            console.log($data.razon_social);
-                            //$("#select2-clientes").select2('data', { id: $data.id, text: $data.razon_social});
-                            $('#select2-clientes').val($data.id).trigger('change');
+                            var data = {
+                                id: $data.id,
+                                text: $data.ruc + ' - ' + $data.razon_social
+                            };
+
+                            var newOption = new Option(data.text, data.id, false, false);
+                            $('#select2-clientes').append(newOption).trigger('change');
+
                             var obj = $.alert({
                                 title: 'Información',
                                 content: 'Cliente guardado correctamente!',
@@ -289,33 +295,31 @@
         if($("#cantidad" ).val().length === 0){
             $("#cantidad" ).val(1).change();
         }
+        $("#cantidad").focus();
     };
 
     function calcularSubtotal() {
-        var calculo = $("#cantidad" ).val() * $("#precio_unitario" ).val();
-        $("#subtotal" ).val(calculo).change();
+        var cantidad = $("#cantidad" ).val();
+        cantidad = cantidad.replace(".", "");
+        var calculo = cantidad * $("#precio_unitario" ).val();
+        if($("#cantidad" ).val().length === 0 && $("#precio_unitario" ).val().length === 0){
+            $("#subtotal" ).val(calculo).change();
+        }
     };
-    /*$(function() {
-        $( "#cliente_id" ).autocomplete({
-          source: function( request, response ) {
-            $.ajax( {
-              url: "/api/clientes/ventas",
-              dataType: "json",
-              data: {
-                term: request.term
-              },
-              success: function( data ) {
-                response( data );
-              }
-            } );
-          },
-          minLength: 4,
-          autoFocus:true,
-          select: function( event, ui ) {
-            document.getElementById("articulo_id").focus();
-          }
-        });
-    });*/
+
+    function addArticulo() {
+        var articulo = $('#select2-articulos').select2('data')[0].text;
+        var cantidad = $("#cantidad").val();
+        var precio_unitario = $("#precio_unitario").val();
+        var subtotal = $("#subtotal").val();
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido' onclick='deleteArticulo()'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + subtotal + "</th> </tr>";
+        $("table tbody").append(markup);
+        $('#select2-articulos').val(null).trigger('change');
+        $('#cantidad').val('');
+        $('#precio_unitario').val('');
+        $('#subtotal').val('');
+        $("#select2-articulos").focus();
+    };
 </script>
 <script type="text/javascript">
     $('#modal-form-fisica').on('shown.bs.modal', function() {
@@ -337,6 +341,17 @@
                                 .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                 });
             }
+    });
+    $("#cantidad").on({
+        "focus": function (event) {
+            $(event.target).select();
+        },
+        "keyup": function (event) {
+            $(event.target).val(function (index, value ) {
+                return value.replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+            });
+        }
     });
     $("#ruc").on({
         "focus": function (event) {
@@ -360,28 +375,7 @@
             });
         }
     });
-    /*$(function() {
-        $( "#articulo_id" ).autocomplete({
-          source: function( request, response ) {
-            $.ajax( {
-              url: "/api/articulos/ventas",
-              dataType: "json",
-              data: {
-                term: request.term
-              },
-              success: function( data ) {
-                response( data );
-              }
-            } );
-          },
-          minLength: 4,
-          autoFocus:true,
-          select: function( event, ui ) {
-            document.getElementById("cantidad").value = 1;
-            document.getElementById("cantidad").focus();
-          }
-        });
-    });*/
+
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
