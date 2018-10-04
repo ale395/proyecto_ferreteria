@@ -36,7 +36,7 @@ class CrearFamiliasRequest extends FormRequest
     {
         return [
         'num_familia.required' => 'El :attribute es obligatorio.',
-        'num_familia.unique' => ':attribute ya existe'
+        'num_familia.unique' => ':attribute ya existe',
         'descripcion.required' => 'Añade un :attribute al producto',
         ];
     }
