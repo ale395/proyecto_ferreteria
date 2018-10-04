@@ -29,12 +29,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(SucursalTableSeeder::class);
 
-        //carga los datos de inicio
-        $this->call(DefaultSeeder::class);
-
         $this->call(MonedaTableSeeder::class);
 
-        $this->call(ArticuloTableSeeder::class);
+        
 
         $this->call(ZonaTableSeeder::class);
 
@@ -48,5 +45,10 @@ class DatabaseSeeder extends Seeder
         $this->call(UserTableSeeder::class);
 
         $this->call(ListaPrecioCabeceraTableSeeder::class);
+
+        //carga los datos de inicio
+        $this->call(DefaultSeeder::class);
+
+        $this->call(ArticuloTableSeeder::class);
     }
 }

@@ -7,7 +7,8 @@ $factory->define(App\Cliente::class, function (Faker $faker) {
     if ($tipo_persona == 'F') {
     	return [
 	        'tipo_persona' => 'F',
-	        'nombre' => $faker->name,
+	        'nombre' => $faker->firstName,
+	        'apellido' => $faker->lastName,
 	        'nro_cedula' => $faker->unique()->numberBetween($min = 800000, $max = 7000000)
 	    ];
     } elseif ($tipo_persona == 'J') {

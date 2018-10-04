@@ -14,8 +14,10 @@ class CreateDatosDefaultsTable extends Migration
     public function up()
     {
         Schema::create('datos_default', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('moneda_nacional_id');
             $table->integer('lista_precio_id');
+            $table->timestamps();
 
             $table->foreign('moneda_nacional_id')->references('id')->on('monedas');
             $table->foreign('lista_precio_id')->references('id')->on('lista_precios_cabecera');

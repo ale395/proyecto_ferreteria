@@ -11,6 +11,7 @@ use App\Cajero;
 use App\User;
 use App\TipoProveedor;
 use App\Proveedor;
+use App\DatosDefault;
 
 
 class DefaultSeeder extends Seeder
@@ -88,18 +89,6 @@ class DefaultSeeder extends Seeder
         $conceptoajuste->descripcion = 'AJUSTE DE EXISTENCIA';
         $conceptoajuste->save();
 
-        //tipo cliente por default - ajuste de existencia
-        $tipoclientemayo = new ClasificacionCliente();
-        $tipoclientemayo->codigo = '001';
-        $tipoclientemayo->nombre = 'Mayorista';
-        $tipoclientemayo->save();
-
-        //tipo cliente por default - ajuste de existencia
-        $tipoclientemino = new ClasificacionCliente();
-        $tipoclientemino->codigo = '002';
-        $tipoclientemino->nombre = 'Minorista';
-        $tipoclientemino->save();
-
         //tipo proveedor 
         $tipoproveedor = new TipoProveedor();
         $tipoproveedor->codigo = '001';
@@ -112,6 +101,10 @@ class DefaultSeeder extends Seeder
         $proveedor->razon_social = 'Proveedor Generico';
         $proveedor->save();
 
+        $datos_default = new DatosDefault();
+        $datos_default->moneda_nacional_id = 1;
+        $datos_default->lista_precio_id = 1;
+        $datos_default->save();
         /*
         //traemos el usuario
         $usuario = User::where('email', 'admin@ferregest.com')->first();

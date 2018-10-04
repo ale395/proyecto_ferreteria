@@ -14,6 +14,18 @@ class ClienteTableSeeder extends Seeder
      */
     public function run()
     {
+        //tipo cliente por default - ajuste de existencia
+        $tipoclientemayo = new ClasificacionCliente();
+        $tipoclientemayo->codigo = '001';
+        $tipoclientemayo->nombre = 'Mayorista';
+        $tipoclientemayo->save();
+
+        //tipo cliente por default - ajuste de existencia
+        $tipoclientemino = new ClasificacionCliente();
+        $tipoclientemino->codigo = '002';
+        $tipoclientemino->nombre = 'Minorista';
+        $tipoclientemino->save();
+
         $zona = Zona::where('codigo', '002')->first();
         $tipo_cliente = ClasificacionCliente::where('codigo', '002')->first();
 
@@ -30,13 +42,6 @@ class ClienteTableSeeder extends Seeder
         $cliente->tipo_cliente_id = $tipo_cliente->id;
         $cliente->save();
 
-        $cliente = new Cliente();
-        $cliente->tipo_persona = 'F';
-        $cliente->nombre = 'Nidia Sofía Alejandra';
-        $cliente->apellido = 'Fernandez Cerrano';
-        $cliente->nro_cedula = 7700590;
-        $cliente->save();
-
-        factory(Cliente::class, 2000)->create();
+        factory(Cliente::class, 1000)->create();
     }
 }
