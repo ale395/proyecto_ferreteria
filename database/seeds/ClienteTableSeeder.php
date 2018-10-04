@@ -36,5 +36,7 @@ class ClienteTableSeeder extends Seeder
         $cliente->apellido = 'Fernandez Cerrano';
         $cliente->nro_cedula = 7700590;
         $cliente->save();
+
+        factory(Cliente::class, 2000)->create();
     }
 }
