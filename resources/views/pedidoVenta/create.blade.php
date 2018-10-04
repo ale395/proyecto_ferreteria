@@ -180,7 +180,7 @@
                                 id: $data.id,
                                 text: $data.nro_cedula + ' - ' + $data.nombre + ', ' + $data.apellido
                             };
-
+                            $('#select2-clientes').val(null).trigger('change');
                             var newOption = new Option(data.text, data.id, false, false);
                             $('#select2-clientes').append(newOption).trigger('change');
                             var obj = $.alert({
@@ -238,7 +238,7 @@
                                 id: $data.id,
                                 text: $data.ruc + ' - ' + $data.razon_social
                             };
-
+                            $('#select2-clientes').val(null).trigger('change');
                             var newOption = new Option(data.text, data.id, false, false);
                             $('#select2-clientes').append(newOption).trigger('change');
 
