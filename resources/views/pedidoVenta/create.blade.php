@@ -47,7 +47,7 @@
                             <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%"></select>
                         </div>
                         <div class="col-md-1">
-                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true" onclick="addForm()"></i></a>
+                            <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
                         </div>
                         <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
                         <div class="col-md-3">
@@ -95,17 +95,23 @@
                     <table id="pedido-detalle" class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th width="10%">Acción</th>
+                                <th width="5%">Acción</th>
                                 <th>Artículo</th>
-                                <th>Cantidad</th>
-                                <th>Precio Unitario</th>
-                                <th>Subtotal</th>
+                                <th width="7%">Cantidad</th>
+                                <th width="10%">Prec. Unit.</th>
+                                <th width="10%">Exenta</th>
+                                <th width="10%">Gravada</th>
+                                <th width="8%">IVA</th>
+                                <th width="10%">Total</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
                         <tfoot>
                             <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -312,7 +318,7 @@
         var cantidad = $("#cantidad").val();
         var precio_unitario = $("#precio_unitario").val();
         var subtotal = $("#subtotal").val();
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido' onclick='deleteArticulo()'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + subtotal + "</th> </tr>";
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido' onclick='deleteArticulo()'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + subtotal + "</th> <th> </th> <th> </th> <th> </th> </tr>";
         $("table tbody").append(markup);
         $('#select2-articulos').val(null).trigger('change');
         $('#cantidad').val('');
