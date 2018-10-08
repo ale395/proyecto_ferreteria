@@ -403,6 +403,7 @@
     <script src="{{ asset('assets/jquery-confirm/dist/jquery-confirm.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js') }}"></script>
+    <script src="{{ asset('assets/jquery-number/jquery.number.min.js') }}"></script>
 
     <!-- Para los Script JavaScript necesarios para la utilización de AJAX con el DataTables-->
     @yield('ajax_datatables')
