@@ -174,13 +174,19 @@ class RoleTableSeeder extends Seeder
         $permiso_tproveedor_editar = Permission::where('slug', 'tiposproveedores.edit')->first();
         $permiso_tproveedor_eliminar = Permission::where('slug', 'tiposproveedores.destroy')->first();
 
-        //permisos de Clientes
+        //permisos de Proveedores
         $permiso_listar_proveedor = Permission::where('slug', 'proveedores.index')->first();
         $permiso_crear_proveedor = Permission::where('slug', 'proveedores.create')->first();
         $permiso_editar_proveedor = Permission::where('slug', 'proveedores.edit')->first();
         $permiso_eliminar_proveedor = Permission::where('slug', 'proveedores.destroy')->first();
         $permiso_ver_proveedor = Permission::where('slug', 'proveedores.show')->first();
 
+        //permisos de Orden de Compra
+        $permiso_listar_ordencompra = Permission::where('slug', 'ordencompra.index')->first();
+        $permiso_crear_ordencompra = Permission::where('slug', 'ordencompra.create')->first();
+        $permiso_editar_ordencompra = Permission::where('slug', 'ordencompra.edit')->first();
+        $permiso_eliminar_ordencompra = Permission::where('slug', 'ordencompra.destroy')->first();
+        $permiso_ver_ordencompra = Permission::where('slug', 'ordencompra.show')->first();
 
         $role = new Role();
         $role->name = 'Administrador';
@@ -334,6 +340,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_proveedor->id);
         $role->assignPermission($permiso_eliminar_proveedor->id);
         $role->assignPermission($permiso_ver_proveedor->id);
+
+        $role->assignPermission($permiso_listar_ordencompra->id);
+        $role->assignPermission($permiso_crear_ordencompra->id);
+        $role->assignPermission($permiso_editar_ordencompra->id);
+        $role->assignPermission($permiso_eliminar_ordencompra->id);
+        $role->assignPermission($permiso_ver_ordencompra->id);
 
         $role->assignPermission($permiso_listar_cliente->id);
         $role->assignPermission($permiso_crear_cliente->id);

@@ -51,9 +51,11 @@
                         </div>
                         <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
                         <div class="col-md-3">
-                            <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%">
-                                <option value="{{$lista_precio->getId()}}">{{$lista_precio->getNombre()}}</option>
-                            </select>
+                            <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
+                                <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%">
+                                    <option value="{{$lista_precio->getId()}}">{{$lista_precio->getNombre()}}</option>
+                                </select>
+                            </a>
                         </div>
                     </div>
                     <div class="form-group">
@@ -79,14 +81,19 @@
 
                             </select>
                         </div>
-                        <div class="col-md-2">
-                            <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
+                        <div class="col-md-1">
+                            <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()">
+                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()"></a>
+                        </div>
+                        <div class="col-md-1">
+                            <a data-toggle="tooltip" data-placement="top" title="% Descuento">
+                            <input type="number" id="porcentaje_descuento" name="porcentaje_descuento" class="form-control" placeholder="% Desc." min="0" max="100" onchange="calcularSubtotal()"></a>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
+                            <a data-toggle="tooltip" data-placement="top" title="Subtotal">
+                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
                         </div>
                         <div class="col-md-1">
                             <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
@@ -97,18 +104,20 @@
                             <tr>
                                 <th width="5%">Acción</th>
                                 <th>Artículo</th>
-                                <th width="7%">Cantidad</th>
-                                <th width="10%">Prec. Unit.</th>
-                                <th width="10%">Exenta</th>
-                                <th width="10%">Gravada</th>
-                                <th width="8%">IVA</th>
-                                <th width="10%">Total</th>
+                                <th width="6%">Cant.</th>
+                                <th width="9%">Prec. Unit.</th>
+                                <th width="9%">Descuento</th>
+                                <th width="9%">Exenta</th>
+                                <th width="9%">Gravada</th>
+                                <th width="6%">IVA</th>
+                                <th width="9%">Total</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
                         <tfoot>
                             <tr>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -295,6 +304,7 @@
           //async: false,
           success: function(data){
             $("#precio_unitario" ).val(data).change();
+            $("#porcentaje_descuento" ).val(0).change();
           }
         });
 
@@ -306,8 +316,11 @@
 
     function calcularSubtotal() {
         var cantidad = $("#cantidad" ).val();
+        var precio_unitario = $("#precio_unitario" ).val();
+        var porcentaje_descuento = $("#porcentaje_descuento" ).val();
         cantidad = cantidad.replace(".", "");
-        var calculo = cantidad * $("#precio_unitario" ).val();
+        precio_unitario = precio_unitario.replace(".", "");
+        var calculo = cantidad * (precio_unitario - (precio_unitario * (porcentaje_descuento/100)));
         if($("#cantidad" ).val().length != 0 && $("#precio_unitario" ).val().length != 0){
             $("#subtotal" ).val(calculo).change();
         }
@@ -317,8 +330,10 @@
         var articulo = $('#select2-articulos').select2('data')[0].text;
         var cantidad = $("#cantidad").val();
         var precio_unitario = $("#precio_unitario").val();
+        var porcentaje_descuento = $("#porcentaje_descuento" ).val();
+        var monto_descuento = precio_unitario.replace(".", "") * (porcentaje_descuento/100);
         var subtotal = $("#subtotal").val();
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido' onclick='deleteArticulo()'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + subtotal + "</th> <th> </th> <th> </th> <th> </th> </tr>";
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido' onclick='deleteArticulo()'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + monto_descuento + "</th> <th> </th> <th> </th> <th> </th> <th> " + subtotal + " </th> </tr>";
         $("table tbody").append(markup);
         $('#select2-articulos').val(null).trigger('change');
         $('#cantidad').val('');
@@ -348,17 +363,7 @@
                 });
             }
     });
-    $("#cantidad").on({
-        "focus": function (event) {
-            $(event.target).select();
-        },
-        "keyup": function (event) {
-            $(event.target).val(function (index, value ) {
-                return value.replace(/\D/g, "")
-                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
-            });
-        }
-    });
+    /*JS para la inclusión del guión en el campo RUC del modal para persona física*/
     $("#ruc").on({
         "focus": function (event) {
             $(event.target).select();
@@ -370,6 +375,7 @@
             });
         }
     });
+    /*JS para la inclusión del guión en el campo RUC del modal para persona jurídica*/
     $("#ruc_juridica").on({
         "focus": function (event) {
             $(event.target).select();
@@ -381,9 +387,13 @@
             });
         }
     });
-
+    $('#cantidad').number(true, 0, ',', '.');
+    $('#precio_unitario').number(true, 0, ',', '.');
+    $('#subtotal').number(true, 0, ',', '.');
 </script>
+
 <script type="text/javascript">
+    /*JS del componente Select2*/
     $(document).ready(function(){
         $('#select2-clientes').select2({
             placeholder: 'Seleccione una opción',
@@ -478,6 +488,7 @@
         });
     });
 
+    /*JS para el DatePicker de fecha_emision*/
     $(function() {
       $('.dpfecha').datepicker({
         format: 'dd/mm/yyyy',

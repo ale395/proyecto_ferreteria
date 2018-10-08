@@ -4,6 +4,7 @@ use App\Articulo;
 use App\Familia;
 use App\Linea;
 use App\Rubro;
+use App\Impuesto;
 use Illuminate\Database\Seeder;
 
 class ArticuloTableSeeder extends Seeder
@@ -21,6 +22,7 @@ class ArticuloTableSeeder extends Seeder
         $articulo->familia_id = Familia::where('num_familia', '005')->first()->id;
         $articulo->linea_id = Linea::where('num_linea', '008')->first()->id;
         $articulo->rubro_id = Rubro::where('num_rubro', '003')->first()->id;
+        $articulo->impuesto_id = Impuesto::where('codigo', '10')->first()->id;
         $articulo->ultimo_costo = 40200.00;
         $articulo->img_producto = 'prod-1.jpg';
         $articulo->costo_promedio = 37152.87;
@@ -32,6 +34,7 @@ class ArticuloTableSeeder extends Seeder
         $articulo->familia_id = Familia::where('num_familia', '001')->first()->id;
         $articulo->linea_id = Linea::where('num_linea', '004')->first()->id;
         $articulo->rubro_id = Rubro::where('num_rubro', '001')->first()->id;
+        $articulo->impuesto_id = Impuesto::where('codigo', '10')->first()->id;
         $articulo->ultimo_costo = 3250.00;
         $articulo->costo_promedio = 3741.02;
         $articulo->save();
@@ -42,6 +45,7 @@ class ArticuloTableSeeder extends Seeder
         $articulo->familia_id = Familia::where('num_familia', '002')->first()->id;
         $articulo->linea_id = Linea::where('num_linea', '004')->first()->id;
         $articulo->rubro_id = Rubro::where('num_rubro', '006')->first()->id;
+        $articulo->impuesto_id = Impuesto::where('codigo', '10')->first()->id;
         $articulo->ultimo_costo = 27800.00;
         $articulo->costo_promedio = 23511.14;
         $articulo->save();
@@ -52,6 +56,7 @@ class ArticuloTableSeeder extends Seeder
         $articulo->familia_id = Familia::where('num_familia', '005')->first()->id;
         $articulo->linea_id = Linea::where('num_linea', '005')->first()->id;
         $articulo->rubro_id = Rubro::where('num_rubro', '001')->first()->id;
+        $articulo->impuesto_id = Impuesto::where('codigo', '10')->first()->id;
         $articulo->ultimo_costo = 157000.00;
         $articulo->costo_promedio = 155012.94;
         $articulo->save();

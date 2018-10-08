@@ -224,7 +224,7 @@ class ArticuloController extends Controller
 
     public function apiArticulosCotizacion($articulo_id){
         if (!empty($articulo_id)) {
-            return 12000;
+            return 12000;//number_format(12000, 0, ',', '.');
         };
     }
 

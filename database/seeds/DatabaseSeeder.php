@@ -30,9 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SucursalTableSeeder::class);
 
         $this->call(MonedaTableSeeder::class);
-
-        
-
+    
         $this->call(ZonaTableSeeder::class);
 
         $this->call(ClienteTableSeeder::class);

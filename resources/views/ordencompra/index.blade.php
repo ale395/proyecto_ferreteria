@@ -6,24 +6,23 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Proveedores
-                        @can('proveedores.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                    <h4>Ordenes de Compra
+                        @can('ordencompra.create')
+                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo</a>
                         @else
-                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                          <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo</a>
                         @endcan
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table id="proveedor-table" class="table table-striped table-responsive">
+                    <table id="orden-compra-table" class="table table-striped table-responsive">
                         <thead>
                             <tr>
-                                <th width="50">Codigo</th>
-                                <th>Nombre</th>
-                                <th>Apellido/Razón Social</th>
-                                <th width="80">Nro CI</th>
-                                <th>RUC</th>
-                                <th width="40">Activo</th>
+                                <th width="50">Nro Orden</th>
+                                <th>Fecha</th>
+                                <th>Proveedor</th>
+                                <th width="80">Moneda</th>
+                                <th>Total Pedido</th>
                                 <th width="110">Acciones</th>
                             </tr>
                         </thead>
@@ -38,22 +37,22 @@
 
 @section('ajax_datatables')
   <script type="text/javascript">
-      var table = $('#proveedor-table').DataTable({
+      var table = $('#orden-compra-table').DataTable({
                       language: { url: 'datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.proveedores') }}",
+                      ajax: "{{ route('api.ordencompra') }}",
                       columns: [
+                        {data: 'nro_orden', name: 'codigo'},
+                        {data: 'fecha', name: 'fecha'},
+                        {data: 'proveedor', name: 'proveedor'},
                         {data: 'codigo', name: 'codigo'},
-                        {data: 'nombre', name: 'nombre'},
-                        {data: 'razon_social', name: 'razon_social'},
-                        {data: 'nro_documento', name: 'nro_documento'},
-                        {data: 'ruc', name: 'ruc'},
-                        {data: 'activo', name: 'activo'},
+                        {data: 'monto_total', name: 'monto_total'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
 
+      /*              
       function addForm() {
         save_method = "add";
         $('#error-block').hide();
@@ -63,7 +62,7 @@
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nuevo Proveedor');
+        $('.modal-title').text('Nuevo orden-compra');
 
         $('#codigo').prop('readonly', false);
         $('#nombre').prop('readonly', false);
@@ -77,6 +76,7 @@
         $('#activo').prop('disabled', false);
         $('#form-btn-guardar').prop('disabled', false);
       }
+      */
 
       function showForm(id) {
         save_method = "add";
@@ -84,7 +84,7 @@
         $('input[name=_method]').val('GET');
         $('#modal-form').modal('show');
         $('#modal-form form')[0].reset();
-        $('.modal-title').text('Ver Proveedor');
+        $('.modal-title').text('Ver orden-compra');
 
         $.ajax({
           url: "{{ url('proveedores') }}" + '/' + id,
@@ -186,7 +186,7 @@
           dataType: "JSON",
           success: function(data) {
             $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Proveedor');
+            $('.modal-title').text('Editar Orden Compra');
 
             $('#codigo').prop('readonly', false);
             $('#nombre').prop('readonly', false);
