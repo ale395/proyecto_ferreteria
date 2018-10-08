@@ -96,42 +96,29 @@ class OrdenCompraController extends Controller
         //
     }
 
-    public function apiProveedores()
+    public function apiOrdenCompra()
     {
         $permiso_editar = Auth::user()->can('ordencompra.edit');
         $permiso_eliminar = Auth::user()->can('ordencompra.destroy');
         $permiso_ver = Auth::user()->can('ordencompra.show');
         //$ordenes_compra = Proveedor::all();
         $ordenes_compra = DB::table('orden_compras_cab as o')
-        ->join('orden_compras_det as od', 'od.orden_compra_cab_id','=', 'o.id')
         ->join('proveedores as p', 'p.id','=', 'o.proveedor_id')
-        ->join('articulos as a', 'a.id','=', 'od.articulo_id')
-        ->join('impuesto as i', 'i.id','=', 'a.impuesto_id');
+        ->join('monedas as m', 'm.id','=', 'o.moneda_id')
+        ->select('o.id', 'o.nro_orden', 'o.fecha_emision', DB::raw("CONCAT('p.apellido','p.nombre') as proveedor"),
+        'm.codigo', 'o,monto_total');
+
 
         if ($permiso_editar) {
             if ($permiso_eliminar) {
                 if ($permiso_ver) {
                     return Datatables::of($ordenes_compra)
-                    ->addColumn('activo', function($ordenes_compra){
-                        if ($ordenes_compra->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
                     ->addColumn('action', function($ordenes_compra){
                         return '<a onclick="showForm('. $ordenes_compra->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $ordenes_compra->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
                                '<a onclick="deleteData('. $ordenes_compra->id .')" class="btn btn-danger btn-sm" title="Eliminar Cliente"><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 } else{
                     return Datatables::of($ordenes_compra)
-                    ->addColumn('activo', function($ordenes_compra){
-                        if ($ordenes_compra->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
                     ->addColumn('action', function($ordenes_compra){
                         return '<a class="btn btn-primary btn-sm" title="Ver Cliente"  disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $ordenes_compra->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
                                '<a onclick="deleteData('. $ordenes_compra->id .')" class="btn btn-danger btn-sm" title="Eliminar Cliente"><i class="fa fa-trash-o"></i></a>';
@@ -140,26 +127,12 @@ class OrdenCompraController extends Controller
             } else {
                 if ($permiso_ver) {
                     return Datatables::of($ordenes_compra)
-                    ->addColumn('activo', function($ordenes_compra){
-                        if ($ordenes_compra->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
                     ->addColumn('action', function($ordenes_compra){
                         return '<a onclick="showForm('. $ordenes_compra->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $ordenes_compra->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                                '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                     })->make(true);
                 } else{
                     return Datatables::of($ordenes_compra)
-                    ->addColumn('activo', function($ordenes_compra){
-                        if ($ordenes_compra->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
                     ->addColumn('action', function($ordenes_compra){
                         return '<a class="btn btn-primary btn-sm" title="Ver Cliente" disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $ordenes_compra->id .')" class="btn btn-warning btn-sm" title="Editar Cliente"><i class="fa fa-pencil-square-o"></i></a> ' .
                                '<a class="btn btn-danger btn-sm" title="Eliminar Cliente" disabled><i class="fa fa-trash-o"></i></a>';
@@ -169,26 +142,12 @@ class OrdenCompraController extends Controller
         } elseif ($permiso_eliminar) {
             if ($permiso_ver) {
                 return Datatables::of($ordenes_compra)
-                ->addColumn('activo', function($ordenes_compra){
-                        if ($ordenes_compra->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
                 ->addColumn('action', function($ordenes_compra){
                     return '<a onclick="showForm('. $ordenes_compra->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a onclick="deleteData('. $ordenes_compra->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else{
                 return Datatables::of($ordenes_compra)
-                ->addColumn('activo', function($ordenes_compra){
-                        if ($ordenes_compra->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
                 ->addColumn('action', function($ordenes_compra){
                     return '<a class="btn btn-primary btn-sm" title="Ver Cliente" disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a onclick="deleteData('. $ordenes_compra->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
@@ -197,26 +156,12 @@ class OrdenCompraController extends Controller
         } else {
             if ($permiso_ver) {
                 return Datatables::of($ordenes_compra)
-                ->addColumn('activo', function($ordenes_compra){
-                        if ($ordenes_compra->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
                 ->addColumn('action', function($ordenes_compra){
                     return '<a onclick="showForm('. $ordenes_compra->id .')" class="btn btn-primary btn-sm" title="Ver Cliente"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                 })->make(true);
             } else{
                 return Datatables::of($ordenes_compra)
-                ->addColumn('activo', function($ordenes_compra){
-                        if ($ordenes_compra->activo) {
-                            return 'Si';
-                        }else{
-                            return 'No';
-                        }
-                    })
                 ->addColumn('action', function($ordenes_compra){
                     return '<a class="btn btn-primary btn-sm" title="Ver Cliente"  disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
                            '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
