@@ -77,7 +77,7 @@
                     <div class="form-group">
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
-                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" onchange="setCantidadPrecioUnitario()">
+                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
 
                             </select>
                         </div>
@@ -295,7 +295,29 @@
             });
         });
 
-    function setCantidadPrecioUnitario() {
+    $("#select2-articulos").change(function (e) {
+        var valor = $(this).val();
+        console.log(valor);
+        if (valor != null) {
+            var articulo_id = $("#select2-articulos" ).val();
+            $.ajax({
+              type: "GET",
+              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id,
+              datatype: "json",
+              success: function(data){
+                $("#precio_unitario" ).val(data).change();
+                $("#porcentaje_descuento" ).val(0).change();
+              }
+            });
+
+            if($("#cantidad" ).val().length == 0){
+                $("#cantidad" ).val(1).change();
+            }
+            $("#cantidad").focus();
+        }
+    });
+
+    /*function setCantidadPrecioUnitario() {
         var articulo_id = $("#select2-articulos" ).val();
         $.ajax({
           type: "GET",
@@ -312,7 +334,7 @@
             $("#cantidad" ).val(1).change();
         }
         $("#cantidad").focus();
-    };
+    };*/
 
     function calcularSubtotal() {
         var cantidad = $("#cantidad" ).val();
@@ -327,42 +349,43 @@
     };
 
     function addArticulo() {
+        /*Se obtienen los valores de los campos correspondientes*/
+        var decimales = 0;
         var articulo = $('#select2-articulos').select2('data')[0].text;
         var cantidad = $("#cantidad").val();
         var precio_unitario = $("#precio_unitario").val();
         var porcentaje_descuento = $("#porcentaje_descuento" ).val();
         var monto_descuento = precio_unitario.replace(".", "") * (porcentaje_descuento/100);
         var subtotal = $("#subtotal").val();
+        /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+        precio_unitario = $.number(precio_unitario,decimales, ',', '.');
+        cantidad = $.number(cantidad,decimales, ',', '.');
+        monto_descuento = $.number(monto_descuento,decimales, ',', '.');
+        subtotal = $.number(subtotal,decimales, ',', '.');
+        /*Se genera el HTML para la inserción de la fila en la tabla*/
         var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido' onclick='deleteArticulo()'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + monto_descuento + "</th> <th> </th> <th> </th> <th> </th> <th> " + subtotal + " </th> </tr>";
         $("table tbody").append(markup);
+        /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+        $('#cantidad').val("");
+        $('#precio_unitario').val("");
+        $('#subtotal').val(null);
         $('#select2-articulos').val(null).trigger('change');
-        $('#cantidad').val('');
-        $('#precio_unitario').val('');
-        $('#subtotal').val('');
         $("#select2-articulos").focus();
     };
 </script>
 <script type="text/javascript">
+    //JS para que al abrir el modal de persona fisica se quede en foco en el campo nro_cedula
     $('#modal-form-fisica').on('shown.bs.modal', function() {
       $("#nro_cedula").focus();
     });
-
+    //JS para que al abrir el modal de persona jurídica se quede en foco en el campo ruc
     $('#modal-form-juridica').on('shown.bs.modal', function() {
       $("#ruc_juridica").focus();
     });
     $('#cliente-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
     $('#cliente-form-juridica').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
-    $("#nro_cedula").on({
-            "focus": function (event) {
-                $(event.target).select();
-            },
-            "keyup": function (event) {
-                $(event.target).val(function (index, value ) {
-                    return value.replace(/\D/g, "")
-                                .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
-                });
-            }
-    });
+    //JS para el formato con separador de miles al ingresar el nro de cedula
+    $('#nro_cedula').number(true, 0, ',', '.');
     /*JS para la inclusión del guión en el campo RUC del modal para persona física*/
     $("#ruc").on({
         "focus": function (event) {
