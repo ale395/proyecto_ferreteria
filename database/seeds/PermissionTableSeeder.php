@@ -132,30 +132,30 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un Empleado del sistema';
         $permission->save();
 
-  //PERMISOS PARA EL FORMULARIO DE DEPOSITOS
-  $permission = new Permission();
-  $permission->name = 'Crear Deposito';
-  $permission->slug = 'depositos.create';
-  $permission->description = 'Permite la creación de nuevos depositos en el sistema';
-  $permission->save();
+        //PERMISOS PARA EL FORMULARIO DE DEPOSITOS
+        $permission = new Permission();
+        $permission->name = 'Crear Deposito';
+        $permission->slug = 'depositos.create';
+        $permission->description = 'Permite la creación de nuevos depositos en el sistema';
+        $permission->save();
 
-  $permission = new Permission();
-  $permission->name = 'Borrar Deposito';
-  $permission->slug = 'depositos.destroy';
-  $permission->description = 'Permite la eliminación de depositos del sistema';
-  $permission->save();
+        $permission = new Permission();
+        $permission->name = 'Borrar Deposito';
+        $permission->slug = 'depositos.destroy';
+        $permission->description = 'Permite la eliminación de depositos del sistema';
+        $permission->save();
 
-  $permission = new Permission();
-  $permission->name = 'Editar Deposito';
-  $permission->slug = 'depositos.edit';
-  $permission->description = 'Permite modificar los valores de un deposito del sistema';
-  $permission->save();
+        $permission = new Permission();
+        $permission->name = 'Editar Deposito';
+        $permission->slug = 'depositos.edit';
+        $permission->description = 'Permite modificar los valores de un deposito del sistema';
+        $permission->save();
 
-  $permission = new Permission();
-  $permission->name = 'Listar Depositos';
-  $permission->slug = 'depositos.index';
-  $permission->description = 'Permite ver el listado de depositos del sistema';
-  $permission->save();
+        $permission = new Permission();
+        $permission->name = 'Listar Depositos';
+        $permission->slug = 'depositos.index';
+        $permission->description = 'Permite ver el listado de depositos del sistema';
+        $permission->save();
 
         //PERMISOS PARA EL FORMULARIO DE TIPOS DE EMPLEADOS
         $permission = new Permission();
@@ -218,6 +218,7 @@ class PermissionTableSeeder extends Seeder
         $permission->slug = 'articulos.index';
         $permission->description = 'Permite ver el listado de impuestos del sistema';
         $permission->save();
+
         //PERMISOS PARA EL FORMULARIO DE COTIZACIONES
         $permission = new Permission();
         $permission->name = 'Crear Cotizacion';
@@ -786,9 +787,40 @@ class PermissionTableSeeder extends Seeder
         $permission->save();
 
         $permission = new Permission();
-        $permission->name = 'Ver Pedido de Venta';
+        $permission->name = 'Ver Proveedor';
         $permission->slug = 'proveedores.show';
         $permission->description = 'Permite ver detalles del proveedor';
+        $permission->save();
+
+        //PERMISOS PARA EL FORMULARIO DE ORDEN DE COMPRA
+        $permission = new Permission();
+        $permission->name = 'Crear Orden de Compra';
+        $permission->slug = 'ordencompra.create';
+        $permission->description = 'Permite registrar una orden de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Orden de Compra';
+        $permission->slug = 'ordencompra.destroy';
+        $permission->description = 'Permite la eliminación de una orden de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Orden de Compra';
+        $permission->slug = 'ordencompra.edit';
+        $permission->description = 'Permite modificar una orden de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Ordenes de Compra';
+        $permission->slug = 'ordencompra.index';
+        $permission->description = 'Permite ver el listado de ordenes de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Orden de Compra';
+        $permission->slug = 'ordencompra.show';
+        $permission->description = 'Permite ver la Orden de Compra Cargada';
         $permission->save();
     }
 }

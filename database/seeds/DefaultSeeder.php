@@ -12,7 +12,7 @@ use App\User;
 use App\TipoProveedor;
 use App\Proveedor;
 use App\DatosDefault;
-
+use App\Impuesto;
 
 class DefaultSeeder extends Seeder
 {
@@ -105,6 +105,25 @@ class DefaultSeeder extends Seeder
         $datos_default->moneda_nacional_id = 1;
         $datos_default->lista_precio_id = 1;
         $datos_default->save();
+
+        $impuesto = new Impuesto();
+        $impuesto->codigo = '0';
+        $impuesto->descripcion = 'Exento';
+        $impuesto->porcentaje = 0;
+        $impuesto->save();
+
+        $impuesto = new Impuesto();
+        $impuesto->codigo = '5';
+        $impuesto->descripcion = 'IVA 5%';
+        $impuesto->porcentaje = 5;
+        $impuesto->save();
+
+        $impuesto = new Impuesto();
+        $impuesto->codigo = '10';
+        $impuesto->descripcion = 'IVA 10%';
+        $impuesto->porcentaje = 10;
+        $impuesto->save();
+
         /*
         //traemos el usuario
         $usuario = User::where('email', 'admin@ferregest.com')->first();
