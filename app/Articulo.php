@@ -9,9 +9,9 @@ class Articulo extends Model
     protected $table = 'articulos';
 
     protected $fillable = 
-    ['codigo','descripcion','codigo_barra','porcentaje_ganancia',
-    'comentario','costo','control_existencia','vendible','activo',
-   'impuesto_id','rubro_id','familia_id','linea_id','unidad_medida_id'];
+    ['img_producto','codigo','descripcion','codigo_barra','porcentaje_ganancia',
+    'comentario','ultimo_costo','costo_promedio','control_existencia','vendible','activo',
+   'impuesto_id','rubro_id','familia_id','linea_id','unidad_medida_id','fecha_ultima_compra'];
 
     public function getId(){
         return $this->id;

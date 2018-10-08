@@ -21,7 +21,8 @@
                                 <th width="50">Codigo</th>
                                 <th>Descripción</th>
                                 <th>Codigo de barras</th>
-                                <th width="80">Costo</th>
+                                <th width="80"> Ultimo costo</th>
+                                <th width="80"> Costo Promedio</th>
                                 <th>Porcentaje ganancia</th>
                                 <th>Comentario</th>
                                 <th>Vendible</th>
@@ -49,7 +50,8 @@
                         {data: 'codigo', name: 'codigo'},
                         {data: 'descripcion', name: 'descripcion'},
                         {data: 'codigo_barra', name: 'codigo_barra'},
-                        {data: 'costo', name: 'costo'},
+                        {data: 'ultimo_costo', name: 'ultimo_costo'},
+                        {data: 'costo_promedio', name: 'costo_promedio'},
                         {data: 'porcentaje_ganancia', name: 'porcentaje_ganancia'},
                         {data: 'comentario', name: 'comentario'},
                         {data: 'vendible', name: 'vendible'},
@@ -108,7 +110,8 @@
             $('#codigo').val(data.codigo);
             $('#codigo_barra').val(data.codigo_barra);
             $('#descripcion').val(data.descripcion);
-            $('#costo').val(data.costo);
+            $('#ultimo_costo').val(data.ultimo_costo);
+            $('#costo_promedio').val(data.costo_promedio);
             $('#porcentaje_ganancia').val(data.porcentaje_ganancia);
             $('#comentario').val(data.comentario);
 
@@ -209,7 +212,8 @@
             $('#codigo').prop('readonly', false);
 
         $('#descripcion').prop('readonly', false);
-        $('#costo').prop('readonly', false);
+        $('#ultimo_costo').prop('readonly', true);
+        $('#costo_promedio').prop('readonly', true);
         $('#codigo_barra').prop('readonly', false);
         $('#porcentaje_ganancia').prop('readonly', false);
         $('#comentario').prop('readonly', false);
@@ -231,10 +235,11 @@
             $('#codigo').val(data.codigo);
             $('#codigo_barra').val(data.codigo_barra);
             $('#descripcion').val(data.descripcion);
-            $('#costo').val(data.costo);
+            $('#ultimo_costo').val(data.ultimo_costo);
+            $('#costo_promedio').val(data.costo_promedio);
             $('#porcentaje_ganancia').val(data.porcentaje_ganancia);
             $('#comentario').val(data.comentario);
-
+            $('#img_producto').val(data.img_producto);
             $("#select2-impuestos").select2("val", "");
             $('#select2-impuestos').val(data.impuesto_id).change();
             $("#select2-familias").select2("val", "");
@@ -320,7 +325,16 @@
       $("#codigo").focus();
     });
   </script>
-  
+      <script type="text/javascript">
+        $("#img_producto").change(function(){
+          var fichero_seleccionado = $(this).val();
+          var nombre_fichero_seleccionado = fichero_seleccionado.replace(/.*[\/\\]/, ''); //Eliminamos el path hasta el fichero seleccionado
+          if (fichero_seleccionado != nombre_fichero_seleccionado) {
+            $("#label-img_producto").text(nombre_fichero_seleccionado);
+          }
+          
+        });
+    </script>
   <script type="text/javascript">
     $('#articulo-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>

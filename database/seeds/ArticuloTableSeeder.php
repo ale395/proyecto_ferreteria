@@ -22,6 +22,7 @@ class ArticuloTableSeeder extends Seeder
         $articulo->linea_id = Linea::where('num_linea', '008')->first()->id;
         $articulo->rubro_id = Rubro::where('num_rubro', '003')->first()->id;
         $articulo->ultimo_costo = 40200.00;
+        $articulo->img_producto = 'prod-1.jpg';
         $articulo->costo_promedio = 37152.87;
         $articulo->save();
 

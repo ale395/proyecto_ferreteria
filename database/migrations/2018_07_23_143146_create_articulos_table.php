@@ -18,7 +18,7 @@ class CreateArticulosTable extends Migration
                 $table->increments('id');
                 $table->string('codigo', 20)->unique();
                 $table->string('descripcion', 100);
-                $table->decimal('codigo_barra', 14, 2)->default(0);
+                $table->string('codigo_barra', 14, 2)->default(0);
                 $table->decimal('porcentaje_ganancia', 14, 2)->default(0);
                 $table->integer('impuesto_id')->unsigned()->nullable();
                 $table->integer('rubro_id')->unsigned()->nullable();
@@ -27,7 +27,11 @@ class CreateArticulosTable extends Migration
                 $table->integer('unidad_medida_id')->unsigned()->nullable();
                 $table->string('comentario', 100)->nullable();
                 $table->decimal('ultimo_costo', 14, 2)->default(0);
+                $table->decimal('ultimo_costo_sin_iva', 14, 2)->default(0);
                 $table->decimal('costo_promedio', 14, 2)->default(0);
+                $table->decimal('costo_promedio_sin_iva', 14, 2)->default(0);
+                $table->date('fecha_ultima_compra')->nullable();
+                $table->string('img_producto')->default('default-img_producto.jpg');
                 $table->boolean('control_existencia')->default(true);
                 $table->boolean('vendible')->default(true);
                 $table->boolean('activo')->default(true);

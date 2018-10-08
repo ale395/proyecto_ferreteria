@@ -16,7 +16,13 @@
                         <div id="error-block" class="alert alert-danger">
                         </div>
                     </div>
-
+                <div class="col-md-12 text-center">
+                    <h5></h5>
+                    <img src="{{ URL::to('/') }}/images/productos/default-img_producto.jpg" alt="..." class="center-block img-responsive" width="120" height="120">
+                    <h5></h5>
+                    <input type="file" name="img_producto" id="img_producto" class="form-control-file" accept=".jpg, .jpeg, .png" style="color: transparent;margin-left: 359px;">
+                    <span id="label-img_producto">default-img_producto.jpg</span>
+                </div>
                     <div class="form-group">
                         <label for="codigo" class="col-md-2 control-label">Código *</label>
                         <div class="col-md-3">
@@ -41,19 +47,25 @@
 
 
                     <div class="form-group">
-                        <label for="costo" class="col-md-1 control-label">Costo</label>
-                        <div class="col-md-4">
-                            <input type="number" id="costo" name="costo" class="form-control">
+                        <label for="ultimo_costo" class="col-md-1 control-label">Ultimo Costo</label>
+                        <div class="col-md-2">
+                            <input type="number" id="ultimo_costo" name="ultimo_costo" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
 
-                        <label for="porcentaje_ganancia" class="col-md-1 control-label">Porcentaje ganancia</label>
+                    <div class="form-group">
+                        <label for="costo_promedio" class="col-md-1 control-label">Costo promedio</label>
                         <div class="col-md-2">
+                            <input type="number" id="costo_promedio" name="costo_promedio" class="form-control">
+                            <span class="help-block with-errors"></span>
+                        </div>
+                        <label for="porcentaje_ganancia" class="col-md-1 control-label">Porcentaje ganancia</label>
+                        <div class="col-sm-2">
                             <input type="number" id="porcentaje_ganancia" name="porcentaje_ganancia" class="form-control">
                             <span class="help-block with-errors"></span>
                         </div>
                         <label for="impuesto_id" class="control-label col-md-1">Impuesto *</label>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <select name="impuesto_id" id="select2-impuestos" class="form-control" style="width: 100%">
                                 <option></option>
                                 @foreach($impuestos as $id => $impuesto)

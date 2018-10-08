@@ -65,6 +65,15 @@ class ArticuloController extends Controller
         ];
 
         $validator = Validator::make($request->all(), $rules);
+       
+        if($request->hasFile('img_producto')){
+            
+            $img_producto = $request->file('img_producto');
+            $filename = $request['descripcion']/*.'-'.time()*/.'.'.$img_producto->getClientOriginalExtension();
+            Image::make($img_producto)->resize(300, 300)->save( public_path('/images/productos/' . $filename ) );
+            $articulo->img_producto = $filename;
+            
+        }
 
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -77,7 +86,8 @@ class ArticuloController extends Controller
             'codigo' => $request['codigo'],
             'descripcion' => $request['descripcion'],
             'codigo_barra' => $request['codigo_barra'],
-            'costo' => $request['costo'],
+            'ultimo_costo' => $request['ultimo_costo'],
+            'costo_promedio' => $request['costo_promedio'],
             'porcentaje_ganancia' => $request['porcentaje_ganancia'],
             'control_existencia' => $request['control_existencia'],
             'vendible' => $request['vendible'],
@@ -143,6 +153,15 @@ class ArticuloController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
+        if($request->hasFile('img_producto')){
+            
+            $img_producto = $request->file('img_producto');
+            $filename = $request['nro_cedula']/*.'-'.time()*/.'.'.$img_producto->getClientOriginalExtension();
+            Image::make($img_producto)->resize(300, 300)->save( public_path('/images/productos/' . $filename ) );
+            $articulo->img_producto = $filename;
+            
+        }
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errors =  json_decode($errors);
@@ -153,7 +172,8 @@ class ArticuloController extends Controller
         $articulo->codigo = $request['codigo'];
         $articulo->descripcion = $request['descripcion'];
         $articulo->codigo_barra = $request['codigo_barra'];
-        $articulo->costo = $request['costo'];
+        $articulo->ultimo_costo = $request['ultimo_costo'];
+        $articulo->costo_promedio = $request['costo_promedio'];
         $articulo->comentario = $request['comentario'];
         $articulo->porcentaje_ganancia = $request['porcentaje_ganancia'];
         $articulo->impuesto_id = $request['impuesto_id'];
