@@ -59,10 +59,6 @@
                           <!--<li><a href="#level1_1">Level One</a>-->
                           <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                                @can('tiposproveedores.index')
-                                    <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
-                                    </li>
-                                @endcan
                                 @can('monedas.index')
                                     <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
                                     </li>
@@ -71,7 +67,10 @@
                                     <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
                                     </li>
                                 @endcan
-                                
+                                @can('ordencompra.index')
+                                      <li class="sub_menu"><a href="{{route('ordencompra.index')}}">Orden de Compra</a>
+                                      </li>
+                                @endcan
                             </ul>
                           </li>
                           <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -113,11 +112,14 @@
                               <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     @can('tiposproveedores.index')
+                                        <li class="sub_menu"><a href="{{route('tiposproveedores.index')}}">Tipos de Proveedores</a>
+                                        </li>
+                                    @endcan
+                                    @can('proveedores.index')
                                       <li class="sub_menu">
                                         <a href="{{route('proveedores.index')}}">Proveedores</a>
                                       </li>
                                     @endcan
-                                    </li>
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>

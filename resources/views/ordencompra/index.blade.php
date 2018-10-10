@@ -78,6 +78,7 @@
       }
       */
 
+     /*
       function showForm(id) {
         save_method = "add";
         $('#error-block').hide();
@@ -265,7 +266,7 @@
             }
           });
         }
-
+        */
     </script>
     
 @endsection
