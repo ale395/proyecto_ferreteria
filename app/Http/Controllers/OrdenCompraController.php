@@ -106,7 +106,7 @@ class OrdenCompraController extends Controller
         ->join('proveedores as p', 'p.id','=', 'o.proveedor_id')
         ->join('monedas as m', 'm.id','=', 'o.moneda_id')
         ->select('o.id', 'o.nro_orden', 'o.fecha_emision', DB::raw("CONCAT('p.apellido','p.nombre') as proveedor"),
-        'm.codigo', 'o,monto_total');
+        'm.codigo', 'o.monto_total');
 
 
         if ($permiso_editar) {

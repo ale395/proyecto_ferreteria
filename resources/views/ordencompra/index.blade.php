@@ -32,7 +32,6 @@
             </div>
         </div>
 
-    @include('proveedores.form')
 @endsection
 
 @section('ajax_datatables')
