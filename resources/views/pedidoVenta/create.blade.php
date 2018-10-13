@@ -295,9 +295,10 @@
             });
         });
 
+    /*Evento onchange del select de artículos, para que recupere el precio si es seleccionado algún artículo distinto a nulo*/
     $("#select2-articulos").change(function (e) {
         var valor = $(this).val();
-        console.log(valor);
+        
         if (valor != null) {
             var articulo_id = $("#select2-articulos" ).val();
             $.ajax({
@@ -305,14 +306,15 @@
               url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id,
               datatype: "json",
               success: function(data){
-                $("#precio_unitario" ).val(data).change();
+                $("#precio_unitario" ).val(data.precio).change();
                 $("#porcentaje_descuento" ).val(0).change();
               }
             });
 
-            if($("#cantidad" ).val().length == 0){
+            /*if($("#cantidad" ).val().length == 0){
                 $("#cantidad" ).val(1).change();
-            }
+            }*/
+            $("#cantidad" ).val(1).change();
             $("#cantidad").focus();
         }
     });
@@ -366,9 +368,14 @@
         var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido' onclick='deleteArticulo()'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + monto_descuento + "</th> <th> </th> <th> </th> <th> </th> <th> " + subtotal + " </th> </tr>";
         $("table tbody").append(markup);
         /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+        $('#cantidad').number(false);
+        $('#precio_unitario').number(false);
+        $('#subtotal').number(false);
+        
         $('#cantidad').val("");
         $('#precio_unitario').val("");
-        $('#subtotal').val(null);
+        $('#porcentaje_descuento').val("");
+        $('#subtotal').val("");
         $('#select2-articulos').val(null).trigger('change');
         $("#select2-articulos").focus();
     };
