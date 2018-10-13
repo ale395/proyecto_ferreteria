@@ -10,7 +10,7 @@
                     <h4>Orden de Compra
                     <div class="pull-right btn-group">
                         <button type="submit" class="btn btn-primary btn-save">Guardar</button>
-                        <a href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-default">Cancelar</a>
+                        <a href="{{route('ordencompra.index')}}" type="button" class="btn btn-default">Cancelar</a>
                     </div>
                     
                     </h4>
@@ -34,7 +34,7 @@
                     <div class="form-group">
                         <label for="nro_orden" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="number" id="nro_orden" name="nro_orden" class="form-control" readonly="readonly">
+                            <input type="text" id="nro_orden" name="nro_orden" class="form-control" value="{{old('nro_orden', $nro_orden)}}" readonly="readonly">
                         </div>
                         <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
                         <div class="col-md-2">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="proveedor_id" class="col-md-1 control-label">Cliente *</label>
+                        <label for="proveedor_id" class="col-md-1 control-label">Proveedor *</label>
                         <div class="col-md-5">
                             <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%"></select>
                         </div>
@@ -77,7 +77,7 @@
                             <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
-                            <input type="text" id="monto_total" name="monto_total" class="form-control" placeholder="monto_total" readonly>
+                            <input type="text" id="monto_total" name="monto_total" class="form-control" placeholder="Total Articulo" readonly>
                         </div>
                         <div class="col-md-1">
                             <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
@@ -214,16 +214,16 @@
             });
         }
     });
-
+    
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#select2-clientes').select2({
+        $('#select2-proveedores').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
             minimumInputLength: 4,
             ajax: {
-                url: "{{ route('api.clientes.ventas') }}",
+                url: "{{ route('api.proveedores.buscador') }}",
                 delay: 250,
                 data: function (params) {
                     var queryParameters = {
@@ -287,6 +287,7 @@
             }
         });
 
+        /*
         $('#select2-lista-precios').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
@@ -309,6 +310,8 @@
                 cache: true
             }
         });
+        */
+
     });
 
     $(function() {

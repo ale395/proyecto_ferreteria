@@ -154,10 +154,10 @@ Route::middleware(['auth'])->group(function() {
 	//Rutas para proveedores
 	Route::resource('proveedores', 'ProveedorController');
 	Route::get('api/proveedores', 'ProveedorController@apiProveedores')->name('api.proveedores');
+	Route::get('api/proveedores/buscador', 'ProveedorController@apiProveedoresBuscador')->name('api.proveedores.buscador');
 
 	//Rutas para orden de compra
 	Route::resource('ordencompra', 'OrdenCompraController');
 	Route::get('api/ordencompra', 'OrdenCompraController@apiOrdenCompra')->name('api.ordencompra');
-	
 
 });

@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
 use App\Http\Requests\OrdenCompraFormRquest;
-use App\OrdenCompra;
-use App\OrdenCompraDetalle;
+use App\OrdenCompraCab;
+use App\OrdenCompraDet;
 use App\Proveedor;
 use App\Moneda;
 use App\Articulo;
+use App\DatosDefault;
 use DB;
 use Response;
 use Illuminate\Support\Collections;
@@ -37,7 +38,23 @@ class OrdenCompraController extends Controller
      */
     public function create()
     {
-        //
+ 
+        $fecha_actual = date("d/m/Y");
+        $datos_default = DatosDefault::get()->first();
+        $orden_compra = OrdenCompraCab::max('nro_orden');
+        $moneda = $datos_default->moneda;
+        $cambio = 1;
+        //$nro_orden = DB::table('orden_compras_cab')->select(DB::raw('coalesce(max(nro_orden),0) + 1 as nro_orden'))->get();
+        //$nro_orden = DB::table('orden_compras_cab')->orderBy('nro_orden', 'desc')->first();    
+                    
+        if($orden_compra) {
+            $nro_orden = $orden_compra->nro_orden + 1; 
+        } else {
+            $nro_orden = 1;       
+        }
+        
+
+        return view('ordencompra.create',compact('fecha_actual', 'nro_orden', 'moneda', 'cambio'));
     }
 
     /**
@@ -71,7 +88,7 @@ class OrdenCompraController extends Controller
     public function edit($id)
     {
         //
-    }
+    } 
 
     /**
      * Update the specified resource in storage.

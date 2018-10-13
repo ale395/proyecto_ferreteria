@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     <h4>Ordenes de Compra
                         @can('ordencompra.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo</a>
+                          <a class="btn btn-primary pull-right" href="{{route('ordencompra.create')}}" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo</a>
                         @endcan
