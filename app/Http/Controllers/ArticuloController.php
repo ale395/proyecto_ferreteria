@@ -207,7 +207,7 @@ class ArticuloController extends Controller
             $search = strtolower($request->q);
             $articulos = Articulo::where('descripcion', 'ilike', "%$search%")
                 ->orWhere('codigo', 'ilike', "%$search%")
-                //->orWhere('codigo_barra', 'ilike', "%$search%")
+                ->orWhere('codigo_barra', 'ilike', "%$search%")
                 ->get();
         } else {
             $articulos = Articulo::all();
@@ -225,7 +225,9 @@ class ArticuloController extends Controller
     public function apiArticulosCotizacion($articulo_id){
         if (!empty($articulo_id)) {
             $articulo = collect(Articulo::findOrFail($articulo_id));
+            $articulo_obj = Articulo::findOrFail($articulo_id);
             $articulo->put('precio', 15000);
+            $articulo->put('iva', $articulo_obj->impuesto);
             return $articulo;
         };
     }
