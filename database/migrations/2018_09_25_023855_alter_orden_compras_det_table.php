@@ -17,6 +17,7 @@ class AlterOrdenComprasDetTable extends Migration
             $table->integer('porcentaje_iva');
             $table->decimal('total_exenta', 14, 2);
             $table->decimal('total_gravada', 14, 2);
+            $table->renameColumn('monto_total', 'sub_total');
         });
     }
 
@@ -31,6 +32,7 @@ class AlterOrdenComprasDetTable extends Migration
             $table->dropColumn('porcentaje_iva');
             $table->dropColumn('total_exenta');
             $table->dropColumn('total_gravada');
+            $table->renameColumn('sub_total', 'monto_total');
         });
     }
 }

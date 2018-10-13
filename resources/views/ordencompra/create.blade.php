@@ -77,7 +77,7 @@
                             <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
-                            <input type="text" id="monto_total" name="monto_total" class="form-control" placeholder="Total Articulo" readonly>
+                            <input type="text" id="sub_total" name="sub_total" class="form-control" placeholder="Total Articulo" readonly>
                         </div>
                         <div class="col-md-1">
                             <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
@@ -101,7 +101,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>Total</th>
-                                <th id="total-th">0</th>
+                            <th id="total-th" name="monto_total">0</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -138,7 +138,7 @@
         cantidad = cantidad.replace(".", "");
         var calculo = cantidad * $("#costo_unitario" ).val();
         if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
-            $("#monto_total" ).val(calculo).change();
+            $("#sub_total" ).val(calculo).change();
         }
     };
 

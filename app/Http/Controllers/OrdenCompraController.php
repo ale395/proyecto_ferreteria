@@ -65,7 +65,32 @@ class OrdenCompraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            //instanciamos la clase
+            $orden_compra = new OrdenCompraCab();
+
+            //pasamos los parámetros del request
+            $orden_compra->nro_orden = $request['nro_orden'];
+            $orden_compra->proveedor_id = $request['proveedor_id'];
+            $orden_compra->fecha_emision = $request['fecha_emision'];            
+            $orden_compra->moneda_id = $request['moneda_id'];
+            $orden_compra->valor_cambio = $request['valor_cambio'];
+            $orden_compra->monto_total = $request['monto_total'];
+            $orden_compra->estado = 'A';
+
+            //guardamos
+            $orden_compra->save();
+
+            //desde aca va el detalle
+
+            DB::commit();
+        } catch (\Exception $e) {
+
+            DB::rollback();
+        }
+
     }
 
     /**
