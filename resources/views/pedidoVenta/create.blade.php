@@ -97,7 +97,7 @@
                         </div>
                         <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
                         <div class="col-md-1">
-                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <table id="pedido-detalle" class="table table-striped table-responsive">
@@ -106,7 +106,7 @@
                                 <th width="5%">Acción</th>
                                 <th>Artículo</th>
                                 <th width="6%">Cant.</th>
-                                <th width="9%">Prec. Unit.</th>
+                                <th width="9%">Precio U.</th>
                                 <th width="9%">Descuento</th>
                                 <th width="9%">Exenta</th>
                                 <th width="9%">Gravada</th>
@@ -296,6 +296,15 @@
             });
         });
 
+    $("#btn-add-articulo").attr("disabled", true);
+    var table = $('#pedido-detalle').dataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false,
+        "searching": false,
+        language: { url: '/datatables/translation/spanish' }
+    });
+
     /*Evento onchange del select de artículos, para que recupere el precio si es seleccionado algún artículo distinto a nulo*/
     $("#select2-articulos").change(function (e) {
         var valor = $(this).val();
@@ -311,6 +320,7 @@
                 $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
                 $("#precio_unitario" ).val(data.precio).change();
                 $("#porcentaje_descuento" ).val(0).change();
+                $("#btn-add-articulo").attr("disabled", false);
               }
             });
 
@@ -319,27 +329,10 @@
             }*/
             $("#cantidad" ).val(1).change();
             $("#cantidad").focus();
+        } else {
+            $("#btn-add-articulo").attr("disabled", true);
         }
     });
-
-    /*function setCantidadPrecioUnitario() {
-        var articulo_id = $("#select2-articulos" ).val();
-        $.ajax({
-          type: "GET",
-          url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id,
-          datatype: "json",
-          //async: false,
-          success: function(data){
-            $("#precio_unitario" ).val(data).change();
-            $("#porcentaje_descuento" ).val(0).change();
-          }
-        });
-
-        if($("#cantidad" ).val().length === 0){
-            $("#cantidad" ).val(1).change();
-        }
-        $("#cantidad").focus();
-    };*/
 
     function calcularSubtotal() {
         var cantidad = $("#cantidad" ).val();
@@ -381,9 +374,22 @@
         iva = $.number(iva,decimales, ',', '.');
         subtotal = $.number(subtotal,decimales, ',', '.');  
         
+        var tabla = $("#pedido-detalle").DataTable();
+        tabla.row.add( [
+            ".",
+            articulo,
+            cantidad,
+            precio_unitario,
+            monto_descuento,
+            exenta,
+            gravada,
+            iva,
+            subtotal
+        ] ).draw( false );
+
         /*Se genera el HTML para la inserción de la fila en la tabla*/
         var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + monto_descuento + "</th> <th> "+ exenta +" </th> <th> "+ gravada +" </th> <th> "+ iva +" </th> <th> " + subtotal + " </th> </tr>";
-        $("table tbody").append(markup);
+        //$("table tbody").append(markup);
         /*Se restauran a nulos los valores del bloque para la selección del articulo*/
         $('#cantidad').number(false);
         $('#precio_unitario').number(false);
