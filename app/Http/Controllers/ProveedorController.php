@@ -308,7 +308,7 @@ class ProveedorController extends Controller
 
         foreach ($proveedores as $proveedor) {
             if ($proveedor->getActivo()) {
-                $proveedores_array[] = ['id'=> $proveedor->id, 'text'=> $proveedor->codigo.'-'.$proveedor->nombre];
+                $proveedores_array[] = ['id'=> $proveedor->id, 'text'=> $proveedor->codigo.' - '.$proveedor->nombre];
             }
         }
 

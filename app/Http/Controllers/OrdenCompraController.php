@@ -84,27 +84,61 @@ class OrdenCompraController extends Controller
             //guardamos
             $orden_compra->save();
 
-            //desde aca va el detalle-----------------------------------
-            $articulo_aux = Articulo::where('id', $articulo_id)->first();//para traer algunas cosas del maestro    
-            $iva = Impuesto::where('id',$articulo_aux->impuesto_id);//para traer el porcentaje del IVA
-            
+            //desde aca va el detalle-----------------------------------         
             //lo que trae directamente del request
             $articulo_id = $request['monto_total'];
             $cantidad = $request['cantidad'];
-            $costo_unitario = $request['costo_unitario'];
-
-            $costo_promedio = $articulo_aux->costo_promedio;            
+            $costo_unitario = $request['costo_unitario'];        
             $sub_total = $request['sub_total'];
-            $porcentaje_iva = $iva->porcentaje;
-            $total_exenta = $request['monto_total'];
-            $total_gravada = $request['monto_total'];
+           
+            $i = 0;
 
-            //-----------------------------------------------------------
+            while($i < count($articulo_id)){
+
+                //datos del articulo.
+                $articulo_aux = Articulo::where('id', $articulo_id[$cont])->first();//para traer algunas cosas del maestro    
+                $iva = Impuesto::where('id',$articulo_aux->impuesto_id);//para traer el porcentaje del IVA
+                
+                $costo_promedio = $articulo_aux->costo_promedio; 
+                $porcentaje_iva = $iva->porcentaje;
+                $coheficiente_iva =  1 - ($porcentaje_iva/100); //coheficiente utilizado para calcular los valores del IVA
+
+                if($porcentaje_iva == 0){
+                    $total_exenta = $sub_total[$i];
+                    $total_gravada = 0;
+                    $total_iva = 0;    
+                } else {
+                    $total_exenta = 0;
+                    $total_gravada = $sub_total[$i];
+                    $total_iva = $sub_total[$i] / $coheficiente_iva;            
+                }
+
+                $orden_compra_detalle = new OrdenCompraDet();
+
+                $orden_compra_detalle->orden_compra_cab_id = $orden_compra->id; 
+                $orden_compra_detalle->articulo_id = $articulo_id[$i];
+                $orden_compra_detalle->cantidad = $cantidad[$i];
+                $orden_compra_detalle->costo_unitario = $costo_unitario[$i];
+                $orden_compra_detalle->costo_promedio = $costo_promedio;
+                $orden_compra_detalle->sub_total = $sub_total[$i];
+                $orden_compra_detalle->porcentaje_iva = $porcentaje_iva;
+                $orden_compra_detalle->total_exenta = $total_exenta;
+                $orden_compra_detalle->total_gravada = $total_gravada;
+                $orden_compra_detalle->total_iva = $total_iva;
+
+                $orden_compra_detalle->save();
+
+                $i = $i + 1;
+            }
+             //-----------------------------------------------------------
+
             DB::commit();
         } catch (\Exception $e) {
 
             DB::rollback();
         }
+
+        return redirect(route('ordencompra.create'))->with('status', 'Datos guardados correctamente!');
 
     }
 
@@ -116,8 +150,26 @@ class OrdenCompraController extends Controller
      */
     public function show($id)
     {
-        //
+        $orden_compra = DB::table('orden_compras_cab as o')
+        ->join('proveedores as p', 'p.id','=', 'o.proveedor_id')
+        ->join('monedas as m', 'm.id','=', 'o.moneda_id')
+        ->join('orden_compras_det od', 'od.orden_compra_cab_id','=','o.id')  
+        ->select('o.id', 'o.nro_orden', 'o.fecha_emision', 'o.proveedor_id',
+        DB::raw("CONCAT('p.codigo','p.nombre') as proveedor"),
+        'o.moneda_id','m.codigo', 'm.descripcion', 'o.valor_cambio', 'o.monto_total')
+        ->where('o.id','=',$id)->fist();
+
+        $orden_compra_detalle = DB::table('orden_compras_det as od')
+        ->join('articulos as a', 'a.id','=', 'od.articulo_id')
+        ->select('od.orden_compra_id', 'a.codigo', 'a.descripcion', 'od.cantidad',
+        'od.costo_unitario', 'od.sub_total','od.porcentaje_iva','od.total_exenta', 
+        'od.total_gravada', 'od.total_iva')
+        ->where('o.id','=',$id)
+        ->get();
+
+        return view('ordencompra.show',compact('orden_compra', 'orden_compra_detalle'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -225,5 +277,5 @@ class OrdenCompraController extends Controller
                 })->make(true);
             }
         }
-}
+    }
 }
