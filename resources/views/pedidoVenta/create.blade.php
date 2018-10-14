@@ -302,7 +302,43 @@
         "ordering": false,
         "info":     false,
         "searching": false,
-        language: { url: '/datatables/translation/spanish' }
+        language: { url: '/datatables/translation/spanish' },
+        "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+        ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            var decimales = 0;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(".", "")*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column(8)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 8, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 8 ).footer() ).html(
+                $.number(total,decimales, ',', '.')
+            );
+        }
     });
 
     /*Evento onchange del select de artículos, para que recupere el precio si es seleccionado algún artículo distinto a nulo*/
@@ -324,9 +360,6 @@
               }
             });
 
-            /*if($("#cantidad" ).val().length == 0){
-                $("#cantidad" ).val(1).change();
-            }*/
             $("#cantidad" ).val(1).change();
             $("#cantidad").focus();
         } else {
@@ -374,9 +407,10 @@
         iva = $.number(iva,decimales, ',', '.');
         subtotal = $.number(subtotal,decimales, ',', '.');  
         
+        /*Se agrega una fila a la tabla*/
         var tabla = $("#pedido-detalle").DataTable();
         tabla.row.add( [
-            ".",
+            "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
             articulo,
             cantidad,
             precio_unitario,
@@ -387,9 +421,6 @@
             subtotal
         ] ).draw( false );
 
-        /*Se genera el HTML para la inserción de la fila en la tabla*/
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + monto_descuento + "</th> <th> "+ exenta +" </th> <th> "+ gravada +" </th> <th> "+ iva +" </th> <th> " + subtotal + " </th> </tr>";
-        //$("table tbody").append(markup);
         /*Se restauran a nulos los valores del bloque para la selección del articulo*/
         $('#cantidad').number(false);
         $('#precio_unitario').number(false);
@@ -398,16 +429,20 @@
         $('#cantidad').val("");
         $('#precio_unitario').val("");
         $('#porcentaje_descuento').val("");
+        $('#porcentaje_iva').val("");
         $('#subtotal').val("");
         $('#select2-articulos').val(null).trigger('change');
         $("#select2-articulos").focus();
     };
 
     /*Elimina el articulo del pedido*/
-    $(document).on('click', '.btn-delete-row', function () {
-        $(this).closest('tr').remove();
-        return false;
-    });
+    var tabla = $("#pedido-detalle").DataTable();
+    $('#pedido-detalle tbody').on( 'click', 'a.btn-delete-row', function () {
+        tabla
+            .row( $(this).parents('tr') )
+            .remove()
+            .draw();
+    } );
 </script>
 <script type="text/javascript">
     //JS para que al abrir el modal de persona fisica se quede en foco en el campo nro_cedula
