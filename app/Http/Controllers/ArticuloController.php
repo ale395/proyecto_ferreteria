@@ -8,6 +8,7 @@ use App\Rubro;
 use App\Familia;
 use App\Linea;
 use App\UnidadMedida;
+use Image;
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -156,7 +157,7 @@ class ArticuloController extends Controller
         if($request->hasFile('img_producto')){
             
             $img_producto = $request->file('img_producto');
-            $filename = $request['nro_cedula']/*.'-'.time()*/.'.'.$img_producto->getClientOriginalExtension();
+            $filename = $request['descripcion']/*.'-'.time()*/.'.'.$img_producto->getClientOriginalExtension();
             Image::make($img_producto)->resize(300, 300)->save( public_path('/images/productos/' . $filename ) );
             $articulo->img_producto = $filename;
             

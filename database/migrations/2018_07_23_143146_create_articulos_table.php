@@ -31,6 +31,7 @@ class CreateArticulosTable extends Migration
                 $table->decimal('costo_promedio', 14, 2)->default(0);
                 $table->decimal('costo_promedio_sin_iva', 14, 2)->default(0);
                 $table->date('fecha_ultima_compra')->nullable();
+                $table->integer('stock_minimo')->unsigned()->nullable();
                 $table->string('img_producto')->default('default-img_producto.jpg');
                 $table->boolean('control_existencia')->default(true);
                 $table->boolean('vendible')->default(true);
