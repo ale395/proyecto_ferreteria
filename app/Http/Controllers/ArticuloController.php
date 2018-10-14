@@ -8,11 +8,8 @@ use App\Rubro;
 use App\Familia;
 use App\Linea;
 use App\UnidadMedida;
-<<<<<<< HEAD
 use Image;
-=======
 use App\ListaPrecioDetalle;
->>>>>>> 7f6d4bcc41beae14d510e9395eb895b8dcd4e7cd
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
