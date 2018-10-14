@@ -302,9 +302,10 @@
         
         if (valor != null) {
             var articulo_id = $("#select2-articulos" ).val();
+            var lista_precio_id = $("#select2-lista-precios" ).val();
             $.ajax({
               type: "GET",
-              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id,
+              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,
               datatype: "json",
               success: function(data){
                 $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
@@ -395,6 +396,8 @@
         $('#select2-articulos').val(null).trigger('change');
         $("#select2-articulos").focus();
     };
+
+    /*Elimina el articulo del pedido*/
     $(document).on('click', '.btn-delete-row', function () {
         $(this).closest('tr').remove();
         return false;

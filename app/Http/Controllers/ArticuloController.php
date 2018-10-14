@@ -8,6 +8,7 @@ use App\Rubro;
 use App\Familia;
 use App\Linea;
 use App\UnidadMedida;
+use App\ListaPrecioDetalle;
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -222,11 +223,16 @@ class ArticuloController extends Controller
         return json_encode($articulos_array);
     }
 
-    public function apiArticulosCotizacion($articulo_id){
-        if (!empty($articulo_id)) {
+    public function apiArticulosCotizacion($articulo_id, $lista_precio_id){
+        if (!empty($articulo_id) && !empty($lista_precio_id)) {
             $articulo = collect(Articulo::findOrFail($articulo_id));
             $articulo_obj = Articulo::findOrFail($articulo_id);
-            $articulo->put('precio', 15000);
+            $precio = ListaPrecioDetalle::where('lista_precio_id', $lista_precio_id)
+                ->where('articulo_id', $articulo_id)->get();
+            $precio = $precio->sortByDesc('fecha_vigencia');
+            $precio = $precio->first();
+            //dd($precio);
+            $articulo->put('precio', $precio->precio);
             $articulo->put('iva', $articulo_obj->impuesto);
             return $articulo;
         };
