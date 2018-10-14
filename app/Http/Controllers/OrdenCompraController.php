@@ -14,6 +14,7 @@ use App\Proveedor;
 use App\Moneda;
 use App\Articulo;
 use App\DatosDefault;
+use App\Impuesto;
 use DB;
 use Response;
 use Illuminate\Support\Collections;
@@ -83,8 +84,22 @@ class OrdenCompraController extends Controller
             //guardamos
             $orden_compra->save();
 
-            //desde aca va el detalle
+            //desde aca va el detalle-----------------------------------
+            $articulo_aux = Articulo::where('id', $articulo_id)->first();//para traer algunas cosas del maestro    
+            $iva = Impuesto::where('id',$articulo_aux->impuesto_id);//para traer el porcentaje del IVA
+            
+            //lo que trae directamente del request
+            $articulo_id = $request['monto_total'];
+            $cantidad = $request['cantidad'];
+            $costo_unitario = $request['costo_unitario'];
 
+            $costo_promedio = $articulo_aux->costo_promedio;            
+            $sub_total = $request['sub_total'];
+            $porcentaje_iva = $iva->porcentaje;
+            $total_exenta = $request['monto_total'];
+            $total_gravada = $request['monto_total'];
+
+            //-----------------------------------------------------------
             DB::commit();
         } catch (\Exception $e) {
 
