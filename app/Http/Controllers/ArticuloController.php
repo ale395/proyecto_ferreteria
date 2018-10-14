@@ -229,11 +229,17 @@ class ArticuloController extends Controller
             $articulo = collect(Articulo::findOrFail($articulo_id));
             $articulo_obj = Articulo::findOrFail($articulo_id);
             $precio = ListaPrecioDetalle::where('lista_precio_id', $lista_precio_id)
-                ->where('articulo_id', $articulo_id)->get();
+                ->where('articulo_id', $articulo_id)
+                ->where('fecha_vigencia', '<=', today())->get();
             $precio = $precio->sortByDesc('fecha_vigencia');
             $precio = $precio->first();
-            //dd($precio);
-            $articulo->put('precio', $precio->precio);
+            
+            if (empty($precio)) {
+                $articulo->put('precio', 0);
+            } else {
+                $articulo->put('precio', $precio->precio);
+            }
+            
             $articulo->put('iva', $articulo_obj->impuesto);
             return $articulo;
         };
