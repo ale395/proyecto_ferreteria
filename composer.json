@@ -13,7 +13,8 @@
         "laravel/tinker": "^1.0",
         "laraveles/spanish": "^1.0",
         "yajra/laravel-datatables-oracle": "^8.4",
-        "zizaco/entrust": "dev-master"
+        "zizaco/entrust": "dev-master",
+        "doctrine/dbal": "2.5.1"
     },
     "require-dev": {
         "filp/whoops": "^2.0",

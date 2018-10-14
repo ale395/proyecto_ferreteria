@@ -291,4 +291,27 @@ class ProveedorController extends Controller
             }
         }
     }
+
+    public function apiProveedoresBuscador(Request $request){
+        $proveedores_array = [];
+
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $proveedores = Proveedor::where('nombre', 'ilike', "%$search%")
+                ->orWhere('razon_social', 'ilike', "%$search%")
+                ->orWhere('ruc', 'ilike', "%$search%")
+                //->orWhere('nro_cedula', 'LIKE', "%$search%")
+                ->get();
+        } else {
+            $proveedores = Cliente::all();
+        }
+
+        foreach ($proveedores as $proveedor) {
+            if ($proveedor->getActivo()) {
+                $proveedores_array[] = ['id'=> $proveedor->id, 'text'=> $proveedor->codigo.'-'.$proveedor->nombre];
+            }
+        }
+
+        return json_encode($proveedores_array);
+    }
 }

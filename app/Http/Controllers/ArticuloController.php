@@ -8,7 +8,11 @@ use App\Rubro;
 use App\Familia;
 use App\Linea;
 use App\UnidadMedida;
+<<<<<<< HEAD
 use Image;
+=======
+use App\ListaPrecioDetalle;
+>>>>>>> 7f6d4bcc41beae14d510e9395eb895b8dcd4e7cd
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -208,14 +212,14 @@ class ArticuloController extends Controller
             $search = strtolower($request->q);
             $articulos = Articulo::where('descripcion', 'ilike', "%$search%")
                 ->orWhere('codigo', 'ilike', "%$search%")
-                //->orWhere('codigo_barra', 'ilike', "%$search%")
+                ->orWhere('codigo_barra', 'ilike', "%$search%")
                 ->get();
         } else {
             $articulos = Articulo::all();
         }
 
         foreach ($articulos as $articulo) {
-            if ($articulo->getActivo()) {
+            if ($articulo->getActivo() && $articulo->getVendible()) {
                 $articulos_array[] = array('id'=> $articulo->getId(), 'text'=> $articulo->getNombreSelect());
             }
         }
@@ -223,9 +227,18 @@ class ArticuloController extends Controller
         return json_encode($articulos_array);
     }
 
-    public function apiArticulosCotizacion($articulo_id){
-        if (!empty($articulo_id)) {
-            return 12000;//number_format(12000, 0, ',', '.');
+    public function apiArticulosCotizacion($articulo_id, $lista_precio_id){
+        if (!empty($articulo_id) && !empty($lista_precio_id)) {
+            $articulo = collect(Articulo::findOrFail($articulo_id));
+            $articulo_obj = Articulo::findOrFail($articulo_id);
+            $precio = ListaPrecioDetalle::where('lista_precio_id', $lista_precio_id)
+                ->where('articulo_id', $articulo_id)->get();
+            $precio = $precio->sortByDesc('fecha_vigencia');
+            $precio = $precio->first();
+            //dd($precio);
+            $articulo->put('precio', $precio->precio);
+            $articulo->put('iva', $articulo_obj->impuesto);
+            return $articulo;
         };
     }
 

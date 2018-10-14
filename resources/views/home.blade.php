@@ -59,6 +59,11 @@
                           <!--<li><a href="#level1_1">Level One</a>-->
                           <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
+                                @can('ordencompra.index')
+                                      <li class="sub_menu"><a href="{{route('ordencompra.index')}}">Orden de Compra</a>
+                                      </li>
+                                @endcan
+                                <!-- Pablo - comento para usar en otras cosas, y porque esto ya está en Parámetros generales
                                 @can('monedas.index')
                                     <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
                                     </li>
@@ -67,10 +72,7 @@
                                     <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
                                     </li>
                                 @endcan
-                                @can('ordencompra.index')
-                                      <li class="sub_menu"><a href="{{route('ordencompra.index')}}">Orden de Compra</a>
-                                      </li>
-                                @endcan
+                                -->                                
                             </ul>
                           </li>
                           <li><a>Reportes<span class="fa fa-chevron-down"></span></a>

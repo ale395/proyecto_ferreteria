@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA IMPUESTOS
 	Route::resource('articulos', 'ArticuloController');
 	Route::get('api/articulos', 'ArticuloController@apiArticulos')->name('api.articulos');
-	Route::get('api/articulos/cotizacion/{articulo}', 'ArticuloController@apiArticulosCotizacion')->name('api.articulos.cotizacion');
+	Route::get('api/articulos/cotizacion/{articulo}/{lista_precio}', 'ArticuloController@apiArticulosCotizacion')->name('api.articulos.cotizacion');
 		
 		//RUTAS PARA Monedas
 	Route::resource('monedas', 'MonedaController');
@@ -154,10 +154,10 @@ Route::middleware(['auth'])->group(function() {
 	//Rutas para proveedores
 	Route::resource('proveedores', 'ProveedorController');
 	Route::get('api/proveedores', 'ProveedorController@apiProveedores')->name('api.proveedores');
+	Route::get('api/proveedores/buscador', 'ProveedorController@apiProveedoresBuscador')->name('api.proveedores.buscador');
 
 	//Rutas para orden de compra
 	Route::resource('ordencompra', 'OrdenCompraController');
 	Route::get('api/ordencompra', 'OrdenCompraController@apiOrdenCompra')->name('api.ordencompra');
-	
 
 });

@@ -95,6 +95,7 @@
                             <a data-toggle="tooltip" data-placement="top" title="Subtotal">
                             <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
                         </div>
+                        <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
                         <div class="col-md-1">
                             <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
@@ -125,7 +126,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>Total</th>
-                                <th id="total-th">0</th>
+                                <th class="total">0</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -295,24 +296,28 @@
             });
         });
 
+    /*Evento onchange del select de artículos, para que recupere el precio si es seleccionado algún artículo distinto a nulo*/
     $("#select2-articulos").change(function (e) {
         var valor = $(this).val();
-        console.log(valor);
+        
         if (valor != null) {
             var articulo_id = $("#select2-articulos" ).val();
+            var lista_precio_id = $("#select2-lista-precios" ).val();
             $.ajax({
               type: "GET",
-              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id,
+              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,
               datatype: "json",
               success: function(data){
-                $("#precio_unitario" ).val(data).change();
+                $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
+                $("#precio_unitario" ).val(data.precio).change();
                 $("#porcentaje_descuento" ).val(0).change();
               }
             });
 
-            if($("#cantidad" ).val().length == 0){
+            /*if($("#cantidad" ).val().length == 0){
                 $("#cantidad" ).val(1).change();
-            }
+            }*/
+            $("#cantidad" ).val(1).change();
             $("#cantidad").focus();
         }
     });
@@ -357,21 +362,46 @@
         var porcentaje_descuento = $("#porcentaje_descuento" ).val();
         var monto_descuento = precio_unitario.replace(".", "") * (porcentaje_descuento/100);
         var subtotal = $("#subtotal").val();
+        var porcentaje_iva = $("#porcentaje_iva" ).val();
+        var exenta = 0;
+        var gravada = 0;
+        var iva = 0;
+        if (porcentaje_iva == 0) {
+            exenta = subtotal;
+        } else {
+            gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
+            iva = Math.round(gravada*(porcentaje_iva/100));
+        }
         /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
         precio_unitario = $.number(precio_unitario,decimales, ',', '.');
         cantidad = $.number(cantidad,decimales, ',', '.');
         monto_descuento = $.number(monto_descuento,decimales, ',', '.');
-        subtotal = $.number(subtotal,decimales, ',', '.');
+        exenta = $.number(exenta,decimales, ',', '.');
+        gravada = $.number(gravada,decimales, ',', '.');
+        iva = $.number(iva,decimales, ',', '.');
+        subtotal = $.number(subtotal,decimales, ',', '.');  
+        
         /*Se genera el HTML para la inserción de la fila en la tabla*/
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido' onclick='deleteArticulo()'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + monto_descuento + "</th> <th> </th> <th> </th> <th> </th> <th> " + subtotal + " </th> </tr>";
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + monto_descuento + "</th> <th> "+ exenta +" </th> <th> "+ gravada +" </th> <th> "+ iva +" </th> <th> " + subtotal + " </th> </tr>";
         $("table tbody").append(markup);
         /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+        $('#cantidad').number(false);
+        $('#precio_unitario').number(false);
+        $('#subtotal').number(false);
+        
         $('#cantidad').val("");
         $('#precio_unitario').val("");
-        $('#subtotal').val(null);
+        $('#porcentaje_descuento').val("");
+        $('#subtotal').val("");
         $('#select2-articulos').val(null).trigger('change');
         $("#select2-articulos").focus();
     };
+
+    /*Elimina el articulo del pedido*/
+    $(document).on('click', '.btn-delete-row', function () {
+        $(this).closest('tr').remove();
+        return false;
+    });
 </script>
 <script type="text/javascript">
     //JS para que al abrir el modal de persona fisica se quede en foco en el campo nro_cedula
