@@ -17,7 +17,8 @@ class OrdenCompraDet extends Model
         'sub_total',
         'porcentaje_iva',
         'total_exenta',
-        'total_gravada'
+        'total_gravada',
+        'total_iva'
     ];
 
     public function articulo()
