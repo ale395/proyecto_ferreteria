@@ -42,7 +42,7 @@ class PedidoVentaController extends Controller
      */
     public function store(Request $request)
     {
-        $cabecera = new PedidoVentaCab();
+        /*$cabecera = new PedidoVentaCab();
 
         $rules = [
             'nro_cedula' => 'required|numeric|unique:empleados,nro_cedula',
@@ -60,7 +60,8 @@ class PedidoVentaController extends Controller
             'tipos_empleados.min' => 'Como mínimo se debe asignar :min tipo(s) de empleado(s)!',
         ];
 
-        Validator::make($request->all(), $rules, $mensajes)->validate();
+        Validator::make($request->all(), $rules, $mensajes)->validate();*/
+        return $request;
     }
 
     /**

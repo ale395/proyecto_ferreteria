@@ -130,6 +130,24 @@
                             </tr>
                         </tfoot>
                     </table>
+
+                    <table id="tab-hidden" class="hidden">
+                        <thead>
+                            <tr>
+                                <th width="5%">Acción</th>
+                                <th>Artículo</th>
+                                <th width="6%">Cant.</th>
+                                <th width="9%">Precio U.</th>
+                                <th width="9%">Descuento</th>
+                                <th width="9%">Exenta</th>
+                                <th width="9%">Gravada</th>
+                                <th width="6%">IVA</th>
+                                <th width="9%">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </form>
@@ -420,6 +438,9 @@
             iva,
             subtotal
         ] ).draw( false );
+
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo + "'></th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + monto_descuento + "</th> <th> "+ exenta +" </th> <th> "+ gravada +" </th> <th> "+ iva +" </th> <th> " + subtotal + " </th> </tr>";
+        $("#tab-hidden").append(markup);
 
         /*Se restauran a nulos los valores del bloque para la selección del articulo*/
         $('#cantidad').number(false);
