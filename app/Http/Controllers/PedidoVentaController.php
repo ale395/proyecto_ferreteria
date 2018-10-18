@@ -67,7 +67,7 @@ class PedidoVentaController extends Controller
         $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
         if ($validator->fails())
         {
-            return back()->withErrors($validator)->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
         return $request;
     }
