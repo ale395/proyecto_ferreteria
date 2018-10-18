@@ -100,7 +100,7 @@
                             <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
-                    <table id="pedido-detalle" class="table table-striped table-responsive">
+                    <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
                         <thead>
                             <tr>
                                 <th width="5%">Acción</th>
@@ -115,6 +115,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if ($errors->any())
+                                @for ($i=0; $i < 10; $i++)
+                                    <tr>
+                                        <td></td>
+                                        <td>{{old('tab_articulo_id.'.$i)}}</td>
+                                    </tr>
+                                @endfor
+                            @endif
                         </tbody>
                         <tfoot>
                             <tr>
@@ -131,14 +139,16 @@
                         </tfoot>
                     </table>
 
-                    <table id="tab-hidden" class="hidden">
+                    <table id="tab-hidden">
                         <thead>
                             <tr>
                                 <th width="5%">Acción</th>
                                 <th>Artículo</th>
                                 <th width="6%">Cant.</th>
                                 <th width="9%">Precio U.</th>
-                                <th width="9%">Descuento</th>
+                                <th width="9%">% Descuento</th>
+                                <th width="9%">Monto Descuento</th>
+                                <th width="9%">% IVA</th>
                                 <th width="9%">Exenta</th>
                                 <th width="9%">Gravada</th>
                                 <th width="6%">IVA</th>
@@ -146,6 +156,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            
                         </tbody>
                     </table>
                 </div>
@@ -315,7 +326,7 @@
         });
 
     $("#btn-add-articulo").attr("disabled", true);
-    var table = $('#pedido-detalle').dataTable({
+    var table = $('#pedido-detalle').DataTable({
         "paging":   false,
         "ordering": false,
         "info":     false,
@@ -401,6 +412,7 @@
         /*Se obtienen los valores de los campos correspondientes*/
         var decimales = 0;
         var articulo = $('#select2-articulos').select2('data')[0].text;
+        var articulo_id = $('#select2-articulos').select2('data')[0].id;
         var cantidad = $("#cantidad").val();
         var precio_unitario = $("#precio_unitario").val();
         var porcentaje_descuento = $("#porcentaje_descuento" ).val();
@@ -439,7 +451,7 @@
             subtotal
         ] ).draw( false );
 
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo + "'></th> <th>" + cantidad + "</th> <th>" + precio_unitario + "</th> <th>" + monto_descuento + "</th> <th> "+ exenta +" </th> <th> "+ gravada +" </th> <th> "+ iva +" </th> <th> " + subtotal + " </th> </tr>";
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='{{ old('tab_articulo_id[]') }}" + articulo_id + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
         $("#tab-hidden").append(markup);
 
         /*Se restauran a nulos los valores del bloque para la selección del articulo*/

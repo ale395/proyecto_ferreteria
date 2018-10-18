@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\DatosDefault;
 use App\PedidoVentaCab;
 use App\PedidoVentaDet;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class PedidoVentaController extends Controller
 {
@@ -42,25 +45,30 @@ class PedidoVentaController extends Controller
      */
     public function store(Request $request)
     {
-        /*$cabecera = new PedidoVentaCab();
+        $cabecera = new PedidoVentaCab();
 
         $rules = [
-            'nro_cedula' => 'required|numeric|unique:empleados,nro_cedula',
-            'nombre' => 'required|max:100',
-            'apellido' => 'required|max:100',
-            'direccion' => 'required|max:100',
-            'correo_electronico' => 'required|max:100|email',
-            'telefono_celular' => 'required|numeric|digits:9',
-            'fecha_nacimiento' => 'required|date_format:d/m/Y',
-            'tipos_empleados' => 'required|array|min:1',
+            'lista_precio_id' => 'required',
+            'sucursal_id' => 'required',
+            'moneda_id' => 'required',
+            'valor_cambio' => 'required',
+            'fecha_emision' => 'required|date_format:d/m/Y',
+            'tab_articulo_id' => 'required|array|min:1|max:2',
+            'tab_cantidad' => 'required|array|min:1',
+            'tab_precio_unitario' => 'required|array|min:1',
+            'tab_monto_descuento' => 'required|array|min:1',
         ];
 
         $mensajes = [
             'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
-            'tipos_empleados.min' => 'Como mínimo se debe asignar :min tipo(s) de empleado(s)!',
+            'tab_articulo_id.min' => 'Como mínimo se debe asignar :min producto(s) al pedido!',
         ];
 
-        Validator::make($request->all(), $rules, $mensajes)->validate();*/
+        $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
+        if ($validator->fails())
+        {
+            return back()->withErrors($validator)->withInput();
+        }
         return $request;
     }
 
