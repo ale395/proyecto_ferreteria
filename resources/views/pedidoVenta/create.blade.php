@@ -146,7 +146,7 @@
                         </tfoot>
                     </table>
 
-                    <table id="tab-hidden">
+                    <table id="tab-hidden" class="hidden">
                         <thead>
                             <tr>
                                 <th width="5%">Acción</th>
