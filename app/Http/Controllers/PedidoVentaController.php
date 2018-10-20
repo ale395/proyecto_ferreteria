@@ -45,7 +45,13 @@ class PedidoVentaController extends Controller
      */
     public function store(Request $request)
     {
+        $sucursal = Auth::user()->empleado->sucursales->first();
         $cabecera = new PedidoVentaCab();
+        $total = 0;
+
+        if (!empty('sucursal')) {
+            $request['sucursal_id'] = $sucursal->getId();
+        }
 
         $rules = [
             'lista_precio_id' => 'required',
@@ -53,22 +59,37 @@ class PedidoVentaController extends Controller
             'moneda_id' => 'required',
             'valor_cambio' => 'required',
             'fecha_emision' => 'required|date_format:d/m/Y',
-            'tab_articulo_id' => 'required|array|min:1|max:2',
+            'tab_articulo_id' => 'required|array|min:1|max:'.PedidoVentaCab::MAX_LINEAS_DETALLE,
             'tab_cantidad' => 'required|array|min:1',
             'tab_precio_unitario' => 'required|array|min:1',
             'tab_monto_descuento' => 'required|array|min:1',
         ];
 
         $mensajes = [
-            'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
             'tab_articulo_id.min' => 'Como mínimo se debe asignar :min producto(s) al pedido!',
+            'tab_articulo_id.max' => 'Ha superado la cantidad máxima de líneas en un pedido. La cantidad máxima es de :max!',
         ];
 
         $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
-        if ($validator->fails())
+        /*if ($validator->fails())
         {
             return redirect()->back()->withErrors($validator)->withInput();
+        }*/
+        foreach ($request['tab_subtotal'] as $subtotal) {
+            $total = $total + str_replace('.', '', $subtotal);
         }
+
+        $cabecera->setNroPedido();
+        $cabecera->setClienteId($request['cliente_id']);
+        $cabecera->setSucursalId($request['sucursal_id']);
+        $cabecera->setMonedaId($request['moneda_id']);
+        $cabecera->setValorCambio($request['valor_cambio']);
+        $cabecera->setFechaEmision($request['fecha_emision']);
+        $cabecera->setMontoTotal($total);
+        $cabecera->setComentario();
+
+        $cabecera->save();
+
         return $request;
     }
 
