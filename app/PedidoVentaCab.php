@@ -14,6 +14,10 @@ class PedidoVentaCab extends Model
         'nro_pedido', 'cliente_id', 'sucursal_id', 'moneda_id', 'valor_cambio', 'fecha_emision', 'monto_total', 'estado','comentario',
     ];
 
+    public function getId(){
+        return $this->id;
+    }
+
     public function setNroPedido($nro_pedido){
         $this->nro_pedido = $nro_pedido;
     }
@@ -39,7 +43,7 @@ class PedidoVentaCab extends Model
     }
 
     public function setMontoTotal($monto_total){
-        $this->monto_total;
+        $this->monto_total = $monto_total;
     }
 
     public function setComentario($comentario){

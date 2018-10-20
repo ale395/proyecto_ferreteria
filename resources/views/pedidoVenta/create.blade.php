@@ -27,6 +27,12 @@
                                 </ul>
                             </div>
                         @endif
+                        @if (session('status'))
+                            <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                {{ session('status') }}
+                            </div>
+                        @endif
                     </div>
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
@@ -542,6 +548,7 @@
             });
         }
     });
+    $('#valor_cambio').number(true, 0, ',', '.');
     $('#cantidad').number(true, 0, ',', '.');
     $('#precio_unitario').number(true, 0, ',', '.');
     $('#subtotal').number(true, 0, ',', '.');
