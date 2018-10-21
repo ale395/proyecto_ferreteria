@@ -74,6 +74,10 @@
                       ]
                     });
 
+      $('#pedidos-table').on('draw.dt', function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    })
+
       function editForm(id) {
         window.location="{{ url('pedidosVentas') }}" + '/' + id +'/edit';
       }

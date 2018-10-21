@@ -186,6 +186,9 @@ class PedidoVentaController extends Controller
                     ->addColumn('moneda', function($pedidos){
                         return $pedidos->moneda->getDescripcion();
                     })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
                     ->addColumn('estado', function($pedidos){
                         if ($pedidos->estado == 'P') {
                             return 'Pendiente';
@@ -198,8 +201,8 @@ class PedidoVentaController extends Controller
                         }
                     })
                     ->addColumn('action', function($pedidos){
-                        return '<a onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
+                        return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 } else{
                     return Datatables::of($pedidos)
@@ -212,6 +215,9 @@ class PedidoVentaController extends Controller
                     ->addColumn('moneda', function($pedidos){
                         return $pedidos->moneda->getDescripcion();
                     })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
                     ->addColumn('estado', function($pedidos){
                         if ($pedidos->estado == 'P') {
                             return 'Pendiente';
@@ -224,8 +230,8 @@ class PedidoVentaController extends Controller
                         }
                     })
                     ->addColumn('action', function($pedidos){
-                        return '<a class="btn btn-primary btn-sm" title="Ver Empleado"  disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Empleado"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Empleado"><i class="fa fa-trash-o"></i></a>';
+                        return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido"  disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 }
             } else {
@@ -240,6 +246,9 @@ class PedidoVentaController extends Controller
                     ->addColumn('moneda', function($pedidos){
                         return $pedidos->moneda->getDescripcion();
                     })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
                     ->addColumn('estado', function($pedidos){
                         if ($pedidos->estado == 'P') {
                             return 'Pendiente';
@@ -252,8 +261,8 @@ class PedidoVentaController extends Controller
                         }
                     })
                     ->addColumn('action', function($pedidos){
-                        return '<a onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
+                        return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 } else{
                     return Datatables::of($pedidos)
@@ -266,6 +275,9 @@ class PedidoVentaController extends Controller
                     ->addColumn('moneda', function($pedidos){
                         return $pedidos->moneda->getDescripcion();
                     })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
                     ->addColumn('estado', function($pedidos){
                         if ($pedidos->estado == 'P') {
                             return 'Pendiente';
@@ -278,8 +290,8 @@ class PedidoVentaController extends Controller
                         }
                     })
                     ->addColumn('action', function($pedidos){
-                        return '<a class="btn btn-primary btn-sm" title="Ver Empleado" disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Empleado"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a class="btn btn-danger btn-sm" title="Eliminar Empleado" disabled><i class="fa fa-trash-o"></i></a>';
+                        return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Eliminar Pedido" disabled><i class="fa fa-trash-o"></i></a>';
                     })->make(true);
                 }
             }
@@ -295,6 +307,9 @@ class PedidoVentaController extends Controller
                     ->addColumn('moneda', function($pedidos){
                         return $pedidos->moneda->getDescripcion();
                     })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
                     ->addColumn('estado', function($pedidos){
                         if ($pedidos->estado == 'P') {
                             return 'Pendiente';
@@ -307,8 +322,8 @@ class PedidoVentaController extends Controller
                         }
                     })
                 ->addColumn('action', function($pedidos){
-                    return '<a onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                    return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>';
                 })->make(true);
             } else{
                 return Datatables::of($pedidos)
@@ -321,6 +336,9 @@ class PedidoVentaController extends Controller
                     ->addColumn('moneda', function($pedidos){
                         return $pedidos->moneda->getDescripcion();
                     })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
                     ->addColumn('estado', function($pedidos){
                         if ($pedidos->estado == 'P') {
                             return 'Pendiente';
@@ -333,8 +351,8 @@ class PedidoVentaController extends Controller
                         }
                     })
                 ->addColumn('action', function($pedidos){
-                    return '<a class="btn btn-primary btn-sm" title="Ver Empleado" disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                    return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>';
                 })->make(true);
             }
         } else {
@@ -349,6 +367,9 @@ class PedidoVentaController extends Controller
                     ->addColumn('moneda', function($pedidos){
                         return $pedidos->moneda->getDescripcion();
                     })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
                     ->addColumn('estado', function($pedidos){
                         if ($pedidos->estado == 'P') {
                             return 'Pendiente';
@@ -361,8 +382,8 @@ class PedidoVentaController extends Controller
                         }
                     })
                 ->addColumn('action', function($pedidos){
-                    return '<a onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                    return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
                 })->make(true);
             } else{
                 return Datatables::of($pedidos)
@@ -375,6 +396,9 @@ class PedidoVentaController extends Controller
                     ->addColumn('moneda', function($pedidos){
                         return $pedidos->moneda->getDescripcion();
                     })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
                     ->addColumn('estado', function($pedidos){
                         if ($pedidos->estado == 'P') {
                             return 'Pendiente';
@@ -387,8 +411,8 @@ class PedidoVentaController extends Controller
                         }
                     })
                 ->addColumn('action', function($pedidos){
-                    return '<a class="btn btn-primary btn-sm" title="Ver Empleado"  disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                    return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
                 })->make(true);
             }
         }

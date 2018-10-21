@@ -50,6 +50,10 @@ class PedidoVentaCab extends Model
         $this->monto_total = $monto_total;
     }
 
+    public function getMontoTotal(){
+        return number_format($this->monto_total, 0, ',', '.');
+    }
+
     public function setComentario($comentario){
         $this->comentario = $comentario;
     }
