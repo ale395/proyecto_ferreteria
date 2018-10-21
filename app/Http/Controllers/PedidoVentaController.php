@@ -173,6 +173,7 @@ class PedidoVentaController extends Controller
         $permiso_eliminar = Auth::user()->can('pedidosVentas.destroy');
         $permiso_ver = Auth::user()->can('pedidosVentas.show');
         $pedidos = PedidoVentaCab::all();
+        $estados_editables = array('C', 'P', 'V');
         //el listado de pedidos debería ser filtrado por la sucursal actual
 
         if ($permiso_editar) {
@@ -203,15 +204,19 @@ class PedidoVentaController extends Controller
                         }
                     })
                     ->addColumn('action', function($pedidos){
+                        $puede_agregar = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ';
+                        $no_puede_agregar = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ';
+                        $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Pedido" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        $puede_borrar = '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
+                        $no_puede_borrar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Eliminar Pedido" disabled><i class="fa fa-trash-o"></i></a>';
                         if ($pedidos->estado == 'F') {
-                            return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Eliminar Pedido" disabled><i class="fa fa-trash-o"></i></a>';
+                            return $puede_agregar.$no_puede_editar.$no_puede_borrar;
                         } else {
-                            return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
-                           }
+                            return $puede_agregar.$puede_editar.$puede_borrar;
+                        }
                     })->make(true);
-                } else{
+                } else {
                     return Datatables::of($pedidos)
                     ->addColumn('fecha', function($pedidos){
                         return $pedidos->getFechaEmision();
