@@ -275,8 +275,8 @@
                                         </li>
                                     @endcan
                                     <li class="sub_menu"><a href="{{route('listaPrecios.actualizar')}}">Actualizar Precios</a></li>
-                                    @can('pedidosVentas.create')
-                                        <li class="sub_menu"><a href="{{route('pedidosVentas.create')}}">Toma de Pedido</a>
+                                    @can('pedidosVentas.index')
+                                        <li class="sub_menu"><a href="{{route('pedidosVentas.index')}}">Toma de Pedido</a>
                                         </li>
                                     @endcan
                                 </ul>

@@ -19,7 +19,7 @@ class PedidoVentaController extends Controller
      */
     public function index()
     {
-        //
+        return view('pedidoVenta.index');
     }
 
     /**
