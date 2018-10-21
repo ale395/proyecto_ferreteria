@@ -10,7 +10,8 @@
                     <h4>Pedido de Venta
                     <div class="pull-right btn-group">
                         <button type="submit" class="btn btn-primary btn-save">Guardar</button>
-                        <a href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-default">Cancelar</a>
+                        <a href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-info">Cancelar</a>
+                        <a href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default">Volver al listado</a>
                     </div>
                     
                     </h4>

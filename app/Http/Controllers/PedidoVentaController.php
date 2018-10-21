@@ -163,7 +163,9 @@ class PedidoVentaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pedido = PedidoVentaCab::findOrFail($id);
+        $pedido->pedidosDetalle()->delete();
+        return PedidoVentaCab::destroy($id);
     }
 
     public function apiPedidosVentas(){
@@ -201,8 +203,13 @@ class PedidoVentaController extends Controller
                         }
                     })
                     ->addColumn('action', function($pedidos){
-                        return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                        if ($pedidos->estado == 'F') {
+                            return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Eliminar Pedido" disabled><i class="fa fa-trash-o"></i></a>';
+                        } else {
+                            return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
                                '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
+                           }
                     })->make(true);
                 } else{
                     return Datatables::of($pedidos)
@@ -230,8 +237,13 @@ class PedidoVentaController extends Controller
                         }
                     })
                     ->addColumn('action', function($pedidos){
-                        return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido"  disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
+                        if ($pedidos->estado == 'F') {
+                            return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido"  disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                                '<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Eliminar Pedido" disabled><i class="fa fa-trash-o"></i></a>';
+                        } else {
+                            return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido"  disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                                '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
+                        }
                     })->make(true);
                 }
             } else {
@@ -322,8 +334,13 @@ class PedidoVentaController extends Controller
                         }
                     })
                 ->addColumn('action', function($pedidos){
-                    return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                    if ($pedidos->estado == 'F') {
+                        return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
+                    } else {
+                        return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
                            '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>';
+                       }
                 })->make(true);
             } else{
                 return Datatables::of($pedidos)
@@ -351,8 +368,13 @@ class PedidoVentaController extends Controller
                         }
                     })
                 ->addColumn('action', function($pedidos){
-                    return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                    if ($pedidos->estado == 'F') {
+                        return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
+                    } else {
+                        return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
                            '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>';
+                       }
                 })->make(true);
             }
         } else {

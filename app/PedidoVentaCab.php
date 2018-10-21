@@ -73,4 +73,8 @@ class PedidoVentaCab extends Model
         return $this->belongsTo('App\Moneda');
     }
 
+    public function pedidosDetalle(){
+        return $this->hasMany('App\PedidoVentaDet', 'pedido_cab_id');
+    }
+
 }

@@ -44,11 +44,11 @@
                       ajax: "{{ route('api.pedidos.ventas') }}",
                       'columnDefs': [
                         {
-                            "targets": 0, // your case first column
+                            "targets": 0,
                             "className": "text-center",
                        },
                        {
-                            "targets": 1, // your case first column
+                            "targets": 1,
                             "className": "text-center",
                        },
                        {
@@ -76,7 +76,7 @@
 
       $('#pedidos-table').on('draw.dt', function() {
         $('[data-toggle="tooltip"]').tooltip();
-    })
+      })
 
       function editForm(id) {
         window.location="{{ url('pedidosVentas') }}" + '/' + id +'/edit';
@@ -87,6 +87,7 @@
             title: '¿De verdad lo quieres eliminar?',
             content: 'No podrás volver atras',
             type: 'red',
+            theme: 'modern',
             buttons: {   
                 ok: {
                     text: "Eliminar",
@@ -108,6 +109,7 @@
                                               content: 'Ocurrió un error durante el proceso!',
                                               icon: 'fa fa-times-circle-o',
                                               type: 'red',
+                                              theme: 'modern',
                                           });
                                   }
                               })
