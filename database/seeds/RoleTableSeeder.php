@@ -36,7 +36,7 @@ class RoleTableSeeder extends Seeder
         $permiso_listar_pedido_venta = Permission::where('slug', 'pedidosVentas.index')->first();
         $permiso_crear_pedido_venta = Permission::where('slug', 'pedidosVentas.create')->first();
         $permiso_editar_pedido_venta = Permission::where('slug', 'pedidosVentas.edit')->first();
-        //$permiso_eliminar_pedido_venta = Permission::where('slug', 'pedidosVentas.destroy')->first();
+        $permiso_eliminar_pedido_venta = Permission::where('slug', 'pedidosVentas.destroy')->first();
         $permiso_ver_pedido_venta = Permission::where('slug', 'pedidosVentas.show')->first();
 
                 //permisos para Pedido de Venta
@@ -306,7 +306,7 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_listar_pedido_venta->id);
         $role->assignPermission($permiso_crear_pedido_venta->id);
         $role->assignPermission($permiso_editar_pedido_venta->id);
-        //$role->assignPermission($permiso_eliminar_pedido_venta->id);
+        $role->assignPermission($permiso_eliminar_pedido_venta->id);
         $role->assignPermission($permiso_ver_pedido_venta->id);
 
         $role->assignPermission($permiso_listar_ajuste_inventario->id);

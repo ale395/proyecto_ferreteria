@@ -18,11 +18,13 @@ class CreatePedidosVentasCabTable extends Migration
             $table->integer('nro_pedido')->unique()->unsigned();
             $table->integer('cliente_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
+            $table->integer('lista_precio_id')->unsigned();
             $table->integer('moneda_id')->unsigned();
             $table->decimal('valor_cambio', 14, 2)->default(1);
             $table->date('fecha_emision');
             $table->decimal('monto_total', 14, 2)->default(0);
-            $table->char('estado', 1);
+            $table->char('estado', 1)->default('P');//P = Pendiente, F = Facturado, C = Cancelado, V = Vencido
+            $table->string('comentario')->nullable();
             $table->timestamps();
 
             $table->foreign('cliente_id')->references('id')->on('clientes');

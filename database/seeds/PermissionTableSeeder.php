@@ -711,11 +711,11 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite la carga de un pedido de venta en el sistema';
         $permission->save();
 
-        /*$permission = new Permission();
+        $permission = new Permission();
         $permission->name = 'Borrar Pedido de Venta';
         $permission->slug = 'pedidosVentas.destroy';
         $permission->description = 'Permite la eliminación de un pedido de venta del sistema';
-        $permission->save();*/
+        $permission->save();
 
         $permission = new Permission();
         $permission->name = 'Editar Pedido de Venta';
@@ -729,7 +729,6 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de Pedidos de Ventas del sistema';
         $permission->save();
 
-        
         $permission = new Permission();
         $permission->name = 'Ver Pedido de Venta';
         $permission->slug = 'pedidosVentas.show';

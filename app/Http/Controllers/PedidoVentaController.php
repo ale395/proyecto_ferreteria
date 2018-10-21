@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\DatosDefault;
 use App\PedidoVentaCab;
 use App\PedidoVentaDet;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class PedidoVentaController extends Controller
 {
@@ -16,7 +19,7 @@ class PedidoVentaController extends Controller
      */
     public function index()
     {
-        //
+        return view('pedidoVenta.index');
     }
 
     /**
@@ -42,26 +45,82 @@ class PedidoVentaController extends Controller
      */
     public function store(Request $request)
     {
-        /*$cabecera = new PedidoVentaCab();
+        $sucursal = Auth::user()->empleado->sucursales->first();
+        $cabecera = new PedidoVentaCab();
+        $total = 0;
+        $nro_pedido = PedidoVentaCab::max('nro_pedido');
+        //Implementar que cuando el cliente se deja en blanco, se busque al registro de cliente ocasional para poder guardarlo
+
+        if (!empty('sucursal')) {
+            $request['sucursal_id'] = $sucursal->getId();
+        }
 
         $rules = [
-            'nro_cedula' => 'required|numeric|unique:empleados,nro_cedula',
-            'nombre' => 'required|max:100',
-            'apellido' => 'required|max:100',
-            'direccion' => 'required|max:100',
-            'correo_electronico' => 'required|max:100|email',
-            'telefono_celular' => 'required|numeric|digits:9',
-            'fecha_nacimiento' => 'required|date_format:d/m/Y',
-            'tipos_empleados' => 'required|array|min:1',
+            'lista_precio_id' => 'required',
+            'cliente_id' => 'required',
+            'sucursal_id' => 'required',
+            'moneda_id' => 'required',
+            'lista_precio_id' => 'required',
+            'valor_cambio' => 'required|numeric|min:1',
+            'fecha_emision' => 'required|date_format:d/m/Y',
+            'tab_articulo_id' => 'required|array|min:1|max:'.PedidoVentaCab::MAX_LINEAS_DETALLE,
         ];
 
         $mensajes = [
-            'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
-            'tipos_empleados.min' => 'Como mínimo se debe asignar :min tipo(s) de empleado(s)!',
+            'valor_cambio.min' => 'El valor de cambio no puede ser menor que :min !',
+            'tab_articulo_id.min' => 'Como mínimo se debe asignar :min producto(s) al pedido!',
+            'tab_articulo_id.max' => 'Ha superado la cantidad máxima de líneas en un pedido. La cantidad máxima es de :max!',
         ];
 
-        Validator::make($request->all(), $rules, $mensajes)->validate();*/
-        return $request;
+        $request['valor_cambio'] = str_replace('.', '', $request['valor_cambio']);
+
+        $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
+        /*if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }*/
+        //foreach ($request['tab_subtotal'] as $subtotal) {
+
+        for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+            $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
+        }
+
+        if (empty('nro_pedido')) {
+            $nro_pedido = 1;
+        } else {
+            $nro_pedido = $nro_pedido + 1;
+        }
+
+        $cabecera->setNroPedido($nro_pedido);
+        $cabecera->setClienteId($request['cliente_id']);
+        $cabecera->setSucursalId($request['sucursal_id']);
+        $cabecera->setMonedaId($request['moneda_id']);
+        $cabecera->setListaPrecioId($request['lista_precio_id']);
+        $cabecera->setValorCambio($request['valor_cambio']);
+        $cabecera->setFechaEmision($request['fecha_emision']);
+        $cabecera->setMontoTotal($total);
+        //$cabecera->setComentario();
+
+        $cabecera->save();
+
+        for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+        //foreach ($request['tab_articulo_id'] as $detalle) {
+            $detalle = new PedidoVentaDet;
+            $detalle->setPedidoCabeceraId($cabecera->getId());
+            $detalle->setArticuloId($request['tab_articulo_id'][$i]);
+            $detalle->setCantidad(str_replace('.', '', $request['tab_cantidad'][$i]));
+            $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_precio_unitario'][$i]));
+            $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
+            $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
+            $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
+            $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
+            $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
+            $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
+            $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
+            $detalle->save();
+        }
+
+        return redirect()->back()->with('status', 'Pedido guardado correctamente!');
     }
 
     /**
@@ -72,7 +131,8 @@ class PedidoVentaController extends Controller
      */
     public function show($id)
     {
-        //
+        $pedido_cab = PedidoVentaCab::findOrFail($id);
+        return view('pedidoVenta.show', compact('pedido_cab'));
     }
 
     /**
@@ -106,6 +166,285 @@ class PedidoVentaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pedido = PedidoVentaCab::findOrFail($id);
+        $pedido->pedidosDetalle()->delete();
+        return PedidoVentaCab::destroy($id);
+    }
+
+    public function apiPedidosVentas(){
+        $permiso_editar = Auth::user()->can('pedidosVentas.edit');
+        $permiso_eliminar = Auth::user()->can('pedidosVentas.destroy');
+        $permiso_ver = Auth::user()->can('pedidosVentas.show');
+        $pedidos = PedidoVentaCab::all();
+        $estados_editables = array('C', 'P', 'V');
+        //el listado de pedidos debería ser filtrado por la sucursal actual
+
+        if ($permiso_editar) {
+            if ($permiso_eliminar) {
+                if ($permiso_ver) {
+                    return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                    ->addColumn('action', function($pedidos){
+                        $puede_agregar = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ';
+                        $no_puede_agregar = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ';
+                        $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Pedido" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        $puede_borrar = '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
+                        $no_puede_borrar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Eliminar Pedido" disabled><i class="fa fa-trash-o"></i></a>';
+                        if ($pedidos->estado == 'F') {
+                            return $puede_agregar.$no_puede_editar.$no_puede_borrar;
+                        } else {
+                            return $puede_agregar.$puede_editar.$puede_borrar;
+                        }
+                    })->make(true);
+                } else {
+                    return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                    ->addColumn('action', function($pedidos){
+                        if ($pedidos->estado == 'F') {
+                            return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido"  disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                                '<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Eliminar Pedido" disabled><i class="fa fa-trash-o"></i></a>';
+                        } else {
+                            return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido"  disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                                '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
+                        }
+                    })->make(true);
+                }
+            } else {
+                if ($permiso_ver) {
+                    return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                    ->addColumn('action', function($pedidos){
+                        return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
+                    })->make(true);
+                } else{
+                    return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                    ->addColumn('action', function($pedidos){
+                        return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Eliminar Pedido" disabled><i class="fa fa-trash-o"></i></a>';
+                    })->make(true);
+                }
+            }
+        } elseif ($permiso_eliminar) {
+            if ($permiso_ver) {
+                return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                ->addColumn('action', function($pedidos){
+                    if ($pedidos->estado == 'F') {
+                        return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
+                    } else {
+                        return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>';
+                       }
+                })->make(true);
+            } else{
+                return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                ->addColumn('action', function($pedidos){
+                    if ($pedidos->estado == 'F') {
+                        return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
+                    } else {
+                        return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></a>';
+                       }
+                })->make(true);
+            }
+        } else {
+            if ($permiso_ver) {
+                return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                ->addColumn('action', function($pedidos){
+                    return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
+                })->make(true);
+            } else{
+                return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                ->addColumn('action', function($pedidos){
+                    return '<a data-toggle="tooltip" data-placement="top" class="btn btn-primary btn-sm" title="Ver Pedido" disabled><i class="fa fa-eye"></i></a> ' .'<a data-toggle="tooltip" data-placement="top" title="Editar Pedido" class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a data-toggle="tooltip" data-placement="top" title="Eliminar Pedido" class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
+                })->make(true);
+            }
+        }
     }
 }
