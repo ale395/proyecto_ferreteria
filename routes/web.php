@@ -113,6 +113,9 @@ Route::middleware(['auth'])->group(function() {
 	//RUTA PARA EL CONTROLADOR DE PEDIDOS - VENTAS
 	Route::resource('pedidosVentas', 'PedidoVentaController');
 
+	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
+	Route::resource('ajustesInventarios', 'AjusteInventarioController');
+
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');
 	Route::get('api/sucursales', 'SucursalController@apiSucursales')->name('api.sucursales');

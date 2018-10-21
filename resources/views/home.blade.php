@@ -254,6 +254,10 @@
                                       <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajustes</a>
                                       </li>
                                     @endcan
+                                    @can('ajustesInventarios.create')
+                                        <li class="sub_menu"><a href="{{route('ajustesInventarios.create')}}">Ajustes de Inventario</a>
+                                        </li>
+                                    @endcan
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
