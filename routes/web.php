@@ -114,6 +114,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('pedidosVentas', 'PedidoVentaController');
 	Route::get('api/pedidosVentas', 'PedidoVentaController@apiPedidosVentas')->name('api.pedidos.ventas');
 
+	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
+	Route::resource('ajustesInventarios', 'AjusteInventarioController');
+
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');
 	Route::get('api/sucursales', 'SucursalController@apiSucursales')->name('api.sucursales');
