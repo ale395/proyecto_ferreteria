@@ -42,6 +42,10 @@ class PedidoVentaCab extends Model
         $this->fecha_emision = $fecha_emision;
     }
 
+    public function getFechaEmision(){
+        return date("d-m-Y", strtotime($this->fecha_emision));
+    }
+
     public function setMontoTotal($monto_total){
         $this->monto_total = $monto_total;
     }

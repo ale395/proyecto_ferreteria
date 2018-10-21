@@ -112,6 +112,7 @@ Route::middleware(['auth'])->group(function() {
 
 	//RUTA PARA EL CONTROLADOR DE PEDIDOS - VENTAS
 	Route::resource('pedidosVentas', 'PedidoVentaController');
+	Route::get('api/pedidosVentas', 'PedidoVentaController@apiPedidosVentas')->name('api.pedidos.ventas');
 
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');

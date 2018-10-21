@@ -165,4 +165,232 @@ class PedidoVentaController extends Controller
     {
         //
     }
+
+    public function apiPedidosVentas(){
+        $permiso_editar = Auth::user()->can('pedidosVentas.edit');
+        $permiso_eliminar = Auth::user()->can('pedidosVentas.destroy');
+        $permiso_ver = Auth::user()->can('pedidosVentas.show');
+        $pedidos = PedidoVentaCab::all();
+        //el listado de pedidos debería ser filtrado por la sucursal actual
+
+        if ($permiso_editar) {
+            if ($permiso_eliminar) {
+                if ($permiso_ver) {
+                    return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                    ->addColumn('action', function($pedidos){
+                        return '<a onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Pedido"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Pedido"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
+                    })->make(true);
+                } else{
+                    return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                    ->addColumn('action', function($pedidos){
+                        return '<a class="btn btn-primary btn-sm" title="Ver Empleado"  disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Empleado"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm" title="Eliminar Empleado"><i class="fa fa-trash-o"></i></a>';
+                    })->make(true);
+                }
+            } else {
+                if ($permiso_ver) {
+                    return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                    ->addColumn('action', function($pedidos){
+                        return '<a onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i></a>';
+                    })->make(true);
+                } else{
+                    return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                    ->addColumn('action', function($pedidos){
+                        return '<a class="btn btn-primary btn-sm" title="Ver Empleado" disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $pedidos->id .')" class="btn btn-warning btn-sm" title="Editar Empleado"><i class="fa fa-pencil-square-o"></i></a> ' .
+                               '<a class="btn btn-danger btn-sm" title="Eliminar Empleado" disabled><i class="fa fa-trash-o"></i></a>';
+                    })->make(true);
+                }
+            }
+        } elseif ($permiso_eliminar) {
+            if ($permiso_ver) {
+                return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                ->addColumn('action', function($pedidos){
+                    return '<a onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            } else{
+                return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                ->addColumn('action', function($pedidos){
+                    return '<a class="btn btn-primary btn-sm" title="Ver Empleado" disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a onclick="deleteData('. $pedidos->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            }
+        } else {
+            if ($permiso_ver) {
+                return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                ->addColumn('action', function($pedidos){
+                    return '<a onclick="showForm('. $pedidos->id .')" class="btn btn-primary btn-sm" title="Ver Empleado"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            } else{
+                return Datatables::of($pedidos)
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($pedidos){
+                        return $pedidos->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('estado', function($pedidos){
+                        if ($pedidos->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($pedidos->estado == 'F') {
+                            return 'Facturado';
+                        } elseif ($pedidos->estado == 'C') {
+                            return 'Cancelado';
+                        } elseif ($pedidos->estado == 'V') {
+                            return 'Vencido';
+                        }
+                    })
+                ->addColumn('action', function($pedidos){
+                    return '<a class="btn btn-primary btn-sm" title="Ver Empleado"  disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
+                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                })->make(true);
+            }
+        }
+    }
 }
