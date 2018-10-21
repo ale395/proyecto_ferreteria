@@ -18,6 +18,7 @@ class CreatePedidosVentasCabTable extends Migration
             $table->integer('nro_pedido')->unique()->unsigned();
             $table->integer('cliente_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
+            $table->integer('lista_precio_id')->unsigned();
             $table->integer('moneda_id')->unsigned();
             $table->decimal('valor_cambio', 14, 2)->default(1);
             $table->date('fecha_emision');

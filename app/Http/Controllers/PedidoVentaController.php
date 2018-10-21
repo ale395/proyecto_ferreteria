@@ -60,6 +60,7 @@ class PedidoVentaController extends Controller
             'cliente_id' => 'required',
             'sucursal_id' => 'required',
             'moneda_id' => 'required',
+            'lista_precio_id' => 'required',
             'valor_cambio' => 'required|numeric|min:1',
             'fecha_emision' => 'required|date_format:d/m/Y',
             'tab_articulo_id' => 'required|array|min:1|max:'.PedidoVentaCab::MAX_LINEAS_DETALLE,
@@ -94,6 +95,7 @@ class PedidoVentaController extends Controller
         $cabecera->setClienteId($request['cliente_id']);
         $cabecera->setSucursalId($request['sucursal_id']);
         $cabecera->setMonedaId($request['moneda_id']);
+        $cabecera->setListaPrecioId($request['lista_precio_id']);
         $cabecera->setValorCambio($request['valor_cambio']);
         $cabecera->setFechaEmision($request['fecha_emision']);
         $cabecera->setMontoTotal($total);
@@ -129,7 +131,8 @@ class PedidoVentaController extends Controller
      */
     public function show($id)
     {
-        //
+        $pedido_cab = PedidoVentaCab::findOrFail($id);
+        return view('pedidoVenta.show', compact('pedido_cab'));
     }
 
     /**

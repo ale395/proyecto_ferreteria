@@ -78,6 +78,10 @@
         $('[data-toggle="tooltip"]').tooltip();
       })
 
+      function showForm(id) {
+        window.location="{{ url('pedidosVentas') }}" + '/' + id;
+      }
+
       function editForm(id) {
         window.location="{{ url('pedidosVentas') }}" + '/' + id +'/edit';
       }

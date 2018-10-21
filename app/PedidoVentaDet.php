@@ -24,8 +24,16 @@ class PedidoVentaDet extends Model
         $this->cantidad = $cantidad;
     }
 
+    public function getCantidad(){
+        return $this->cantidad;
+    }
+
     public function setPrecioUnitario($precio_unitario){
         $this->precio_unitario = $precio_unitario;
+    }
+
+    public function getPrecioUnitario(){
+        return number_format($this->precio_unitario, 0, ',', '.');
     }
 
     public function setPorcentajeDescuento($porcentaje_descuento){
@@ -36,6 +44,10 @@ class PedidoVentaDet extends Model
         $this->monto_descuento = $monto_descuento;
     }
 
+    public function getMontoDescuento(){
+        return number_format($this->monto_descuento, 0, ',', '.');
+    }
+
     public function setPorcentajeIva($porcentaje_iva){
         $this->porcentaje_iva = $porcentaje_iva;
     }
@@ -44,16 +56,32 @@ class PedidoVentaDet extends Model
         $this->monto_exenta = $monto_exenta;
     }
 
+    public function getMontoExenta(){
+        return number_format($this->monto_exenta, 0, ',', '.');
+    }
+
     public function setMontoGravada($monto_gravada){
         $this->monto_gravada = $monto_gravada;
+    }
+
+    public function getMontoGravada(){
+        return number_format($this->monto_gravada, 0, ',', '.');
     }
 
     public function setMontoIva($monto_iva){
         $this->monto_iva = $monto_iva;
     }
 
+    public function getMontoIva(){
+        return number_format($this->monto_iva, 0, ',', '.');
+    }
+
     public function setMontoTotal($monto_total){
         $this->monto_total = $monto_total;
+    }
+
+    public function getMontoTotal(){
+        return number_format($this->monto_total, 0, ',', '.');
     }
 
     public function articulo()
@@ -67,4 +95,3 @@ class PedidoVentaDet extends Model
     }
 
 }
-

@@ -11,7 +11,7 @@ class PedidoVentaCab extends Model
     protected $table = 'pedidos_ventas_cab';
 
     protected $fillable = [
-        'nro_pedido', 'cliente_id', 'sucursal_id', 'moneda_id', 'valor_cambio', 'fecha_emision', 'monto_total', 'estado','comentario',
+        'nro_pedido', 'cliente_id', 'sucursal_id', 'moneda_id', 'lista_precio_id', 'valor_cambio', 'fecha_emision', 'monto_total', 'estado','comentario',
     ];
 
     public function getId(){
@@ -20,6 +20,10 @@ class PedidoVentaCab extends Model
 
     public function setNroPedido($nro_pedido){
         $this->nro_pedido = $nro_pedido;
+    }
+
+    public function getNroPedido(){
+        return $this->nro_pedido;
     }
 
     public function setClienteId($cliente_id){
@@ -34,8 +38,16 @@ class PedidoVentaCab extends Model
         $this->moneda_id = $moneda_id;
     }
 
+    public function setListaPrecioId($lista_precio_id){
+        $this->lista_precio_id = $lista_precio_id;
+    }
+
     public function setValorCambio($valor_cambio){
         $this->valor_cambio = $valor_cambio;
+    }
+
+    public function getValorCambio(){
+        return $this->valor_cambio;
     }
 
     public function setFechaEmision($fecha_emision){
@@ -58,9 +70,18 @@ class PedidoVentaCab extends Model
         $this->comentario = $comentario;
     }
 
+    public function getComentario(){
+        return $this->comentario;
+    }
+
     public function cliente()
     {
         return $this->belongsTo('App\Cliente');
+    }
+
+    public function listaPrecio()
+    {
+        return $this->belongsTo('App\ListaPrecioCabecera', 'lista_precio_id');
     }
 
     public function sucursal()
