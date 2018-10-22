@@ -120,7 +120,7 @@ class PedidoVentaController extends Controller
             $detalle->save();
         }
 
-        return redirect()->back()->with('status', 'Pedido guardado correctamente!');
+        return redirect()->route('pedidosVentas.show', ['pedidosVenta' => $cabecera->getId()])->with('status', 'Pedido guardado correctamente!');
     }
 
     /**

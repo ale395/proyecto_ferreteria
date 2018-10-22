@@ -15,6 +15,14 @@
                     </h4>
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        @if (session('status'))
+                            <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                    </div>
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id" value="{{$pedido_cab->getId()}}">
