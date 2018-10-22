@@ -9,7 +9,8 @@
                 <div class="panel-heading">
                     <h4>Ver Pedido
                     <div class="pull-right btn-group">
-                        <a href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default">Volver al listado</a>
+                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Pedido" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
