@@ -58,9 +58,16 @@
                         <div class="col-md-2">
                             <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{$pedido_cab->getValorCambio()}}" readonly>
                         </div>
+                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
+                        <div class="col-md-4">
+                            <textarea class="form-control" rows="2" id="comentario" name="comentario" readonly>{{$pedido_cab->getComentario()}}</textarea>
+                        </div>
                     </div>
                     <div class="form-group">
-                        
+                        <label for="estado" class="col-md-1 control-label">Estado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="estado" name="estado" class="form-control" value="{{old('valor_cambio', $pedido_cab->getEstadoNombre())}}" readonly>
+                        </div>
                     </div>
                     <br>
                     <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">

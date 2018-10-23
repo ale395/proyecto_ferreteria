@@ -35,7 +35,7 @@
                             </div>
                         @endif
                     </div>
-                    <input name="_method" type="hidden" value="POST">
+                    <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id" value="{{$pedido_cab->getId()}}">
                     <div class="form-group">
@@ -62,7 +62,7 @@
                         <div class="col-md-3">
                             <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
                                 <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%" disabled>
-                                    <option value="{{$pedido_cab->listaPrecio->getId()}}">{{$pedido_cab->listaPrecio->getNombre()}}</option>
+                                    <option value="{{$pedido_cab->listaPrecio->getId()}}" selected>{{$pedido_cab->listaPrecio->getNombre()}}</option>
                                 </select>
                             </a>
                         </div>
@@ -71,26 +71,36 @@
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
                             <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%" disabled>
-                                <option value="{{$pedido_cab->moneda->getId()}}">{{$pedido_cab->moneda->getDescripcion()}}</option>
+                                <option value="{{$pedido_cab->moneda->getId()}}" selected>{{$pedido_cab->moneda->getDescripcion()}}</option>
                             </select>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $pedido_cab->getValorCambio())}}" disabled>
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $pedido_cab->getValorCambio())}}" readonly>
                         </div>
                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
-                        <div class="col-md-2">
-                            <input type="text" id="comentario" name="comentario" class="form-control" value="{{old('comentario', $pedido_cab->getComentario())}}">
+                        <div class="col-md-4">
+                            <textarea class="form-control" rows="2" id="comentario" name="comentario">{{old('comentario', $pedido_cab->getComentario())}}</textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="estado" class="col-md-1 control-label">Estado*</label>
                         <div class="col-md-3">
                             <select id="select2-estados" name="estado" class="form-control" style="width: 100%">
-                                <option value="P">Pendiente</option>
+                                @if ($pedido_cab->getEstado() == 'P')
+                                    <option value="P" selected>Pendiente</option>
+                                    <option value="C">Cancelado</option>
+                                    <option value="V">Vencido</option>
+                                @elseif ($pedido_cab->getEstado() == 'C')
+                                    <option value="P">Pendiente</option>
+                                    <option value="C" selected>Cancelado</option>
+                                    <option value="V">Vencido</option>
+                                @elseif ($pedido_cab->getEstado() == 'V')
+                                    <option value="P">Pendiente</option>
+                                    <option value="C">Cancelado</option>
+                                    <option value="V" selected>Vencido</option>
+                                @endif
                                 <option value="F" disabled>Facturado</option>
-                                <option value="C">Cancelado</option>
-                                <option value="V">Vencido</option>
                             </select>
                         </div>
                     </div>
@@ -410,7 +420,8 @@
         "searching": false,
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
-        {"className": "dt-center", "targets": "_all"}
+          { className: "dt-center", "targets": [0,2,3,4,5,6,7,8] },
+          { className: "dt-left", "targets": [1] }
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -548,13 +559,13 @@
     /*Elimina el articulo del pedido*/
     var tabla = $("#pedido-detalle").DataTable();
     $('#pedido-detalle tbody').on( 'click', 'a.btn-delete-row', function () {
-        var row = $(this).parent().index('#pedido-detalle tbody tr');
-        console.log(row);
-        /*tabla
+        var row = $(this).closest('tr').index();
+        row = row + 1;
+        tabla
             .row( $(this).parents('tr') )
             .remove()
-            .draw();*/
-        //$("#tab-hidden tr:eq("+row+")").remove();
+            .draw();
+        $("#tab-hidden tr:eq("+row+")").remove();
     } );
 
 </script>

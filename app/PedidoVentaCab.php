@@ -74,6 +74,26 @@ class PedidoVentaCab extends Model
         return $this->comentario;
     }
 
+    public function getEstado(){
+        return $this->estado;
+    }
+
+    public function getEstadoNombre(){
+        if ($this->estado == 'P') {
+            return 'Pendiente';
+        } elseif ($this->estado == 'F') {
+            return 'Facturado';
+        } elseif ($this->estado == 'C') {
+            return 'Cancelado';
+        } elseif ($this->estado == 'V') {
+            return 'Vencido';
+        }
+    }
+
+    public function setEstado($estado){
+        $this->estado = $estado;
+    }
+
     public function cliente()
     {
         return $this->belongsTo('App\Cliente');
