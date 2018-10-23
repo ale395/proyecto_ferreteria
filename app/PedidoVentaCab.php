@@ -47,7 +47,7 @@ class PedidoVentaCab extends Model
     }
 
     public function getValorCambio(){
-        return $this->valor_cambio;
+        return number_format($this->valor_cambio, 0, ',', '.');
     }
 
     public function setFechaEmision($fecha_emision){

@@ -143,7 +143,8 @@ class PedidoVentaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $pedido_cab = PedidoVentaCab::findOrFail($id);
+        return view('pedidoVenta.edit', compact('pedido_cab'));
     }
 
     /**
