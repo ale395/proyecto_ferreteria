@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente</label>
                         <div class="col-md-6">
-                            <input id="select2-clientes" name="cliente_id" class="form-control" value="{{$pedido_cab->cliente->getNombreIndex()}}" readonly>
+                            <input id="select2-clientes" name="cliente_id" class="form-control" value="{{$pedido_cab->cliente->getNombreSelect()}}" readonly>
                         </div>
                         <label for="lista_precio_id" class="col-md-1 control-label">Lista Prec.</label>
                         <div class="col-md-3">
@@ -86,8 +86,8 @@
                         <tbody>
                             @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
                                 <tr>
-                                    <td>{{$pedido_det->articulo->getDescripcion()}}</td>
-                                    <td>{{$pedido_det->getCantidad()}}</td>
+                                    <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
+                                    <td>{{$pedido_det->getCantidadNumber()}}</td>
                                     <td>{{$pedido_det->getPrecioUnitario()}}</td>
                                     <td>{{$pedido_det->getMontoDescuento()}}</td>
                                     <td>{{$pedido_det->getMontoExenta()}}</td>

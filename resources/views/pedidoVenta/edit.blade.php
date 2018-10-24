@@ -149,7 +149,7 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
                                         <td>{{old('tab_precio_unitario.'.$i)}}</td>
@@ -163,7 +163,7 @@
                             @else
                                 @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
                                     <tr>
-                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{$pedido_det->articulo->getDescripcion()}}</td>
                                         <td>{{$pedido_det->getCantidad()}}</td>
                                         <td>{{$pedido_det->getPrecioUnitario()}}</td>
@@ -212,7 +212,7 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                         <th><input type="text" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
@@ -229,7 +229,7 @@
                             @else
                                 @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
                                     <tr>
-                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                         <th><input type="text" name="tab_articulo_id[]" value="{{$pedido_det->articulo->getId()}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{$pedido_det->articulo->getDescripcion()}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{$pedido_det->getCantidad()}}"></th>
@@ -257,6 +257,11 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
+
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    });
+
     function addForm() {
         $.confirm({
             title: 'Tipo de Persona',
@@ -528,7 +533,7 @@
         /*Se agrega una fila a la tabla*/
         var tabla = $("#pedido-detalle").DataTable();
         tabla.row.add( [
-            "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+            "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
             articulo,
             cantidad,
             precio_unitario,
@@ -539,7 +544,7 @@
             subtotal
         ] ).draw( false );
 
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
         $("#tab-hidden").append(markup);
 
         /*Se restauran a nulos los valores del bloque para la selección del articulo*/

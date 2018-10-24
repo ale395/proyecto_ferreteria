@@ -15,7 +15,7 @@
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <table id="pedidos-table" class="table table-striped table-responsive">
+                    <table id="pedidos-table" class="table-striped table-responsive row-border" style="width:100%">
                         <thead>
                             <tr>
                                 <th width="70">Nro Pedido</th>
@@ -71,7 +71,8 @@
                         {data: 'monto_total', name: 'monto_total'},
                         {data: 'estado', name: 'estado'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
-                      ]
+                      ],
+                      "order": [[ 1, "desc" ]],
                     });
 
       $('#pedidos-table').on('draw.dt', function() {

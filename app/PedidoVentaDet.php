@@ -28,6 +28,10 @@ class PedidoVentaDet extends Model
         return $this->cantidad;
     }
 
+    public function getCantidadNumber(){
+        return number_format($this->cantidad, 2, ',', '.');
+    }
+
     public function setPrecioUnitario($precio_unitario){
         $this->precio_unitario = $precio_unitario;
     }

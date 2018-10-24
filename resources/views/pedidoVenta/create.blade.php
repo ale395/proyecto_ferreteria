@@ -369,7 +369,8 @@
         "searching": false,
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
-        {"className": "dt-center", "targets": "_all"}
+          { className: "dt-center", "targets": [0,2,3,4,5,6,7,8] },
+          { className: "dt-left", "targets": [1] }
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -452,7 +453,7 @@
         var cantidad = $("#cantidad").val();
         var precio_unitario = $("#precio_unitario").val();
         var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-        var monto_descuento = precio_unitario.replace(".", "") * (porcentaje_descuento/100);
+        var monto_descuento = cantidad * precio_unitario.replace(".", "") * (porcentaje_descuento/100);
         var subtotal = $("#subtotal").val();
         var porcentaje_iva = $("#porcentaje_iva" ).val();
         var exenta = 0;
