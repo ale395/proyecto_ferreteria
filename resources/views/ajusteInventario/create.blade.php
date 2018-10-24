@@ -7,7 +7,7 @@
         <form method="post" action="{{action('AjusteIventarioController@store')}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Pedido de Venta
+                    <h4>Ajuste de inventario
                     <div class="pull-right btn-group">
                         <button type="submit" class="btn btn-primary btn-save">Guardar</button>
                         <a href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-default">Cancelar</a>
