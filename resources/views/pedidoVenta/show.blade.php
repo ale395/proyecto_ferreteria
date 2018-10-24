@@ -9,12 +9,21 @@
                 <div class="panel-heading">
                     <h4>Ver Pedido
                     <div class="pull-right btn-group">
-                        <a href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default">Volver al listado</a>
+                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Pedido" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        @if (session('status'))
+                            <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                    </div>
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id" value="{{$pedido_cab->getId()}}">
@@ -49,9 +58,16 @@
                         <div class="col-md-2">
                             <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{$pedido_cab->getValorCambio()}}" readonly>
                         </div>
+                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
+                        <div class="col-md-4">
+                            <textarea class="form-control" rows="2" id="comentario" name="comentario" readonly>{{$pedido_cab->getComentario()}}</textarea>
+                        </div>
                     </div>
                     <div class="form-group">
-                        
+                        <label for="estado" class="col-md-1 control-label">Estado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="estado" name="estado" class="form-control" value="{{old('valor_cambio', $pedido_cab->getEstadoNombre())}}" readonly>
+                        </div>
                     </div>
                     <br>
                     <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">

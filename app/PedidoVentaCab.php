@@ -47,7 +47,7 @@ class PedidoVentaCab extends Model
     }
 
     public function getValorCambio(){
-        return $this->valor_cambio;
+        return number_format($this->valor_cambio, 0, ',', '.');
     }
 
     public function setFechaEmision($fecha_emision){
@@ -72,6 +72,26 @@ class PedidoVentaCab extends Model
 
     public function getComentario(){
         return $this->comentario;
+    }
+
+    public function getEstado(){
+        return $this->estado;
+    }
+
+    public function getEstadoNombre(){
+        if ($this->estado == 'P') {
+            return 'Pendiente';
+        } elseif ($this->estado == 'F') {
+            return 'Facturado';
+        } elseif ($this->estado == 'C') {
+            return 'Cancelado';
+        } elseif ($this->estado == 'V') {
+            return 'Vencido';
+        }
+    }
+
+    public function setEstado($estado){
+        $this->estado = $estado;
     }
 
     public function cliente()

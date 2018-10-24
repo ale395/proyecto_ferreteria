@@ -114,6 +114,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('pedidosVentas', 'PedidoVentaController');
 	Route::get('api/pedidosVentas', 'PedidoVentaController@apiPedidosVentas')->name('api.pedidos.ventas');
 
+	//RUTA PARA EL CONTROLADOR DE FACTURACION - VENTAS
+	Route::resource('facturacionVentas', 'FacturaVentaController');
+	Route::get('api/facturacionVentas', 'FacturaVentaController@apiFacturacionVentas')->name('api.facturacion.ventas');
+
 	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
 	Route::resource('ajustesInventarios', 'AjusteInventarioController');
 

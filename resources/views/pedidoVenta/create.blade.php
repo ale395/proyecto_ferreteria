@@ -9,9 +9,9 @@
                 <div class="panel-heading">
                     <h4>Pedido de Venta
                     <div class="pull-right btn-group">
-                        <button type="submit" class="btn btn-primary btn-save">Guardar</button>
-                        <a href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-info">Cancelar</a>
-                        <a href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default">Volver al listado</a>
+                        <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
@@ -75,6 +75,10 @@
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
                             <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
+                        </div>
+                        <label for="comentario" class="col-md-1 control-label">Comentario</label>
+                        <div class="col-md-4">
+                            <textarea class="form-control" rows="2" id="comentario" name="comentario"></textarea>
                         </div>
                     </div>
                     <div class="form-group">

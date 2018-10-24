@@ -40,6 +40,10 @@ class PedidoVentaDet extends Model
         $this->porcentaje_descuento = $porcentaje_descuento;
     }
 
+    public function getPorcentajeDescuento(){
+        return $this->porcentaje_descuento;
+    }
+
     public function setMontoDescuento($monto_descuento){
         $this->monto_descuento = $monto_descuento;
     }
@@ -50,6 +54,10 @@ class PedidoVentaDet extends Model
 
     public function setPorcentajeIva($porcentaje_iva){
         $this->porcentaje_iva = $porcentaje_iva;
+    }
+
+    public function getPorcentajeIva(){
+        return $this->porcentaje_iva;
     }
 
     public function setMontoExenta($monto_exenta){
