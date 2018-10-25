@@ -96,7 +96,7 @@
                             <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()" readonly></a>
                         </div>
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="% Descuento">
@@ -555,7 +555,7 @@
         }
     });
     $('#valor_cambio').number(true, 0, ',', '.');
-    $('#cantidad').number(true, 0, ',', '.');
+    $('#cantidad').number(true, 2, ',', '.');
     $('#precio_unitario').number(true, 0, ',', '.');
     $('#subtotal').number(true, 0, ',', '.');
 </script>

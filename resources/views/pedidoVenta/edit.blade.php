@@ -116,7 +116,7 @@
                             <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()" readonly></a>
                         </div>
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="% Descuento">
@@ -164,8 +164,8 @@
                                 @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
                                     <tr>
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
-                                        <td>{{$pedido_det->articulo->getDescripcion()}}</td>
-                                        <td>{{$pedido_det->getCantidad()}}</td>
+                                        <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
+                                        <td>{{$pedido_det->getCantidadNumber()}}</td>
                                         <td>{{$pedido_det->getPrecioUnitario()}}</td>
                                         <td>{{$pedido_det->getMontoDescuento()}}</td>
                                         <td>{{$pedido_det->getMontoExenta()}}</td>
@@ -509,7 +509,7 @@
         var cantidad = $("#cantidad").val();
         var precio_unitario = $("#precio_unitario").val();
         var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-        var monto_descuento = precio_unitario.replace(".", "") * (porcentaje_descuento/100);
+        var monto_descuento = cantidad * precio_unitario.replace(".", "") * (porcentaje_descuento/100);
         var subtotal = $("#subtotal").val();
         var porcentaje_iva = $("#porcentaje_iva" ).val();
         var exenta = 0;
@@ -612,7 +612,7 @@
         }
     });
     $('#valor_cambio').number(true, 0, ',', '.');
-    $('#cantidad').number(true, 0, ',', '.');
+    $('#cantidad').number(true, 2, ',', '.');
     $('#precio_unitario').number(true, 0, ',', '.');
     $('#subtotal').number(true, 0, ',', '.');
 </script>
