@@ -363,6 +363,7 @@
         });
 
     $("#btn-add-articulo").attr("disabled", true);
+    
     var table = $('#pedido-detalle').DataTable({
         "paging":   false,
         "ordering": false,
@@ -454,6 +455,17 @@
         
         if (Number(cantidad) > Number(existencia)) {
             console.log('Cantidad es mayor que existencia: '+cantidad+' - '+existencia);
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },4000); 
         } else {
             var decimales = 0;
             var articulo = $('#select2-articulos').select2('data')[0].text;
