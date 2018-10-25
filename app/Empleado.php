@@ -88,5 +88,29 @@ class Empleado extends Model
     {
         return $this->belongsToMany('App\Sucursal')->withTimestamps();
     }
+
+    public function esVendedor(){
+        $tipos = $this->tiposEmpleados;
+        $esVendedor = false;
+
+        foreach ($tipos as $key => $tipo_empleado) {
+            if ($tipo_empleado->codigo == 'VEND') {
+                $esVendedor = true;
+            }
+        }
+        return $esVendedor;
+    }
+
+    public function esCajero(){
+        $tipos = $this->tiposEmpleados;
+        $esCajero = false;
+
+        foreach ($tipos as $key => $tipo_empleado) {
+            if ($tipo_empleado->codigo == 'CAJE') {
+                $esCajero = true;
+            }
+        }
+        return $esCajero;
+    }
     
 }
