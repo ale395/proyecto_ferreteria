@@ -33,8 +33,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('articulos', 'ArticuloController');
 	Route::get('api/articulos', 'ArticuloController@apiArticulos')->name('api.articulos');
 	Route::get('api/articulos/cotizacion/{articulo}/{lista_precio}', 'ArticuloController@apiArticulosCotizacion')->name('api.articulos.cotizacion');
-		
-		//RUTAS PARA Monedas
+	Route::get('api/articulos/costo/{articulo}', 'ArticuloController@apiArticulosCosto')->name('api.articulos.costo');
+
+	//RUTAS PARA Monedas
 	Route::resource('monedas', 'MonedaController');
 	Route::get('api/monedas', 'MonedaController@apiMonedas')->name('api.monedas');
 	Route::get('api/monedas/select', 'MonedaController@apiMonedasSelect')->name('api.monedas.select');

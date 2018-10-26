@@ -66,7 +66,7 @@
                     <div class="form-group">
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
-                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" onchange="setCantidadPrecioUnitario()">
+                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" onchange="setCantidadCosto()">
 
                             </select>
                         </div>
@@ -77,23 +77,34 @@
                             <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
-                            <input type="text" id="sub_total" name="sub_total" class="form-control" placeholder="Total Articulo" readonly>
+                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Total Articulo" readonly>
                         </div>
                         <div class="col-md-1">
                             <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
-                    <table id="pedido-detalle" class="table table-striped table-responsive">
+                    <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
                         <thead>
                             <tr>
-                                <th width="10%">Acción</th>
+                                <th width="5%">Acción</th>
                                 <th>Artículo</th>
-                                <th>Cantidad</th>
-                                <th>Costo Unitario</th>
-                                <th>Sub-Total</th>
+                                <th width="6%">Cant.</th>
+                                <th width="9%">Precio U.</th>
+                                <th width="9%">Total</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if ($errors->any())
+                                @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
+                                    <tr>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td>{{old('tab_articulo_nombre.'.$i)}}</td>
+                                        <td>{{old('tab_cantidad.'.$i)}}</td>
+                                        <td>{{old('tab_costounitario.'.$i)}}</td>>
+                                        <td>{{old('tab_subtotal.'.$i)}}</td>
+                                    </tr>
+                                @endfor
+                            @endif
                         </tbody>
                         <tfoot>
                             <tr>
@@ -101,9 +112,36 @@
                                 <th></th>
                                 <th></th>
                                 <th>Total</th>
-                            <th id="total-th" name="monto_total">0</th>
+                                <th class="total">0</th>
                             </tr>
                         </tfoot>
+                    </table>
+
+                    <table id="tab-hidden" class="hidden">
+                        <thead>
+                            <tr>
+                                <th width="5%">Acción</th>
+                                <th>Artículo ID</th>
+                                <th>Nombre Artículo</th>
+                                <th width="6%">Cant.</th>
+                                <th width="9%">Costo U.</th>
+                                <th width="9%">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($errors->any())
+                                @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
+                                    <tr>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><input type="text" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_costounitario[]" value="{{old('tab_costounitario.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
+                                    </tr>
+                                @endfor
+                            @endif
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -115,11 +153,11 @@
 @section('otros_scripts')
 <script type="text/javascript">
  
-    function setCantidadPrecioUnitario() {
+    function setCantidadCosto() {
         var articulo_id = $("#select2-articulos" ).val();
         $.ajax({
           type: "GET",
-          url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id,
+          url: "{{ url('api/articulos') }}" + '/costo/' + articulo_id,
           datatype: "json",
           //async: false,
           success: function(data){
@@ -138,23 +176,107 @@
         cantidad = cantidad.replace(".", "");
         var calculo = cantidad * $("#costo_unitario" ).val();
         if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
-            $("#sub_total" ).val(calculo).change();
+            $("#subtotal" ).val(calculo).change();
         }
     };
 
-    function addArticulo() {
+     function addArticulo() {
+        /*Se obtienen los valores de los campos correspondientes*/
+        var decimales = 0;
         var articulo = $('#select2-articulos').select2('data')[0].text;
+        var articulo_id = $('#select2-articulos').select2('data')[0].id;
         var cantidad = $("#cantidad").val();
-        var costo_unitario = $("#costo_unitario").val();
-        var monto_total = $("#monto_total").val();
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido' onclick='deleteArticulo()'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th>" + articulo + "</th> <th>" + cantidad + "</th> <th>" + costo_unitario + "</th> <th>" + monto_total + "</th> </tr>";
-        $("table tbody").append(markup);
+        var precio_unitario = $("#costo_unitario").val();
+        var subtotal = $("#subtotal").val();
+
+        /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+        precio_unitario = $.number(precio_unitario,decimales, ',', '.');
+        cantidad = $.number(cantidad,decimales, ',', '.');
+        subtotal = $.number(subtotal,decimales, ',', '.');  
+        
+        /*Se agrega una fila a la tabla*/
+        var tabla = $("#pedido-detalle").DataTable();
+        tabla.row.add( [
+            "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+            articulo,
+            cantidad,
+            precio_unitario,
+            subtotal
+        ] ).draw( false );
+
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costounitario[]' value='" + precio_unitario + "'></th> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+        $("#tab-hidden").append(markup);
+
+        /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+        $('#cantidad').number(false);
+        $('#costo_unitario').number(false);
+        $('#subtotal').number(false);
+        
+        $('#cantidad').val("");
+        $('#costo_unitario').val("");
+        $('#porcentaje_descuento').val("");
+        $('#porcentaje_iva').val("");
+        $('#subtotal').val("");
         $('#select2-articulos').val(null).trigger('change');
-        $('#cantidad').val('');
-        $('#costo_unitario').val('');
-        $('#monto_total').val('');
         $("#select2-articulos").focus();
     };
+
+    $("#btn-add-articulo").attr("disabled", true);
+    var table = $('#pedido-detalle').DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false,
+        "searching": false,
+        language: { url: '/datatables/translation/spanish' },
+        "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+        ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            var decimales = 0;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(".", "")*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column(4)//se refiere a la columna del datatable donde está el sub-total
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 4, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 4 ).footer() ).html(
+                $.number(total,decimales, ',', '.')
+            );
+        }
+    });
+
+
+    /*Elimina el articulo del pedido*/
+    var tabla = $("#pedido-detalle").DataTable();
+    $('#pedido-detalle tbody').on( 'click', 'a.btn-delete-row', function () {
+        var row = $(this).parent().index('#pedido-detalle tbody tr');
+        tabla
+            .row( $(this).parents('tr') )
+            .remove()
+            .draw();
+        $("#tab-hidden tr:eq("+row+")").remove();
+    } );
 </script>
 <script type="text/javascript">
     /*

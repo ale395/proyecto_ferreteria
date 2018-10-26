@@ -26,7 +26,6 @@ class OrdenCompraFormRequest extends FormRequest
         return [
             'nro_orden'=>'required', 
             'proveedor_id'=>'required', 
-            'sucursal_id'=>'required', 
             'moneda_id'=>'required',
             'fecha_emision'=>'required',
             'articulo_id'=>'required',
@@ -34,4 +33,17 @@ class OrdenCompraFormRequest extends FormRequest
             'costo_unitario'=>'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'nro_orden.required' => 'El :attribute es obligatorio.',
+            'proveedor_id.required' => 'Ingrese el proveedor.',
+            'costo_unitario.required' => 'El artículo no tiene costo',
+            'moneda.required' => 'Debe seleccionar una moneda.',
+            'articulo_id.required' => 'Ingrese al menos un artículo.',
+            'fecha_emision.required' => 'Ingrese la fecha.'
+        ];
+
+    }   
 }

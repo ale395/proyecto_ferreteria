@@ -7,7 +7,7 @@ use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
-use App\Http\Requests\OrdenCompraFormRquest;
+use App\Http\Requests\OrdenCompraFormRequest;
 use App\OrdenCompraCab;
 use App\OrdenCompraDet;
 use App\Proveedor;
@@ -64,7 +64,7 @@ class OrdenCompraController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrdenCompraFormRequest $request)
     {
         try {
             DB::beginTransaction();
@@ -135,7 +135,10 @@ class OrdenCompraController extends Controller
             DB::commit();
         } catch (\Exception $e) {
 
+            return back()->withInput();
+
             DB::rollback();
+
         }
 
         return redirect(route('ordencompra.create'))->with('status', 'Datos guardados correctamente!');
@@ -157,7 +160,7 @@ class OrdenCompraController extends Controller
         ->select('o.id', 'o.nro_orden', 'o.fecha_emision', 'o.proveedor_id',
         DB::raw("CONCAT('p.codigo','p.nombre') as proveedor"),
         'o.moneda_id','m.codigo', 'm.descripcion', 'o.valor_cambio', 'o.monto_total')
-        ->where('o.id','=',$id)->fist();
+        ->where('o.id','=',$id)->first();
 
         $orden_compra_detalle = DB::table('orden_compras_det as od')
         ->join('articulos as a', 'a.id','=', 'od.articulo_id')

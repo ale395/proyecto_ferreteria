@@ -245,6 +245,16 @@ class ArticuloController extends Controller
         };
     }
 
+    public function apiArticulosCosto($articulo_id){
+        if (!empty($articulo_id)) {
+            $articulo = Articulo::findOrFail($articulo_id)->first();
+            //$ultimo_costo = $articulo->ultimo_costo;
+    
+          
+            return $articulo->ultimo_costo;
+        };
+    }
+
     public function apiArticulos()
     {
         $permiso_editar = Auth::user()->can('articulos.edit');
