@@ -98,6 +98,7 @@ class PedidoVentaController extends Controller
         $cabecera->setListaPrecioId($request['lista_precio_id']);
         $cabecera->setValorCambio($request['valor_cambio']);
         $cabecera->setFechaEmision($request['fecha_emision']);
+        $cabecera->setComentario($request['comentario']);
         $cabecera->setMontoTotal($total);
         //$cabecera->setComentario();
 
@@ -156,7 +157,64 @@ class PedidoVentaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //return $request;
+        $cabecera = PedidoVentaCab::findOrFail($id);
+        $sucursal = Auth::user()->empleado->sucursales->first();
+        $total = 0;
+
+        if (!empty('sucursal')) {
+            $request['sucursal_id'] = $sucursal->getId();
+        }
+
+        $rules = [
+            'cliente_id' => 'required',
+            'sucursal_id' => 'required',
+            'valor_cambio' => 'required|numeric|min:1',
+            'fecha_emision' => 'required|date_format:d/m/Y',
+            'tab_articulo_id' => 'required|array|min:1|max:'.PedidoVentaCab::MAX_LINEAS_DETALLE,
+        ];
+
+        $mensajes = [
+            'valor_cambio.min' => 'El valor de cambio no puede ser menor que :min !',
+            'tab_articulo_id.min' => 'Como mínimo se debe asignar :min producto(s) al pedido!',
+            'tab_articulo_id.max' => 'Ha superado la cantidad máxima de líneas en un pedido. La cantidad máxima es de :max!',
+        ];
+
+        $request['valor_cambio'] = str_replace('.', '', $request['valor_cambio']);
+
+        $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+            $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
+        }
+
+        $cabecera->setEstado($request['estado']);
+        $cabecera->setClienteId($request['cliente_id']);
+        $cabecera->setFechaEmision($request['fecha_emision']);
+        $cabecera->setMontoTotal($total);
+        $cabecera->setComentario($request['comentario']);
+
+        $cabecera->update();
+        $cabecera->pedidosDetalle()->delete();
+
+        for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+        //foreach ($request['tab_articulo_id'] as $detalle) {
+            $detalle = new PedidoVentaDet;
+            $detalle->setPedidoCabeceraId($cabecera->getId());
+            $detalle->setArticuloId($request['tab_articulo_id'][$i]);
+            $detalle->setCantidad($request['tab_cantidad'][$i]);
+            $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_precio_unitario'][$i]));
+            $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
+            $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
+            $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
+            $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
+            $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
+            $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
+            $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
+            $detalle->save();
+        }
+
+        return redirect()->route('pedidosVentas.show', ['pedidosVenta' => $cabecera->getId()])->with('status', 'Pedido guardado correctamente!');
     }
 
     /**

@@ -16,14 +16,15 @@ class CreateExistenciaArticulosTable extends Migration
     {
         Schema::create('existencia_articulos', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('articulo_id')->nullable();
-            $table->integer('deposito_id')->nullable();
-            $table->decimal('cantidad', 25, 4)->nullable();
-            $table->date('fecha_ultimo_inventario')->nullable();
-            $table->decimal('costo_ultimo_inventario', 25, 4)->nullable();
+            $table->integer('articulo_id')->unsigned();
+            $table->integer('sucursal_id')->unsigned();
+            $table->decimal('cantidad', 14, 2)->unsigned();
+            $table->timestamps();
+            //$table->date('fecha_ultimo_inventario')->nullable();
+            //$table->decimal('costo_ultimo_inventario', 14, 2)->nullable();
 
             $table->foreign('articulo_id')->references('id')->on('articulos');
-            $table->foreign('deposito_id')->references('id')->on('depositos');                       
+            $table->foreign('sucursal_id')->references('id')->on('sucursales');                       
         });
     }
 

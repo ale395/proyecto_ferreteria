@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente</label>
                         <div class="col-md-6">
-                            <input id="select2-clientes" name="cliente_id" class="form-control" value="{{$pedido_cab->cliente->getNombreIndex()}}" readonly>
+                            <input id="select2-clientes" name="cliente_id" class="form-control" value="{{$pedido_cab->cliente->getNombreSelect()}}" readonly>
                         </div>
                         <label for="lista_precio_id" class="col-md-1 control-label">Lista Prec.</label>
                         <div class="col-md-3">
@@ -58,9 +58,16 @@
                         <div class="col-md-2">
                             <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{$pedido_cab->getValorCambio()}}" readonly>
                         </div>
+                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
+                        <div class="col-md-4">
+                            <textarea class="form-control" rows="2" id="comentario" name="comentario" readonly>{{$pedido_cab->getComentario()}}</textarea>
+                        </div>
                     </div>
                     <div class="form-group">
-                        
+                        <label for="estado" class="col-md-1 control-label">Estado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="estado" name="estado" class="form-control" value="{{old('valor_cambio', $pedido_cab->getEstadoNombre())}}" readonly>
+                        </div>
                     </div>
                     <br>
                     <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
@@ -79,8 +86,8 @@
                         <tbody>
                             @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
                                 <tr>
-                                    <td>{{$pedido_det->articulo->getDescripcion()}}</td>
-                                    <td>{{$pedido_det->getCantidad()}}</td>
+                                    <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
+                                    <td>{{$pedido_det->getCantidadNumber()}}</td>
                                     <td>{{$pedido_det->getPrecioUnitario()}}</td>
                                     <td>{{$pedido_det->getMontoDescuento()}}</td>
                                     <td>{{$pedido_det->getMontoExenta()}}</td>
