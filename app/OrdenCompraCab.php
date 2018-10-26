@@ -8,7 +8,7 @@ class OrdenCompraCab extends Model
 {
     protected $table = 'orden_compras_cab';
     
-    protected $primaryKey = 'id_orden';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'nro_orden', 

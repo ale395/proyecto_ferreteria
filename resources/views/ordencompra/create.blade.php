@@ -9,9 +9,9 @@
                 <div class="panel-heading">
                     <h4>Orden de Compra
                     <div class="pull-right btn-group">
-                        <button type="submit" class="btn btn-primary btn-save">Guardar</button>
-                        <a href="{{route('ordencompra.index')}}" type="button" class="btn btn-default">Cancelar</a>
-                    </div>
+                    <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('ordencompra.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ordencompra.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>                    </div>
                     
                     </h4>
                 </div>

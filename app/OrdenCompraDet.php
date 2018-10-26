@@ -15,7 +15,7 @@ class OrdenCompraDet extends Model
         'costo_unitario', 
         'costo_promedio', 
         'sub_total',
-        'porcentaje_iva',
+        'porcentaje',
         'total_exenta',
         'total_gravada',
         'total_iva'

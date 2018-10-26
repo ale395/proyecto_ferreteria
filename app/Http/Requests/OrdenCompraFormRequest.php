@@ -28,9 +28,9 @@ class OrdenCompraFormRequest extends FormRequest
             'proveedor_id'=>'required', 
             'moneda_id'=>'required',
             'fecha_emision'=>'required',
-            'articulo_id'=>'required',
-            'cantidad'=>'required', 
-            'costo_unitario'=>'required'
+            'tab_articulo_id'=>'required',
+            'tab_cantidad'=>'required', 
+            'tab_costounitario'=>'required'
         ];
     }
 
