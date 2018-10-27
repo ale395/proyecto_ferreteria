@@ -209,7 +209,17 @@ class OrdenCompraController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        try {
+            $orden_compra = OrdenCompraCab::findOrFail('id');
+    
+            return view('ordencompra.edit',compact('orden_compra'));
+    
+        } catch (\Exception $e) {
+            return redirect()->back()->with('warning', 'Ocurrió un error!');
+        }
+
+    
     } 
 
     /**
@@ -219,9 +229,111 @@ class OrdenCompraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(OrdenCompraFormRequest $request, $id)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            //instanciamos la clase
+            $orden_compra = new OrdenCompraCab();
+            $total = 0;
+            $sucursal = Auth::user()->empleado->sucursales->first();
+
+            if (!empty('sucursal')) {
+                $request['sucursal_id'] = $sucursal->getId();
+            }
+
+            for ($i=0; $i < collect($request['tab_subtotal'])->count(); $i++){
+
+                $subtotal =  $request['tab_subtotal'][$i];
+                $subtotal = str_replace('.', '', $subtotal);
+                $subtotal = str_replace(',', '.', $subtotal);
+                
+                $total = $total + $subtotal;
+            }
+
+            //pasamos los parámetros del request
+            $orden_compra->nro_orden = $request['nro_orden'];
+            $orden_compra->proveedor_id = $request['proveedor_id'];
+            $orden_compra->fecha_emision = $request['fecha_emision'];   
+            $orden_compra->sucursal_id = $request['sucursal_id'];     
+            $orden_compra->moneda_id = $request['moneda_id'];
+            $orden_compra->valor_cambio = $request['valor_cambio'];
+            $orden_compra->monto_total = $total;
+            $orden_compra->estado = 'A';
+
+            //guardamos
+            $orden_compra->save();
+
+            //desde aca va el detalle-----------------------------------         
+            //lo que trae directamente del request
+            $tab_articulo_id = $request['tab_articulo_id'];
+            $tab_cantidad = $request['tab_cantidad'];
+            $tab_costounitario = $request['tab_costounitario'];        
+            $tab_subtotal = $request['tab_subtotal'];
+           
+            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+
+                $cantidad = $tab_cantidad[$i];
+                $cantidad = str_replace('.', '', $cantidad);
+                //$cantidad = str_replace(',', '.', $cantidad);
+
+                $costo_unitario = $tab_costounitario[$i];
+                $costo_unitario = str_replace('.', '', $costo_unitario);
+                //$costo_unitario = str_replace(',', '.', $costo_unitario);
+
+                $subtotal = $tab_subtotal[$i];
+                $subtotal = str_replace('.', '', $subtotal);
+                //$subtotal = str_replace(',', '.', $subtotal);
+
+                //datos del articulo.
+                $articulo_aux = Articulo::where('id', $tab_articulo_id[$i])->first();//para traer algunas cosas del maestro    
+                $iva = Impuesto::where('id',$articulo_aux->impuesto_id)->first();//para traer el porcentaje del IVA
+                
+                $costo_promedio = $articulo_aux->costo_promedio; 
+                $porcentaje_iva = $iva->porcentaje;
+                $coheficiente_iva =  1 + ($porcentaje_iva/100); //coheficiente utilizado para calcular los valores del IVA
+
+                if($porcentaje_iva == 0){
+                    $total_exenta = $tab_subtotal[$i];
+                    $total_gravada = 0;
+                    $total_iva = 0;    
+                } else {
+                    $total_exenta = 0;
+                    $total_gravada = $subtotal;
+                    $total_iva = $subtotal / $coheficiente_iva;            
+                }
+
+                $orden_compra_detalle = new OrdenCompraDet();
+
+                $orden_compra_detalle->orden_compra_cab_id = $orden_compra->id; 
+                $orden_compra_detalle->articulo_id = $tab_articulo_id[$i];
+                $orden_compra_detalle->cantidad = $cantidad;
+                $orden_compra_detalle->costo_unitario = $costo_unitario;
+                $orden_compra_detalle->costo_promedio = $costo_promedio;
+                $orden_compra_detalle->sub_total = $subtotal;
+                $orden_compra_detalle->porcentaje = $porcentaje_iva;
+                $orden_compra_detalle->total_exenta = $total_exenta;
+                $orden_compra_detalle->total_gravada = $total_gravada;
+                $orden_compra_detalle->total_iva = $total_iva;
+
+                $orden_compra_detalle->save();
+
+            }
+             //-----------------------------------------------------------
+
+            DB::commit();
+        } catch (\Exception $e) {
+
+            //$error = $e->getMessage();
+            //Deshacemos la transaccion
+            DB::rollback();
+            //volvemos para atras y mostrarmos los errores
+            return back()->withErrors( $e->getMessage() )->withInput();
+            //return back()->withErrors( $e->getTraceAsString() )->withInput();
+        }
+
+        return redirect(route('ordencompra.create'))->with('status', 'Datos guardados correctamente!');
     }
 
     /**
