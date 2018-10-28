@@ -95,8 +95,9 @@
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
+                        <input type="hidden" id="existencia" name="existencia">
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()" readonly></a>
                         </div>
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="% Descuento">
@@ -362,6 +363,7 @@
         });
 
     $("#btn-add-articulo").attr("disabled", true);
+    
     var table = $('#pedido-detalle').DataTable({
         "paging":   false,
         "ordering": false,
@@ -369,7 +371,8 @@
         "searching": false,
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
-        {"className": "dt-center", "targets": "_all"}
+          { className: "dt-center", "targets": [0,2,3,4,5,6,7,8] },
+          { className: "dt-left", "targets": [1] }
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -418,6 +421,7 @@
               url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,
               datatype: "json",
               success: function(data){
+                $("#existencia" ).val(data.existencia).change();
                 $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
                 $("#precio_unitario" ).val(data.precio).change();
                 $("#porcentaje_descuento" ).val(0).change();
@@ -446,62 +450,80 @@
 
     function addArticulo() {
         /*Se obtienen los valores de los campos correspondientes*/
-        var decimales = 0;
-        var articulo = $('#select2-articulos').select2('data')[0].text;
-        var articulo_id = $('#select2-articulos').select2('data')[0].id;
-        var cantidad = $("#cantidad").val();
-        var precio_unitario = $("#precio_unitario").val();
-        var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-        var monto_descuento = precio_unitario.replace(".", "") * (porcentaje_descuento/100);
-        var subtotal = $("#subtotal").val();
-        var porcentaje_iva = $("#porcentaje_iva" ).val();
-        var exenta = 0;
-        var gravada = 0;
-        var iva = 0;
-        if (porcentaje_iva == 0) {
-            exenta = subtotal;
+        var cantidad = $("#cantidad" ).val();
+        var existencia = $("#existencia" ).val();
+        
+        if (Number(cantidad) > Number(existencia)) {
+            console.log('Cantidad es mayor que existencia: '+cantidad+' - '+existencia);
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },4000); 
         } else {
-            gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
-            iva = Math.round(gravada*(porcentaje_iva/100));
+            var decimales = 0;
+            var articulo = $('#select2-articulos').select2('data')[0].text;
+            var articulo_id = $('#select2-articulos').select2('data')[0].id;
+            //var cantidad = $("#cantidad").val();
+            var precio_unitario = $("#precio_unitario").val();
+            var porcentaje_descuento = $("#porcentaje_descuento" ).val();
+            var monto_descuento = cantidad * precio_unitario.replace(".", "") * (porcentaje_descuento/100);
+            var subtotal = $("#subtotal").val();
+            var porcentaje_iva = $("#porcentaje_iva" ).val();
+            var exenta = 0;
+            var gravada = 0;
+            var iva = 0;
+            if (porcentaje_iva == 0) {
+                exenta = subtotal;
+            } else {
+                gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
+                iva = Math.round(gravada*(porcentaje_iva/100));
+            }
+            /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+            precio_unitario = $.number(precio_unitario,decimales, ',', '.');
+            cantidad = $.number(cantidad,decimales, ',', '.');
+            monto_descuento = $.number(monto_descuento,decimales, ',', '.');
+            exenta = $.number(exenta,decimales, ',', '.');
+            gravada = $.number(gravada,decimales, ',', '.');
+            iva = $.number(iva,decimales, ',', '.');
+            subtotal = $.number(subtotal,decimales, ',', '.');  
+            
+            /*Se agrega una fila a la tabla*/
+            var tabla = $("#pedido-detalle").DataTable();
+            tabla.row.add( [
+                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+                articulo,
+                cantidad,
+                precio_unitario,
+                monto_descuento,
+                exenta,
+                gravada,
+                iva,
+                subtotal
+            ] ).draw( false );
+
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+            $("#tab-hidden").append(markup);
+
+            /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+            $('#cantidad').number(false);
+            $('#precio_unitario').number(false);
+            $('#subtotal').number(false);
+            
+            $('#cantidad').val("");
+            $('#precio_unitario').val("");
+            $('#porcentaje_descuento').val("");
+            $('#porcentaje_iva').val("");
+            $('#subtotal').val("");
+            $('#select2-articulos').val(null).trigger('change');
+            $("#select2-articulos").focus();
         }
-        /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
-        precio_unitario = $.number(precio_unitario,decimales, ',', '.');
-        cantidad = $.number(cantidad,decimales, ',', '.');
-        monto_descuento = $.number(monto_descuento,decimales, ',', '.');
-        exenta = $.number(exenta,decimales, ',', '.');
-        gravada = $.number(gravada,decimales, ',', '.');
-        iva = $.number(iva,decimales, ',', '.');
-        subtotal = $.number(subtotal,decimales, ',', '.');  
-        
-        /*Se agrega una fila a la tabla*/
-        var tabla = $("#pedido-detalle").DataTable();
-        tabla.row.add( [
-            "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
-            articulo,
-            cantidad,
-            precio_unitario,
-            monto_descuento,
-            exenta,
-            gravada,
-            iva,
-            subtotal
-        ] ).draw( false );
-
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
-        $("#tab-hidden").append(markup);
-
-        /*Se restauran a nulos los valores del bloque para la selección del articulo*/
-        $('#cantidad').number(false);
-        $('#precio_unitario').number(false);
-        $('#subtotal').number(false);
-        
-        $('#cantidad').val("");
-        $('#precio_unitario').val("");
-        $('#porcentaje_descuento').val("");
-        $('#porcentaje_iva').val("");
-        $('#subtotal').val("");
-        $('#select2-articulos').val(null).trigger('change');
-        $("#select2-articulos").focus();
     };
 
     /*Elimina el articulo del pedido*/
@@ -554,7 +576,7 @@
         }
     });
     $('#valor_cambio').number(true, 0, ',', '.');
-    $('#cantidad').number(true, 0, ',', '.');
+    $('#cantidad').number(true, 2, ',', '.');
     $('#precio_unitario').number(true, 0, ',', '.');
     $('#subtotal').number(true, 0, ',', '.');
 </script>

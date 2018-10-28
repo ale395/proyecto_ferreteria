@@ -14,7 +14,8 @@ class AlterOrdenComprasDetTable extends Migration
     public function up()
     {
         Schema::table('orden_compras_det', function (Blueprint $table) {
-            $table->integer('porcentaje_iva');
+            //$table->integer('porcentaje_iva');
+            $table->decimal('porcentaje', 8, 4);
             $table->decimal('total_exenta', 14, 2);
             $table->decimal('total_gravada', 14, 2);
             $table->decimal('total_iva', 14, 2);

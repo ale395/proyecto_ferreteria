@@ -19,12 +19,6 @@ class DatabaseSeeder extends Seeder
 	    // La creación de datos de roles debe ejecutarse primero
     	$this->call(RoleTableSeeder::class);	
 
-        //Carga los Modulos del Sistema
-        //$this->call(ModuloTableSeeder::class);
-
-        //Carga los Conceptos del Sistema
-        //$this->call(ConceptoTableSeeder::class);
-
         $this->call(TimbradoTableSeeder::class);
 
         $this->call(SucursalTableSeeder::class);
@@ -48,5 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DefaultSeeder::class);
 
         $this->call(ArticuloTableSeeder::class);
+
+        $this->call(ExistenciaTableSeeder::class);
     }
 }

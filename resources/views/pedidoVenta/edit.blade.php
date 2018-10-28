@@ -116,7 +116,7 @@
                             <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()" readonly></a>
                         </div>
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="% Descuento">
@@ -149,7 +149,7 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
                                         <td>{{old('tab_precio_unitario.'.$i)}}</td>
@@ -163,9 +163,9 @@
                             @else
                                 @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
                                     <tr>
-                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
-                                        <td>{{$pedido_det->articulo->getDescripcion()}}</td>
-                                        <td>{{$pedido_det->getCantidad()}}</td>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
+                                        <td>{{$pedido_det->getCantidadNumber()}}</td>
                                         <td>{{$pedido_det->getPrecioUnitario()}}</td>
                                         <td>{{$pedido_det->getMontoDescuento()}}</td>
                                         <td>{{$pedido_det->getMontoExenta()}}</td>
@@ -212,7 +212,7 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                         <th><input type="text" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
@@ -229,7 +229,7 @@
                             @else
                                 @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
                                     <tr>
-                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                         <th><input type="text" name="tab_articulo_id[]" value="{{$pedido_det->articulo->getId()}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{$pedido_det->articulo->getDescripcion()}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{$pedido_det->getCantidad()}}"></th>
@@ -257,6 +257,11 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
+
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    });
+
     function addForm() {
         $.confirm({
             title: 'Tipo de Persona',
@@ -504,7 +509,7 @@
         var cantidad = $("#cantidad").val();
         var precio_unitario = $("#precio_unitario").val();
         var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-        var monto_descuento = precio_unitario.replace(".", "") * (porcentaje_descuento/100);
+        var monto_descuento = cantidad * precio_unitario.replace(".", "") * (porcentaje_descuento/100);
         var subtotal = $("#subtotal").val();
         var porcentaje_iva = $("#porcentaje_iva" ).val();
         var exenta = 0;
@@ -528,7 +533,7 @@
         /*Se agrega una fila a la tabla*/
         var tabla = $("#pedido-detalle").DataTable();
         tabla.row.add( [
-            "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+            "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
             articulo,
             cantidad,
             precio_unitario,
@@ -539,7 +544,7 @@
             subtotal
         ] ).draw( false );
 
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
         $("#tab-hidden").append(markup);
 
         /*Se restauran a nulos los valores del bloque para la selección del articulo*/
@@ -607,7 +612,7 @@
         }
     });
     $('#valor_cambio').number(true, 0, ',', '.');
-    $('#cantidad').number(true, 0, ',', '.');
+    $('#cantidad').number(true, 2, ',', '.');
     $('#precio_unitario').number(true, 0, ',', '.');
     $('#subtotal').number(true, 0, ',', '.');
 </script>

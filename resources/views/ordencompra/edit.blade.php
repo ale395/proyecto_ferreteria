@@ -4,13 +4,13 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('OrdenCompraController@store')}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('OrdenCompraController@update', $orden_compra->id)}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Orden de Compra
                     <div class="pull-right btn-group">
                     <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('ordencompra.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar Edición" href="{{route('ordencompra.index')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ordencompra.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>                    </div>
                     
                     </h4>
@@ -27,36 +27,44 @@
                                 </ul>
                             </div>
                         @endif
+                        @if (session('status'))
+                            <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                {{ session('status') }}
+                            </div>
+                        @endif
                     </div>
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
-                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="id" name="id" value="{{$orden_compra->id}}">
                     <div class="form-group">
                         <label for="nro_orden" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="text" id="nro_orden" name="nro_orden" class="form-control" value="{{old('nro_orden', $nro_orden)}}" readonly="readonly">
+                            <input type="text" id="nro_orden" name="nro_orden" class="form-control"  value="{{$orden_compra->nro_orden}}" readonly="readonly">
                         </div>
                         <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$orden_compra->fecha_emision}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="proveedor_id" class="col-md-1 control-label">Proveedor *</label>
                         <div class="col-md-5">
-                            <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%"></select>
+                            <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
+                                <option value="{{$orden_compra->proveedor->id}}">{{$orden_compra->proveedor->codigo.' - '$orden_compra->proveedor->razon_social}}</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
                             <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
-                                <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
+                                <option value="{{$orden_compra->moneda->getId()}}">{{$orden_compra->moneda->getDescripcion()}}</option>
                             </select>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{$orden_compra->proveedor->valor_cambio}}">
                         </div>
                     </div>
                     <div class="form-group">

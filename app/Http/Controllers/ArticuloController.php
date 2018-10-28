@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Image;
 use Validator;
 use App\Articulo;
 use App\Impuesto;
@@ -8,8 +10,8 @@ use App\Rubro;
 use App\Familia;
 use App\Linea;
 use App\UnidadMedida;
-use Image;
 use App\ListaPrecioDetalle;
+use App\ExistenciaArticulo;
 
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -233,15 +235,34 @@ class ArticuloController extends Controller
                 ->where('fecha_vigencia', '<=', today())->get();
             $precio = $precio->sortByDesc('fecha_vigencia');
             $precio = $precio->first();
+            $sucursal = Auth::user()->empleado->sucursales->first();
+            $existencia = ExistenciaArticulo::where('articulo_id', $articulo_obj->id)
+                ->where('sucursal_id', $sucursal->id)->first();
             
             if (empty($precio)) {
                 $articulo->put('precio', 0);
             } else {
                 $articulo->put('precio', $precio->precio);
             }
+
+            if (empty($existencia)) {
+                $articulo->put('existencia', 0);
+            } else {
+                $articulo->put('existencia', $existencia->getCantidad());
+            }
             
             $articulo->put('iva', $articulo_obj->impuesto);
             return $articulo;
+        };
+    }
+
+    public function apiArticulosCosto($articulo_id){
+        if (!empty($articulo_id)) {
+            $articulo = Articulo::findOrFail($articulo_id)->first();
+            //$ultimo_costo = $articulo->ultimo_costo;
+    
+          
+            return $articulo->ultimo_costo;
         };
     }
 

@@ -33,8 +33,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('articulos', 'ArticuloController');
 	Route::get('api/articulos', 'ArticuloController@apiArticulos')->name('api.articulos');
 	Route::get('api/articulos/cotizacion/{articulo}/{lista_precio}', 'ArticuloController@apiArticulosCotizacion')->name('api.articulos.cotizacion');
-		
-		//RUTAS PARA Monedas
+	Route::get('api/articulos/costo/{articulo}', 'ArticuloController@apiArticulosCosto')->name('api.articulos.costo');
+
+	//RUTAS PARA Monedas
 	Route::resource('monedas', 'MonedaController');
 	Route::get('api/monedas', 'MonedaController@apiMonedas')->name('api.monedas');
 	Route::get('api/monedas/select', 'MonedaController@apiMonedasSelect')->name('api.monedas.select');
@@ -167,5 +168,8 @@ Route::middleware(['auth'])->group(function() {
 	//Rutas para orden de compra
 	Route::resource('ordencompra', 'OrdenCompraController');
 	Route::get('api/ordencompra', 'OrdenCompraController@apiOrdenCompra')->name('api.ordencompra');
+
+	//Para ver los errores de PHP
+	Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 });
