@@ -13,10 +13,11 @@ class CreateConceptosAjusteTable extends Migration
      */
     public function up()
     {
-        Schema::create('conceptos_ajuste', function (Blueprint $table) {
+        Schema::create('conceptos_ajustes', function (Blueprint $table) {
             $table->increments('id');
             $table->char('num_concepto', 4)->unique();
             $table->string('descripcion');
+            $table->string('signo');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateConceptosAjusteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('conceptos_ajuste');
+        Schema::dropIfExists('conceptos_ajustes');
     }
 }

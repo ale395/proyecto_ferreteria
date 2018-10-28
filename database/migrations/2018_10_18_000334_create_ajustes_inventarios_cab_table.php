@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAjusteInventario extends Migration
+class CreateAjustesInventarios extends Migration
 {
    /**
      * Run the migrations.
@@ -20,13 +20,12 @@ class CreateAjusteInventario extends Migration
             $table->integer('sucursal_id')->unsigned();
             $table->integer('concepto_ajuste_id')->unsigned();
             $table->date('fecha_emision');
-            $table->decimal('monto_total', 14, 2)->default(0);
-            $table->char('estado', 1);
+            $table->string('motivos');
             $table->timestamps();
 
             $table->foreign('empleado_id')->references('id')->on('empleados');
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
-            $table->foreign('concepto_ajuste_id')->references('id')->on('conceptos_ajuste');
+            $table->foreign('concepto_ajuste_id')->references('id')->on('conceptos_ajustes');
         });
     }
 
