@@ -86,7 +86,8 @@ class DefaultSeeder extends Seeder
        	//Concepto ajuste por default - ajuste de existencia
         $conceptoajuste = new ConceptoAjuste();
         $conceptoajuste->num_concepto = '001';
-        $conceptoajuste->descripcion = 'AJUSTE DE EXISTENCIA';
+        $conceptoajuste->descripcion = 'DEVOLUCION';
+        $conceptoajuste->signo = '-';
         $conceptoajuste->save();
 
         //tipo proveedor 

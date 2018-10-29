@@ -17,7 +17,7 @@ class CreateConceptosAjusteTable extends Migration
             $table->increments('id');
             $table->char('num_concepto', 4)->unique();
             $table->string('descripcion');
-            $table->string('signo');
+            $table->string('signo', 1)->nullable();
             $table->timestamps();
         });
     }
