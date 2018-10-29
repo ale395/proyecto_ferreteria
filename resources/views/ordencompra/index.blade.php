@@ -8,6 +8,7 @@
                 <div class="panel-heading">
                     @if (session('warning'))
                         <div class="alert alert-warning alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
                             {{ session('warning') }}
                         </div>
                     @endif

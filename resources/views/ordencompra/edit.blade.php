@@ -29,7 +29,7 @@
                         @endif
                         @if (session('status'))
                             <div class="alert alert-success alert-dismissible">
-                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                <a href="#" class="close" data-dismiss="alert">&times;</a>
                                 {{ session('status') }}
                             </div>
                         @endif
@@ -51,7 +51,7 @@
                         <label for="proveedor_id" class="col-md-1 control-label">Proveedor *</label>
                         <div class="col-md-5">
                             <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
-                                <option value="{{$orden_compra->proveedor->id}}">{{$orden_compra->proveedor->codigo.' - '$orden_compra->proveedor->razon_social}}</option>
+                                <option value="{{$orden_compra->proveedor_id}}">{{$orden_compra->proveedor->codigo.' - '.$orden_compra->proveedor->razon_social}}</option>
                             </select>
                         </div>
                     </div>
@@ -64,11 +64,23 @@
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{$orden_compra->proveedor->valor_cambio}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{$orden_compra->valor_cambio}}">
                         </div>
                     </div>
                     <div class="form-group">
-                        
+                         <label for="estado" class="col-md-1 control-label">Estado</label>
+                        <div class="col-md-2">
+                            <select id="select2-estados" name="estado" class="form-control" style="width: 100%">
+                                @if ($orden_compra->estado == 'A')
+                                    <option value="P" selected>Pendiente</option>
+                                    <option value="C">Cancelado</option>
+                                @elseif ($orden_compra->estado == 'C')
+                                    <option value="P">Pendiente</option>
+                                    <option value="C" selected>Cancelado</option>
+                                @endif
+                                <option value="F" disabled>Facturado</option>
+                            </select>
+                        </div>  
                     </div>
                     <br>
                     <div class="form-group">
@@ -112,6 +124,16 @@
                                         <td>{{old('tab_subtotal.'.$i)}}</td>
                                     </tr>
                                 @endfor
+                            @else
+                                @foreach ($orden_compra->ordenCompraDetalle as $pedido_det)
+                                    <tr>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
+                                        <td>{{$pedido_det->getCantidadNumber()}}</td>
+                                        <td>{{$pedido_det->getCostoUnitario()}}</td>
+                                        <td>{{$pedido_det->getSubTotal()}}</td>
+                                    </tr>
+                                @endforeach
                             @endif
                         </tbody>
                         <tfoot>
@@ -148,6 +170,17 @@
                                         <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
                                     </tr>
                                 @endfor
+                            @else
+                                @foreach ($orden_compra->ordenCompraDetalle as $pedido_det)
+                                    <tr>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><input type="text" name="tab_articulo_id[]" value="{{$pedido_det->articulo->getId()}}"></th>
+                                        <th><input type="text" name="tab_articulo_nombre[]" value="{{$pedido_det->articulo->getDescripcion()}}"></th>
+                                        <th><input type="text" name="tab_cantidad[]" value="{{$pedido_det->getCantidad()}}"></th>
+                                        <th><input type="text" name="tab_costounitario[]" value="{{$pedido_det->getCostoUnitario()}}"></th>
+                                        <th><input type="text" name="tab_subtotal[]" value="{{$pedido_det->getSubTotal()}}"></th>
+                                    </tr>
+                                @endforeach
                             @endif
                         </tbody>
                     </table>
