@@ -183,7 +183,6 @@ class OrdenCompraController extends Controller
         $orden_compra = DB::table('orden_compras_cab as o')
         ->join('proveedores as p', 'p.id','=', 'o.proveedor_id')
         ->join('monedas as m', 'm.id','=', 'o.moneda_id')
-        ->join('orden_compras_det od', 'od.orden_compra_cab_id','=','o.id')  
         ->select('o.id', 'o.nro_orden', 'o.fecha_emision', 'o.proveedor_id',
         DB::raw("CONCAT(p.codigo, ' ', p.nombre) as proveedor"),
         'o.moneda_id','m.codigo', 'm.descripcion', 'o.valor_cambio', 'o.monto_total')
@@ -191,10 +190,10 @@ class OrdenCompraController extends Controller
 
         $orden_compra_detalle = DB::table('orden_compras_det as od')
         ->join('articulos as a', 'a.id','=', 'od.articulo_id')
-        ->select('od.orden_compra_id', 'a.codigo', 'a.descripcion', 'od.cantidad',
-        'od.costo_unitario', 'od.sub_total','od.porcentaje_iva','od.total_exenta', 
+        ->select('od.orden_compra_cab_id', 'a.codigo', 'a.descripcion', 'od.cantidad',
+        'od.costo_unitario', 'od.sub_total','od.porcentaje','od.total_exenta', 
         'od.total_gravada', 'od.total_iva')
-        ->where('o.id','=',$id)
+        ->where('od.orden_compra_cab_id','=',$id)
         ->get();
 
         return view('ordencompra.show',compact('orden_compra', 'orden_compra_detalle'));
@@ -209,22 +208,17 @@ class OrdenCompraController extends Controller
      */
     public function edit($id)
     {
-
-        $orden_compra = OrdenCompraCab::findOrFail($id);
-    
-        return view('ordencompra.edit',compact('orden_compra'));
-
         /*
+        $orden_compra = OrdenCompraCab::findOrFail($id);
+        return view('ordencompra.edit',compact('orden_compra'));
+        */
         try {
-
-            $orden_compra = OrdenCompraCab::findOrFail('id');
-    
+            $orden_compra = OrdenCompraCab::findOrFail($id);
             return view('ordencompra.edit',compact('orden_compra'));
     
         } catch (\Exception $e) {
             return redirect()->back()->with('warning', 'Ocurrió un error!');
         }
-        */
     
     } 
 
@@ -274,7 +268,7 @@ class OrdenCompraController extends Controller
             //borramos el detalle anterior
             $orden_compra->OrdenCompraDetalle()->delete();
 
-            //desde aca va el detalle-----------------------------------         
+            //desde aca va el nuevo detalle-----------------------------------         
             //lo que trae directamente del request
             $tab_articulo_id = $request['tab_articulo_id'];
             $tab_cantidad = $request['tab_cantidad'];
@@ -344,7 +338,7 @@ class OrdenCompraController extends Controller
 
         }
 
-        return redirect(route('ordencompra.create'))->with('status', 'Datos guardados correctamente!');
+        return redirect(route('ordencompra.index'))->with('status', 'Datos modificados correctamente!');
     }
 
     /**
@@ -355,7 +349,9 @@ class OrdenCompraController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $orden_compra = OrdenCompraCab::findOrFail($id);
+        $orden_compra->pedidosDetalle()->delete();
+        return OrdenCompraCab::destroy($id);
     }
 
     public function apiOrdenCompra()

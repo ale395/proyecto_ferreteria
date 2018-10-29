@@ -12,6 +12,12 @@
                             {{ session('warning') }}
                         </div>
                     @endif
+                    @if (session('status'))
+                        <div class="alert success-warning alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            {{ session('status') }}
+                        </div>
+                    @endif
                     <h4>Ordenes de Compra
                         @can('ordencompra.create')
                           <a class="btn btn-primary pull-right" href="{{route('ordencompra.create')}}" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Nuevo</a>

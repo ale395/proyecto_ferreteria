@@ -4,15 +4,15 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('OrdenCompraController@update', $orden_compra->id)}}" class="form-horizontal" data-toggle="validator">
+        <form method="put" action="{{action('OrdenCompraController@update', $orden_compra->id)}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Orden de Compra
                     <div class="pull-right btn-group">
-                    <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                        <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
                         <a data-toggle="tooltip" data-placement="top" title="Cancelar Edición" href="{{route('ordencompra.index')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ordencompra.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>                    </div>
-                    
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ordencompra.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>                    
+                    </div>
                     </h4>
                 </div>
                 <div class="panel-body">
@@ -34,7 +34,7 @@
                             </div>
                         @endif
                     </div>
-                    <input name="_method" type="hidden" value="POST">
+                    <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id" value="{{$orden_compra->id}}">
                     <div class="form-group">
