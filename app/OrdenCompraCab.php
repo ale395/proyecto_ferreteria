@@ -21,7 +21,7 @@ class OrdenCompraCab extends Model
         'estado',
     ];
 
-    public function cliente()
+    public function proveedor()
     {
         return $this->belongsTo('App\Proveedor');
     }
@@ -35,4 +35,9 @@ class OrdenCompraCab extends Model
     {
         return $this->belongsTo('App\Moneda');
     }
+
+    public function ordenCompraDetalle(){
+        return $this->hasMany('App\OrdenCompraDet', 'orden_compra_cab_id');
+    }
+
 }

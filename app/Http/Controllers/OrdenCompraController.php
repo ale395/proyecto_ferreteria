@@ -185,7 +185,7 @@ class OrdenCompraController extends Controller
         ->join('monedas as m', 'm.id','=', 'o.moneda_id')
         ->join('orden_compras_det od', 'od.orden_compra_cab_id','=','o.id')  
         ->select('o.id', 'o.nro_orden', 'o.fecha_emision', 'o.proveedor_id',
-        DB::raw("CONCAT('p.codigo','p.nombre') as proveedor"),
+        DB::raw("CONCAT(p.codigo, ' ', p.nombre) as proveedor"),
         'o.moneda_id','m.codigo', 'm.descripcion', 'o.valor_cambio', 'o.monto_total')
         ->where('o.id','=',$id)->first();
 
@@ -210,7 +210,13 @@ class OrdenCompraController extends Controller
     public function edit($id)
     {
 
+        $orden_compra = OrdenCompraCab::findOrFail($id);
+    
+        return view('ordencompra.edit',compact('orden_compra'));
+
+        /*
         try {
+
             $orden_compra = OrdenCompraCab::findOrFail('id');
     
             return view('ordencompra.edit',compact('orden_compra'));
@@ -218,7 +224,7 @@ class OrdenCompraController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('warning', 'Ocurrió un error!');
         }
-
+        */
     
     } 
 
@@ -247,7 +253,7 @@ class OrdenCompraController extends Controller
 
                 $subtotal =  $request['tab_subtotal'][$i];
                 $subtotal = str_replace('.', '', $subtotal);
-                $subtotal = str_replace(',', '.', $subtotal);
+                //$subtotal = str_replace(',', '.', $subtotal);
                 
                 $total = $total + $subtotal;
             }
@@ -260,10 +266,13 @@ class OrdenCompraController extends Controller
             $orden_compra->moneda_id = $request['moneda_id'];
             $orden_compra->valor_cambio = $request['valor_cambio'];
             $orden_compra->monto_total = $total;
-            $orden_compra->estado = 'A';
+            $orden_compra->estado = $request['estado'];
 
-            //guardamos
+            //guardamos los cambios
             $orden_compra->save();
+
+            //borramos el detalle anterior
+            $orden_compra->OrdenCompraDetalle()->delete();
 
             //desde aca va el detalle-----------------------------------         
             //lo que trae directamente del request
@@ -328,9 +337,11 @@ class OrdenCompraController extends Controller
             //$error = $e->getMessage();
             //Deshacemos la transaccion
             DB::rollback();
-            //volvemos para atras y mostrarmos los errores
-            return back()->withErrors( $e->getMessage() )->withInput();
+            //volvemos para atras y retornamos un mensaje de error
+            return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
+            //return back()->withErrors( $e->getMessage() )->withInput();
             //return back()->withErrors( $e->getTraceAsString() )->withInput();
+
         }
 
         return redirect(route('ordencompra.create'))->with('status', 'Datos guardados correctamente!');
