@@ -21,7 +21,7 @@ class CreateAjustesInventariosCabTable extends Migration
             $table->integer('sucursal_id')->unsigned();
             $table->integer('concepto_ajuste_id')->unsigned();
             $table->date('fecha_emision');
-            $table->string('motivos');
+            $table->string('motivo');
 
             $table->foreign('empleado_id')->references('id')->on('empleados');
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
