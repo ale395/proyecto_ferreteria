@@ -12,6 +12,10 @@ class Empresa extends Model
         'razon_social', 'ruc', 'direccion', 'correo_electronico', 'sitio_web', 'eslogan', 'telefono', 'rubro', 'codigo_establecimiento', 'moneda_nacional_id',
     ];
 
+    public function getCodigoEstablecimiento(){
+    	return $this->codigo_establecimiento;
+    }
+
     public function moneda()
     {
         return $this->belongsTo('App\Moneda', 'moneda_nacional_id');

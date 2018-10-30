@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Empresa;
 use Illuminate\Database\Eloquent\Model;
 
 class FacturaVentaCab extends Model
@@ -24,6 +25,12 @@ class FacturaVentaCab extends Model
 
     public function getNroFactura(){
     	return $this->nro_factura;
+    }
+
+    public function getNroFacturaIndex(){
+        $configuracion_empresa = Empresa::first();
+        $serie = $configuracion_empresa->getCodigoEstablecimiento()+'-'+$this->sucursal()->getCodigoPuntoExpedicion();
+        return $serie+' '+str_pad($this->nro_factura, 10, "0", STR_PAD_LEFT);
     }
 
     public function setNroFactura($nro_factura){

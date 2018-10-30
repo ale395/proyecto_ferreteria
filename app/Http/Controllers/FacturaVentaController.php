@@ -29,7 +29,12 @@ class FacturaVentaController extends Controller
      */
     public function create()
     {
-        //
+        $fecha_actual = date("d/m/Y");
+        $datos_default = DatosDefault::get()->first();
+        $lista_precio = $datos_default->listaPrecio;
+        $moneda = $datos_default->moneda;
+        $cambio = 1;
+        return view('facturaVenta.create', compact('fecha_actual', 'moneda', 'lista_precio', 'cambio'));
     }
 
     /**
@@ -98,6 +103,9 @@ class FacturaVentaController extends Controller
         if ($permiso_editar) {
             if ($permiso_ver) {
                 return Datatables::of($facturas)
+                    ->addColumn('nro_factura', function($facturas){
+                        return $facturas->getNroFacturaIndex();
+                    })
                     ->addColumn('fecha', function($facturas){
                         return $facturas->getFechaEmision();
                     })

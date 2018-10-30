@@ -6,9 +6,9 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Pedidos
-                        @can('pedidosVentas.create')
-                          <a onclick="window.location='{{route('pedidosVentas.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                    <h4>Lista de Facturas
+                        @can('facturacionVentas.create')
+                          <a onclick="window.location='{{route('facturacionVentas.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
@@ -18,7 +18,7 @@
                     <table id="pedidos-table" class="table-striped table-responsive row-border" style="width:100%">
                         <thead>
                             <tr>
-                                <th width="70">Nro Pedido</th>
+                                <th width="70">Nro Factura</th>
                                 <th>Fecha</th>
                                 <th>Cliente</th>
                                 <th>Moneda</th>
@@ -41,7 +41,7 @@
                       language: { url: '/datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.pedidos.ventas') }}",
+                      ajax: "{{ route('api.facturacion.ventas') }}",
                       'columnDefs': [
                         {
                             "targets": 0,
@@ -64,7 +64,7 @@
                             "className": "text-center",
                        }],
                       columns: [
-                        {data: 'nro_pedido', name: 'nro_pedido'},
+                        {data: 'nro_factura', name: 'nro_factura'},
                         {data: 'fecha', name: 'fecha'},
                         {data: 'cliente', name: 'cliente'},
                         {data: 'moneda', name: 'moneda'},
@@ -80,11 +80,11 @@
       })
 
       function showForm(id) {
-        window.location="{{ url('pedidosVentas') }}" + '/' + id;
+        window.location="{{ url('facturacionVentas') }}" + '/' + id;
       }
 
       function editForm(id) {
-        window.location="{{ url('pedidosVentas') }}" + '/' + id +'/edit';
+        window.location="{{ url('facturacionVentas') }}" + '/' + id +'/edit';
       }
 
       function deleteData(id){
@@ -102,7 +102,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('pedidosVentas') }}" + '/' + id,
+                                  url : "{{ url('facturacionVentas') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {
