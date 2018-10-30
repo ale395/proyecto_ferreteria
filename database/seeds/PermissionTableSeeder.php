@@ -735,7 +735,36 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un Pedido de Venta del sistema';
         $permission->save();
 
+        //Facturacion - Ventas
+        $permission = new Permission();
+        $permission->name = 'Cargar Factura de Venta';
+        $permission->slug = 'facturacionVentas.create';
+        $permission->description = 'Permite la carga de una Factura de venta en el sistema';
+        $permission->save();
 
+        $permission = new Permission();
+        $permission->name = 'Borrar Factura de Venta';
+        $permission->slug = 'facturacionVentas.destroy';
+        $permission->description = 'Permite la eliminación de una Factura de venta del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Factura de Venta';
+        $permission->slug = 'facturacionVentas.edit';
+        $permission->description = 'Permite modificar los valores de una Factura del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Facturas de Ventas';
+        $permission->slug = 'facturacionVentas.index';
+        $permission->description = 'Permite ver el listado de Facturas de Ventas del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Factura de Venta';
+        $permission->slug = 'facturacionVentas.show';
+        $permission->description = 'Permite ver una Factura de Venta del sistema';
+        $permission->save();
 
 
 

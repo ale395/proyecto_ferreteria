@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+use App\DatosDefault;
+use App\FacturaVentaCab;
+use App\FacturaVentaDet;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class FacturaVentaController extends Controller
 {
@@ -13,7 +19,7 @@ class FacturaVentaController extends Controller
      */
     public function index()
     {
-        //
+        return view('facturaVenta.index');
     }
 
     /**
@@ -83,6 +89,138 @@ class FacturaVentaController extends Controller
     }
 
     public function apiFacturacionVentas(){
-        //
+        $permiso_editar = Auth::user()->can('facturacionVentas.edit');
+        //$permiso_eliminar = Auth::user()->can('facturacionVentas.destroy');
+        $permiso_ver = Auth::user()->can('facturacionVentas.show');
+        $sucursal_actual = Auth::user()->empleado->sucursales->first();
+        $facturas = FacturaVentaCab::where('sucursal_id',$sucursal_actual->getId())->get();
+
+        if ($permiso_editar) {
+            if ($permiso_ver) {
+                return Datatables::of($facturas)
+                    ->addColumn('fecha', function($facturas){
+                        return $facturas->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($facturas){
+                        return $facturas->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($facturas){
+                        return $facturas->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($facturas){
+                        return $facturas->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($facturas){
+                        if ($facturas->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($facturas->estado == 'C') {
+                            return 'Cobrada';
+                        } elseif ($facturas->estado == 'A') {
+                            return 'Anulada';
+                        }
+                    })
+                    ->addColumn('action', function($facturas){
+                        $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $facturas->id .')" class="btn btn-primary btn-sm" title="Ver Factura"><i class="fa fa-eye"></i></a> ';
+                        $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $facturas->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        if ($facturas->estado == 'P') {
+                            return $puede_ver.$puede_editar;
+                        } else {
+                            return $puede_ver.$no_puede_editar;
+                        }
+                    })->make(true);
+            } else {
+                return Datatables::of($facturas)
+                    ->addColumn('fecha', function($facturas){
+                        return $facturas->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($facturas){
+                        return $facturas->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($facturas){
+                        return $facturas->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($facturas){
+                        return $facturas->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($facturas){
+                        if ($facturas->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($facturas->estado == 'C') {
+                            return 'Cobrada';
+                        } elseif ($facturas->estado == 'A') {
+                            return 'Anulada';
+                        }
+                    })
+                    ->addColumn('action', function($facturas){
+                        $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Factura" disabled><i class="fa fa-eye"></i></a> ';
+                        $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $facturas->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        if ($facturas->estado == 'P') {
+                            return $no_puede_ver.$puede_editar;
+                        } else {
+                            return $no_puede_ver.$no_puede_editar;
+                        }
+                    })->make(true);
+            }
+        } else {
+            if ($permiso_ver) {
+                return Datatables::of($facturas)
+                    ->addColumn('fecha', function($facturas){
+                        return $facturas->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($facturas){
+                        return $facturas->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($facturas){
+                        return $facturas->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($facturas){
+                        return $facturas->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($facturas){
+                        if ($facturas->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($facturas->estado == 'C') {
+                            return 'Cobrada';
+                        } elseif ($facturas->estado == 'A') {
+                            return 'Anulada';
+                        }
+                    })
+                    ->addColumn('action', function($facturas){
+                        $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $facturas->id .')" class="btn btn-primary btn-sm" title="Ver Factura"><i class="fa fa-eye"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        return $puede_ver.$no_puede_editar;
+                    })->make(true);
+            } else {
+                return Datatables::of($facturas)
+                    ->addColumn('fecha', function($facturas){
+                        return $facturas->getFechaEmision();
+                    })
+                    ->addColumn('cliente', function($facturas){
+                        return $facturas->cliente->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($facturas){
+                        return $facturas->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($facturas){
+                        return $facturas->getMontoTotal();
+                    })
+                    ->addColumn('estado', function($facturas){
+                        if ($facturas->estado == 'P') {
+                            return 'Pendiente';
+                        } elseif ($facturas->estado == 'C') {
+                            return 'Cobrada';
+                        } elseif ($facturas->estado == 'A') {
+                            return 'Anulada';
+                        }
+                    })
+                    ->addColumn('action', function($facturas){
+                        $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Factura" disabled><i class="fa fa-eye"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        return $no_puede_ver.$no_puede_editar;
+                    })->make(true);
+            }
+        }
     }
 }

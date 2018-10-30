@@ -279,12 +279,16 @@
                                         </li>
                                     @endcan
                                     <li class="sub_menu"><a href="{{route('listaPrecios.actualizar')}}">Actualizar Precios</a></li>
-                                    @can('pedidosVentas.index')
-                                      @if(Auth::user()->empleado->esVendedor())
+                                    @if(Auth::user()->empleado->esVendedor())
+                                      @can('pedidosVentas.index')
                                         <li class="sub_menu"><a href="{{route('pedidosVentas.index')}}">Toma de Pedido</a>
                                         </li>
-                                      @endif
-                                    @endcan
+                                      @endcan
+                                      @can('facturacionVentas.index')
+                                        <li class="sub_menu"><a href="{{route('facturacionVentas.index')}}">Facturación</a>
+                                        </li>
+                                      @endcan
+                                    @endif
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>

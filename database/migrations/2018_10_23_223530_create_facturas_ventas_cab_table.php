@@ -34,7 +34,7 @@ class CreateFacturasVentasCabTable extends Migration
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
             $table->foreign('moneda_id')->references('id')->on('monedas');
             $table->foreign('serie_id')->references('id')->on('series');
-            $table->foreign('usuario_id')->references('id')->on('usuarios');
+            $table->foreign('usuario_id')->references('id')->on('users');
         });
     }
 
