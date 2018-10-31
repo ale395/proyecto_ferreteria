@@ -310,7 +310,7 @@
 
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="Cambiar Sucursal">
+              <a data-toggle="tooltip" data-placement="top" title="Cambiar Sucursal" onclick="elegirSucursal()">
                 <span class="fa fa-home" aria-hidden="true"></span>
               </a>
               <a data-toggle="tooltip" data-placement="top" title="Consulta de artículo">
@@ -356,6 +356,7 @@
             </nav>
           </div>
         </div>
+        @include('modalSeleccionSucursal')
         <!-- /top navigation -->
 
         <!-- extendemos con todo lo que tenemos -->
@@ -364,7 +365,7 @@
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-            <h2><strong>Sucursal:</strong> {{Auth::user()->empleado->sucursales->first()->getNombre()}}</h2>
+            <h2><strong>Sucursal:</strong> {{Auth::user()->empleado->sucursalDefault->getNombre()}}</h2>
           </div>
         </footer>
         <!-- /footer content -->
@@ -418,6 +419,34 @@
     <script src="{{ asset('assets/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js') }}"></script>
     <script src="{{ asset('assets/jquery-number/jquery.number.min.js') }}"></script>
+
+    <script type="text/javascript">
+      function elegirSucursal() {
+        save_method = "add";
+        $('input[name=_method]').val('POST');
+        $('#modal-sucursal').modal('show');
+        //$('#modal-sucursal form')[0].reset();
+      }
+
+      function actualizaSucursal(empleado_id, sucursal_id){
+        console.log('Actualiza la sucursal! ID:'+sucursal_id+' Empleado:'+empleado_id);
+        //var form = document.getElementById("sucursal-form");
+        //form.submit();
+        //$("#modal-sucursal").submit(function (e){
+          //e.preventDefault();
+          $.ajax({
+              type: "GET",
+              url: "{{ url('api/empleados') }}" + '/cambioSucursal/' + empleado_id + '/' + sucursal_id,
+              data : $('#modal-sucursal form').serialize(),
+              datatype: "json",
+              success: function(data){
+                $('#modal-sucursal').modal('hide');
+                location.reload();
+              }
+            });
+        //});
+      }
+    </script>
 
     <!-- Para los Script JavaScript necesarios para la utilización de AJAX con el DataTables-->
     @yield('ajax_datatables')

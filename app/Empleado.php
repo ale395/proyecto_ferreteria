@@ -34,6 +34,10 @@ class Empleado extends Model
     	$this->telefono_celular = (integer)str_replace(" ","",str_replace(")","",str_replace("(","",str_replace("-","",$telefono_celular))));
     }
 
+    public function setSucursalActual($sucursal_id){
+        $this->sucursal_default_id = $sucursal_id;
+    }
+
     public function getNombre(){
     	return $this->nombre;
     }
@@ -87,6 +91,11 @@ class Empleado extends Model
     public function sucursales()
     {
         return $this->belongsToMany('App\Sucursal')->withTimestamps();
+    }
+
+    public function sucursalDefault()
+    {
+        return $this->belongsTo('App\Sucursal', 'sucursal_default_id');
     }
 
     public function esVendedor(){

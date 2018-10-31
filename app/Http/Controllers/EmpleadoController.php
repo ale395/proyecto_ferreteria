@@ -249,6 +249,14 @@ class EmpleadoController extends Controller
         return json_encode($sucursales_array);
     }
 
+    public function cambioSucursal($empleado_id, $sucursal_id){
+        $empleado = Empleado::findOrFail($empleado_id);
+        $empleado->setSucursalActual($sucursal_id);
+        //dd($empleado);
+        $empleado->update();
+        return;
+    }
+
     public function apiEmpleados()
     {
         $permiso_editar = Auth::user()->can('empleados.edit');

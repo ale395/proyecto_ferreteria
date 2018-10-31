@@ -67,7 +67,7 @@
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
-                        <label for="lista_precio_id" class="col-md-2 control-label">Lista Pre.*</label>
+                        <label for="lista_precio_id" class="col-md-2 control-label">Lista Precio*</label>
                         <div class="col-md-3">
                             <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
                                 <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%">

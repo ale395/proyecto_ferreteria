@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/empleados/sucursales/{empleado_id}', 'EmpleadoController@apiSucursales')->name('api.empleados.sucursales');
 	//Para agregar una sucursal al empleado en la vista AGREGARSUCURSAL
 	Route::post('empleados/sucursales', 'EmpleadoController@agregarSucursal')->name('empleados.agregar.sucursal');
+	Route::get('api/empleados/cambioSucursal/{empleado_id}/{sucursal_id}', 'EmpleadoController@cambioSucursal')->name('api.empleados.cambio.sucursal');
 
 	//RUTAS PARA VENDEDORES
 	Route::resource('vendedores', 'VendedorController');
