@@ -12,10 +12,10 @@
                             {{ session('warning') }}
                         </div>
                     @endif
-                    @if (session('status'))
-                        <div class="alert success-warning alert-dismissible">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible">
                             <a href="#" class="close" data-dismiss="alert">&times;</a>
-                            {{ session('status') }}
+                            {{ session('success') }}
                         </div>
                     @endif
                     <h4>Ordenes de Compra

@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="put" action="{{action('OrdenCompraController@update', $orden_compra->id)}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('OrdenCompraController@update', $orden_compra->id)}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Orden de Compra
@@ -44,7 +44,7 @@
                         </div>
                         <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$orden_compra->fecha_emision}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{date("d-m-Y", strtotime($orden_compra->fecha_emision))}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
                     </div>
                     <div class="form-group">

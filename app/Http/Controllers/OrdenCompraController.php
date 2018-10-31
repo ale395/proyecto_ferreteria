@@ -183,7 +183,7 @@ class OrdenCompraController extends Controller
         $orden_compra = DB::table('orden_compras_cab as o')
         ->join('proveedores as p', 'p.id','=', 'o.proveedor_id')
         ->join('monedas as m', 'm.id','=', 'o.moneda_id')
-        ->select('o.id', 'o.nro_orden', 'o.fecha_emision', 'o.proveedor_id',
+        ->select('o.id', 'o.nro_orden', DB::raw("to_char(DATE o.fecha_emision, 'DD/MM/YYYY') as fecha_emision"), 'o.proveedor_id',
         DB::raw("CONCAT(p.codigo, ' ', p.nombre) as proveedor"),
         'o.moneda_id','m.codigo', 'm.descripcion', 'o.valor_cambio', 'o.monto_total')
         ->where('o.id','=',$id)->first();
@@ -235,7 +235,7 @@ class OrdenCompraController extends Controller
             DB::beginTransaction();
 
             //instanciamos la clase
-            $orden_compra = new OrdenCompraCab();
+            $orden_compra = OrdenCompraCab::findOrFail($id);
             $total = 0;
             $sucursal = Auth::user()->empleado->sucursales->first();
 
@@ -253,7 +253,7 @@ class OrdenCompraController extends Controller
             }
 
             //pasamos los parámetros del request
-            $orden_compra->nro_orden = $request['nro_orden'];
+            //$orden_compra->nro_orden = $request['nro_orden'];
             $orden_compra->proveedor_id = $request['proveedor_id'];
             $orden_compra->fecha_emision = $request['fecha_emision'];   
             $orden_compra->sucursal_id = $request['sucursal_id'];     
@@ -263,7 +263,7 @@ class OrdenCompraController extends Controller
             $orden_compra->estado = $request['estado'];
 
             //guardamos los cambios
-            $orden_compra->save();
+            $orden_compra->update();
 
             //borramos el detalle anterior
             $orden_compra->OrdenCompraDetalle()->delete();
@@ -332,8 +332,8 @@ class OrdenCompraController extends Controller
             //Deshacemos la transaccion
             DB::rollback();
             //volvemos para atras y retornamos un mensaje de error
-            return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
-            //return back()->withErrors( $e->getMessage() )->withInput();
+            //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
+            return back()->withErrors( $e->getMessage() )->withInput();
             //return back()->withErrors( $e->getTraceAsString() )->withInput();
 
         }
