@@ -4,14 +4,14 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('PedidoVentaController@store')}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('FacturaVentaController@store')}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Pedido de Venta
+                    <h4>Factura de Venta
                     <div class="pull-right btn-group">
                         <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('facturacionVentas.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('facturacionVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
@@ -39,30 +39,50 @@
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
-                        <label for="nro_pedido" class="col-md-1 control-label">Número</label>
+                        <label for="tipo_factura" class="col-md-1 control-label">Tipo Fac.</label>
+                        <div class="col-md-3">
+                            <div id="tipo_persona" class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                <input id="radioPersonaFisica" type="radio" name="tipo_persona" value="F" checked>&nbsp;Contado&nbsp;</label>
+                                <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                <input type="radio" name="tipo_persona" value="CR"> Crédito</label>
+                            </div>
+                        </div>
+                        <label for="serie_id" class="col-md-1 control-label">Serie*</label>
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="Serie">
+                                <select id="select2-series" name="serie_id" class="form-control" style="width: 100%">
+                                    <option>001-001</option>
+                                    <!--<option value="{{$lista_precio->getId()}}">{{$lista_precio->getNombre()}}</option>-->
+                                </select>
+                            </a>
+                        </div>
+                        <label for="nro_pedido" class="col-md-2 control-label">Número</label>
                         <div class="col-md-2">
                             <input type="number" id="nro_pedido" name="nro_pedido" class="form-control" readonly="readonly">
                         </div>
-                        <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
-                        <div class="col-md-5">
-                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%"></select>
-                        </div>
-                        <div class="col-md-1">
-                            <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
-                        </div>
-                        <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
+                        <label for="lista_precio_id" class="col-md-2 control-label">Lista Pre.*</label>
                         <div class="col-md-3">
                             <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
                                 <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%">
                                     <option value="{{$lista_precio->getId()}}">{{$lista_precio->getNombre()}}</option>
                                 </select>
                             </a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
+                        <div class="col-md-7">
+                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%"></select>
+                        </div>
+                        <div class="col-md-1">
+                            <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div class="form-group">
@@ -657,6 +677,29 @@
         });
 
         $('#select2-lista-precios').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            ajax: {
+                url: "{{ route('api.listaPrecios.select') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('#select2-series').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
             ajax: {
