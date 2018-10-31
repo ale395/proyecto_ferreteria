@@ -18,13 +18,14 @@
                     <table id="pedidos-table" class="table-striped table-responsive row-border" style="width:100%">
                         <thead>
                             <tr>
-                                <th width="70">Nro Factura</th>
+                                <th width="65">Tipo Fact.</th>
+                                <th width="100">Nro Factura</th>
                                 <th>Fecha</th>
                                 <th>Cliente</th>
                                 <th>Moneda</th>
                                 <th>Total</th>
                                 <th>Estado</th>
-                                <th width="110">Acciones</th>
+                                <th width="70">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -52,18 +53,23 @@
                             "className": "text-center",
                        },
                        {
-                            "targets": 3,
+                            "targets": 2,
                             "className": "text-center",
                        },
                        {
                             "targets": 4,
-                            "className": "text-right",
+                            "className": "text-center",
                        },
                        {
                             "targets": 5,
+                            "className": "text-right",
+                       },
+                       {
+                            "targets": 6,
                             "className": "text-center",
                        }],
                       columns: [
+                        {data: 'tipo_factura', name: 'tipo_factura'},
                         {data: 'nro_factura', name: 'nro_factura'},
                         {data: 'fecha', name: 'fecha'},
                         {data: 'cliente', name: 'cliente'},

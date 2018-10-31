@@ -19,6 +19,14 @@ class FacturaVentaCab extends Model
     	return $this->tipo_factura;
     }
 
+    public function getTipoFacturaIndex(){
+        if ($this->tipo_factura = 'CO') {
+            return 'Contado';
+        } else {
+            return 'Crédito';
+        }
+    }
+
     public function setTipoFactura($tipo_factura){
     	$this->tipo_factura = $tipo_factura;
     }
@@ -29,8 +37,8 @@ class FacturaVentaCab extends Model
 
     public function getNroFacturaIndex(){
         $configuracion_empresa = Empresa::first();
-        $serie = $configuracion_empresa->getCodigoEstablecimiento()+'-'+$this->sucursal()->getCodigoPuntoExpedicion();
-        return $serie+' '+str_pad($this->nro_factura, 10, "0", STR_PAD_LEFT);
+        $serie = $configuracion_empresa->getCodigoEstablecimiento().'-'.$this->sucursal->getCodigoPuntoExpedicion();
+        return $serie.' '.str_pad($this->nro_factura, 7, "0", STR_PAD_LEFT);
     }
 
     public function setNroFactura($nro_factura){

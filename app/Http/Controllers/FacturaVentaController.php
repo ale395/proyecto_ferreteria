@@ -103,6 +103,9 @@ class FacturaVentaController extends Controller
         if ($permiso_editar) {
             if ($permiso_ver) {
                 return Datatables::of($facturas)
+                    ->addColumn('tipo_factura', function($facturas){
+                        return $facturas->getTipoFacturaIndex();
+                    })
                     ->addColumn('nro_factura', function($facturas){
                         return $facturas->getNroFacturaIndex();
                     })
@@ -139,6 +142,9 @@ class FacturaVentaController extends Controller
                     })->make(true);
             } else {
                 return Datatables::of($facturas)
+                    ->addColumn('tipo_factura', function($facturas){
+                        return $facturas->getTipoFacturaIndex();
+                    })
                     ->addColumn('fecha', function($facturas){
                         return $facturas->getFechaEmision();
                     })
@@ -174,6 +180,9 @@ class FacturaVentaController extends Controller
         } else {
             if ($permiso_ver) {
                 return Datatables::of($facturas)
+                    ->addColumn('tipo_factura', function($facturas){
+                        return $facturas->getTipoFacturaIndex();
+                    })
                     ->addColumn('fecha', function($facturas){
                         return $facturas->getFechaEmision();
                     })
@@ -202,6 +211,9 @@ class FacturaVentaController extends Controller
                     })->make(true);
             } else {
                 return Datatables::of($facturas)
+                    ->addColumn('tipo_factura', function($facturas){
+                        return $facturas->getTipoFacturaIndex();
+                    })
                     ->addColumn('fecha', function($facturas){
                         return $facturas->getFechaEmision();
                     })
