@@ -122,6 +122,7 @@ Route::middleware(['auth'])->group(function() {
 
 	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
 	Route::resource('ajustesInventarios', 'AjusteInventarioController');
+	Route::get('api/ajustesInventarios', 'AjusteInventarioController@apiAjustesInventarios')->name('api.ajustes.inventarios');
 
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');
