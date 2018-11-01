@@ -81,6 +81,17 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="tipo_empleado" class="col-md-3 control-label">Sucursal por defecto*</label>
+                        <div class="col-md-6">
+                            <select name="sucursal_default_id" id="select2-sucursales" class="form-control" style="width: 100%">
+                                <option></option>
+                                @foreach($sucursales as $id => $sucursal)
+                                  <option value="{{ $sucursal->id }}">({{ $sucursal->codigo}}) {{ $sucursal->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-2">
                     <h5></h5>
@@ -135,6 +146,13 @@
         $(document).ready(function(){
             $('#select2-tipos-empleados').select2({
                 placeholder : 'Seleccione una o varias opciones',
+                tags: false,
+                width: 'resolve',
+                language: "es"
+            });
+
+            $('#select2-sucursales').select2({
+                placeholder : 'Seleccione una opción',
                 tags: false,
                 width: 'resolve',
                 language: "es"

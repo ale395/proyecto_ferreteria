@@ -14,7 +14,7 @@ class AlterEmpleadosTable extends Migration
     public function up()
     {
         Schema::table('empleados', function (Blueprint $table) {
-            $table->integer('sucursal_default_id')->unsigned()->nullable();
+            $table->integer('sucursal_default_id')->unsigned();
 
             $table->foreign('sucursal_default_id')->references('id')->on('sucursales');
         });

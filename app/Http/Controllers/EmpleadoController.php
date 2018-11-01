@@ -31,7 +31,8 @@ class EmpleadoController extends Controller
     public function create()
     {
         $tipos_empleados = TipoEmpleado::all();
-        return view('empleado.create', compact('tipos_empleados'));
+        $sucursales = Sucursal::where('activo',true)->get();
+        return view('empleado.create', compact('tipos_empleados', 'sucursales'));
     }
 
     /**
@@ -61,11 +62,13 @@ class EmpleadoController extends Controller
             'telefono_celular' => 'required|numeric|digits:9',
             'fecha_nacimiento' => 'required|date_format:d/m/Y',
             'tipos_empleados' => 'required|array|min:1',
+            'sucursal_default_id' => 'required',
         ];
 
         $mensajes = [
             'nro_cedula.unique' => 'El Nro de Cédula ingresado ya existe!',
             'tipos_empleados.min' => 'Como mínimo se debe asignar :min tipo(s) de empleado(s)!',
+            'sucursal_default_id.required' => 'Debe asignar una sucursal por defecto donde podrá operar el/la empleado/a!',
         ];
 
         Validator::make($request->all(), $rules, $mensajes)->validate();
@@ -86,10 +89,12 @@ class EmpleadoController extends Controller
         $empleado->setCorreoElectronico($request['correo_electronico']);
         $empleado->setTelefonoCelular($request['telefono_celular']);
         $empleado->setFechaNacimiento($request['fecha_nacimiento']);
+        $empleado->setSucursalActual($request['sucursal_default_id']);
         
         $empleado->save();
 
         $empleado->tiposEmpleados()->sync($request->get('tipos_empleados'));
+        $empleado->sucursales()->attach($request['sucursal_default_id']);
 
         return redirect('/empleados')->with('status', 'Datos guardados correctamente!');
     }
@@ -205,6 +210,7 @@ class EmpleadoController extends Controller
     }
 
     public function deleteSucursal($empleado_id, $sucursal_id){
+        //se deberia validar que al menos una sucursal quede en la tabla, que no se puedan borrar todas las sucursales relacionadas.
         $empleado = Empleado::findOrFail($empleado_id);
         $empleado->sucursales()->detach($sucursal_id);
         $empleado->update();

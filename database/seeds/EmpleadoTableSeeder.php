@@ -28,6 +28,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->setFechaNacimiento('28/03/1995');
         $empleado->setCorreoElectronico('alexis.fernandez.rc@gmail.com');
         $empleado->avatar = '5568434.jpg';
+        $empleado->setSucursalActual($sucursal_central->getId());
         $empleado->save();
         $empleado->tiposEmpleados()->sync($vendedor->id);
         $empleado->sucursales()->sync([$sucursal_central->id, $sucursal_sanber->id]);
@@ -40,6 +41,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->setNroCedula(8888888);
         $empleado->setFechaNacimiento('01/01/1981');
         $empleado->setCorreoElectronico('usuario@ferregest.com');
+        $empleado->setSucursalActual($sucursal_central->getId());
         $empleado->save();
         $empleado->tiposEmpleados()->sync($vendedor->id);
         $empleado->sucursales()->sync([$sucursal_central->id]);
@@ -52,6 +54,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->setNroCedula(1111111);
         $empleado->setFechaNacimiento('01/01/1981');
         $empleado->setCorreoElectronico('admin@ferregest.com');
+        $empleado->setSucursalActual($sucursal_central->getId());
         $empleado->save();
         $empleado->tiposEmpleados()->sync([$vendedor->id, $cajero->id]);
         $empleado->sucursales()->sync([$sucursal_central->id]);
@@ -64,6 +67,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->setNroCedula(123456);
         $empleado->setFechaNacimiento('01/01/1994');
         $empleado->setCorreoElectronico('yani_rsc@hotmail.com');
+        $empleado->setSucursalActual($sucursal_central->getId());
         $empleado->save();
         $empleado->tiposEmpleados()->sync($vendedor->id);
         $empleado->sucursales()->sync([$sucursal_central->id]);
