@@ -10,21 +10,21 @@ class AjusteInventarioCab extends Model
         CONST MAX_LINEAS_DETALLE = 3;
     
         protected $table = 'ajustes_inventarios_cab';
-    
+        protected $primaryKey = 'id';
         protected $fillable = [
-            'nro_pedido', 'empleado_id', 'sucursal_id', 'concepto_ajuste','fecha_emision','motivos',
+            'nro_ajuste', 'empleado_id', 'sucursal_id', 'concepto_ajuste','fecha_emision','motivo',
         ];
     
         public function getId(){
             return $this->id;
         }
     
-        public function setNroPedido($nro_pedido){
-            $this->nro_pedido = $nro_pedido;
+        public function setNroAjuste($nro_ajuste){
+            $this->nro_ajuste = $nro_ajuste;
         }
     
-        public function getNroPedido(){
-            return $this->nro_pedido;
+        public function getNroAjuste(){
+            return $this->nro_ajuste;
         }
     
         public function setEmpleadoId($empleado_id){
