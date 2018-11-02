@@ -24,6 +24,14 @@ class ExistenciaArticulo extends Model
     	$this->sucursal_id = $sucursal_id;
     }
 
+    public function actualizaStock($operacion, $cantidad){
+        if ($operacion == '+') {
+            $this->cantidad = $this->cantidad + $cantidad;
+        } elseif ($operacion = '-') {
+            $this->cantidad = $this->cantidad - $cantidad;
+        }
+    }
+
     public function articulo()
     {
         return $this->belongsTo('App\Articulo', 'articulo_id');

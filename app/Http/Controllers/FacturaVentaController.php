@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Serie;
 use App\Empresa;
+use App\ExistenciaArticulo;
 use App\DatosDefault;
 use App\FacturaVentaCab;
 use App\FacturaVentaDet;
@@ -95,17 +96,10 @@ class FacturaVentaController extends Controller
         {
             return redirect()->back()->withErrors($validator)->withInput();
         }*/
-        //foreach ($request['tab_subtotal'] as $subtotal) {
 
         for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
             $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
         }
-
-        /*if (empty('nro_pedido')) {
-            $nro_pedido = 1;
-        } else {
-            $nro_pedido = $nro_pedido + 1;
-        }*/
 
         $cabecera->setTipoFactura($request['tipo_factura']);
         $cabecera->setSerieId($request['serie_id']);
@@ -123,7 +117,6 @@ class FacturaVentaController extends Controller
         $cabecera->save();
 
         for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
-        //foreach ($request['tab_articulo_id'] as $detalle) {
             $detalle = new FacturaVentaDet;
             $detalle->setFacturaCabeceraId($cabecera->getId());
             $detalle->setArticuloId($request['tab_articulo_id'][$i]);
@@ -137,12 +130,22 @@ class FacturaVentaController extends Controller
             $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
             $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
             $detalle->save();
+
+            if ($detalle->articulo->getControlExistencia() == true) {
+                //Actualizacion de existencia
+                $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
+                    ->where('sucursal_id', $sucursal->getId())->get();
+                $existencia->actualizaStock('-', $detalle->getCantidad());
+                $existencia->update();
+            }
         }
 
         $serie->setNroActual($serie->getNroActual()+1);
         $serie->update();
 
-        return redirect()->route('pedidosVentas.show', ['pedidosVenta' => $cabecera->getId()])->with('status', 'Pedido guardado correctamente!');
+        //Actualizacion de saldo cliente
+
+        return redirect()->route('facturacionVentas.show', ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
     }
 
     /**
