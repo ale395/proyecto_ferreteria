@@ -41,11 +41,11 @@
                     <div class="form-group">
                         <label for="tipo_factura" class="col-md-1 control-label">Tipo Fac.</label>
                         <div class="col-md-3">
-                            <div id="tipo_persona" class="btn-group" data-toggle="buttons">
+                            <div id="tipo_factura" class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                <input id="radioPersonaFisica" type="radio" name="tipo_persona" value="F" checked>&nbsp;Contado&nbsp;</label>
+                                <input id="radioContado" type="radio" name="tipo_factura" value="F" checked>&nbsp;Contado&nbsp;</label>
                                 <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                <input type="radio" name="tipo_persona" value="CR"> Crédito</label>
+                                <input type="radio" name="tipo_factura" value="CR"> Crédito</label>
                             </div>
                         </div>
                         <label for="serie_id" class="col-md-1 control-label">Serie*</label>
@@ -56,9 +56,9 @@
                                 </select>
                             </a>
                         </div>
-                        <label for="nro_pedido" class="col-md-2 control-label">Número</label>
+                        <label for="nro_factura" class="col-md-2 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="number" id="nro_pedido" name="nro_pedido" class="form-control text-right" readonly="readonly" value="{{$nro_factura}}">
+                            <input type="number" id="nro_factura" name="nro_factura" class="form-control text-right" readonly="readonly" value="{{$nro_factura}}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -229,6 +229,10 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    });
+
     function addForm() {
         $.confirm({
             title: 'Tipo de Persona',
@@ -519,7 +523,7 @@
             /*Se agrega una fila a la tabla*/
             var tabla = $("#pedido-detalle").DataTable();
             tabla.row.add( [
-                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
                 articulo,
                 cantidad,
                 precio_unitario,
@@ -699,26 +703,10 @@
         });
 
         $('#select2-series').select2({
-            placeholder: 'Seleccione una opción',
-            language: "es",
-            ajax: {
-                url: "{{ route('api.listaPrecios.select') }}",
-                delay: 250,
-                data: function (params) {
-                    var queryParameters = {
-                      q: params.term
-                    }
-
-                    return queryParameters;
-                  },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            }
+            placeholder : 'Seleccione una opción',
+            tags: false,
+            width: 'resolve',
+            language: "es"
         });
     });
 

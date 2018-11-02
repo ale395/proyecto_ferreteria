@@ -55,7 +55,94 @@ class FacturaVentaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $sucursal = Auth::user()->empleado->sucursalDefault;
+        $usuario = Auth::user();
+        $cabecera = new FacturaVentaCab();
+        $total = 0;
+        $serie = Serie::findOrFail($request['serie_id']);
+        //Implementar que cuando el cliente se deja en blanco, se busque al registro de cliente ocasional para poder guardarlo
+
+        if (!empty('sucursal')) {
+            $request['sucursal_id'] = $sucursal->getId();
+        }
+
+        $rules = [
+            'tipo_factura' => 'required',
+            'serie_id' => 'required',
+            'nro_factura' => 'required',
+            'lista_precio_id' => 'required',
+            'cliente_id' => 'required',
+            'sucursal_id' => 'required',
+            'moneda_id' => 'required',
+            'lista_precio_id' => 'required',
+            'valor_cambio' => 'required|numeric|min:1',
+            'fecha_emision' => 'required|date_format:d/m/Y',
+            'tab_articulo_id' => 'required|array|min:1|max:'.FacturaVentaCab::MAX_LINEAS_DETALLE,
+        ];
+
+        $mensajes = [
+            'valor_cambio.min' => 'El valor de cambio no puede ser menor que :min !',
+            'tab_articulo_id.required' => 'No se puede guardar una factura sin artículos en el detalle!',
+            'tab_articulo_id.min' => 'Como mínimo se debe asignar :min producto(s) a la factura!',
+            'tab_articulo_id.max' => 'Ha superado la cantidad máxima de líneas en una factura. La cantidad máxima es de :max!',
+            'cliente_id.required' => 'Debe seleccionar un cliente!',
+        ];
+
+        $request['valor_cambio'] = str_replace('.', '', $request['valor_cambio']);
+
+        $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
+        /*if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }*/
+        //foreach ($request['tab_subtotal'] as $subtotal) {
+
+        for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+            $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
+        }
+
+        /*if (empty('nro_pedido')) {
+            $nro_pedido = 1;
+        } else {
+            $nro_pedido = $nro_pedido + 1;
+        }*/
+
+        $cabecera->setTipoFactura($request['tipo_factura']);
+        $cabecera->setSerieId($request['serie_id']);
+        $cabecera->setNroFactura($request['nro_factura']);
+        $cabecera->setClienteId($request['cliente_id']);
+        $cabecera->setSucursalId($request['sucursal_id']);
+        $cabecera->setMonedaId($request['moneda_id']);
+        $cabecera->setListaPrecioId($request['lista_precio_id']);
+        $cabecera->setValorCambio($request['valor_cambio']);
+        $cabecera->setFechaEmision($request['fecha_emision']);
+        $cabecera->setComentario($request['comentario']);
+        $cabecera->setMontoTotal($total);
+        $cabecera->setUsuarioId($usuario->id);
+
+        $cabecera->save();
+
+        for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+        //foreach ($request['tab_articulo_id'] as $detalle) {
+            $detalle = new FacturaVentaDet;
+            $detalle->setFacturaCabeceraId($cabecera->getId());
+            $detalle->setArticuloId($request['tab_articulo_id'][$i]);
+            $detalle->setCantidad(str_replace('.', '', $request['tab_cantidad'][$i]));
+            $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_precio_unitario'][$i]));
+            $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
+            $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
+            $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
+            $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
+            $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
+            $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
+            $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
+            $detalle->save();
+        }
+
+        $serie->setNroActual($serie->getNroActual()+1);
+        $serie->update();
+
+        return redirect()->route('pedidosVentas.show', ['pedidosVenta' => $cabecera->getId()])->with('status', 'Pedido guardado correctamente!');
     }
 
     /**
@@ -66,7 +153,8 @@ class FacturaVentaController extends Controller
      */
     public function show($id)
     {
-        //
+        $factura_cab = FacturaVentaCab::findOrFail($id);
+        return view('facturaVenta.show', compact('factura_cab'));
     }
 
     /**

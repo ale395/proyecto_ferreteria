@@ -32,6 +32,10 @@ class Serie extends Model
         $this->nro_inicial = $nro_inicial;
     }
 
+    public function setNroActual($nro_actual){
+        $this->nro_actual = $nro_actual;
+    }
+
     public function getNroActual(){
         return $this->nro_actual;
     }
