@@ -52,14 +52,13 @@
                         <div class="col-md-2">
                             <a data-toggle="tooltip" data-placement="top" title="Serie">
                                 <select id="select2-series" name="serie_id" class="form-control" style="width: 100%">
-                                    <option>001-001</option>
-                                    <!--<option value="{{$lista_precio->getId()}}">{{$lista_precio->getNombre()}}</option>-->
+                                    <option value="{{$serie->getId()}}">{{$serie_factura}}</option>
                                 </select>
                             </a>
                         </div>
                         <label for="nro_pedido" class="col-md-2 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="number" id="nro_pedido" name="nro_pedido" class="form-control" readonly="readonly">
+                            <input type="number" id="nro_pedido" name="nro_pedido" class="form-control text-right" readonly="readonly" value="{{$nro_factura}}">
                         </div>
                     </div>
                     <div class="form-group">

@@ -12,6 +12,10 @@ class Serie extends Model
         'tipo_comprobante', 'timbrado_id', 'sucursal_id', 'nro_inicial', 'nro_final', 'nro_actual', 'vendedor_id', 'activo',
     ];
 
+    public function getId(){
+        return $this->id;
+    }
+
     public function getTipoComprobante(){
         return $this->tipo_comprobante;
     }

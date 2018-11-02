@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\Serie;
 use App\Empresa;
 use App\DatosDefault;
 use App\FacturaVentaCab;
@@ -36,9 +37,14 @@ class FacturaVentaController extends Controller
         $moneda = $datos_default->moneda;
         $cambio = 1;
         $configuracion_empresa = Empresa::first();
-        $sucursal = Auth::user()->empleado->sucursales->first();
-        $serie = $configuracion_empresa->getCodigoEstablecimiento().'-'.$sucursal->getCodigoPuntoExpedicion();
-        return view('facturaVenta.create', compact('fecha_actual', 'moneda', 'lista_precio', 'cambio', 'serie'));
+        $sucursal = Auth::user()->empleado->sucursalDefault;
+        $vendedor = Auth::user()->empleado;
+        $serie = Serie::where('vendedor_id', $vendedor->getId())
+            ->where('sucursal_id', $sucursal->getId())
+            ->where('tipo_comprobante', 'F')->first();
+        $serie_factura = $configuracion_empresa->getCodigoEstablecimiento().'-'.$sucursal->getCodigoPuntoExpedicion();
+        $nro_factura = str_pad($serie->getNroActual()+1, 7, "0", STR_PAD_LEFT);
+        return view('facturaVenta.create', compact('fecha_actual', 'moneda', 'lista_precio', 'cambio', 'serie', 'serie_factura', 'nro_factura'));
     }
 
     /**

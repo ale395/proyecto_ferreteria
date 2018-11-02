@@ -425,15 +425,9 @@
         save_method = "add";
         $('input[name=_method]').val('POST');
         $('#modal-sucursal').modal('show');
-        //$('#modal-sucursal form')[0].reset();
       }
 
       function actualizaSucursal(empleado_id, sucursal_id){
-        console.log('Actualiza la sucursal! ID:'+sucursal_id+' Empleado:'+empleado_id);
-        //var form = document.getElementById("sucursal-form");
-        //form.submit();
-        //$("#modal-sucursal").submit(function (e){
-          //e.preventDefault();
           $.ajax({
               type: "GET",
               url: "{{ url('api/empleados') }}" + '/cambioSucursal/' + empleado_id + '/' + sucursal_id,
@@ -444,7 +438,6 @@
                 location.reload();
               }
             });
-        //});
       }
     </script>
 
