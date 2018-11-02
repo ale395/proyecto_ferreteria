@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Serie;
 use App\Empresa;
-use App\ExistenciaArticulo;
 use App\DatosDefault;
+use App\CuentaCliente;
 use App\FacturaVentaCab;
 use App\FacturaVentaDet;
+use App\ExistenciaArticulo;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -134,7 +135,7 @@ class FacturaVentaController extends Controller
             if ($detalle->articulo->getControlExistencia() == true) {
                 //Actualizacion de existencia
                 $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
-                    ->where('sucursal_id', $sucursal->getId())->get();
+                    ->where('sucursal_id', $sucursal->getId())->first();
                 $existencia->actualizaStock('-', $detalle->getCantidad());
                 $existencia->update();
             }
@@ -144,6 +145,12 @@ class FacturaVentaController extends Controller
         $serie->update();
 
         //Actualizacion de saldo cliente
+        $cuenta = new CuentaCliente;
+        $cuenta->setTipoComprobante('F');
+        $cuenta->setComprobanteId($cabecera->getId());
+        $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
+        $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
+        $cuenta->save();
 
         return redirect()->route('facturacionVentas.show', ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
     }
