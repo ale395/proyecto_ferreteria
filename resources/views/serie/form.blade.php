@@ -62,6 +62,17 @@
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
+                    <div class="form-group">
+                            <label for="vendedor_id" class="control-label col-md-3 col-sm-3 col-xs-12">Vendedor *</label>
+                          <div class="col-md-6">
+                            <select name="vendedor_id" id="select2-vendedores" class="form-control" style="width: 100%">
+                                <option></option>
+                                @foreach($vendedores as $id => $vendedor)
+                                  <option value="{{ $vendedor->getId() }}">{{$vendedor->getNombre()}}, {{$vendedor->getApellido()}}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Activo *</label>

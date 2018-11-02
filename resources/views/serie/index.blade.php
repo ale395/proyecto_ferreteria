@@ -70,6 +70,7 @@
         $('.modal-title').text('Nueva Serie');
         $('#select2-timbrados').val("").change();
         $('#select2-sucursales').val("").change();
+        $('#select2-vendedores').val("").change();
         $('#select2-tipos').val("F").change();
       }
 
@@ -137,6 +138,7 @@
             $('#select2-sucursales').val(data.sucursal_id).change();
             $("#select2-tipos").select2("val", "");
             $('#select2-tipos').val(data.tipo_comprobante).change();
+            $('#select2-vendedores').val(data.vendedor_id).change();
             if (data.activo) {
               $('#activo').attr('checked', true);
             }else{
@@ -209,14 +211,22 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-            $('#select2-timbrados').select2({
-                placeholder : 'Seleccione una de las opciones',
-                tags: false,
-                width: 'resolve',
-                dropdownParent: $('#modal-form'),
-                language: "es"
-            });
-        });
+      $('#select2-timbrados').select2({
+        placeholder : 'Seleccione una de las opciones',
+        tags: false,
+        width: 'resolve',
+        dropdownParent: $('#modal-form'),
+        language: "es"
+      });
+
+      $('#select2-vendedores').select2({
+        placeholder : 'Seleccione una de las opciones',
+        tags: false,
+        width: 'resolve',
+        dropdownParent: $('#modal-form'),
+        language: "es"
+      });
+    });
   </script>
 
   <script type="text/javascript">

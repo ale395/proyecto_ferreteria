@@ -9,7 +9,7 @@ class Serie extends Model
     protected $table = 'series';
 
     protected $fillable = [
-        'tipo_comprobante', 'timbrado_id', 'sucursal_id', 'nro_inicial', 'nro_final', 'nro_actual', 'activo',
+        'tipo_comprobante', 'timbrado_id', 'sucursal_id', 'nro_inicial', 'nro_final', 'nro_actual', 'vendedor_id', 'activo',
     ];
 
     public function getTipoComprobante(){

@@ -13,6 +13,10 @@ class Empleado extends Model
         'nro_cedula', 'nombre', 'apellido', 'direccion', 'zona_id', 'telefono_celular', 'telefono_linea_baja', 'correo_electronico', 'fecha_nacimiento', 'activo', 'avatar',
     ];
 
+    public function getId(){
+        return $this->id;
+    }
+
     public function getNroCedula(){
     	return number_format($this->nro_cedula, 0, ',', '.');
     }

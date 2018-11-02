@@ -6,6 +6,7 @@ use Validator;
 use App\Serie;
 use App\Sucursal;
 use App\Timbrado;
+use App\Empleado;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,11 @@ class SerieController extends Controller
         $timbrados = Timbrado::where('fecha_fin_vigencia', '>=', today())->get();
         //Recupera solamente las sucursales activas
         $sucursales = Sucursal::where('activo', true)->get();
-        return view('serie.index', compact('timbrados', 'sucursales'));
+        $empleados = Empleado::where('activo', true)->get();
+        $vendedores = $empleados->filter(function ($value, $key) {
+            return $value->esVendedor() == true;
+        });
+        return view('serie.index', compact('timbrados', 'sucursales', 'vendedores'));
     }
 
     /**
@@ -50,6 +55,7 @@ class SerieController extends Controller
             'sucursal_id' => 'required|exists:sucursales,id',
             'nro_inicial' => 'bail|required|min:1|integer',
             'nro_final' => 'bail|required|min:1|integer|gt:nro_inicial',
+            'vendedor_id' => 'required',
             'activo' => 'required'
         ];
 
@@ -59,7 +65,8 @@ class SerieController extends Controller
             //'nro_inicial.lt' => 'El Nro Inicial no puede ser mayor al Nro Final de la Serie.',
             'nro_final.gt' => 'El Nro Final no puede ser menor al Nro Inicial de la Serie.',
             'nro_inicial.min' => 'El Nro Inicial no puede ser menor o igual a 0.',
-            'nro_final.min' => 'El Nro Final no puede ser menor o igual a 0.'
+            'nro_final.min' => 'El Nro Final no puede ser menor o igual a 0.',
+            'vendedor_id.required' => 'Debe asignar el rango de numeración a un vendedor!',
         ];
 
         $validator = Validator::make($request->all(), $rules, $mensajes);
@@ -77,6 +84,7 @@ class SerieController extends Controller
             'sucursal_id' => $request['sucursal_id'],
             'nro_inicial' => $request['nro_inicial'],
             'nro_final' => $request['nro_final'],
+            'vendedor_id' => $request['vendedor_id'],
             'activo' => $request['activo']
         ];
 
@@ -123,6 +131,7 @@ class SerieController extends Controller
             'sucursal_id' => 'required|exists:sucursales,id',
             'nro_inicial' => 'bail|required|min:1|integer',
             'nro_final' => 'bail|required|min:1|integer|gt:nro_inicial',
+            'vendedor_id' => 'required',
             'activo' => 'required'
         ];
 
@@ -132,7 +141,8 @@ class SerieController extends Controller
             //'nro_inicial.lt' => 'El Nro Inicial no puede ser mayor al Nro Final de la Serie.',
             'nro_final.gt' => 'El Nro Final no puede ser menor al Nro Inicial de la Serie.',
             'nro_inicial.min' => 'El Nro Inicial no puede ser menor o igual a 0.',
-            'nro_final.min' => 'El Nro Final no puede ser menor o igual a 0.'
+            'nro_final.min' => 'El Nro Final no puede ser menor o igual a 0.',
+            'vendedor_id.required' => 'Debe asignar el rango de numeración a un vendedor!',
         ];
 
         $validator = Validator::make($request->all(), $rules, $mensajes);
@@ -149,6 +159,7 @@ class SerieController extends Controller
         $serie->sucursal_id = $request['sucursal_id'];
         $serie->nro_inicial = $request['nro_inicial'];
         $serie->nro_final = $request['nro_final'];
+        $serie->vendedor_id = $request['vendedor_id'];
         $serie->activo = $request['activo'];
         
         $serie->update();
