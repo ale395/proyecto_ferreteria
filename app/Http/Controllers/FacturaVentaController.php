@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Serie;
 use App\Empresa;
+use App\Cliente;
 use App\DatosDefault;
 use App\CuentaCliente;
 use App\FacturaVentaCab;
@@ -62,6 +63,7 @@ class FacturaVentaController extends Controller
         $cabecera = new FacturaVentaCab();
         $total = 0;
         $serie = Serie::findOrFail($request['serie_id']);
+        $cliente = Cliente::findOrFail($request['cliente_id']);
         //Implementar que cuando el cliente se deja en blanco, se busque al registro de cliente ocasional para poder guardarlo
 
         if (!empty('sucursal')) {
@@ -151,6 +153,9 @@ class FacturaVentaController extends Controller
         $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
         $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
         $cuenta->save();
+
+        $cliente->setMontoSaldo($cliente->getMontoSaldo()+str_replace('.', '', $cabecera->getMontoTotal()));
+        $cliente->update();
 
         return redirect()->route('facturacionVentas.show', ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
     }

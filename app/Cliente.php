@@ -153,6 +153,14 @@ class Cliente extends Model
         $this->activo = $activo;
     }
 
+    public function getMontoSaldo(){
+        return $this->monto_saldo;
+    }
+
+    public function setMontoSaldo($monto_saldo){
+        $this->monto_saldo = $monto_saldo;
+    }
+
     public function setZonaId($zona_id){
         $this->zona_id = $zona_id;
     }

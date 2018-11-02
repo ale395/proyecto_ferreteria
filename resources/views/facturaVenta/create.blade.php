@@ -43,7 +43,7 @@
                         <div class="col-md-3">
                             <div id="tipo_factura" class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                <input id="radioContado" type="radio" name="tipo_factura" value="F" checked>&nbsp;Contado&nbsp;</label>
+                                <input id="radioContado" type="radio" name="tipo_factura" value="CO" checked>&nbsp;Contado&nbsp;</label>
                                 <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
                                 <input type="radio" name="tipo_factura" value="CR"> Crédito</label>
                             </div>

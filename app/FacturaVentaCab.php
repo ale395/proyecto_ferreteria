@@ -20,9 +20,9 @@ class FacturaVentaCab extends Model
     }
 
     public function getTipoFacturaIndex(){
-        if ($this->tipo_factura = 'CO') {
+        if ($this->tipo_factura == 'CO') {
             return 'Contado';
-        } else {
+        } elseif ($this->tipo_factura == 'CR') {
             return 'Crédito';
         }
     }
