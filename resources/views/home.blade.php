@@ -316,7 +316,7 @@
               <a data-toggle="tooltip" data-placement="top" title="Consulta de artículo">
                 <span class="fa fa-search" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Facturación">
+              <a href="{{route('facturacionVentas.create')}}" data-toggle="tooltip" data-placement="top" title="Facturación">
                 <span class="fa fa-shopping-cart" aria-hidden="true"></span>
               </a>
 
