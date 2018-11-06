@@ -58,12 +58,13 @@ class FacturaVentaController extends Controller
      */
     public function store(Request $request)
     {
+        //return $request;
         $sucursal = Auth::user()->empleado->sucursalDefault;
         $usuario = Auth::user();
         $cabecera = new FacturaVentaCab();
         $total = 0;
-        $serie = Serie::findOrFail($request['serie_id']);
-        $cliente = Cliente::findOrFail($request['cliente_id']);
+        
+
         //Implementar que cuando el cliente se deja en blanco, se busque al registro de cliente ocasional para poder guardarlo
 
         if (!empty('sucursal')) {
@@ -95,6 +96,10 @@ class FacturaVentaController extends Controller
         $request['valor_cambio'] = str_replace('.', '', $request['valor_cambio']);
 
         $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        $serie = Serie::findOrFail($request['serie_id']);
+        $cliente = Cliente::findOrFail($request['cliente_id']);
+        
         /*if ($validator->fails())
         {
             return redirect()->back()->withErrors($validator)->withInput();

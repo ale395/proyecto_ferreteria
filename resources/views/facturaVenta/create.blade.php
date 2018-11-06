@@ -152,7 +152,7 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
                                         <td>{{old('tab_precio_unitario.'.$i)}}</td>
@@ -201,8 +201,8 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
-                                        <th><input type="text" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
                                         <th><input type="text" name="tab_precio_unitario[]" value="{{old('tab_precio_unitario.'.$i)}}"></th>
@@ -229,6 +229,15 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
+    var old_articulos_input = document.getElementsByName("tab_articulo_id");
+    if (old_articulos_input.length != 0) {
+        console.log('No es nulo. '+old_articulos_input.length);
+        //var articulos_detalle = {{ json_encode(old('tab_articulo_id')) }};
+    } else {
+        console.log('Si es nulo');
+        var articulos_detalle = [];
+    }
+
     $('[data-toggle="tooltip"]').tooltip({
         trigger : 'hover'
     });
@@ -478,9 +487,17 @@
         /*Se obtienen los valores de los campos correspondientes*/
         var cantidad = $("#cantidad" ).val();
         var existencia = $("#existencia" ).val();
+        /*ME QUEDE AQUIIIIIIIIIIIIIIIIIIII*/
+        var JSONresults = {};
+        var indexColumn = 0;
+        $('#tab_articulo_id').each(function () {
+            indexColumn++;
+            JSONresults['field_' + indexColumn] = $(this).val();
+        });
+        alert(JSON.stringify(JSONresults));
         
         if (Number(cantidad) > Number(existencia)) {
-            console.log('Cantidad es mayor que existencia: '+cantidad+' - '+existencia);
+            //console.log('Cantidad es mayor que existencia: '+cantidad+' - '+existencia);
             var obj = $.alert({
                 title: 'Atención',
                 content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
@@ -491,11 +508,25 @@
             });
             setTimeout(function(){
                 obj.close();
-            },4000); 
+            },3000); 
         } else {
             var decimales = 0;
             var articulo = $('#select2-articulos').select2('data')[0].text;
             var articulo_id = $('#select2-articulos').select2('data')[0].id;
+            if (articulos_detalle.includes(articulo_id)) {
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'El artículo que intenta agregar ya está incluido en el detalle de la factura!',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000); 
+            } else {
+            articulos_detalle.push(articulo_id);
             //var cantidad = $("#cantidad").val();
             var precio_unitario = $("#precio_unitario").val();
             var porcentaje_descuento = $("#porcentaje_descuento" ).val();
@@ -534,7 +565,7 @@
                 subtotal
             ] ).draw( false );
 
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
             $("#tab-hidden").append(markup);
 
             /*Se restauran a nulos los valores del bloque para la selección del articulo*/
@@ -549,6 +580,7 @@
             $('#subtotal').val("");
             $('#select2-articulos').val(null).trigger('change');
             $("#select2-articulos").focus();
+            }
         }
     };
 
