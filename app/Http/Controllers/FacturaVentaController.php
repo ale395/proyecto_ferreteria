@@ -47,7 +47,8 @@ class FacturaVentaController extends Controller
             ->where('tipo_comprobante', 'F')->first();
         $serie_factura = $configuracion_empresa->getCodigoEstablecimiento().'-'.$sucursal->getCodigoPuntoExpedicion();
         $nro_factura = str_pad($serie->getNroActual()+1, 7, "0", STR_PAD_LEFT);
-        return view('facturaVenta.create', compact('fecha_actual', 'moneda', 'lista_precio', 'cambio', 'serie', 'serie_factura', 'nro_factura'));
+        $clientes = Cliente::where('activo', true)->get();
+        return view('facturaVenta.create', compact('fecha_actual', 'moneda', 'lista_precio', 'cambio', 'serie', 'serie_factura', 'nro_factura', 'clientes'));
     }
 
     /**
@@ -107,6 +108,12 @@ class FacturaVentaController extends Controller
 
         for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
             $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
+        }
+
+        if ($request['tipo_factura'] == 'CR') {
+            if ($cliente->getLimiteCredito() < $total) {
+                return redirect()->back()->withErrors('La factura supera el límite de crédito del cliente! Su límite es de Gs '.$cliente->getLimiteCreditoNumber())->withInput();
+            }
         }
 
         $cabecera->setTipoFactura($request['tipo_factura']);

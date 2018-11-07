@@ -112,6 +112,17 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="limite_credito" class="col-md-2 control-label">Límite de Crédito</label>
+                        <div class="col-md-3">
+                            <input type="text" id="limite_credito" name="limite_credito" class="form-control" value="{{old('limite_credito',$cliente->getLimiteCreditoNumber())}}" readonly>
+                        </div>
+                        <label for="monto_saldo" class="col-md-2 control-label">Saldo</label>
+                        <div class="col-md-3">
+                            <input type="text" id="monto_saldo" name="monto_saldo" class="form-control" value="{{old('monto_saldo',$cliente->getMontoSaldoNumber())}}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="control-label col-md-2">Activo *</label>
                         <div class="col-md-1 custom-control custom-checkbox">
                             <input type="hidden" name="activo" value="false">

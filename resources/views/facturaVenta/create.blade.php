@@ -42,10 +42,17 @@
                         <label for="tipo_factura" class="col-md-1 control-label">Tipo Fac.</label>
                         <div class="col-md-3">
                             <div id="tipo_factura" class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                <input id="radioContado" type="radio" name="tipo_factura" value="CO" checked>&nbsp;Contado&nbsp;</label>
-                                <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                <input type="radio" name="tipo_factura" value="CR"> Crédito</label>
+                                @if(old('tipo_factura') === 'CR')
+                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                    <input id="radioContado" type="radio" name="tipo_factura" value="CO">Contado</label>
+                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                    <input type="radio" name="tipo_factura" value="CR" checked> Crédito</label>
+                                @else
+                                    <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                    <input id="radioContado" type="radio" name="tipo_factura" value="CO" checked>&nbsp;Contado&nbsp;</label>
+                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                    <input type="radio" name="tipo_factura" value="CR"> Crédito </label>
+                                @endif
                             </div>
                         </div>
                         <label for="serie_id" class="col-md-1 control-label">Serie*</label>
@@ -58,7 +65,7 @@
                         </div>
                         <label for="nro_factura" class="col-md-2 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="number" id="nro_factura" name="nro_factura" class="form-control text-right" readonly="readonly" value="{{$nro_factura}}">
+                            <input type="number" id="nro_factura" name="nro_factura" class="form-control text-right" readonly="readonly" value="{{old('nro_factura', $nro_factura)}}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -78,7 +85,15 @@
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
                         <div class="col-md-7">
-                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%"></select>
+                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%">
+                                @if ($errors->any())
+                                    @foreach($clientes as $cliente)
+                                        @if(old('cliente_id') == $cliente->getId())
+                                            <option value="{{old('cliente_id')}}" selected>{{$cliente->getNombreSelect()}}</option>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </select>
                         </div>
                         <div class="col-md-1">
                             <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
@@ -129,7 +144,7 @@
                         </div>
                         <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
                         <div class="col-md-1">
-                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <span class="help-block with-errors"></span>
@@ -231,12 +246,6 @@
 <script type="text/javascript">
     
     var articulos_detalle = [];
-    /*var indexColumn = 0;
-    $('#tab_articulo_id').each(function () {
-        articulos_detalle[indexColumn] = $(this).val();
-        indexColumn++;
-    });
-    console.log(articulos_detalle);*/
 
     $('[data-toggle="tooltip"]').tooltip({
         trigger : 'hover'
@@ -298,7 +307,7 @@
                                 text: $data.nro_cedula + ' - ' + $data.nombre + ', ' + $data.apellido
                             };
                             $('#select2-clientes').val(null).trigger('change');
-                            var newOption = new Option(data.text, data.id, false, false);
+                            var newOption = new Option(data.text, data.id, true, true);
                             $('#select2-clientes').append(newOption).trigger('change');
                             var obj = $.alert({
                                 title: 'Información',
@@ -356,7 +365,7 @@
                                 text: $data.ruc + ' - ' + $data.razon_social
                             };
                             $('#select2-clientes').val(null).trigger('change');
-                            var newOption = new Option(data.text, data.id, false, false);
+                            var newOption = new Option(data.text, data.id, true, true);
                             $('#select2-clientes').append(newOption).trigger('change');
 
                             var obj = $.alert({
@@ -486,19 +495,15 @@
     function addArticulo() {
         var indexColumn = 0;
         var articulos_detalle = $('input[name="tab_articulo_id[]"]').map(function () {
-            return this.value; // $(this).val()
+            return this.value;
         }).get();
-        //console.log(articulos_detalle);
 
         /*Se obtienen los valores de los campos correspondientes*/
         var cantidad = $("#cantidad").val();
         var existencia = $("#existencia").val();
-        //var JSONresults = [];
-        //var indexColumn = articulos_detalle.length;
         console.log('Antes de add: '+articulos_detalle);
         
         if (Number(cantidad) > Number(existencia)) {
-            //console.log('Cantidad es mayor que existencia: '+cantidad+' - '+existencia);
             var obj = $.alert({
                 title: 'Atención',
                 content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
