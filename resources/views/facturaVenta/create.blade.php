@@ -229,14 +229,14 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
-    var old_articulos_input = document.getElementsByName("tab_articulo_id");
-    if (old_articulos_input.length != 0) {
-        console.log('No es nulo. '+old_articulos_input.length);
-        //var articulos_detalle = {{ json_encode(old('tab_articulo_id')) }};
-    } else {
-        console.log('Si es nulo');
-        var articulos_detalle = [];
-    }
+    
+    var articulos_detalle = [];
+    /*var indexColumn = 0;
+    $('#tab_articulo_id').each(function () {
+        articulos_detalle[indexColumn] = $(this).val();
+        indexColumn++;
+    });
+    console.log(articulos_detalle);*/
 
     $('[data-toggle="tooltip"]').tooltip({
         trigger : 'hover'
@@ -484,17 +484,18 @@
     };
 
     function addArticulo() {
-        /*Se obtienen los valores de los campos correspondientes*/
-        var cantidad = $("#cantidad" ).val();
-        var existencia = $("#existencia" ).val();
-        /*ME QUEDE AQUIIIIIIIIIIIIIIIIIIII*/
-        var JSONresults = {};
         var indexColumn = 0;
-        $('#tab_articulo_id').each(function () {
-            indexColumn++;
-            JSONresults['field_' + indexColumn] = $(this).val();
-        });
-        alert(JSON.stringify(JSONresults));
+        var articulos_detalle = $('input[name="tab_articulo_id[]"]').map(function () {
+            return this.value; // $(this).val()
+        }).get();
+        //console.log(articulos_detalle);
+
+        /*Se obtienen los valores de los campos correspondientes*/
+        var cantidad = $("#cantidad").val();
+        var existencia = $("#existencia").val();
+        //var JSONresults = [];
+        //var indexColumn = articulos_detalle.length;
+        console.log('Antes de add: '+articulos_detalle);
         
         if (Number(cantidad) > Number(existencia)) {
             //console.log('Cantidad es mayor que existencia: '+cantidad+' - '+existencia);
@@ -527,6 +528,7 @@
                 },3000); 
             } else {
             articulos_detalle.push(articulo_id);
+            console.log('Despues de add: '+articulos_detalle);
             //var cantidad = $("#cantidad").val();
             var precio_unitario = $("#precio_unitario").val();
             var porcentaje_descuento = $("#porcentaje_descuento" ).val();
