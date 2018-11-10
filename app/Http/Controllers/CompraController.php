@@ -3,6 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Input;
+use App\Http\Requests\OrdenCompraFormRequest;
+use App\OrdenCompraCab;
+use App\OrdenCompraDet;
+use App\Proveedor;
+use App\Moneda;
+use App\Articulo;
+use App\DatosDefault;
+use App\Impuesto;
+use App\Cotizacion;
+use DB;
+use Response;
+use Illuminate\Support\Collections;
+
 
 class CompraController extends Controller
 {
@@ -13,7 +30,7 @@ class CompraController extends Controller
      */
     public function index()
     {
-        //
+        return view('compra.index');            
     }
 
     /**
@@ -23,7 +40,15 @@ class CompraController extends Controller
      */
     public function create()
     {
-        //
+        $fecha_actual = date("d/m/Y");
+        $datos_default = DatosDefault::get()->first();
+        $moneda = $datos_default->moneda;
+        $cotizacion = Cotizacion::where('moneda_id','=', $moneda->id)
+        ->orderBy('fecha_cotizacion', 'desc')
+        ->first();
+        
+        $cambio = $cotizacion->getValorVenta;
+        return view('compra.create', compact('fecha_actual', 'moneda', 'cambio'));
     }
 
     /**

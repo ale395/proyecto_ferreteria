@@ -887,5 +887,36 @@ class PermissionTableSeeder extends Seeder
         $permission->slug = 'ordencompra.show';
         $permission->description = 'Permite ver la Orden de Compra Cargada';
         $permission->save();
+
+        //PERMISOS PARA EL FORMULARIO DE COMPRAS
+        $permission = new Permission();
+        $permission->name = 'Crear Compra';
+        $permission->slug = 'compra.create';
+        $permission->description = 'Permite registrar una orden de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Compra';
+        $permission->slug = 'compra.destroy';
+        $permission->description = 'Permite la eliminación de una orden de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Compra';
+        $permission->slug = 'compra.edit';
+        $permission->description = 'Permite modificar una orden de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Compras';
+        $permission->slug = 'compra.index';
+        $permission->description = 'Permite ver el listado de ordenes de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Compra';
+        $permission->slug = 'compra.show';
+        $permission->description = 'Permite ver la Orden de Compra Cargada';
+        $permission->save();
     }
 }

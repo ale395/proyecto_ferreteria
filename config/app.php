@@ -150,7 +150,7 @@ return [
         Caffeinated\Shinobi\ShinobiServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-
+        Felixkiss\UniqueWithValidator\ServiceProvider::class,
         /*
          * Package Service Providers...
          */

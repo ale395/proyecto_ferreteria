@@ -202,6 +202,13 @@ class RoleTableSeeder extends Seeder
         $permiso_eliminar_ordencompra = Permission::where('slug', 'ordencompra.destroy')->first();
         $permiso_ver_ordencompra = Permission::where('slug', 'ordencompra.show')->first();
 
+        //permisos de Orden de Compra
+        $permiso_listar_compra = Permission::where('slug', 'compra.index')->first();
+        $permiso_crear_compra = Permission::where('slug', 'compra.create')->first();
+        $permiso_editar_compra = Permission::where('slug', 'compra.edit')->first();
+        $permiso_eliminar_compra = Permission::where('slug', 'compra.destroy')->first();
+        $permiso_ver_compra = Permission::where('slug', 'compra.show')->first();
+
         $role = new Role();
         $role->name = 'Administrador';
         $role->slug = 'administrador';
@@ -373,6 +380,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_ordencompra->id);
         $role->assignPermission($permiso_eliminar_ordencompra->id);
         $role->assignPermission($permiso_ver_ordencompra->id);
+
+        $role->assignPermission($permiso_listar_compra->id);
+        $role->assignPermission($permiso_crear_compra->id);
+        $role->assignPermission($permiso_editar_compra->id);
+        $role->assignPermission($permiso_eliminar_compra->id);
+        $role->assignPermission($permiso_ver_compra->id);
 
         $role->assignPermission($permiso_listar_cliente->id);
         $role->assignPermission($permiso_crear_cliente->id);
