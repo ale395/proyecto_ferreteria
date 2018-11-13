@@ -81,6 +81,9 @@
                                 </select>
                             </a>
                         </div>
+                        <div class="col-md-1">
+                            <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
