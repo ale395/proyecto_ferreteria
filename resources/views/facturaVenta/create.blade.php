@@ -82,7 +82,7 @@
                             </a>
                         </div>
                         <div class="col-md-1">
-                            <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
+                            <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div class="form-group">
@@ -243,6 +243,7 @@
 </div>
 @include('cliente.create-persona-fisica')
 @include('cliente.create-persona-juridica')
+@include('facturaVenta.pedidosForm')
 
 @endsection
 @section('otros_scripts')
@@ -410,6 +411,40 @@
         });
 
     $("#btn-add-articulo").attr("disabled", true);
+
+    function showPedidosForm(){
+        if ($('#select2-clientes').val() == null) {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'Debe seleccionar el cliente para buscar los pedidos relacionados al mismo!',
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000); 
+        } else {
+            $('#modal-pedido-venta').modal('show');
+            $('#modal-pedido-venta form')[0].reset();
+            $('.modal-title').text('Lista de Pedidos');
+        }
+    }
+
+    var tablePedidos = $('#tabla-pedidos').DataTable({
+        language: { url: '/datatables/translation/spanish' },
+        'columnDefs': [{
+             'targets': 0,
+             'checkboxes': {
+                'selectRow': true
+             }
+        }],
+        'select': {
+          'style': 'multi'
+        },
+        'order': [[1, 'asc']]
+    });
     
     var table = $('#pedido-detalle').DataTable({
         "paging":   false,
