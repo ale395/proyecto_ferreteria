@@ -47,7 +47,7 @@ class CompraController extends Controller
         ->orderBy('fecha_cotizacion', 'desc')
         ->first();
         
-        $cambio = $cotizacion->getValorVenta;
+        $cambio = $cotizacion->getValorVenta();
         return view('compra.create', compact('fecha_actual', 'moneda', 'cambio'));
     }
 

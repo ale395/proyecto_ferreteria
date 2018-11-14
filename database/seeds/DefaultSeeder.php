@@ -13,6 +13,8 @@ use App\TipoProveedor;
 use App\Proveedor;
 use App\DatosDefault;
 use App\Impuesto;
+use App\FormaPago;
+use App\Cotizacion;
 
 class DefaultSeeder extends Seeder
 {
@@ -107,6 +109,7 @@ class DefaultSeeder extends Seeder
         $datos_default->lista_precio_id = 1;
         $datos_default->save();
 
+        //Impuestos
         $impuesto = new Impuesto();
         $impuesto->codigo = '0';
         $impuesto->descripcion = 'Exento';
@@ -124,6 +127,40 @@ class DefaultSeeder extends Seeder
         $impuesto->descripcion = 'IVA 10%';
         $impuesto->porcentaje = 10;
         $impuesto->save();
+
+        //Formas de Pago (y de cobro creo yo)
+        $forma_pago = new FormaPago();
+        $forma_pago->codigo = 'EFE';
+        $forma_pago->descripcion = 'Efectivo';
+        $forma_pago->control_valor = 1;
+        $forma_pago->save();
+
+        $forma_pago = new FormaPago();
+        $forma_pago->codigo = 'CHE';
+        $forma_pago->descripcion = 'Cheque';
+        $forma_pago->control_valor = 1;
+        $forma_pago->save();
+
+        $forma_pago = new FormaPago();
+        $forma_pago->codigo = 'TAR';
+        $forma_pago->descripcion = 'Tarjeta';
+        $forma_pago->control_valor = 1;
+        $forma_pago->save();
+
+
+        $forma_pago = new FormaPago();
+        $forma_pago->codigo = 'NC';
+        $forma_pago->descripcion = 'Nota de Credito';
+        $forma_pago->control_valor = 1;
+        $forma_pago->save();
+
+        $forma_pago = new FormaPago();
+        $forma_pago->codigo = 'RET';
+        $forma_pago->descripcion = 'Retencion';
+        $forma_pago->control_valor = 1;
+        $forma_pago->save();
+
+        //seeder de la forma de pago
 
         /*
         //traemos el usuario

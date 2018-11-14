@@ -45,17 +45,6 @@ class OrdenCompraController extends Controller
         $nro_orden_compra = OrdenCompraCab::max('nro_orden');
         $moneda = $datos_default->moneda;
         $cambio = 1;
-
-        //$cambio = DB::table('cotizaciones as o')
-        //->select('o.valor_venta')
-        //->where('o.moneda_id', '=', $moneda->id)
-        //->where('o.fecha_cotizacion','=', function ($query) {
-        //    $query->select(DB::raw(1))
-        //    ->from('orders')
-        //    ->whereRaw('orders.user_id = users.id');
-        //})
-        //->get();
-
         //$nro_orden = DB::table('orden_compras_cab')->select(DB::raw('coalesce(max(nro_orden),0) + 1 as nro_orden'))->get();
         //$nro_orden = DB::table('orden_compras_cab')->orderBy('nro_orden', 'desc')->first();    
                     
@@ -349,7 +338,7 @@ class OrdenCompraController extends Controller
 
         }
 
-        return redirect(route('ordencompra.index'))->with('status', 'Datos modificados correctamente!');
+        return redirect(route('ordencompra.index'))->with('success', 'Datos modificados correctamente!');
     }
 
     /**
