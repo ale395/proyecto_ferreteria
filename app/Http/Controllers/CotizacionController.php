@@ -139,7 +139,7 @@ class CotizacionController extends Controller
         return Cotizacion::destroy($id);
     }
 
-    public function apiArticulosCosto($moneda_id){
+    public function apiCotizacionValorVenta($moneda_id){
         if (!empty($articulo_id) && !empty($articulo_id)) {
             $cotizacion = Cotizacion::where('moneda_id','=', $moneda->id)
             ->orderBy('fecha_cotizacion', 'desc')
