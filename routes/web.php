@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA COTIZACIONES
 	Route::resource('cotizaciones', 'CotizacionController', ['parameters'=>['cotizaciones'=>'cotizacion']]);
 	Route::get('api/cotizaciones', 'CotizacionController@apiCotizaciones')->name('api.cotizaciones');
+	Route::get('api/cotizaciones/venta/{moneda}', 'CotizacionController@apiCotizacionValorVenta')->name('api.cotizaciones.valorventa');
 
 	//RUTAS PARA IMPUESTOS
 	Route::resource('articulos', 'ArticuloController');
@@ -173,7 +174,7 @@ Route::middleware(['auth'])->group(function() {
 
 	//Rutas para orden de compra
 	Route::resource('compra', 'CompraController');
-	Route::get('api/compra', 'CompraController@apiCompra')->name('api.compra');
+	Route::get('api/compra', 'CompraController@apiCompras')->name('api.compra');
 
 	//Para ver los errores de PHP
 	Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');

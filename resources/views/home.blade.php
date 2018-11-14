@@ -63,11 +63,11 @@
                                       <li class="sub_menu"><a href="{{route('ordencompra.index')}}">Orden de Compra</a>
                                       </li>
                                 @endcan
-                                <!-- Pablo - comento para usar en otras cosas, y porque esto ya está en Parámetros generales
-                                @can('monedas.index')
-                                    <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
+                                @can('compra.index')
+                                    <li class="sub_menu"><a href="{{route('compra.index')}}">Compra</a>
                                     </li>
                                 @endcan
+                                <!-- Pablo - comento para usar en otras cosas, y porque esto ya está en Parámetros generales
                                 @can('sucursales.index')
                                     <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
                                     </li>

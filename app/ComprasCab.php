@@ -20,14 +20,30 @@ class ComprasCab extends Model
         return $this->id;
     }
 
-    public function setNroFactura($nro_factura){
-        $this->nro_factura = $nro_factura;
+    public function getTipoFactura(){
+    	return $this->tipo_factura;
+    }
+
+    public function getTipoFacturaIndex(){
+        if ($this->tipo_factura == 'CO') {
+            return 'Contado';
+        } elseif ($this->tipo_factura == 'CR') {
+            return 'Crédito';
+        }
+    }
+
+    public function setTipoFactura($tipo_factura){
+    	$this->tipo_factura = $tipo_factura;
     }
 
     public function getNroFactura(){
-        return $this->nro_factura;
+    	return $this->nro_factura;
     }
 
+    public function getNroFacturaIndex(){
+        $serie = "";
+        return $serie.' '.str_pad($this->nro_factura, 7, "0", STR_PAD_LEFT);
+    }
     public function setProveedorId($proveedor_id){
         $this->proveedor_id = $proveedor_id;
     }

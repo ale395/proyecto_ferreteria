@@ -20,6 +20,10 @@ class Proveedor extends Model
         $this->activo = $activo;
     }
     
+    public function getNombreIndex(){
+            return $this->apellido. ', '.$this->nombre;
+    }
+
     public function tipoProveedor()
     {
         return $this->belongsTo('App\TipoProveedor');
