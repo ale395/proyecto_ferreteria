@@ -412,6 +412,34 @@
 
     $("#btn-add-articulo").attr("disabled", true);
 
+    var cliente_id = $('#select2-clientes').val();
+    var tablePedidos = $('#tabla-pedidos').DataTable({
+        language: { url: '/datatables/translation/spanish' },
+        processing: true,
+        serverSide: true,
+        ajax: {"url": "/api/pedidos/cliente/"+$('#select2-clientes').val()},
+        
+        columns: [
+            {data: ''},
+            {data: 'nro_pedido'},
+            {data: 'fecha'},
+            {data: 'moneda'},
+            {data: 'monto_total'},
+            {data: 'comentario'}
+            ],
+        'columnDefs': [{
+             'targets': 0,
+             'checkboxes': {
+                'selectRow': true
+             }
+        }],
+        'select': {
+          'style': 'multi'
+        },
+        'order': [[1, 'asc']]
+        
+    });
+
     function showPedidosForm(){
         if ($('#select2-clientes').val() == null) {
             var obj = $.alert({
@@ -429,22 +457,9 @@
             $('#modal-pedido-venta').modal('show');
             $('#modal-pedido-venta form')[0].reset();
             $('.modal-title').text('Lista de Pedidos');
+            tablePedidos.ajax.reload();
         }
     }
-
-    var tablePedidos = $('#tabla-pedidos').DataTable({
-        language: { url: '/datatables/translation/spanish' },
-        'columnDefs': [{
-             'targets': 0,
-             'checkboxes': {
-                'selectRow': true
-             }
-        }],
-        'select': {
-          'style': 'multi'
-        },
-        'order': [[1, 'asc']]
-    });
     
     var table = $('#pedido-detalle').DataTable({
         "paging":   false,
