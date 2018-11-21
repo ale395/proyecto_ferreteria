@@ -231,28 +231,7 @@ class PedidoVentaController extends Controller
     }
 
     public function apiPedidosCliente($cliente_id){
-        if ($cliente_id = "" or empty($cliente_id)) {
-            //$pedidos = PedidoVentaCab::findOrFail(0);   
-            //return Datatables::of($pedido)->make(true);
-            /*return Datatables::of($pedidos)
-                    ->addColumn('', function($pedidos){
-                        return '';
-                    })
-                    ->addColumn('nro_pedido', function($pedidos){
-                        return '';
-                    })
-                    ->addColumn('fecha', function($pedidos){
-                        return '';
-                    })
-                    ->addColumn('moneda', function($pedidos){
-                        return '';
-                    })
-                    ->addColumn('monto_total', function($pedidos){
-                        return '';
-                    })
-                    ->addColumn('comentario', function($pedidos){
-                        return '';
-                    })->make(true);*/
+        if (empty($cliente_id)) {
             return [];
         } else {
             $pedidos = PedidoVentaCab::where('cliente_id', $cliente_id)->
@@ -268,7 +247,7 @@ class PedidoVentaController extends Controller
                         return $pedidos->getFechaEmision();
                     })
                     ->addColumn('moneda', function($pedidos){
-                        return $pedidos->moneda->getNombre();
+                        return $pedidos->moneda->getDescripcion();
                     })
                     ->addColumn('monto_total', function($pedidos){
                         return $pedidos->getMontoTotal();

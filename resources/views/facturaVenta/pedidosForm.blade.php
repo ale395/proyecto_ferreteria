@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal-pedido-venta" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="pedido-form" method="post" class="form-horizontal" data-toggle="validator">
+            <form id="pedido-form" class="form-horizontal" data-toggle="validator">
                 {{ csrf_field() }} {{ method_field('POST') }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -15,7 +15,7 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Nro Pedido</th>
+                                <th width="15">Nro Pedido</th>
                                 <th>Fecha</th>
                                 <th>Moneda</th>
                                 <th>Total</th>
@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button id="form-btn-guardar" type="submit" class="btn btn-primary btn-save">Cargar Pedidos</button>
+                    <button type="button" id="form-btn-guardar" class="btn btn-primary btn-save" onclick="cargarPedidos()">Cargar Pedidos</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
 

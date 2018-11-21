@@ -413,32 +413,8 @@
     $("#btn-add-articulo").attr("disabled", true);
 
     var cliente_id = $('#select2-clientes').val();
-    var tablePedidos = $('#tabla-pedidos').DataTable({
-        language: { url: '/datatables/translation/spanish' },
-        processing: true,
-        serverSide: true,
-        ajax: {"url": "/api/pedidos/cliente/"+$('#select2-clientes').val()},
-        
-        columns: [
-            {data: ''},
-            {data: 'nro_pedido'},
-            {data: 'fecha'},
-            {data: 'moneda'},
-            {data: 'monto_total'},
-            {data: 'comentario'}
-            ],
-        'columnDefs': [{
-             'targets': 0,
-             'checkboxes': {
-                'selectRow': true
-             }
-        }],
-        'select': {
-          'style': 'multi'
-        },
-        'order': [[1, 'asc']]
-        
-    });
+    var tablePedidos = null;
+    
 
     function showPedidosForm(){
         if ($('#select2-clientes').val() == null) {
@@ -454,11 +430,54 @@
                 obj.close();
             },3000); 
         } else {
+            if ($.fn.DataTable.isDataTable('#tabla-pedidos')) {
+                $('#tabla-pedidos').DataTable().clear();
+                $('#tabla-pedidos').DataTable().destroy();    
+            }
+
+            tablePedidos = $('#tabla-pedidos').DataTable({
+                language: { url: '/datatables/translation/spanish' },
+                processing: true,
+                serverSide: true,
+                ajax: {"url": "/api/pedidos/cliente/"+$('#select2-clientes').val()},
+                    
+                columns: [
+                    {data: ''},
+                    {data: 'nro_pedido'},
+                    {data: 'fecha'},
+                    {data: 'moneda'},
+                    {data: 'monto_total'},
+                    {data: 'comentario'}
+                    ],
+                'columnDefs': [{
+                    'targets': 0,
+                    'className': 'select-checkbox',
+                    'checkboxes': {
+                        'selectRow': true
+                    }
+                },
+                { className: "dt-center", "targets": [1,2,3,4] }],
+                'select': {
+                    'style': 'multi',
+                    'selector': 'td:first-child'
+                },
+                'order': [[2, 'desc']]    
+            });
+            
             $('#modal-pedido-venta').modal('show');
             $('#modal-pedido-venta form')[0].reset();
             $('.modal-title').text('Lista de Pedidos');
-            tablePedidos.ajax.reload();
         }
+    }
+
+    function cargarPedidos(){
+        //var rows_selected = tablePedidos.column(0).checkboxes.selected();
+        var count = tablePedidos.rows( { checked: true } ).data();
+        //var count = tablePedidos.$(".call-checkbox:checked", {"page": "all"});;
+        /*$.each(rows_selected, function(index, rowId){
+            console.log(rowId);
+        });*/
+        console.log(count);
     }
     
     var table = $('#pedido-detalle').DataTable({
