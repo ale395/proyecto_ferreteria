@@ -150,6 +150,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('conceptos', 'ConceptoAjusteController');
 	Route::get('api/conceptosajuste', 'ConceptoAjusteController@apiConceptosAjuste')->name('api.conceptos');
 
+	//rutas para modelo 'conceptos_caja'
+	Route::resource('conceptocaja', 'ConceptoCajaController');
+	Route::get('api/conceptocaja', 'ConceptoCajaController@apiConceptosAjuste')->name('api.conceptocaja');	
 
 	//rutas para modelo 'clasificacioncliente'
 	Route::resource('clasificacionclientes', 'ClasificacionClienteController');

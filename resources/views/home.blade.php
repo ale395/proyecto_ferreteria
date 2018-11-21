@@ -86,26 +86,26 @@
                   </li>
 
                   <li><a><i class="fa fa-money"></i> Cuentas por Cobrar <span class="fa fa-chevron-down"></span></a>
-                          <ul class="nav child_menu">
-                              <!--<li><a href="#level1_1">Level One</a>-->
-                              <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    @can('clientes.index')
-                                      <li class="sub_menu"><a href="{{route('clientes.index')}}">Clientes</a>
-                                      </li>
-                                    @endcan
-                                    @can('clasificacioncliente.index')
-                                      <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
-                                      </li>
-                                    @endcan
-                                </ul>
-                              </li>
-                              <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+                      <ul class="nav child_menu">
+                          <!--<li><a href="#level1_1">Level One</a>-->
+                          <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                @can('clientes.index')
+                                  <li class="sub_menu"><a href="{{route('clientes.index')}}">Clientes</a>
                                   </li>
-                                </ul>
+                                @endcan
+                                @can('clasificacioncliente.index')
+                                  <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
+                                  </li>
+                                @endcan
+                            </ul>
+                          </li>
+                          <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                              <li class="sub_menu"><a href="#">Reporte 1</a>
                               </li>
+                            </ul>
+                          </li>
                     </ul>
                   </li>
 
@@ -174,6 +174,10 @@
                             @endcan
                             @can('sucursales.index')
                               <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
+                              </li>
+                            @endcan
+                            @can('conceptocaja.index')
+                              <li class="sub_menu"><a href="{{route('conceptocaja.index')}}">Conceptos de Caja</a>
                               </li>
                             @endcan
                           </ul>
