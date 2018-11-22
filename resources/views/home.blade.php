@@ -17,7 +17,7 @@
     <link href="{{asset('assets/jquery-confirm/dist/jquery-confirm.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/select2/dist/css/select2.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
-    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/css/dataTables.checkboxes.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css">
     
   </head>
 
@@ -424,8 +424,7 @@
     <script src="{{ asset('assets/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js') }}"></script>
     <script src="{{ asset('assets/jquery-number/jquery.number.min.js') }}"></script>
-
-    <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/js/dataTables.checkboxes.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
 
     <script type="text/javascript">
       function elegirSucursal() {

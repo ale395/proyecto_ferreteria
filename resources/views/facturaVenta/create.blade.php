@@ -414,7 +414,6 @@
 
     var cliente_id = $('#select2-clientes').val();
     var tablePedidos = null;
-    
 
     function showPedidosForm(){
         if ($('#select2-clientes').val() == null) {
@@ -435,33 +434,31 @@
                 $('#tabla-pedidos').DataTable().destroy();    
             }
 
+            $('#tabla-pedidos2').DataTable( {
+                select: true,
+                select: {
+                    style: 'single'
+                }
+            } );
+
             tablePedidos = $('#tabla-pedidos').DataTable({
+                
                 language: { url: '/datatables/translation/spanish' },
                 processing: true,
                 serverSide: true,
                 ajax: {"url": "/api/pedidos/cliente/"+$('#select2-clientes').val()},
-                    
+                select: {
+                    style: 'multi'
+                },
                 columns: [
-                    {data: ''},
                     {data: 'nro_pedido'},
                     {data: 'fecha'},
                     {data: 'moneda'},
                     {data: 'monto_total'},
                     {data: 'comentario'}
                     ],
-                'columnDefs': [{
-                    'targets': 0,
-                    'className': 'select-checkbox',
-                    'checkboxes': {
-                        'selectRow': true
-                    }
-                },
-                { className: "dt-center", "targets": [1,2,3,4] }],
-                'select': {
-                    'style': 'multi',
-                    'selector': 'td:first-child'
-                },
-                'order': [[2, 'desc']]    
+                'columnDefs': [
+                { className: "dt-center", "targets": [1,2,3,4] }]
             });
             
             $('#modal-pedido-venta').modal('show');
@@ -471,13 +468,13 @@
     }
 
     function cargarPedidos(){
-        //var rows_selected = tablePedidos.column(0).checkboxes.selected();
-        var count = tablePedidos.rows( { checked: true } ).data();
-        //var count = tablePedidos.$(".call-checkbox:checked", {"page": "all"});;
-        /*$.each(rows_selected, function(index, rowId){
-            console.log(rowId);
-        });*/
-        console.log(count);
+        var datos = tablePedidos.rows( { selected: true } ).data();
+        var i;
+        var pedidos_id = [];
+        for (i = 0; i < datos.length; i++) {
+            pedidos_id.push(datos[i].id);
+        }
+        console.log(pedidos_id);
     }
     
     var table = $('#pedido-detalle').DataTable({

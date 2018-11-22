@@ -11,11 +11,10 @@
                 </div>
 
                 <div class="modal-body">
-                    <table id="tabla-pedidos" class="table table-striped table-responsive display" style="width:100%">
+                    <table id="tabla-pedidos" class="table table-striped" width="100%">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th width="15">Nro Pedido</th>
+                                <th>Nro Pedido</th>
                                 <th>Fecha</th>
                                 <th>Moneda</th>
                                 <th>Total</th>

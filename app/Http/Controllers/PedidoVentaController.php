@@ -237,9 +237,6 @@ class PedidoVentaController extends Controller
             $pedidos = PedidoVentaCab::where('cliente_id', $cliente_id)->
                 where('estado', 'P')->get();
             return Datatables::of($pedidos)
-                    ->addColumn('', function($pedidos){
-                        return '';
-                    })
                     ->addColumn('nro_pedido', function($pedidos){
                         return $pedidos->getNroPedido();
                     })
