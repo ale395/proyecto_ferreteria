@@ -12,7 +12,7 @@ class AjusteInventarioCab extends Model
         protected $table = 'ajustes_inventarios_cab';
         protected $primaryKey = 'id';
         protected $fillable = [
-            'nro_ajuste', 'empleado_id', 'sucursal_id', 'concepto_ajuste','fecha_emision','motivo',
+            'nro_ajuste', 'empleado_id', 'sucursal_id', 'concepto_ajuste_id','fecha_emision','motivo',
         ];
     
         public function getId(){

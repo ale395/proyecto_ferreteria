@@ -127,6 +127,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');
 	Route::get('api/sucursales', 'SucursalController@apiSucursales')->name('api.sucursales');
+	Route::get('api/sucursales/buscador', 'SucursalController@apiSucursalesBuscador')->name('api.sucursales.buscador');
 
 	//rutas para modelo 'Familias'
 	Route::resource('familias', 'FamiliaController');
@@ -147,7 +148,7 @@ Route::middleware(['auth'])->group(function() {
 	//rutas para modelo 'conceptoajuste'
 	Route::resource('conceptos', 'ConceptoAjusteController');
 	Route::get('api/conceptosajuste', 'ConceptoAjusteController@apiConceptosAjuste')->name('api.conceptos');
-
+	Route::get('api/conceptosAjustes/buscador', 'ConceptoAjusteController@apiConceptosAjustesBuscador')->name('api.conceptosAjustes.buscador');
 
 	//rutas para modelo 'clasificacioncliente'
 	Route::resource('clasificacionclientes', 'ClasificacionClienteController');

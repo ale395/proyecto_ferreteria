@@ -75,7 +75,7 @@ class ArticuloController extends Controller
             $img_producto = $request->file('img_producto');
             $filename = $request['descripcion']/*.'-'.time()*/.'.'.$img_producto->getClientOriginalExtension();
             Image::make($img_producto)->resize(300, 300)->save( public_path('/images/productos/' . $filename ) );
-            $articulo->img_producto = $filename;
+           
             
         }
 
@@ -100,7 +100,8 @@ class ArticuloController extends Controller
             'rubro_id' => $request['rubro_id'],
             'familia_id' => $request['familia_id'],
             'linea_id' => $request['linea_id'],
-            'unidad_medida_id' => $request['unidad_medida_id']
+            'unidad_medida_id' => $request['unidad_medida_id'],
+            'img_producto' => $filename
 
         ];
 

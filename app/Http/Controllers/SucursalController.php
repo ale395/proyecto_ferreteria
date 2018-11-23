@@ -153,7 +153,28 @@ class SucursalController extends Controller
     {
         return Sucursal::destroy($id);
     }
+    public function apiSucursalesBuscador(Request $request){
+        $sucursales_array = [];
 
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $sucursales = Sucursal::where('nombre', 'ilike', "%$search%")
+                //->orWhere('razon_social', 'ilike', "%$search%")
+                //->orWhere('ruc', 'ilike', "%$search%")
+                //->orWhere('nro_cedula', 'LIKE', "%$search%")
+                ->get();
+        } else {
+            $sucursales = Sucursal::all();
+        }
+
+        foreach ($sucursales as $sucursal) {
+            if ($sucursal->getActivo()) {
+                $sucursales_array[] = ['id'=> $sucursal->id, 'text'=> $sucursal->nombre];
+            }
+        }
+
+        return json_encode($sucursales_array);
+    }
     public function apiSucursales()
     {
         $permiso_editar = Auth::user()->can('sucursales.edit');

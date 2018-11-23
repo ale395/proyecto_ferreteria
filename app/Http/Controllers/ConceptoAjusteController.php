@@ -96,6 +96,27 @@ class ConceptoAjusteController extends Controller
         return ConceptoAjuste::destroy($id);
     }
 
+    public function apiConceptoAjusteBuscador(Request $request){
+        $conceptos_ajustes_array = [];
+
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $conceptos_ajustes = ConceptoAjuste::where('descripcion', 'ilike', "%$search%")
+                //->orWhere('razon_social', 'ilike', "%$search%")
+                //->orWhere('ruc', 'ilike', "%$search%")
+                //->orWhere('nro_cedula', 'LIKE', "%$search%")
+                ->get();
+        } else {
+            $conceptos_ajustes = ConceptoAjuste::all();
+        }
+
+        foreach ($conceptos_ajustes as $concepto_ajuste) {
+        $conceptos_ajustes_array[] = ['id'=> $concepto_ajuste->id, 'text'=> $concepto_ajuste->descripcion];
+            
+        }
+
+        return json_encode($conceptos_ajustes_array);
+    }
     //Función que retorna un JSON con todos los registros para que los maneje AJAX desde el DataTable
     public function apiConceptosAjuste()
     {

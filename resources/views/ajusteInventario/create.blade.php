@@ -43,19 +43,38 @@
                         <div class="col-md-2">
                             <input type="number" id="nro_ajuste" name="nro_ajuste" class="form-control" readonly="readonly">
                         </div>
-                        <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
+
+                        <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
+                        <label for="sucursal_id" class="col-md-1 control-label">Sucursal *</label>
+                          <div class="col-md-5">
+                            <select id="select2-sucursales" name="sucursal_id" class="form-control" style="width: 100%">
+                            <option></option>
+                                @foreach($sucursales as $id => $sucursal)
+                                  <option value="{{ $sucursal->id }}">({{ $sucursal->codigo}}) {{ $sucursal->nombre }}</option>
+                                @endforeach
+                            </select>    
+                        </div>
+                    
                     </div>
-
+                    <label for="concepto_ajuste_id" class="col-md-1 control-label">Concepto de Ajuste *</label>
+                          <div class="col-md-5">
+                            <select id="select2-conceptosAjustes" name="concepto_ajuste_id" class="form-control" style="width: 100%">
+                            <option></option>
+                                @foreach($conceptos_ajustes as $id => $concepto_ajuste)
+                                  <option value="{{ $concepto_ajuste->id }}"> {{ $concepto_ajuste->descripcion }}</option>
+                                @endforeach
+                            </select>    
+                        </div>
                     <div class="form-group">
                        
-                        <label for="motivo" class="col-md-1 control-label">Motivo</label>
-                        <div class="col-md-4">
-                            <textarea class="form-control" rows="2" id="motivo" name="motivo"></textarea>
-                        </div>
-                    </div>
+                       <label for="motivo" class="col-md-1 control-label">Motivo</label>
+                       <div class="col-md-4">
+                           <textarea class="form-control" rows="2" id="motivo" name="motivo"></textarea>
+                       </div>
+                   </div>
                     <div class="form-group">
                          <label for="empleado_id" class="col-md-1 control-label">Registrado por: </label>
                          <div class="col-md-5">
@@ -384,6 +403,50 @@
             minimumInputLength: 4,
             ajax: {
                 url: "{{ route('api.clientes.ventas') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+        $('#select2-sucursales').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            ajax: {
+                url: "{{ route('api.sucursales.buscador') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+        $('#select2-conceptosAjustes').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            ajax: {
+                url: "{{ route('api.conceptosAjustes.buscador') }}",
                 delay: 250,
                 data: function (params) {
                     var queryParameters = {

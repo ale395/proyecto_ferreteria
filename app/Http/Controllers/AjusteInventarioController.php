@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Input;
 
 use App\Empleado;
 use App\Articulo;
+use App\ConceptoAjuste;
 use App\Sucursal;
 use DB;
 use Response;
@@ -39,7 +40,11 @@ class AjusteInventarioController extends Controller
     {
         $fecha_actual = date("d/m/Y");
         $datos_default = DatosDefault::get()->first();
-        $concepto_ajuste = $datos_default->concepto_ajuste;
+        $conceptos_ajustes =   ConceptoAjuste::all();
+        
+
+        $sucursales = Sucursal::where('activo',true)->get();
+          
         $nro_ajuste_inventario = AjusteInventarioCab::max('nro_ajuste');
 
 
@@ -51,7 +56,7 @@ class AjusteInventarioController extends Controller
         }
         
 
-        return view('ajusteInventario.create', compact('fecha_actual', 'nro_ajuste','concepto_ajuste'));
+        return view('ajusteInventario.create', compact('fecha_actual', 'nro_ajuste','conceptos_ajustes','sucursales'));
     }
 
     /**
@@ -66,11 +71,11 @@ class AjusteInventarioController extends Controller
             DB::beginTransaction();
 
             //instanciamos la clase
-            $ajuste_inventario = new AjusteInventarioCab();
+            $ajuste_inventario_cab = new AjusteInventarioCab();
             $cantidad_total = 0;
             $sucursal = Auth::user()->empleado->sucursales->first();
             
-            $nro_ajuste_inventario = AjusteInventarioCab::max('nro_ajuste');
+            $nro_ajuste_inventario_cab = AjusteInventarioCab::max('nro_ajuste');
             if (!empty('sucursal')) {
                 $request['sucursal_id'] = $sucursal->getId();
             }
@@ -90,7 +95,7 @@ class AjusteInventarioController extends Controller
             $ajuste_inventario_cab->fecha_emision = $request['fecha_emision'];   
             $ajuste_inventario_cab->concepto_ajuste_id = $request['concepto_ajuste_id'];   
             $ajuste_inventario_cab->sucursal_id = $request['sucursal_id'];    
-            $ajuste_inventario_cab->motivos=$request['motivos']; 
+            $ajuste_inventario_cab->motivo=$request['motivo']; 
             $ajuste_inventario_cab->cantidad_total = $cantidad_total;
 
             //guardamos
@@ -119,7 +124,7 @@ class AjusteInventarioController extends Controller
 
                 $ajuste_inventario_det = new AjusteInventarioDet();
 
-                $ajuste_inventario_det->ajuste_inventario_cab_id = $ajuste_inventario->id; 
+                $ajuste_inventario_det->ajuste_inventario_cab_id = $ajuste_inventario_cab->id; 
                 $ajuste_inventario_det->articulo_id = $tab_articulo_id[$i];
                 $ajuste_inventario_det->cantidad = $cantidad;
                 $ajuste_inventario_det->sub_total = $subtotal;
