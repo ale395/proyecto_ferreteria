@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ComprasCab extends Model
 {
-
     CONST MAX_LINEAS_DETALLE = 3;
 
     protected $table = 'compras_cab';

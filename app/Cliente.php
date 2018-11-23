@@ -9,7 +9,9 @@ class Cliente extends Model
     protected $table = 'clientes';
 
     protected $fillable = [
+
     'tipo_persona', 'nombre', 'apellido', 'razon_social', 'ruc', 'nro_cedula', 'telefono_celular', 'telefono_linea_baja', 'direccion', 'correo_electronico', 'limite_credito', 'zona_id','tipo_cliente_id', 'activo',
+
     ];
 
     public function getId(){

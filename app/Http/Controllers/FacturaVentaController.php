@@ -64,9 +64,6 @@ class FacturaVentaController extends Controller
         $usuario = Auth::user();
         $cabecera = new FacturaVentaCab();
         $total = 0;
-        $serie = Serie::findOrFail($request['serie_id']);
-        $cliente = Cliente::findOrFail($request['cliente_id']);
-
         
 
         //Implementar que cuando el cliente se deja en blanco, se busque al registro de cliente ocasional para poder guardarlo

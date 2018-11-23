@@ -75,9 +75,6 @@
                         <div class="col-md-6">
                             <select name="tipos_empleados[]" id="select2-tipos-empleados" class="form-control" style="width: 100%" multiple="multiple">
                                 <option></option>
-                                @foreach($tipos_empleados as $id => $tipo_empleado)
-                                  <option value="{{ $tipo_empleado->id }}">({{ $tipo_empleado->codigo}}) {{ $tipo_empleado->nombre }}</option>
-                                @endforeach
                                 @if (old("tipos_empleados"))
                                 	@foreach($tipos_empleados as $id => $tipo_empleado)
 	                                  <option value="{{ $tipo_empleado->id }}" {{ (in_array($tipo_empleado->id, old("tipos_empleados")) ? "selected":"") }}>({{ $tipo_empleado->codigo}}) {{ $tipo_empleado->nombre }}</option>

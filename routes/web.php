@@ -26,7 +26,6 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/impuestos', 'ImpuestoController@apiImpuestos')->name('api.impuestos');
 	
 	//RUTAS PARA COTIZACIONES
-
 	Route::resource('cotizaciones', 'CotizacionController', ['parameters'=>['cotizaciones'=>'cotizacion']]);
 	Route::get('api/cotizaciones', 'CotizacionController@apiCotizaciones')->name('api.cotizaciones');
 	Route::get('api/cotizaciones/venta/{moneda}', 'CotizacionController@apiCotizacionValorVenta')->name('api.cotizaciones.valorventa');
@@ -152,12 +151,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('conceptos', 'ConceptoAjusteController');
 	Route::get('api/conceptosajuste', 'ConceptoAjusteController@apiConceptosAjuste')->name('api.conceptos');
 
-	Route::get('api/conceptosAjustes/buscador', 'ConceptoAjusteController@apiConceptosAjustesBuscador')->name('api.conceptosAjustes.buscador');
-
 	//rutas para modelo 'conceptos_caja'
 	Route::resource('conceptocaja', 'ConceptoCajaController');
 	Route::get('api/conceptocaja', 'ConceptoCajaController@apiConceptosAjuste')->name('api.conceptocaja');	
-
 
 	//rutas para modelo 'clasificacioncliente'
 	Route::resource('clasificacionclientes', 'ClasificacionClienteController');

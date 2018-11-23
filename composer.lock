@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
    "content-hash": "9db27668cab77647b86b4102d65dde3c",
+
     "packages": [
         {
             "name": "caffeinated/shinobi",

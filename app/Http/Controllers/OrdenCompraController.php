@@ -337,7 +337,6 @@ class OrdenCompraController extends Controller
             //return back()->withErrors( $e->getTraceAsString() )->withInput();
 
         }
-        
         return redirect(route('ordencompra.index'))->with('success', 'Datos modificados correctamente!');
     }
 
