@@ -434,13 +434,6 @@
                 $('#tabla-pedidos').DataTable().destroy();    
             }
 
-            $('#tabla-pedidos2').DataTable( {
-                select: true,
-                select: {
-                    style: 'single'
-                }
-            } );
-
             tablePedidos = $('#tabla-pedidos').DataTable({
                 
                 language: { url: '/datatables/translation/spanish' },
@@ -470,11 +463,27 @@
     function cargarPedidos(){
         var datos = tablePedidos.rows( { selected: true } ).data();
         var i;
-        var pedidos_id = [];
+        var array_pedidos = [];
         for (i = 0; i < datos.length; i++) {
-            pedidos_id.push(datos[i].id);
+            array_pedidos.push(datos[i].id);
         }
-        console.log(pedidos_id);
+        console.log(array_pedidos);
+        if (array_pedidos.length > 0) {
+            $.ajax({
+                type: "GET",
+                url: "/api/pedidos/detalles/"+array_pedidos,
+                //url: '{{ route('api.pedidos.detalles', serialize('array_pedidos'))}}',
+                datatype: "json",
+                success: function(data){
+                    console.log(data);
+                    /*$("#existencia" ).val(data.existencia).change();
+                    $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
+                    $("#precio_unitario" ).val(data.precio).change();
+                    $("#porcentaje_descuento" ).val(0).change();
+                    $("#btn-add-articulo").attr("disabled", false);*/
+                }
+            });
+        }
     }
     
     var table = $('#pedido-detalle').DataTable({

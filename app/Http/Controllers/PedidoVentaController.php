@@ -8,6 +8,7 @@ use App\PedidoVentaCab;
 use App\PedidoVentaDet;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class PedidoVentaController extends Controller
@@ -254,6 +255,34 @@ class PedidoVentaController extends Controller
                     })->make(true);
         }
         
+    }
+
+    public function apiPedidosDetalles($array_pedidos){
+        $cast_array = explode(",",($array_pedidos));
+        /*$array_pedidos_agrupados = [];
+        $detalles = PedidoVentaDet::whereIn('pedido_cab_id',$cast_array)->get();
+        $group_by = $detalles->groupBy('articulo_id');
+        dd(array($group_by));
+        foreach ($group_by as $registro) {
+            $pedido_agrupado = new PedidoVentaDet;
+            $pedido_agrupado->setArticuloId($registro[0]);
+            array_push($array_pedidos_agrupados, $pedido_agrupado);
+        }
+        return $array_pedidos_agrupados;*/
+
+        /*PROBANDO CON DB*/
+        $pedidos = DB::table('pedidos_ventas_det')
+            ->select('articulo_id', 'precio_unitario', 'porcentaje_descuento', 'porcentaje_iva', 
+            DB::raw('SUM(cantidad) as cantidad'), 
+            DB::raw('SUM(monto_descuento) as monto_descuento'),
+            DB::raw('AVG(monto_exenta) as monto_exenta'),
+            DB::raw('AVG(monto_gravada) as monto_gravada'),
+            DB::raw('AVG(monto_iva) as monto_iva'),
+            DB::raw('AVG(monto_total) as monto_total'))
+            ->whereIn('pedido_cab_id', $cast_array)
+            ->groupBy('articulo_id', 'precio_unitario', 'porcentaje_descuento', 'porcentaje_iva')
+            ->get();
+        return $pedidos;
     }
 
     public function apiPedidosVentas(){
