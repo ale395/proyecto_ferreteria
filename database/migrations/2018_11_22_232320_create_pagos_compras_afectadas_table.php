@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePagosFormaPagosTable extends Migration
+class CreatePagosComprasAfectadasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreatePagosFormaPagosTable extends Migration
      */
     public function up()
     {
-        Schema::create('pagos_forma_pagos', function (Blueprint $table) {
+        Schema::create('pagos_compras_afectadas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('pagos_id');
-            $table->integer('forma_pago_id');
-            $table->decimal('importe_pago', 14, 2);
+            $table->integer('compras_id');
+            $table->decimal('importe_afectado', 14, 2);
             $table->timestamps();
 
-            $table->foreign('forma_pago_id')->references('id')->on('formas_pagos');
-            $table->foreign('pagos_id')->references('id')->on('pagos');
+            $table->foreign('compras_id')->references('id')->on('compras_cab');
+            $table->foreign('pagos_id')->references('id')->on('pagos');        
+
         });
     }
 
@@ -32,6 +33,6 @@ class CreatePagosFormaPagosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pagos_forma_pagos');
+        Schema::dropIfExists('pagos_compras_afectadas');
     }
 }
