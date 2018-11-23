@@ -78,6 +78,15 @@
                                 @foreach($tipos_empleados as $id => $tipo_empleado)
                                   <option value="{{ $tipo_empleado->id }}">({{ $tipo_empleado->codigo}}) {{ $tipo_empleado->nombre }}</option>
                                 @endforeach
+                                @if (old("tipos_empleados"))
+                                	@foreach($tipos_empleados as $id => $tipo_empleado)
+	                                  <option value="{{ $tipo_empleado->id }}" {{ (in_array($tipo_empleado->id, old("tipos_empleados")) ? "selected":"") }}>({{ $tipo_empleado->codigo}}) {{ $tipo_empleado->nombre }}</option>
+	                                @endforeach
+                                @else
+                                	@foreach($tipos_empleados as $id => $tipo_empleado)
+                                  		<option value="{{ $tipo_empleado->id }}">({{ $tipo_empleado->codigo}}) {{ $tipo_empleado->nombre }}</option>
+                                	@endforeach
+                                @endif
                             </select>
                         </div>
                     </div>

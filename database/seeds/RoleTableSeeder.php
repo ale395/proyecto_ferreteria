@@ -170,6 +170,12 @@ class RoleTableSeeder extends Seeder
         $permiso_concepto_editar = Permission::where('slug', 'conceptoajuste.edit')->first();
         $permiso_concepto_eliminar = Permission::where('slug', 'conceptoajuste.destroy')->first();
 
+        //permisos de Conceptos de Caja
+        $permiso_conceptocaja_listar = Permission::where('slug', 'conceptocaja.index')->first();
+        $permiso_conceptocaja_crear = Permission::where('slug', 'conceptocaja.create')->first();
+        $permiso_conceptocaja_editar = Permission::where('slug', 'conceptocaja.edit')->first();
+        $permiso_conceptocaja_eliminar = Permission::where('slug', 'conceptocaja.destroy')->first();
+
          //permisos de Categoria de clientes
         $permiso_clasicli_listar = Permission::where('slug', 'clasificacioncliente.index')->first();
         $permiso_clasicli_crear = Permission::where('slug', 'clasificacioncliente.create')->first();
@@ -201,6 +207,13 @@ class RoleTableSeeder extends Seeder
         $permiso_editar_ordencompra = Permission::where('slug', 'ordencompra.edit')->first();
         $permiso_eliminar_ordencompra = Permission::where('slug', 'ordencompra.destroy')->first();
         $permiso_ver_ordencompra = Permission::where('slug', 'ordencompra.show')->first();
+
+        //permisos de Orden de Compra
+        $permiso_listar_compra = Permission::where('slug', 'compra.index')->first();
+        $permiso_crear_compra = Permission::where('slug', 'compra.create')->first();
+        $permiso_editar_compra = Permission::where('slug', 'compra.edit')->first();
+        $permiso_eliminar_compra = Permission::where('slug', 'compra.destroy')->first();
+        $permiso_ver_compra = Permission::where('slug', 'compra.show')->first();
 
         $role = new Role();
         $role->name = 'Administrador';
@@ -260,6 +273,11 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_concepto_crear->id);
         $role->assignPermission($permiso_concepto_editar->id);
         $role->assignPermission($permiso_concepto_eliminar->id);
+
+        $role->assignPermission($permiso_conceptocaja_listar->id);
+        $role->assignPermission($permiso_conceptocaja_crear->id);
+        $role->assignPermission($permiso_conceptocaja_editar->id);
+        $role->assignPermission($permiso_conceptocaja_eliminar->id);
 
         $role->assignPermission($permiso_clasicli_listar->id);
         $role->assignPermission($permiso_clasicli_crear->id);
@@ -373,6 +391,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_ordencompra->id);
         $role->assignPermission($permiso_eliminar_ordencompra->id);
         $role->assignPermission($permiso_ver_ordencompra->id);
+
+        $role->assignPermission($permiso_listar_compra->id);
+        $role->assignPermission($permiso_crear_compra->id);
+        $role->assignPermission($permiso_editar_compra->id);
+        $role->assignPermission($permiso_eliminar_compra->id);
+        $role->assignPermission($permiso_ver_compra->id);
 
         $role->assignPermission($permiso_listar_cliente->id);
         $role->assignPermission($permiso_crear_cliente->id);

@@ -4,14 +4,14 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('FacturaVentaController@store')}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('PedidoVentaController@update', $pedido_cab->getId())}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Factura de Venta
+                    <h4>Editar Pedido
                     <div class="pull-right btn-group">
                         <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('facturacionVentas.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('facturacionVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar edición" href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
@@ -35,92 +35,74 @@
                             </div>
                         @endif
                     </div>
-                    <input name="_method" type="hidden" value="POST">
+                    <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
-                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="id" name="id" value="{{$pedido_cab->getId()}}">
                     <div class="form-group">
-                        <label for="tipo_factura" class="col-md-1 control-label">Tipo Fac.</label>
-                        <div class="col-md-3">
-                            <div id="tipo_factura" class="btn-group" data-toggle="buttons">
-                                @if(old('tipo_factura') === 'CR')
-                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                    <input id="radioContado" type="radio" name="tipo_factura" value="CO">Contado</label>
-                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                    <input type="radio" name="tipo_factura" value="CR" checked> Crédito</label>
-                                @else
-                                    <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                    <input id="radioContado" type="radio" name="tipo_factura" value="CO" checked>&nbsp;Contado&nbsp;</label>
-                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                    <input type="radio" name="tipo_factura" value="CR"> Crédito </label>
-                                @endif
-                            </div>
-                        </div>
-                        <label for="serie_id" class="col-md-1 control-label">Serie*</label>
+                        <label for="nro_pedido" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Serie">
-                                <select id="select2-series" name="serie_id" class="form-control" style="width: 100%">
-                                    <option value="{{$serie->getId()}}">{{$serie_factura}}</option>
-                                </select>
-                            </a>
+                            <input type="number" id="nro_pedido" name="nro_pedido" class="form-control" readonly="readonly" value="{{$pedido_cab->getNroPedido()}}">
                         </div>
-                        <label for="nro_factura" class="col-md-2 control-label">Número</label>
+                        <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="number" id="nro_factura" name="nro_factura" class="form-control text-right" readonly="readonly" value="{{old('nro_factura', $nro_factura)}}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
-                        <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
-                        </div>
-                        <label for="lista_precio_id" class="col-md-2 control-label">Lista Precio*</label>
-                        <div class="col-md-3">
-                            <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
-                                <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%">
-                                    <option value="{{$lista_precio->getId()}}">{{$lista_precio->getNombre()}}</option>
-                                </select>
-                            </a>
-                        </div>
-                        <div class="col-md-1">
-                            <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $pedido_cab->getFechaEmision())}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
-                        <div class="col-md-7">
-
+                        <div class="col-md-5">
                             <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%">
-                                @if ($errors->any())
-                                    @foreach($clientes as $cliente)
-                                        @if(old('cliente_id') == $cliente->getId())
-                                            <option value="{{old('cliente_id')}}" selected>{{$cliente->getNombreSelect()}}</option>
-                                        @endif
-                                    @endforeach
-                                @endif
+                                <option value="{{$pedido_cab->cliente->getId()}}">{{$pedido_cab->cliente->getNombreIndex()}}</option>
                             </select>
                         </div>
                         <div class="col-md-1">
                             <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
                         </div>
+                        <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
+                        <div class="col-md-3">
+                            <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
+                                <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%" disabled>
+                                    <option value="{{$pedido_cab->listaPrecio->getId()}}" selected>{{$pedido_cab->listaPrecio->getNombre()}}</option>
+                                </select>
+                            </a>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
-                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
-                                <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
+                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%" disabled>
+                                <option value="{{$pedido_cab->moneda->getId()}}" selected>{{$pedido_cab->moneda->getDescripcion()}}</option>
                             </select>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $pedido_cab->getValorCambio())}}" readonly>
                         </div>
                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
                         <div class="col-md-4">
-                            <textarea class="form-control" rows="2" id="comentario" name="comentario"></textarea>
+                            <textarea class="form-control" rows="2" id="comentario" name="comentario">{{old('comentario', $pedido_cab->getComentario())}}</textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        
+                        <label for="estado" class="col-md-1 control-label">Estado*</label>
+                        <div class="col-md-3">
+                            <select id="select2-estados" name="estado" class="form-control" style="width: 100%">
+                                @if ($pedido_cab->getEstado() == 'P')
+                                    <option value="P" selected>Pendiente</option>
+                                    <option value="C">Cancelado</option>
+                                    <option value="V">Vencido</option>
+                                @elseif ($pedido_cab->getEstado() == 'C')
+                                    <option value="P">Pendiente</option>
+                                    <option value="C" selected>Cancelado</option>
+                                    <option value="V">Vencido</option>
+                                @elseif ($pedido_cab->getEstado() == 'V')
+                                    <option value="P">Pendiente</option>
+                                    <option value="C">Cancelado</option>
+                                    <option value="V" selected>Vencido</option>
+                                @endif
+                                <option value="F" disabled>Facturado</option>
+                            </select>
+                        </div>
                     </div>
                     <br>
                     <div class="form-group">
@@ -133,14 +115,12 @@
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
-                        <input type="hidden" id="existencia" name="existencia">
                         <div class="col-md-2">
                             <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()" readonly></a>
                         </div>
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="% Descuento">
                             <input type="number" id="porcentaje_descuento" name="porcentaje_descuento" class="form-control" placeholder="% Desc." min="0" max="100" onchange="calcularSubtotal()"></a>
-
                         </div>
                         <div class="col-md-2">
                             <a data-toggle="tooltip" data-placement="top" title="Subtotal">
@@ -148,11 +128,9 @@
                         </div>
                         <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
                         <div class="col-md-1">
-                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
-                    <span class="help-block with-errors"></span>
-
                     <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
                         <thead>
                             <tr>
@@ -182,6 +160,20 @@
                                         <td>{{old('tab_subtotal.'.$i)}}</td>
                                     </tr>
                                 @endfor
+                            @else
+                                @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
+                                    <tr>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
+                                        <td>{{$pedido_det->getCantidadNumber()}}</td>
+                                        <td>{{$pedido_det->getPrecioUnitario()}}</td>
+                                        <td>{{$pedido_det->getMontoDescuento()}}</td>
+                                        <td>{{$pedido_det->getMontoExenta()}}</td>
+                                        <td>{{$pedido_det->getMontoGravada()}}</td>
+                                        <td>{{$pedido_det->getMontoIva()}}</td>
+                                        <td>{{$pedido_det->getMontoTotal()}}</td>
+                                    </tr>
+                                @endforeach
                             @endif
                         </tbody>
                         <tfoot>
@@ -220,9 +212,8 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-
                                         <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
-                                        <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
                                         <th><input type="text" name="tab_precio_unitario[]" value="{{old('tab_precio_unitario.'.$i)}}"></th>
@@ -235,6 +226,23 @@
                                         <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
                                     </tr>
                                 @endfor
+                            @else
+                                @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
+                                    <tr>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><input type="text" name="tab_articulo_id[]" value="{{$pedido_det->articulo->getId()}}"></th>
+                                        <th><input type="text" name="tab_articulo_nombre[]" value="{{$pedido_det->articulo->getDescripcion()}}"></th>
+                                        <th><input type="text" name="tab_cantidad[]" value="{{$pedido_det->getCantidad()}}"></th>
+                                        <th><input type="text" name="tab_precio_unitario[]" value="{{$pedido_det->getPrecioUnitario()}}"></th>
+                                        <th><input type="text" name="tab_porcentaje_descuento[]" value="{{$pedido_det->getPorcentajeDescuento()}}"></th>
+                                        <th><input type="text" name="tab_monto_descuento[]" value="{{$pedido_det->getMontoDescuento()}}"></th>
+                                        <th><input type="text" name="tab_porcentaje_iva[]" value="{{$pedido_det->getPorcentajeIva()}}"></th>
+                                        <th><input type="text" name="tab_exenta[]" value="{{$pedido_det->getMontoExenta()}}"></th>
+                                        <th><input type="text" name="tab_gravada[]" value="{{$pedido_det->getMontoGravada()}}"></th>
+                                        <th><input type="text" name="tab_iva[]" value="{{$pedido_det->getMontoIva()}}"></th>
+                                        <th><input type="text" name="tab_subtotal[]" value="{{$pedido_det->getMontoTotal()}}"></th>
+                                    </tr>
+                                @endforeach
                             @endif
                         </tbody>
                     </table>
@@ -245,13 +253,10 @@
 </div>
 @include('cliente.create-persona-fisica')
 @include('cliente.create-persona-juridica')
-@include('facturaVenta.pedidosForm')
 
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
-    
-    var articulos_detalle = [];
 
     $('[data-toggle="tooltip"]').tooltip({
         trigger : 'hover'
@@ -313,7 +318,7 @@
                                 text: $data.nro_cedula + ' - ' + $data.nombre + ', ' + $data.apellido
                             };
                             $('#select2-clientes').val(null).trigger('change');
-                            var newOption = new Option(data.text, data.id, true, true);
+                            var newOption = new Option(data.text, data.id, false, false);
                             $('#select2-clientes').append(newOption).trigger('change');
                             var obj = $.alert({
                                 title: 'Información',
@@ -371,7 +376,7 @@
                                 text: $data.ruc + ' - ' + $data.razon_social
                             };
                             $('#select2-clientes').val(null).trigger('change');
-                            var newOption = new Option(data.text, data.id, true, true);
+                            var newOption = new Option(data.text, data.id, false, false);
                             $('#select2-clientes').append(newOption).trigger('change');
 
                             var obj = $.alert({
@@ -413,72 +418,6 @@
         });
 
     $("#btn-add-articulo").attr("disabled", true);
-
-    var cliente_id = $('#select2-clientes').val();
-    var tablePedidos = null;
-
-    function showPedidosForm(){
-        if ($('#select2-clientes').val() == null) {
-            var obj = $.alert({
-                title: 'Atención',
-                content: 'Debe seleccionar el cliente para buscar los pedidos relacionados al mismo!',
-                icon: 'fa fa-exclamation-triangle',
-                type: 'orange',
-                backgroundDismiss: true,
-                theme: 'modern',
-            });
-            setTimeout(function(){
-                obj.close();
-            },3000); 
-        } else {
-            if ($.fn.DataTable.isDataTable('#tabla-pedidos')) {
-                $('#tabla-pedidos').DataTable().clear();
-                $('#tabla-pedidos').DataTable().destroy();    
-            }
-
-            $('#tabla-pedidos2').DataTable( {
-                select: true,
-                select: {
-                    style: 'single'
-                }
-            } );
-
-            tablePedidos = $('#tabla-pedidos').DataTable({
-                
-                language: { url: '/datatables/translation/spanish' },
-                processing: true,
-                serverSide: true,
-                ajax: {"url": "/api/pedidos/cliente/"+$('#select2-clientes').val()},
-                select: {
-                    style: 'multi'
-                },
-                columns: [
-                    {data: 'nro_pedido'},
-                    {data: 'fecha'},
-                    {data: 'moneda'},
-                    {data: 'monto_total'},
-                    {data: 'comentario'}
-                    ],
-                'columnDefs': [
-                { className: "dt-center", "targets": [1,2,3,4] }]
-            });
-            
-            $('#modal-pedido-venta').modal('show');
-            $('#modal-pedido-venta form')[0].reset();
-            $('.modal-title').text('Lista de Pedidos');
-        }
-    }
-
-    function cargarPedidos(){
-        var datos = tablePedidos.rows( { selected: true } ).data();
-        var i;
-        var pedidos_id = [];
-        for (i = 0; i < datos.length; i++) {
-            pedidos_id.push(datos[i].id);
-        }
-        console.log(pedidos_id);
-    }
-    
     var table = $('#pedido-detalle').DataTable({
         "paging":   false,
         "ordering": false,
@@ -536,7 +475,6 @@
               url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,
               datatype: "json",
               success: function(data){
-                $("#existencia" ).val(data.existencia).change();
                 $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
                 $("#precio_unitario" ).val(data.precio).change();
                 $("#porcentaje_descuento" ).val(0).change();
@@ -564,108 +502,70 @@
     };
 
     function addArticulo() {
-        var indexColumn = 0;
-        var articulos_detalle = $('input[name="tab_articulo_id[]"]').map(function () {
-            return this.value;
-        }).get();
-
         /*Se obtienen los valores de los campos correspondientes*/
+        var decimales = 0;
+        var articulo = $('#select2-articulos').select2('data')[0].text;
+        var articulo_id = $('#select2-articulos').select2('data')[0].id;
         var cantidad = $("#cantidad").val();
-        var existencia = $("#existencia").val();
-        console.log('Antes de add: '+articulos_detalle);
-        
-        if (Number(cantidad) > Number(existencia)) {
-            var obj = $.alert({
-                title: 'Atención',
-                content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
-                icon: 'fa fa-exclamation-triangle',
-                type: 'orange',
-                backgroundDismiss: true,
-                theme: 'modern',
-            });
-            setTimeout(function(){
-                obj.close();
-            },3000); 
+        var precio_unitario = $("#precio_unitario").val();
+        var porcentaje_descuento = $("#porcentaje_descuento" ).val();
+        var monto_descuento = cantidad * precio_unitario.replace(".", "") * (porcentaje_descuento/100);
+        var subtotal = $("#subtotal").val();
+        var porcentaje_iva = $("#porcentaje_iva" ).val();
+        var exenta = 0;
+        var gravada = 0;
+        var iva = 0;
+        if (porcentaje_iva == 0) {
+            exenta = subtotal;
         } else {
-            var decimales = 0;
-            var articulo = $('#select2-articulos').select2('data')[0].text;
-            var articulo_id = $('#select2-articulos').select2('data')[0].id;
-            if (articulos_detalle.includes(articulo_id)) {
-                var obj = $.alert({
-                    title: 'Atención',
-                    content: 'El artículo que intenta agregar ya está incluido en el detalle de la factura!',
-                    icon: 'fa fa-exclamation-triangle',
-                    type: 'orange',
-                    backgroundDismiss: true,
-                    theme: 'modern',
-                });
-                setTimeout(function(){
-                    obj.close();
-                },3000); 
-            } else {
-            articulos_detalle.push(articulo_id);
-            console.log('Despues de add: '+articulos_detalle);
-            //var cantidad = $("#cantidad").val();
-            var precio_unitario = $("#precio_unitario").val();
-            var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-            var monto_descuento = cantidad * precio_unitario.replace(".", "") * (porcentaje_descuento/100);
-            var subtotal = $("#subtotal").val();
-            var porcentaje_iva = $("#porcentaje_iva" ).val();
-            var exenta = 0;
-            var gravada = 0;
-            var iva = 0;
-            if (porcentaje_iva == 0) {
-                exenta = subtotal;
-            } else {
-                gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
-                iva = Math.round(gravada*(porcentaje_iva/100));
-            }
-            /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
-            precio_unitario = $.number(precio_unitario,decimales, ',', '.');
-            cantidad = $.number(cantidad,decimales, ',', '.');
-            monto_descuento = $.number(monto_descuento,decimales, ',', '.');
-            exenta = $.number(exenta,decimales, ',', '.');
-            gravada = $.number(gravada,decimales, ',', '.');
-            iva = $.number(iva,decimales, ',', '.');
-            subtotal = $.number(subtotal,decimales, ',', '.');  
-            
-            /*Se agrega una fila a la tabla*/
-            var tabla = $("#pedido-detalle").DataTable();
-            tabla.row.add( [
-                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
-                articulo,
-                cantidad,
-                precio_unitario,
-                monto_descuento,
-                exenta,
-                gravada,
-                iva,
-                subtotal
-            ] ).draw( false );
-
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
-            $("#tab-hidden").append(markup);
-
-            /*Se restauran a nulos los valores del bloque para la selección del articulo*/
-            $('#cantidad').number(false);
-            $('#precio_unitario').number(false);
-            $('#subtotal').number(false);
-            
-            $('#cantidad').val("");
-            $('#precio_unitario').val("");
-            $('#porcentaje_descuento').val("");
-            $('#porcentaje_iva').val("");
-            $('#subtotal').val("");
-            $('#select2-articulos').val(null).trigger('change');
-            $("#select2-articulos").focus();
-            }
+            gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
+            iva = Math.round(gravada*(porcentaje_iva/100));
         }
+        /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+        precio_unitario = $.number(precio_unitario,decimales, ',', '.');
+        cantidad = $.number(cantidad,decimales, ',', '.');
+        monto_descuento = $.number(monto_descuento,decimales, ',', '.');
+        exenta = $.number(exenta,decimales, ',', '.');
+        gravada = $.number(gravada,decimales, ',', '.');
+        iva = $.number(iva,decimales, ',', '.');
+        subtotal = $.number(subtotal,decimales, ',', '.');  
+        
+        /*Se agrega una fila a la tabla*/
+        var tabla = $("#pedido-detalle").DataTable();
+        tabla.row.add( [
+            "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+            articulo,
+            cantidad,
+            precio_unitario,
+            monto_descuento,
+            exenta,
+            gravada,
+            iva,
+            subtotal
+        ] ).draw( false );
+
+        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+        $("#tab-hidden").append(markup);
+
+        /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+        $('#cantidad').number(false);
+        $('#precio_unitario').number(false);
+        $('#subtotal').number(false);
+        
+        $('#cantidad').val("");
+        $('#precio_unitario').val("");
+        $('#porcentaje_descuento').val("");
+        $('#porcentaje_iva').val("");
+        $('#subtotal').val("");
+        $('#select2-articulos').val(null).trigger('change');
+        $("#select2-articulos").focus();
     };
 
     /*Elimina el articulo del pedido*/
     var tabla = $("#pedido-detalle").DataTable();
     $('#pedido-detalle tbody').on( 'click', 'a.btn-delete-row', function () {
-        var row = $(this).parent().index('#pedido-detalle tbody tr');
+        var row = $(this).closest('tr').index();
+        row = row + 1;
         tabla
             .row( $(this).parents('tr') )
             .remove()
@@ -811,11 +711,8 @@
                 cache: true
             }
         });
-
-        $('#select2-series').select2({
-            placeholder : 'Seleccione una opción',
-            tags: false,
-            width: 'resolve',
+        $('#select2-estados').select2({
+            placeholder: 'Seleccione una opción',
             language: "es"
         });
     });

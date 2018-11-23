@@ -23,10 +23,10 @@ class Cotizacion extends Model
     }
 
     public function getValorVenta(){
-        return $this->valor_venta;
+        return number_format($this->valor_venta, 2, ',', '.');
     }
 
     public function getValorCompra(){
-        return $this->valor_compra;
+        return number_format($this->valor_compra, 2, ',', '.');
     }
 }

@@ -26,8 +26,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/impuestos', 'ImpuestoController@apiImpuestos')->name('api.impuestos');
 	
 	//RUTAS PARA COTIZACIONES
-		Route::resource('cotizaciones', 'CotizacionController', ['parameters'=>['cotizaciones'=>'cotizacion']]);
-		Route::get('api/cotizaciones', 'CotizacionController@apiCotizaciones')->name('api.cotizaciones');
+
+	Route::resource('cotizaciones', 'CotizacionController', ['parameters'=>['cotizaciones'=>'cotizacion']]);
+	Route::get('api/cotizaciones', 'CotizacionController@apiCotizaciones')->name('api.cotizaciones');
+	Route::get('api/cotizaciones/venta/{moneda}', 'CotizacionController@apiCotizacionValorVenta')->name('api.cotizaciones.valorventa');
 
 	//RUTAS PARA IMPUESTOS
 	Route::resource('articulos', 'ArticuloController');
@@ -115,6 +117,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTA PARA EL CONTROLADOR DE PEDIDOS - VENTAS
 	Route::resource('pedidosVentas', 'PedidoVentaController');
 	Route::get('api/pedidosVentas', 'PedidoVentaController@apiPedidosVentas')->name('api.pedidos.ventas');
+	Route::get('api/pedidos/cliente/{cliente_id}', 'PedidoVentaController@apiPedidosCliente')->name('api.pedidos.cliente');
 
 	//RUTA PARA EL CONTROLADOR DE FACTURACION - VENTAS
 	Route::resource('facturacionVentas', 'FacturaVentaController');
@@ -148,7 +151,13 @@ Route::middleware(['auth'])->group(function() {
 	//rutas para modelo 'conceptoajuste'
 	Route::resource('conceptos', 'ConceptoAjusteController');
 	Route::get('api/conceptosajuste', 'ConceptoAjusteController@apiConceptosAjuste')->name('api.conceptos');
+
 	Route::get('api/conceptosAjustes/buscador', 'ConceptoAjusteController@apiConceptosAjustesBuscador')->name('api.conceptosAjustes.buscador');
+
+	//rutas para modelo 'conceptos_caja'
+	Route::resource('conceptocaja', 'ConceptoCajaController');
+	Route::get('api/conceptocaja', 'ConceptoCajaController@apiConceptosAjuste')->name('api.conceptocaja');	
+
 
 	//rutas para modelo 'clasificacioncliente'
 	Route::resource('clasificacionclientes', 'ClasificacionClienteController');
@@ -171,6 +180,10 @@ Route::middleware(['auth'])->group(function() {
 	//Rutas para orden de compra
 	Route::resource('ordencompra', 'OrdenCompraController');
 	Route::get('api/ordencompra', 'OrdenCompraController@apiOrdenCompra')->name('api.ordencompra');
+
+	//Rutas para orden de compra
+	Route::resource('compra', 'CompraController');
+	Route::get('api/compra', 'CompraController@apiCompras')->name('api.compra');
 
 	//Para ver los errores de PHP
 	Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');

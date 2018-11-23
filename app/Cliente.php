@@ -9,7 +9,7 @@ class Cliente extends Model
     protected $table = 'clientes';
 
     protected $fillable = [
-        'tipo_persona', 'nombre', 'apellido', 'razon_social', 'ruc', 'nro_cedula', 'telefono_celular', 'telefono_linea_baja', 'direccion', 'correo_electronico', 'zona_id','tipo_cliente_id', 'activo',
+    'tipo_persona', 'nombre', 'apellido', 'razon_social', 'ruc', 'nro_cedula', 'telefono_celular', 'telefono_linea_baja', 'direccion', 'correo_electronico', 'limite_credito', 'zona_id','tipo_cliente_id', 'activo',
     ];
 
     public function getId(){
@@ -161,12 +161,28 @@ class Cliente extends Model
         $this->monto_saldo = $monto_saldo;
     }
 
+    public function getMontoSaldoNumber(){
+        return number_format($this->monto_saldo, 0, ',', '.');
+    }
+
     public function setZonaId($zona_id){
         $this->zona_id = $zona_id;
     }
 
     public function setTipoClienteId($tipo_cliente_id){
         $this->tipo_cliente_id = $tipo_cliente_id;
+    }
+
+    public function setLimiteCredito($limite_credito){
+        $this->limite_credito = $limite_credito;
+    }
+
+    public function getLimiteCredito(){
+        return $this->limite_credito;
+    }
+
+    public function getLimiteCreditoNumber(){
+        return number_format($this->limite_credito, 0, ',', '.');
     }
 
     public function zona()

@@ -17,6 +17,7 @@
     <link href="{{asset('assets/jquery-confirm/dist/jquery-confirm.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/select2/dist/css/select2.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css">
     
   </head>
 
@@ -63,11 +64,11 @@
                                       <li class="sub_menu"><a href="{{route('ordencompra.index')}}">Orden de Compra</a>
                                       </li>
                                 @endcan
-                                <!-- Pablo - comento para usar en otras cosas, y porque esto ya está en Parámetros generales
-                                @can('monedas.index')
-                                    <li class="sub_menu"><a href="{{route('monedas.index')}}">Moneda</a>
+                                @can('compra.index')
+                                    <li class="sub_menu"><a href="{{route('compra.index')}}">Compra</a>
                                     </li>
                                 @endcan
+                                <!-- Pablo - comento para usar en otras cosas, y porque esto ya está en Parámetros generales
                                 @can('sucursales.index')
                                     <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
                                     </li>
@@ -85,26 +86,28 @@
                   </li>
 
                   <li><a><i class="fa fa-money"></i> Cuentas por Cobrar <span class="fa fa-chevron-down"></span></a>
-                          <ul class="nav child_menu">
-                              <!--<li><a href="#level1_1">Level One</a>-->
-                              <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                    @can('clientes.index')
-                                      <li class="sub_menu"><a href="{{route('clientes.index')}}">Clientes</a>
-                                      </li>
-                                    @endcan
-                                    @can('clasificacioncliente.index')
-                                      <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
-                                      </li>
-                                    @endcan
-                                </ul>
-                              </li>
-                              <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu">
-                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+
+                      <ul class="nav child_menu">
+                          <!--<li><a href="#level1_1">Level One</a>-->
+                          <li><a>Formularios<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                @can('clientes.index')
+                                  <li class="sub_menu"><a href="{{route('clientes.index')}}">Clientes</a>
                                   </li>
-                                </ul>
+
+                                @endcan
+                                @can('clasificacioncliente.index')
+                                  <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
+                                  </li>
+                                @endcan
+                            </ul>
+                          </li>
+                          <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                              <li class="sub_menu"><a href="#">Reporte 1</a>
                               </li>
+                            </ul>
+                          </li>
                     </ul>
                   </li>
 
@@ -173,6 +176,10 @@
                             @endcan
                             @can('sucursales.index')
                               <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
+                              </li>
+                            @endcan
+                            @can('conceptocaja.index')
+                              <li class="sub_menu"><a href="{{route('conceptocaja.index')}}">Conceptos de Caja</a>
                               </li>
                             @endcan
                           </ul>
@@ -419,6 +426,7 @@
     <script src="{{ asset('assets/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js') }}"></script>
     <script src="{{ asset('assets/jquery-number/jquery.number.min.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
 
     <script type="text/javascript">
       function elegirSucursal() {

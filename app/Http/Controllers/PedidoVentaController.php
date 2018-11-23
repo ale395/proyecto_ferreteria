@@ -230,6 +230,32 @@ class PedidoVentaController extends Controller
         return PedidoVentaCab::destroy($id);
     }
 
+    public function apiPedidosCliente($cliente_id){
+        if (empty($cliente_id)) {
+            return [];
+        } else {
+            $pedidos = PedidoVentaCab::where('cliente_id', $cliente_id)->
+                where('estado', 'P')->get();
+            return Datatables::of($pedidos)
+                    ->addColumn('nro_pedido', function($pedidos){
+                        return $pedidos->getNroPedido();
+                    })
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('comentario', function($pedidos){
+                        return $pedidos->getComentario();
+                    })->make(true);
+        }
+        
+    }
+
     public function apiPedidosVentas(){
         $permiso_editar = Auth::user()->can('pedidosVentas.edit');
         $permiso_eliminar = Auth::user()->can('pedidosVentas.destroy');

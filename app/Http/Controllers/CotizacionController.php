@@ -139,6 +139,16 @@ class CotizacionController extends Controller
         return Cotizacion::destroy($id);
     }
 
+    public function apiCotizacionValorVenta($moneda_id){
+        if (!empty($articulo_id) && !empty($articulo_id)) {
+            $cotizacion = Cotizacion::where('moneda_id','=', $moneda->id)
+            ->orderBy('fecha_cotizacion', 'desc')
+            ->first();
+
+            return $cotizacion->valor_venta;
+        };
+    }
+
     public function apiCotizaciones()
     {
         $permiso_editar = Auth::user()->can('cotizaciones.edit');

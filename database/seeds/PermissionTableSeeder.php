@@ -654,6 +654,32 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver el listado de conceptos de ajuste';
         $permission->save();
 
+        //PERMISOS PARA EL FORMULARIO DE CONCEPTO AJUSTES
+        $permission = new Permission();
+        $permission->name = 'Crear Concepto de Caja';
+        $permission->slug = 'conceptocaja.create';
+        $permission->description = 'Permite la creación de nuevos conceptos de caja en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Concepto de Caja';
+        $permission->slug = 'conceptocaja.destroy';
+        $permission->description = 'Permite la eliminación de Concepto de caja del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Concepto de Caja';
+        $permission->slug = 'conceptocaja.edit';
+        $permission->description = 'Permite modificar los valores de un Concepto de caja';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Concepto de Caja';
+        $permission->slug = 'conceptocaja.index';
+        $permission->description = 'Permite ver el listado de conceptos de caja';
+        $permission->save();
+
+
         //PERMISOS PARA EL FORMULARIO DE CLASIFICACION DE CLIENTES
         $permission = new Permission();
         $permission->name = 'Crear Clasificacion de Cliente';
@@ -766,9 +792,9 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver una Factura de Venta del sistema';
         $permission->save();
 
+       
 
-
-          //Ajustes - Inventarios
+        //Ajustes - Inventarios
           $permission = new Permission();
           $permission->name = 'Cargar Ajuste de inventario';
           $permission->slug = 'ajustesInventarios.create';
@@ -799,7 +825,7 @@ class PermissionTableSeeder extends Seeder
           $permission->slug = 'ajustesInventarios.show';
           $permission->description = 'Permite ver un ajuste de inventrio del sistema';
           $permission->save();
-  
+            
 
         //PERMISOS PARA EL FORMULARIO DE Tipo de Proveedor
         $permission = new Permission();
@@ -885,6 +911,37 @@ class PermissionTableSeeder extends Seeder
         $permission = new Permission();
         $permission->name = 'Ver Orden de Compra';
         $permission->slug = 'ordencompra.show';
+        $permission->description = 'Permite ver la Orden de Compra Cargada';
+        $permission->save();
+
+        //PERMISOS PARA EL FORMULARIO DE COMPRAS
+        $permission = new Permission();
+        $permission->name = 'Crear Compra';
+        $permission->slug = 'compra.create';
+        $permission->description = 'Permite registrar una orden de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Compra';
+        $permission->slug = 'compra.destroy';
+        $permission->description = 'Permite la eliminación de una orden de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Compra';
+        $permission->slug = 'compra.edit';
+        $permission->description = 'Permite modificar una orden de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Compras';
+        $permission->slug = 'compra.index';
+        $permission->description = 'Permite ver el listado de ordenes de compra';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Compra';
+        $permission->slug = 'compra.show';
         $permission->description = 'Permite ver la Orden de Compra Cargada';
         $permission->save();
     }
