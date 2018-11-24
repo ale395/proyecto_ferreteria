@@ -233,16 +233,16 @@
         
         if (valor != null) {
             var articulo_id = $("#select2-articulos" ).val();
-            var lista_precio_id = $("#select2-lista-precios" ).val();
-            $.ajax({
-              type: "GET",
-              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,
-              datatype: "json",
-              success: function(data){
-                $("#existencia" ).val(data.existencia).change();
-                $("#btn-add-articulo").attr("disabled", false);
-              }
-            });
+            {{--var lista_precio_id = $("#select2-lista-precios" ).val();--}}
+            {{--$.ajax({--}}
+              {{--type: "GET",--}}
+              {{--url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,--}}
+              {{--datatype: "json",--}}
+              {{--success: function(data){--}}
+                {{--$("#existencia" ).val(data.existencia).change();--}}
+                {{--$("#btn-add-articulo").attr("disabled", false);--}}
+              {{--}--}}
+            {{--});--}}
 
             $("#cantidad" ).val(1).change();
             $("#cantidad").focus();
