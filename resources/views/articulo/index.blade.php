@@ -167,7 +167,8 @@
                     $.ajax({
                         url : url,
                         type : "POST",
-                        data : $('#modal-form form').serialize(),
+                        //data : $('#modal-form form').serialize(),
+                        data : new FormData(this),
                         success : function($data) {
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
@@ -239,7 +240,8 @@
             $('#costo_promedio').val(data.costo_promedio);
             $('#porcentaje_ganancia').val(data.porcentaje_ganancia);
             $('#comentario').val(data.comentario);
-            $('#img_producto').val(data.img_producto);
+            //$('#img_producto').val(data.img_producto);
+            $('#img_producto_image').attr('src','{{ URL::to('/') }}/images/productos/'+data.img_producto);
             $("#select2-impuestos").select2("val", "");
             $('#select2-impuestos').val(data.impuesto_id).change();
             $("#select2-familias").select2("val", "");

@@ -18,7 +18,9 @@
                     </div>
                 <div class="col-md-12 text-center">
                     <h5></h5>
-                    <img src="{{ URL::to('/') }}/images/productos/default-img_producto.jpg" alt="..." class="center-block img-responsive" width="120" height="120">
+
+                    <img id="img_producto_image" src="{{ URL::to('/') }}/images/productos/default-img_producto.jpg" alt="..." class="center-block img-responsive" width="120" height="120">
+
                     <h5></h5>
                     <input type="file" name="img_producto" id="img_producto" class="form-control-file" accept=".jpg, .jpeg, .png" style="color: transparent;margin-left: 359px;">
                     <span id="label-img_producto">default-img_producto.jpg</span>
