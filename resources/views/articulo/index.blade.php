@@ -163,11 +163,29 @@
                     var id = $('#id').val();
                     if (save_method == 'add') url = "{{ url('articulos') }}";
                     else url = "{{ url('articulos') . '/' }}" + id;
+                    var data = new FormData();
 
+//Form data
+//var form_data = $('#modal-form form').serializeArray();
+//$.each(form_data, function (key, input) {
+  //  data.append(input.name, input.value);
+//});
+
+//File data
+//var file_data = $('input[name="img_producto"]')[0].files;
+//for (var i = 0; i < file_data.length; i++) {
+ //   data.append("my_imageimg_productos[]", file_data[i]);
+//}
                     $.ajax({
                         url : url,
+
+                        //type: $(this).attr("method"),
+                        dataType: "JSON",
+                        //data: new FormData('form'),
+                        processData: false,
+                        contentType: false,
                         type : "POST",
-                        data : $('#modal-form form').serialize(),
+                        data : $('#modal-form form'),
                         success : function($data) {
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
