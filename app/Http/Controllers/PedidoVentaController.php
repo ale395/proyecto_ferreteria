@@ -272,15 +272,22 @@ class PedidoVentaController extends Controller
 
         /*PROBANDO CON DB*/
         $pedidos = DB::table('pedidos_ventas_det')
-            ->select('articulo_id', 'precio_unitario', 'porcentaje_descuento', 'porcentaje_iva', 
-            DB::raw('SUM(cantidad) as cantidad'), 
-            DB::raw('SUM(monto_descuento) as monto_descuento'),
-            DB::raw('AVG(monto_exenta) as monto_exenta'),
-            DB::raw('AVG(monto_gravada) as monto_gravada'),
-            DB::raw('AVG(monto_iva) as monto_iva'),
-            DB::raw('AVG(monto_total) as monto_total'))
-            ->whereIn('pedido_cab_id', $cast_array)
-            ->groupBy('articulo_id', 'precio_unitario', 'porcentaje_descuento', 'porcentaje_iva')
+            ->join('pedidos_ventas_cab', 'pedidos_ventas_det.pedido_cab_id', '=', 'pedidos_ventas_cab.id')
+            ->leftJoin('existencia_articulos', 'pedidos_ventas_det.articulo_id', '=', 'existencia_articulos.articulo_id')
+            ->select('pedidos_ventas_det.articulo_id', 'pedidos_ventas_det.porcentaje_iva', 
+            DB::raw('ROUND(AVG(existencia_articulos.cantidad), 2) as cantidad_existencia'),
+            DB::raw('ROUND(MIN(pedidos_ventas_det.precio_unitario), 2) as precio_unitario'),
+            DB::raw('ROUND(MAX(pedidos_ventas_det.porcentaje_descuento), 2) as porcentaje_descuento'),
+            DB::raw('ROUND(SUM(pedidos_ventas_det.cantidad), 2) as cantidad'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_descuento), 2) as monto_descuento'), 
+            DB::raw('ROUND(AVG(pedidos_ventas_det.monto_exenta), 2) as monto_exenta'), 
+            DB::raw('ROUND(AVG(pedidos_ventas_det.monto_gravada), 2) as monto_gravada'), 
+            DB::raw('ROUND(AVG(pedidos_ventas_det.monto_iva), 2) as monto_iva'), 
+            DB::raw('ROUND(AVG(pedidos_ventas_det.monto_total), 2) as monto_total'))
+            ->whereIn('pedidos_ventas_det.pedido_cab_id', $cast_array)
+            ->where('pedidos_ventas_cab.estado', 'P')
+            ->where('existencia_articulos.sucursal_id', Auth::user()->empleado->sucursalDefault->getId())
+            ->groupBy('pedidos_ventas_det.articulo_id', 'pedidos_ventas_det.porcentaje_iva', 'existencia_articulos.cantidad')
             ->get();
         return $pedidos;
     }

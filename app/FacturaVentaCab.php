@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FacturaVentaCab extends Model
 {
-    CONST MAX_LINEAS_DETALLE = 3;
+    CONST MAX_LINEAS_DETALLE = 10;
 
     protected $table = 'facturas_ventas_cab';
 

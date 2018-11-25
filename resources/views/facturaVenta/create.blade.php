@@ -467,20 +467,32 @@
         for (i = 0; i < datos.length; i++) {
             array_pedidos.push(datos[i].id);
         }
-        console.log(array_pedidos);
+        //console.log(array_pedidos);
         if (array_pedidos.length > 0) {
             $.ajax({
                 type: "GET",
                 url: "/api/pedidos/detalles/"+array_pedidos,
-                //url: '{{ route('api.pedidos.detalles', serialize('array_pedidos'))}}',
                 datatype: "json",
                 success: function(data){
                     console.log(data);
-                    /*$("#existencia" ).val(data.existencia).change();
-                    $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
-                    $("#precio_unitario" ).val(data.precio).change();
-                    $("#porcentaje_descuento" ).val(0).change();
-                    $("#btn-add-articulo").attr("disabled", false);*/
+                    if(data.length > 10){
+                        var obj = $.alert({
+                            title: 'Atención',
+                            content: 'Los pedidos seleccionados superan la cantidad de lineas de detalles permitidos en una factura!',
+                            icon: 'fa fa-exclamation-triangle',
+                            type: 'orange',
+                            backgroundDismiss: true,
+                            theme: 'modern',
+                        });
+                        setTimeout(function(){
+                            obj.close();
+                        },3000);
+                    } else{
+                        for (i = 0; i < data.length; i++) {
+                            console.log(data[i]);
+                            //INSERTAR EN LAS TABLAS DE DETALLES
+                        }
+                    }
                 }
             });
         }
