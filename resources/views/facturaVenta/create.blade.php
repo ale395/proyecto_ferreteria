@@ -84,6 +84,7 @@
                         <div class="col-md-1">
                             <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
+                        <input type="text" id="pedidos_id" class="hidden" name="pedidos_id" value="{{old('pedidos_id')}}">
                     </div>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
@@ -459,44 +460,6 @@
             $('.modal-title').text('Lista de Pedidos');
         }
     }
-
-    function cargarPedidos(){
-        var datos = tablePedidos.rows( { selected: true } ).data();
-        var i;
-        var array_pedidos = [];
-        for (i = 0; i < datos.length; i++) {
-            array_pedidos.push(datos[i].id);
-        }
-        //console.log(array_pedidos);
-        if (array_pedidos.length > 0) {
-            $.ajax({
-                type: "GET",
-                url: "/api/pedidos/detalles/"+array_pedidos,
-                datatype: "json",
-                success: function(data){
-                    console.log(data);
-                    if(data.length > 10){
-                        var obj = $.alert({
-                            title: 'Atención',
-                            content: 'Los pedidos seleccionados superan la cantidad de lineas de detalles permitidos en una factura!',
-                            icon: 'fa fa-exclamation-triangle',
-                            type: 'orange',
-                            backgroundDismiss: true,
-                            theme: 'modern',
-                        });
-                        setTimeout(function(){
-                            obj.close();
-                        },3000);
-                    } else{
-                        for (i = 0; i < data.length; i++) {
-                            console.log(data[i]);
-                            //INSERTAR EN LAS TABLAS DE DETALLES
-                        }
-                    }
-                }
-            });
-        }
-    }
     
     var table = $('#pedido-detalle').DataTable({
         "paging":   false,
@@ -574,7 +537,7 @@
         var cantidad = $("#cantidad" ).val();
         var precio_unitario = $("#precio_unitario" ).val();
         var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-        cantidad = cantidad.replace(".", "");
+        cantidad = cantidad.replace(",", ".");
         precio_unitario = precio_unitario.replace(".", "");
         var calculo = cantidad * (precio_unitario - (precio_unitario * (porcentaje_descuento/100)));
         if($("#cantidad" ).val().length != 0 && $("#precio_unitario" ).val().length != 0){
@@ -590,6 +553,7 @@
 
         /*Se obtienen los valores de los campos correspondientes*/
         var cantidad = $("#cantidad").val();
+        cantidad = cantidad.replace(",", ".");
         var existencia = $("#existencia").val();
         console.log('Antes de add: '+articulos_detalle);
         
@@ -637,11 +601,12 @@
                 exenta = subtotal;
             } else {
                 gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
-                iva = Math.round(gravada*(porcentaje_iva/100));
+                //iva = Math.round(gravada*(porcentaje_iva/100));
+                iva = subtotal - gravada;
             }
             /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
             precio_unitario = $.number(precio_unitario,decimales, ',', '.');
-            cantidad = $.number(cantidad,decimales, ',', '.');
+            cantidad = $.number(cantidad, 2, ',', '.');
             monto_descuento = $.number(monto_descuento,decimales, ',', '.');
             exenta = $.number(exenta,decimales, ',', '.');
             gravada = $.number(gravada,decimales, ',', '.');
@@ -691,6 +656,78 @@
             .draw();
         $("#tab-hidden tr:eq("+row+")").remove();
     } );
+
+    function cargarPedidos(){
+        var datos = tablePedidos.rows( { selected: true } ).data();
+        var i;
+        var array_pedidos = [];
+        for (i = 0; i < datos.length; i++) {
+            array_pedidos.push(datos[i].id);
+        }
+        if (array_pedidos.length > 0) {
+            $.ajax({
+                type: "GET",
+                url: "/api/pedidos/detalles/"+array_pedidos,
+                datatype: "json",
+                success: function(data){
+                    console.log(data);
+                    if(data.length > 10){
+                        var obj = $.alert({
+                            title: 'Atención',
+                            content: 'Los pedidos seleccionados superan la cantidad de lineas de detalles permitidos en una factura!',
+                            icon: 'fa fa-exclamation-triangle',
+                            type: 'orange',
+                            backgroundDismiss: true,
+                            theme: 'modern',
+                        });
+                        setTimeout(function(){
+                            obj.close();
+                        },3000);
+                    } else{
+                        document.getElementById("pedidos_id").value = array_pedidos;
+                        for (i = 0; i < data.length; i++) {
+                            //console.log(data[i]);
+                            //INSERTAR EN LAS TABLAS DE DETALLES
+                            var articulo = '('+data[i].codigo+') '+data[i].descripcion;
+                            var precio_unitario = data[i].precio_unitario;
+                            var cantidad = data[i].cantidad;
+                            var monto_descuento = data[i].monto_descuento;
+                            var porcentaje_iva = Number(data[i].porcentaje_iva);
+                            var porcentaje_descuento = Number(data[i].porcentaje_descuento);
+                            var exenta = 0;
+                            var gravada = 0;
+                            var iva = 0;
+                            var subtotal = (precio_unitario *  cantidad) - monto_descuento;
+                            if (porcentaje_iva == 0) {
+                                exenta = subtotal;
+                            } else {
+                                gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
+                                iva = Math.round(gravada*(porcentaje_iva/100));
+                            }
+                            cantidad = $.number(cantidad, 2, ',', '.');
+                            precio_unitario = $.number(precio_unitario, 0, ',', '.');
+                            monto_descuento = $.number(monto_descuento, 0, ',', '.');
+                            var tabla_deta = $("#pedido-detalle").DataTable();
+                            tabla_deta.row.add( [
+                                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+                                articulo,
+                                $.number(data[i].cantidad, 2, ',', '.'),
+                                $.number(data[i].precio_unitario, 0, ',', '.'),
+                                $.number(data[i].monto_descuento, 0, ',', '.'),
+                                $.number(exenta, 0, ',', '.'),
+                                $.number(gravada, 0, ',', '.'),
+                                $.number(iva, 0, ',', '.'),
+                                $.number(subtotal, 0, ',', '.')
+                            ]).draw( false );
+
+                            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + data[i].articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+                            $("#tab-hidden").append(markup);
+                        }
+                    }
+                }
+            });
+        }
+    }
 
 </script>
 <script type="text/javascript">

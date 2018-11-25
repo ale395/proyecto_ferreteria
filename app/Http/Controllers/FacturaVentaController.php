@@ -8,6 +8,7 @@ use App\Empresa;
 use App\Cliente;
 use App\DatosDefault;
 use App\CuentaCliente;
+use App\PedidoVentaCab;
 use App\FacturaVentaCab;
 use App\FacturaVentaDet;
 use App\ExistenciaArticulo;
@@ -59,13 +60,15 @@ class FacturaVentaController extends Controller
      */
     public function store(Request $request)
     {
-        //return $request;
         $sucursal = Auth::user()->empleado->sucursalDefault;
         $usuario = Auth::user();
         $cabecera = new FacturaVentaCab();
         $total = 0;
-        
-
+        $array_pedidos = [];
+        if ($request['pedidos_id'] != null) {
+            $array_pedidos = explode(",",($request['pedidos_id']));
+        }
+        //dd(count($array_pedidos));
         //Implementar que cuando el cliente se deja en blanco, se busque al registro de cliente ocasional para poder guardarlo
 
         if (!empty('sucursal')) {
@@ -135,7 +138,8 @@ class FacturaVentaController extends Controller
             $detalle = new FacturaVentaDet;
             $detalle->setFacturaCabeceraId($cabecera->getId());
             $detalle->setArticuloId($request['tab_articulo_id'][$i]);
-            $detalle->setCantidad(str_replace('.', '', $request['tab_cantidad'][$i]));
+            
+            $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
             $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_precio_unitario'][$i]));
             $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
             $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
@@ -152,6 +156,14 @@ class FacturaVentaController extends Controller
                     ->where('sucursal_id', $sucursal->getId())->first();
                 $existencia->actualizaStock('-', $detalle->getCantidad());
                 $existencia->update();
+            }
+        }
+
+        if (count($array_pedidos) > 0) {
+            foreach ($array_pedidos as $nro_pedido) {
+                $pedido_cab = PedidoVentaCab::findOrFail($nro_pedido);
+                $pedido_cab->setEstado('F');
+                $pedido_cab->update();
             }
         }
 
