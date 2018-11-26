@@ -89,9 +89,27 @@ class DefaultSeeder extends Seeder
         $conceptoajuste = new ConceptoAjuste();
         $conceptoajuste->num_concepto = '001';
         $conceptoajuste->descripcion = 'DEVOLUCION';
+        $conceptoajuste->signo = '+';
+        $conceptoajuste->save();
+
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '002';
+        $conceptoajuste->descripcion = 'CONTEO MANUAL';
         $conceptoajuste->signo = '-';
         $conceptoajuste->save();
 
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '003';
+        $conceptoajuste->descripcion = 'TRANSLADO';
+        $conceptoajuste->signo = '-';
+        $conceptoajuste->save();
+
+
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '004';
+        $conceptoajuste->descripcion = 'AVERIA';
+        $conceptoajuste->signo = '-';
+        $conceptoajuste->save();
         //tipo proveedor 
         $tipoproveedor = new TipoProveedor();
         $tipoproveedor->codigo = '001';

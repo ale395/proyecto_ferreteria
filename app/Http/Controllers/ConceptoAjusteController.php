@@ -96,7 +96,7 @@ class ConceptoAjusteController extends Controller
         return ConceptoAjuste::destroy($id);
     }
 
-    public function apiConceptoAjusteBuscador(Request $request){
+    public function apiConceptosAjustesBuscador(Request $request){
         $conceptos_ajustes_array = [];
 
         if($request->has('q')){
