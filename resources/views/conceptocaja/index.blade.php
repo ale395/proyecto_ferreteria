@@ -29,7 +29,7 @@
             </div>
         </div>
 
-    @include('conceptoajuste.form')
+    @include('conceptocaja.form')
 @endsection
 
 @section('ajax_datatables')

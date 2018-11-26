@@ -59,7 +59,88 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        try {
+            $sucursal = Auth::user()->empleado->sucursalDefault;
+            $usuario = Auth::user();
+            $cabecera = new ComprasCab();
+            $total = 0;
+            
+            //dd(count($array_pedidos));
+            //Implementar que cuando el cliente se deja en blanco, se busque al registro de cliente ocasional para poder guardarlo
+    
+            if (!empty('sucursal')) {
+                $request['sucursal_id'] = $sucursal->getId();
+            }
+            
+            $proveedor = proveedor::findOrFail($request['proveedor_id']);
+            
+            /*if ($validator->fails())
+            {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }*/
+    
+            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+                $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
+            }
+    
+            $cabecera->setTipoFactura($request['tipo_factura']);
+            $cabecera->setNroFactura($request['nro_factura']);
+            $cabecera->setClienteId($request['cliente_id']);
+            $cabecera->setSucursalId($request['sucursal_id']);
+            $cabecera->setMonedaId($request['moneda_id']);
+            $cabecera->setListaPrecioId($request['lista_precio_id']);
+            $cabecera->setValorCambio($request['valor_cambio']);
+            $cabecera->setFechaEmision($request['fecha_emision']);
+            $cabecera->setComentario($request['comentario']);
+            $cabecera->setMontoTotal($total);
+            $cabecera->setUsuarioId($usuario->id);
+    
+            $cabecera->save();
+    
+            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+                $detalle = new ComprasDet();
+                $detalle->setFacturaCabeceraId($cabecera->getId());
+                $detalle->setArticuloId($request['tab_articulo_id'][$i]);
+                
+                $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
+                $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
+                $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
+                $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
+                $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
+                $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
+                $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
+                $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
+                $detalle->save();
+    
+                if ($detalle->articulo->getControlExistencia() == true) {
+                    //Actualizacion de existencia
+                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
+                        ->where('sucursal_id', $sucursal->getId())->first();
+                    $existencia->actualizaStock('+', $detalle->getCantidad());
+                    $existencia->update();
+                }
+            }
+  
+
+            //Actualizacion de saldo cliente
+            $cuenta = new CuentaCliente;
+            $cuenta->setTipoComprobante('F');
+            $cuenta->setComprobanteId($cabecera->getId());
+            $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
+            $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
+            $cuenta->save();
+    
+            $cliente->setMontoSaldo($cliente->getMontoSaldo()+str_replace('.', '', $cabecera->getMontoTotal()));
+            $cliente->update();
+    
+            return redirect()->route('facturacionVentas.show', ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
+        }
+        catch (\Exception $e) {
+
+        }
+  
     }
 
     /**

@@ -35,7 +35,7 @@ class CompraRequest extends FormRequest
             case 'POST':
             {
                 return [
-                    'nro_factura'=>'required', 
+                    'nro_factura'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado', 
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
@@ -47,7 +47,7 @@ class CompraRequest extends FormRequest
             case 'PUT':
             {
                 return [
-                    'nro_factura'=>'required|unique:compras_cab,nro_factura,'.$this->id, 
+                    'nro_factura'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado,'.$this->id, 
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
@@ -59,7 +59,7 @@ class CompraRequest extends FormRequest
             case 'PATCH':
             {
                 return [
-                    'nro_orden'=>'required|unique:compras_cab,nro_factura,'.$this->id, 
+                    'nro_orden'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado,'.$this->id, 
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
