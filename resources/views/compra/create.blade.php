@@ -324,7 +324,10 @@
                 datatype: "json",
                 //async: false,
                 success: function(data){
-                    $("#costo_unitario" ).val(data).change();
+                    $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
+                    $("#costo_unitario" ).val(data).change();                    
+                    $("#porcentaje_descuento" ).val(0).change();
+                    $("#btn-add-articulo").attr("disabled", false);
                 }
             });
 
