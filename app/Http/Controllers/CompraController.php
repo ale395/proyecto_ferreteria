@@ -46,6 +46,7 @@ class CompraController extends Controller
         $cotizacion = Cotizacion::where('moneda_id','=', $moneda->id)
         ->orderBy('fecha_cotizacion', 'desc')
         ->first();
+        // $cotizacion;
         $proveedores = Proveedor::where('activo', true)->get();
         $cambio = $cotizacion->getValorVenta();
         return view('compra.create', compact('fecha_actual', 'moneda', 'cambio', 'proveedores'));
