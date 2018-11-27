@@ -258,10 +258,14 @@ class ArticuloController extends Controller
     }
 
     public function apiArticulosCosto($articulo_id){
+
         if (!empty($articulo_id)) {
-            $articulo = Articulo::findOrFail($articulo_id)->first();
+            $articulo = collect(Articulo::findOrFail($articulo_id));
+            $articulo_obj = Articulo::findOrFail($articulo_id);
+            //$articulo = Articulo::findOrFail($articulo_id)->first();
             //$ultimo_costo = $articulo->ultimo_costo;    
-          
+            
+            $articulo->put('iva', $articulo_obj->impuesto);
             return $articulo;
         };
     }

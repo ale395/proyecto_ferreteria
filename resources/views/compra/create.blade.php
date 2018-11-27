@@ -71,7 +71,7 @@
                         </div>
                         -->
                         <label for="timbrado" class="col-md-3 control-label">Timbrado</label>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('nro_factura')}}" >  
                         </div>
                     </div>
@@ -131,7 +131,7 @@
                                     <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                                 </div>
                                 <div class="col-md-2">
-                                    <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()" readonly></a>
+                                    <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()"></a>
                                 </div>
                                 <div class="col-md-1">
                                     <a data-toggle="tooltip" data-placement="top" title="% Descuento">
@@ -325,7 +325,7 @@
                 //async: false,
                 success: function(data){
                     $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
-                    $("#costo_unitario" ).val(data).change();                    
+                    $("#costo_unitario" ).val(data.ultimo_costo).change();                    
                     $("#porcentaje_descuento" ).val(0).change();
                     $("#btn-add-articulo").attr("disabled", false);
                 }
@@ -360,7 +360,9 @@
         var costo_unitario = $("#costo_unitario" ).val();
         var porcentaje_descuento = $("#porcentaje_descuento" ).val();
         cantidad = cantidad.replace(".", "");
+        //cantidad = cantidad.replace(",", ".");
         costo_unitario = costo_unitario.replace(".", "");
+        //costo_unitario = costo_unitario.replace(".", ",");
         var calculo = cantidad * (costo_unitario - (costo_unitario * (porcentaje_descuento/100)));
         if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
             $("#subtotal" ).val(calculo).change();

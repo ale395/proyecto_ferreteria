@@ -144,15 +144,13 @@ class CompraController extends Controller
             //Deshacemos la transaccion
             DB::rollback();
             //volvemos para atras y retornamos un mensaje de error
-            //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
-            return back()->withErrors( $e->getMessage() )->withInput();
+            return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
+            //return back()->withErrors( $e->getMessage() )->withInput();
             //return back()->withErrors( $e->getTraceAsString() )->withInput();
 
         }
 
-        return redirect()->route('facturacionVentas.show', 
-                                ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
-  
+        return redirect(route('compra.create'))->with('status', 'Datos guardados correctamente!');
     }
 
     /**
