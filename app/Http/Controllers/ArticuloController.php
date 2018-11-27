@@ -263,7 +263,7 @@ class ArticuloController extends Controller
             //$ultimo_costo = $articulo->ultimo_costo;
     
           
-            return $articulo->ultimo_costo;
+            return number_format($articulo->ultimo_costo, 0, ',', '.');
         };
     }
 

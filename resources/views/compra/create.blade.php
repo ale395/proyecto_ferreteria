@@ -57,19 +57,23 @@
                         </div>
                         <label for="nro_factura" class="col-md-2 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="text" id="nro_factura" name="nro_factura" class="form-control text-right" readonly="readonly" value="{{old('nro_factura')}}" >  
+                            <input type="text" id="nro_factura" name="nro_factura" class="form-control text-right" value="{{old('nro_factura')}}" >  
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
-                        </div>
+                        </div>                        
                         <!--
                         <div class="col-md-1">
                             <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
                         -->
+                        <label for="timbrado" class="col-md-3 control-label">Timbrado</label>
+                        <div class="col-md-3">
+                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('nro_factura')}}" >  
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Proveedor *</label>
@@ -77,8 +81,8 @@
                             <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
                                 @if ($errors->any())
                                     @foreach($proveedores as $proveedor)
-                                        @if(old('proveedor_id') == $proveedor->getId())
-                                            <option value="{{old('cliente_id')}}" selected>{{$proveedor->getNombreSelect()}}</option>
+                                        @if(old('proveedor_id') == $proveedor->id)
+                                            <option value="{{old('proveedor_id')}}" selected>{{$proveedor->getNombreSelect()}}</option>
                                         @endif
                                     @endforeach
                                 @endif
@@ -88,7 +92,7 @@
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
-                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%" onchange="setValorCambio()>
+                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%" onchange="setValorCambio()">
                                 <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
                             </select>
                         </div>
@@ -126,7 +130,6 @@
                                 <div class="col-md-1">
                                     <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                                 </div>
-                                <input type="hidden" id="existencia" name="existencia">
                                 <div class="col-md-2">
                                     <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()" readonly></a>
                                 </div>
@@ -336,11 +339,11 @@
     });
 
     //Función para recuperar el valor de cambio al cambiar de moneda (?)
-    function setCantidadCosto() {
-        var articulo_id = $("#select2-articulos" ).val();
+    function setValorCambio() {
+        var moneda_id = $("#select2-monedas" ).val();
         $.ajax({
           type: "GET",
-          url: "{{ url('api/cotizaciones') }}" + '/venta/' + articulo_id,
+          url: "{{ url('api/cotizaciones') }}" + '/venta/' + moneda_id,
           datatype: "json",
           //async: false,
           success: function(data){

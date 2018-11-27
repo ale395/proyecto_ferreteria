@@ -36,6 +36,7 @@ class CompraRequest extends FormRequest
             {
                 return [
                     'nro_factura'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado', 
+                    'timbrado'=>'required', 
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
@@ -48,6 +49,7 @@ class CompraRequest extends FormRequest
             {
                 return [
                     'nro_factura'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado,'.$this->id, 
+                    'timbrado'=>'required',
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
@@ -59,7 +61,8 @@ class CompraRequest extends FormRequest
             case 'PATCH':
             {
                 return [
-                    'nro_orden'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado,'.$this->id, 
+                    'nro_factura'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado,'.$this->id, 
+                    'timbrado'=>'required',
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
@@ -76,8 +79,9 @@ class CompraRequest extends FormRequest
     public function messages()
     {
         return [
-            'nro_orden.required' => 'El :attribute es obligatorio.',
-            'nro_orden.unique' => 'el número de Orden ya existe.',
+            'nro_factura.required' => 'Ingrese el número del comprobante.',
+            'nro_factura.unique' => 'Comprobante ya existe.',
+            'timbrado.required' => 'Ingrese el timbrado',
             'proveedor_id.required' => 'Ingrese el proveedor.',
             'costo_unitario.required' => 'El artículo no tiene costo',
             'moneda.required' => 'Debe seleccionar una moneda.',

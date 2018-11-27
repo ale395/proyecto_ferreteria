@@ -16,6 +16,10 @@ class Proveedor extends Model
         return $this->activo;
     }
 
+    public function getId(){
+        return $this->id;
+    }
+
     public function setActivo($activo){
         $this->activo = $activo;
     }

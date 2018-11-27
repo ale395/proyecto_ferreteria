@@ -46,9 +46,9 @@ class CompraController extends Controller
         $cotizacion = Cotizacion::where('moneda_id','=', $moneda->id)
         ->orderBy('fecha_cotizacion', 'desc')
         ->first();
-        
+        $proveedores = Proveedor::where('activo', true)->get();
         $cambio = $cotizacion->getValorVenta();
-        return view('compra.create', compact('fecha_actual', 'moneda', 'cambio'));
+        return view('compra.create', compact('fecha_actual', 'moneda', 'cambio', 'proveedores'));
     }
 
     /**
@@ -57,19 +57,19 @@ class CompraController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CompraRequest $request)
     {
 
         try {
+
+            DB::beginTransaction();
+
             $sucursal = Auth::user()->empleado->sucursalDefault;
             $usuario = Auth::user();
             $cabecera = new ComprasCab();
             $total = 0;
             
-            //dd(count($array_pedidos));
-            //Implementar que cuando el cliente se deja en blanco, se busque al registro de cliente ocasional para poder guardarlo
-    
-            if (!empty('sucursal')) {
+           if (!empty('sucursal')) {
                 $request['sucursal_id'] = $sucursal->getId();
             }
             
@@ -86,7 +86,8 @@ class CompraController extends Controller
     
             $cabecera->setTipoFactura($request['tipo_factura']);
             $cabecera->setNroFactura($request['nro_factura']);
-            $cabecera->setClienteId($request['cliente_id']);
+            $cabecera->setClienteId($request['proveedor_id']);
+            $cabecera->setTimbrado($request['timbrado']);
             $cabecera->setSucursalId($request['sucursal_id']);
             $cabecera->setMonedaId($request['moneda_id']);
             $cabecera->setListaPrecioId($request['lista_precio_id']);
@@ -124,7 +125,7 @@ class CompraController extends Controller
             }
   
 
-            //Actualizacion de saldo cliente
+            //Actualizacion de saldo proveedor
             $cuenta = new CuentaCliente;
             $cuenta->setTipoComprobante('F');
             $cuenta->setComprobanteId($cabecera->getId());
@@ -132,14 +133,25 @@ class CompraController extends Controller
             $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
             $cuenta->save();
     
-            $cliente->setMontoSaldo($cliente->getMontoSaldo()+str_replace('.', '', $cabecera->getMontoTotal()));
-            $cliente->update();
+            $proveedor->setMontoSaldo($proveedor->getMontoSaldo()+str_replace('.', '', $cabecera->getMontoTotal()));
+            $proveedor->update();
     
-            return redirect()->route('facturacionVentas.show', ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
+            DB::commit();
+            
         }
         catch (\Exception $e) {
+                        //$error = $e->getMessage();
+            //Deshacemos la transaccion
+            DB::rollback();
+            //volvemos para atras y retornamos un mensaje de error
+            //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
+            return back()->withErrors( $e->getMessage() )->withInput();
+            //return back()->withErrors( $e->getTraceAsString() )->withInput();
 
         }
+
+        return redirect()->route('facturacionVentas.show', 
+                                ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
   
     }
 
@@ -234,8 +246,8 @@ class CompraController extends Controller
                     ->addColumn('fecha', function($compras){
                         return $compras->getFechaEmision();
                     })
-                    ->addColumn('cliente', function($compras){
-                        return $compras->cliente->getNombreIndex();
+                    ->addColumn('proveedor', function($compras){
+                        return $compras->proveedor->getNombreIndex();
                     })
                     ->addColumn('moneda', function($compras){
                         return $compras->moneda->getDescripcion();
@@ -263,8 +275,8 @@ class CompraController extends Controller
                     ->addColumn('fecha', function($compras){
                         return $compras->getFechaEmision();
                     })
-                    ->addColumn('cliente', function($compras){
-                        return $compras->cliente->getNombreIndex();
+                    ->addColumn('proveedor', function($compras){
+                        return $compras->proveedor->getNombreIndex();
                     })
                     ->addColumn('moneda', function($compras){
                         return $compras->moneda->getDescripcion();
@@ -285,8 +297,8 @@ class CompraController extends Controller
                     ->addColumn('fecha', function($compras){
                         return $compras->getFechaEmision();
                     })
-                    ->addColumn('cliente', function($compras){
-                        return $compras->cliente->getNombreIndex();
+                    ->addColumn('proveedor', function($compras){
+                        return $compras->proveedor->getNombreIndex();
                     })
                     ->addColumn('moneda', function($compras){
                         return $compras->moneda->getDescripcion();
