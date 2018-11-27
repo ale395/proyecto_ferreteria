@@ -8,6 +8,7 @@ use App\Empresa;
 use App\Cliente;
 use App\DatosDefault;
 use App\CuentaCliente;
+use App\PedidoFactura;
 use App\PedidoVentaCab;
 use App\FacturaVentaCab;
 use App\FacturaVentaDet;
@@ -164,6 +165,11 @@ class FacturaVentaController extends Controller
                 $pedido_cab = PedidoVentaCab::findOrFail($nro_pedido);
                 $pedido_cab->setEstado('F');
                 $pedido_cab->update();
+
+                $pedido_factura = new PedidoFactura;
+                $pedido_factura->setPedidoId($pedido_cab->getId());
+                $pedido_factura->setFacturaId($cabecera->getId());
+                $pedido_factura->save();
             }
         }
 
