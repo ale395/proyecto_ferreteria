@@ -55,18 +55,22 @@
                                 @endif
                             </div>
                         </div>
-                        <label for="serie_id" class="col-md-1 control-label">Serie*</label>
+                        <label for="nro_fact_exte" class="col-md-2 control-label">Número de Factura</label>
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Serie">
+                            <input type="text" id="nro_fact_exte" name="nro_fact_exte" class="form-control text-right" readonly="readonly" value="{{old('nro_fact_exte', $nro_fact_exte)}}">
+                        </div>
+                        <!--<label for="serie_id" class="col-md-1 control-label">Serie*</label>
+                        <div class="col-md-2">-->
+                            <a class="hidden" data-toggle="tooltip" data-placement="top" title="Serie">
                                 <select id="select2-series" name="serie_id" class="form-control" style="width: 100%">
                                     <option value="{{$serie->getId()}}">{{$serie_factura}}</option>
                                 </select>
                             </a>
-                        </div>
+                        <!--</div>
                         <label for="nro_factura" class="col-md-2 control-label">Número</label>
-                        <div class="col-md-2">
-                            <input type="number" id="nro_factura" name="nro_factura" class="form-control text-right" readonly="readonly" value="{{old('nro_factura', $nro_factura)}}">
-                        </div>
+                        <div class="col-md-2">-->
+                            <input type="number" id="nro_factura" name="nro_factura" class="form-control text-right hidden" readonly="readonly" value="{{old('nro_factura', $nro_factura)}}">
+                        <!--</div>-->
                     </div>
                     <div class="form-group">
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
@@ -722,6 +726,8 @@
 
                             var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + data[i].articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
                             $("#tab-hidden").append(markup);
+
+                            $('#modal-pedido-venta').modal('hide');
                         }
                     }
                 }

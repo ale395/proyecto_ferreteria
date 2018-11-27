@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class PedidoFactura extends Model
 {
     protected $table = 'pedidos_facturas';
+    public $timestamps = false;
+    protected $primaryKey = null;
+	public $incrementing = false;
 
     public function setPedidoId($pedido_id){
     	$this->pedido_cabecera_id = $pedido_id;
@@ -18,11 +21,11 @@ class PedidoFactura extends Model
 
     public function pedido()
     {
-        return $this->belongsTo('App\PedidoVentaCab');
+        return $this->hasOne('App\PedidoVentaCab', 'id', 'pedido_cabecera_id');
     }
 
     public function factura()
     {
-        return $this->belongsTo('App\FacturaVentaCab');
+        return $this->hasOne('App\FacturaVentaCab', 'id', 'factura_cabecera_id');
     }
 }
