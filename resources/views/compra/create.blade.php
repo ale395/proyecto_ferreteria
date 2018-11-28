@@ -236,7 +236,7 @@
                                 <div class="form-group">
                                     <br>
                                     <label for="lista_costo_id" class="col-md-1 control-label">Forma de Pago</label>
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
                                         <select id="select2-forma-pago" name="forma_pago_id" class="form-control" style="width: 100%" >
 
                                         </select>
@@ -632,6 +632,29 @@
                 cache: true
             }
         });
+        $('#select2-forma-pago').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            minimumInputLength: 3,
+            ajax: {
+                url: "{{ route('api.formasPagos.compras') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
         $('#select2-monedas').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
@@ -658,11 +681,7 @@
      
     });
 
-    $("#removeTabs").click(function() {
-        var tabIndex = parseInt($("#indexValue").val(), 10);
-        var tab = $( "#demoTabs" ).find(".ui-tabs-nav li:eq(" + tabIndex + ")").disable();
-         $("#demoTabs").tabs("refresh");
-    });         
+    
 
     /*JS para el DatePicker de fecha_emision*/
     $(function() {

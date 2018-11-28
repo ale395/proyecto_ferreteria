@@ -132,6 +132,25 @@ class FormaPagoController extends Controller
         return FormaPago::destroy($id);
     }
 
+    public function apiFormasPagosCompras(Request $request){
+        $articulos_array = [];
+
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $formaspagos = FormaPago::where('descripcion', 'ilike', "%$search%")
+                ->orWhere('codigo', 'ilike', "%$search%")
+                ->get();
+        } else {
+            $formaspagos = FormaPago::all();
+        }
+
+        foreach ($formaspagos as $formapago) {
+            $formaspagos_array[] = array('id'=> $formapago->getId(), 'text'=> $formapago->getNombreSelect());
+        }
+
+        return json_encode($formaspagos_array);
+    }
+
     public function apiFormasPagos()
     {
         $permiso_editar = Auth::user()->can('formasPagos.edit');

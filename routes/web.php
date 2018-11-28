@@ -85,7 +85,8 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA FORMAS DE PAGO
 	Route::resource('formasPagos', 'FormaPagoController', ['parameters'=>['formasPagos'=>'formaPago']]);
 	Route::get('api/formasPagos', 'FormaPagoController@apiFormasPagos')->name('api.formasPagos');
-	
+	Route::get('api/formasPagos/compras', 'FormaPagoController@apiFormasPagosCompras')->name('api.formasPagos.compras');
+
 	//RUTAS PARA NUMERACION DE SERIES
 	Route::resource('seriesVendedores', 'SerieVendedorController');
 	Route::get('api/seriesVendedores', 'SerieVendedorController@apiSeriesVendedores')->name('api.seriesVendedores');
