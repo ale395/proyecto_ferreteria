@@ -255,40 +255,57 @@
                                         <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
                                     </div>
                                     <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
+                                     -->
                                     <div class="col-md-1">
-                                        <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                        <a id="btn-add-forma-pago" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir forma de pago" onclick="addFormaPago()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                                     </div>
-                                    -->
+
                                 </div>
                                 <span class="help-block with-errors"></span>
                     
-                                <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
+                                <table id="forma-pago-detalle" class="table table-striped table-responsive display" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th width="5%">Acción</th>
-                                            <th>Artículo</th>
-                                            <th width="6%">Cant.</th>
+                                            <th>Forma de Pago</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th width="6%">Importe</th>
+                                            <!--    
                                             <th width="9%">Costo U.</th>
                                             <th width="9%">Descuento</th>
                                             <th width="9%">Exenta</th>
                                             <th width="9%">Gravada</th>
                                             <th width="6%">IVA</th>
                                             <th width="9%">Total</th>
+                                            -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @if ($errors->any())
-                                            @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
+                                            @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
                                                 <tr>
                                                     <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
-                                                    <td>{{old('tab_articulo_nombre.'.$i)}}</td>
-                                                    <td>{{old('tab_cantidad.'.$i)}}</td>
+                                                    <td>{{old('tab_forma_pago_nombre.'.$i)}}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>{{old('tab_importe.'.$i)}}</td>
+                                                    <!--
                                                     <td>{{old('tab_costo_unitario.'.$i)}}</td>
                                                     <td>{{old('tab_monto_descuento.'.$i)}}</td>
                                                     <td>{{old('tab_exenta.'.$i)}}</td>
                                                     <td>{{old('tab_gravada.'.$i)}}</td>
                                                     <td>{{old('tab_iva.'.$i)}}</td>
                                                     <td>{{old('tab_subtotal.'.$i)}}</td>
+                                                    -->
                                                 </tr>
                                             @endfor
                                         @endif
@@ -303,7 +320,7 @@
                                             <th></th>
                                             <th></th>
                                             <th>Total</th>
-                                            <th class="total">0</th>
+                                            <th class="total-fp">0</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -312,17 +329,9 @@
                                     <thead>
                                         <tr>
                                             <th width="5%">Acción</th>
-                                            <th>Artículo ID</th>
-                                            <th>Nombre Artículo</th>
-                                            <th width="6%">Cant.</th>
-                                            <th width="9%">Costo U.</th>
-                                            <th width="9%">% Descuento</th>
-                                            <th width="9%">Monto Descuento</th>
-                                            <th width="9%">% IVA</th>
-                                            <th width="9%">Exenta</th>
-                                            <th width="9%">Gravada</th>
-                                            <th width="6%">IVA</th>
-                                            <th width="9%">Total</th>
+                                            <th>Forma de pago ID</th>
+                                            <th>Forma de Pago</th>
+                                            <th width="9%">importe</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -330,17 +339,56 @@
                                             @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                                 <tr>
                                                     <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
-                                                    <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
+                                                    <th><input type="text" id="tab_forma_pago_id" name="tab_articulo_id[]" value="{{old('tab_forma_pago_id.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_forma_pago_nombre[]" value="{{old('tab_forma_pago_nombre.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_importe[]" value="{{old('tab_importe.'.$i)}}"></th>
+                                                </tr>
+                                            @endfor
+                                        @endif
+                                    </tbody>
+                                </table>
+
+                                <table id="tab-hidden-che" class="hidden">
+                                    <thead>
+                                        <tr>
+                                            <th>Id Banco</th>
+                                            <th>Banco</th>
+                                            <th>Numero de Cuenta</th>
+                                            <th>Fecha de Vencimiento</th>
+                                            <th>Librador</th>
+                                            <th>Importe</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th width="6%">Importe</th>
+                                            <th width="9%">Costo U.</th>
+                                            <th width="9%">Descuento</th>
+                                            <th width="9%">Exenta</th>
+                                            <th width="9%">Gravada</th>
+                                            <th width="6%">IVA</th>
+                                            <th width="9%">Total</th>
+                                            -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($errors->any())
+                                            @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
+                                                <tr>
+                                                    <td>{{old('tab_forma_pago_nombre.'.$i)}}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>{{old('tab_importe.'.$i)}}</td>
+                                                    <!--
+                                                    <td>{{old('tab_costo_unitario.'.$i)}}</td>
+                                                    <td>{{old('tab_monto_descuento.'.$i)}}</td>
+                                                    <td>{{old('tab_exenta.'.$i)}}</td>
+                                                    <td>{{old('tab_gravada.'.$i)}}</td>
+                                                    <td>{{old('tab_iva.'.$i)}}</td>
+                                                    <td>{{old('tab_subtotal.'.$i)}}</td>
+                                                    -->
                                                 </tr>
                                             @endfor
                                         @endif
@@ -373,6 +421,51 @@
     
     
     var table = $('#pedido-detalle').DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false,
+        "searching": false,
+        language: { url: '/datatables/translation/spanish' },
+        "columnDefs": [
+          { className: "dt-center", "targets": [0,2,3,4,5,6,7,8] },
+          { className: "dt-left", "targets": [1] }
+        ],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            var decimales = 0;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(".", "")*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+ 
+            // Total over all pages
+            total = api
+                .column(8)
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Total over this page
+            pageTotal = api
+                .column( 8, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column( 8 ).footer() ).html(
+                $.number(total,decimales, ',', '.')
+            );
+        }
+    });
+
+    var table = $('#forma-pago-detalle').DataTable({
         "paging":   false,
         "ordering": false,
         "info":     false,
@@ -513,6 +606,91 @@
             } else {
                 articulos_detalle.push(articulo_id);
                 console.log('Despues de add: '+articulos_detalle);
+                //var cantidad = $("#cantidad").val();
+                var costo_unitario = $("#costo_unitario").val();
+                var porcentaje_descuento = $("#porcentaje_descuento" ).val();
+                var monto_descuento = cantidad * costo_unitario.replace(".", "") * (porcentaje_descuento/100);
+                var subtotal = $("#subtotal").val();
+                var porcentaje_iva = $("#porcentaje_iva" ).val();
+                var exenta = 0;
+                var gravada = 0;
+                var iva = 0;
+                if (porcentaje_iva == 0) {
+                    exenta = subtotal;
+                } else {
+                    gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
+                    iva = Math.round(gravada*(porcentaje_iva/100));
+                }
+                /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+                costo_unitario = $.number(costo_unitario,decimales, ',', '.');
+                cantidad = $.number(cantidad,decimales, ',', '.');
+                monto_descuento = $.number(monto_descuento,decimales, ',', '.');
+                exenta = $.number(exenta,decimales, ',', '.');
+                gravada = $.number(gravada,decimales, ',', '.');
+                iva = $.number(iva,decimales, ',', '.');
+                subtotal = $.number(subtotal,decimales, ',', '.');  
+                
+                /*Se agrega una fila a la tabla*/
+                var tabla = $("#pedido-detalle").DataTable();
+                tabla.row.add( [
+                    "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+                    articulo,
+                    cantidad,
+                    costo_unitario,
+                    monto_descuento,
+                    exenta,
+                    gravada,
+                    iva,
+                    subtotal
+                ] ).draw( false );
+
+                var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+                $("#tab-hidden").append(markup);
+
+                /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+                $('#cantidad').number(false);
+                $('#costo_unitario').number(false);
+                $('#subtotal').number(false);
+                
+                $('#cantidad').val("");
+                $('#costo_unitario').val("");
+                $('#porcentaje_descuento').val("");
+                $('#porcentaje_iva').val("");
+                $('#subtotal').val("");
+                $('#select2-articulos').val(null).trigger('change');
+                $("#select2-articulos").focus();
+            }
+    
+    };
+
+    function addFormaPago() {
+        var indexColumn = 0;
+        var formaspago_detalle = $('input[name="tab_forma_pago_id[]"]').map(function () {
+            return this.value;
+        }).get();
+
+        /*Se obtienen los valores de los campos correspondientes*/
+        var cantidad = $("#cantidad").val();
+        //console.log('Antes de add: '+articulos_detalle);
+        
+        var decimales = 0;
+            var formapago = $('#select2-forma-pago').select2('data')[0].text;
+            var formapago_id = $('#select2-forma-pago').select2('data')[0].id;
+            if (formaspago_detalle.includes(formapago_id)) {
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'Ya se ingresó esta forma de pago',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000); 
+            } else {
+                articulos_detalle.push(articulo_id);
+                //console.log('Despues de add: '+articulos_detalle);
                 //var cantidad = $("#cantidad").val();
                 var costo_unitario = $("#costo_unitario").val();
                 var porcentaje_descuento = $("#porcentaje_descuento" ).val();
