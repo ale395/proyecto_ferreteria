@@ -293,6 +293,10 @@
                                         <li class="sub_menu"><a href="{{route('facturacionVentas.index')}}">Facturación</a>
                                         </li>
                                       @endcan
+                                      @can('notaCreditoVentas.index')
+                                        <li class="sub_menu"><a href="{{route('notaCreditoVentas.index')}}">Nota de Crédito</a>
+                                        </li>
+                                      @endcan
                                     @endif
                                 </ul>
                               </li>

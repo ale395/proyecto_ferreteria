@@ -46,7 +46,14 @@ class RoleTableSeeder extends Seeder
         $permiso_eliminar_factura_venta = Permission::where('slug', 'facturacionVentas.destroy')->first();
         $permiso_ver_factura_venta = Permission::where('slug', 'facturacionVentas.show')->first();
 
-                //permisos para Ajuste
+        //permisos para Notas de Crédito de Venta
+        $permiso_listar_ncre_venta = Permission::where('slug', 'notaCreditoVentas.index')->first();
+        $permiso_crear_ncre_venta = Permission::where('slug', 'notaCreditoVentas.create')->first();
+        $permiso_editar_ncre_venta = Permission::where('slug', 'notaCreditoVentas.edit')->first();
+        $permiso_eliminar_ncre_venta = Permission::where('slug', 'notaCreditoVentas.destroy')->first();
+        $permiso_ver_ncre_venta = Permission::where('slug', 'notaCreditoVentas.show')->first();
+
+        //permisos para Ajuste
         $permiso_listar_ajuste_inventario = Permission::where('slug', 'ajustesInventarios.index')->first();
         $permiso_crear_ajuste_inventario = Permission::where('slug', 'ajustesInventarios.create')->first();
         $permiso_editar_ajuste_inventario = Permission::where('slug', 'ajustesInventarios.edit')->first();
@@ -339,6 +346,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_factura_venta->id);
         $role->assignPermission($permiso_eliminar_factura_venta->id);
         $role->assignPermission($permiso_ver_factura_venta->id);
+
+        $role->assignPermission($permiso_listar_ncre_venta->id);
+        $role->assignPermission($permiso_crear_ncre_venta->id);
+        $role->assignPermission($permiso_editar_ncre_venta->id);
+        $role->assignPermission($permiso_eliminar_ncre_venta->id);
+        $role->assignPermission($permiso_ver_ncre_venta->id);
 
         $role->assignPermission($permiso_listar_ajuste_inventario->id);
         $role->assignPermission($permiso_crear_ajuste_inventario->id);
