@@ -16,6 +16,7 @@ use App\Articulo;
 use App\DatosDefault;
 use App\Impuesto;
 use App\Cotizacion;
+use App\ExistenciaArticulo;
 use DB;
 use Response;
 use Illuminate\Support\Collections;

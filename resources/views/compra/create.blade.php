@@ -43,14 +43,14 @@
                         <div class="col-md-3">
                             <div id="tipo_factura" class="btn-group" data-toggle="buttons">
                                 @if(old('tipo_factura') === 'CR')
-                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="$('#MyTabSelector').disableTab(2);">
                                     <input id="radioContado" type="radio" name="tipo_factura" value="CO">Contado</label>
-                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="$('#MyTabSelector').disableTab(1);>
                                     <input type="radio" name="tipo_factura" value="CR" checked> Crédito</label>
                                 @else
-                                    <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                    <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="verificaModalidaPagoContado()">
                                     <input id="radioContado" type="radio" name="tipo_factura" value="CO" checked>&nbsp;Contado&nbsp;</label>
-                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="verificaModalidaPagoCredito()">
                                     <input type="radio" name="tipo_factura" value="CR"> Crédito </label>
                                 @endif
                             </div>
@@ -110,7 +110,7 @@
                     </div>
                     <br>
                     <div class="form-group">
-                        <ul class="nav nav-tabs">
+                        <ul class="nav nav-tabs" id='MyTabSelector'>
                             <li class="active"><a data-toggle="tab" href="#home">Detalle</a></li>
                             <li><a data-toggle="tab" href="#menu1">Formas de Pago</a></li>
                             <li><a data-toggle="tab" href="#menu2">Cuotas</a></li>
@@ -355,6 +355,16 @@
         });
     };
 
+    //Función para recuperar el valor de cambio al cambiar de moneda (?)
+    function verificaModalidaPagoContado() {
+        $('[href="#menu2"]').tab('disable');
+    };
+
+    //Función para recuperar el valor de cambio al cambiar de moneda (?)
+    function verificaModalidaPagoCredito() {
+        $('[href="#menu1"]').tab('disable');
+    };
+
     function calcularSubtotal() {
         var cantidad = $("#cantidad" ).val();
         var costo_unitario = $("#costo_unitario" ).val();
@@ -542,6 +552,12 @@
 
      
     });
+
+    $("#removeTabs").click(function() {
+        var tabIndex = parseInt($("#indexValue").val(), 10);
+        var tab = $( "#demoTabs" ).find(".ui-tabs-nav li:eq(" + tabIndex + ")").disable();
+         $("#demoTabs").tabs("refresh");
+    });         
 
     /*JS para el DatePicker de fecha_emision*/
     $(function() {
