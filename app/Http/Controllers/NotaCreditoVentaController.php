@@ -2,7 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+use App\Serie;
+use App\Empresa;
+use App\Cliente;
+use App\DatosDefault;
+use App\CuentaCliente;
+use App\FacturaVentaCab;
+use App\NotaCreditoVentaCab;
+use App\NotaCreditoVentaDet;
+use App\ExistenciaArticulo;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class NotaCreditoVentaController extends Controller
 {
@@ -13,7 +25,7 @@ class NotaCreditoVentaController extends Controller
      */
     public function index()
     {
-        //
+        return view('notaCreditoVenta.index');
     }
 
     /**
@@ -80,5 +92,74 @@ class NotaCreditoVentaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function apiNotaCreditoVentas(){
+        //$permiso_editar = Auth::user()->can('notaCreditoVentas.edit');
+        //$permiso_eliminar = Auth::user()->can('notaCreditoVentas.destroy');
+        $permiso_ver = Auth::user()->can('notaCreditoVentas.show');
+        $sucursal_actual = Auth::user()->empleado->sucursales->first();
+        $notas = NotaCreditoVentaCab::where('sucursal_id',$sucursal_actual->getId())->get();
+        if ($permiso_ver) {
+            return Datatables::of($notas)
+                ->addColumn('tipo_nota_cred', function($notas){
+                    return $notas->getTipoNotaCreditoIndex();
+                })
+                ->addColumn('nro_nota_cred', function($notas){
+                    return $notas->getNroNotaCreditoIndex();
+                })
+                ->addColumn('fecha', function($notas){
+                    return $notas->getFechaEmision();
+                })
+                ->addColumn('cliente', function($notas){
+                    return $notas->cliente->getNombreIndex();
+                })
+                ->addColumn('moneda', function($notas){
+                    return $notas->moneda->getDescripcion();
+                })
+                ->addColumn('monto_total', function($notas){
+                    return $notas->getMontoTotal();
+                })
+                ->addColumn('estado', function($notas){
+                    if ($notas->estado == 'P') {
+                        return 'Pendiente';
+                    } elseif ($notas->estado == 'A') {
+                        return 'Anulada';
+                    }
+                })
+                ->addColumn('action', function($facturas){
+                    return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Nota de Crédito"><i class="fa fa-eye"></i></a>';
+                })->make(true);
+        } else {
+            return Datatables::of($notas)
+                ->addColumn('tipo_nota_cred', function($notas){
+                    return $notas->getTipoNotaCreditoIndex();
+                })
+                ->addColumn('nro_nota_cred', function($notas){
+                    return $notas->getNroNotaCreditoIndex();
+                })
+                ->addColumn('fecha', function($notas){
+                    return $notas->getFechaEmision();
+                })
+                ->addColumn('cliente', function($notas){
+                    return $notas->cliente->getNombreIndex();
+                })
+                ->addColumn('moneda', function($notas){
+                    return $notas->moneda->getDescripcion();
+                })
+                ->addColumn('monto_total', function($notas){
+                    return $notas->getMontoTotal();
+                })
+                ->addColumn('estado', function($notas){
+                    if ($notas->estado == 'P') {
+                        return 'Pendiente';
+                    } elseif ($notas->estado == 'A') {
+                        return 'Anulada';
+                    }
+                })
+                ->addColumn('action', function($facturas){
+                    return '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Nota de Crédito" disabled><i class="fa fa-eye"></i></a> ';
+                })->make(true);
+        }
     }
 }
