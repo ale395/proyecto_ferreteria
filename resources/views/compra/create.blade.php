@@ -113,135 +113,240 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#home">Detalle</a></li>
                             <li><a data-toggle="tab" href="#menu1">Formas de Pago</a></li>
-                            <li><a data-toggle="tab" href="#menu2">Cuotas</a></li>
                         </ul>
 
                         <div class="tab-content">
-                        <div id="home" class="tab-pane fade in active">
-                            
-                            <div class="form-group">
-                                <br>
-                                <label for="lista_costo_id" class="col-md-1 control-label">Artículo</label>
-                                <div class="col-md-4">
-                                    <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" >
+                            <div id="home" class="tab-pane fade in active">
+                                <div class="form-group">
+                                    <br>
+                                    <label for="lista_costo_id" class="col-md-1 control-label">Artículo</label>
+                                    <div class="col-md-4">
+                                        <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" >
 
-                                    </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
-                                </div>
-                                <div class="col-md-2">
-                                    <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()"></a>
-                                </div>
-                                <div class="col-md-1">
-                                    <a data-toggle="tooltip" data-placement="top" title="% Descuento">
-                                    <input type="number" id="porcentaje_descuento" name="porcentaje_descuento" class="form-control" placeholder="% Desc." min="0" max="100" onchange="calcularSubtotal()"></a>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()"></a>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a data-toggle="tooltip" data-placement="top" title="% Descuento">
+                                        <input type="number" id="porcentaje_descuento" name="porcentaje_descuento" class="form-control" placeholder="% Desc." min="0" max="100" onchange="calcularSubtotal()"></a>
 
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a data-toggle="tooltip" data-placement="top" title="Subtotal">
+                                        <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
+                                    </div>
+                                    <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
+                                    <div class="col-md-1">
+                                        <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                    </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <a data-toggle="tooltip" data-placement="top" title="Subtotal">
-                                    <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
-                                </div>
-                                <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
-                                <div class="col-md-1">
-                                    <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                                </div>
+                                <span class="help-block with-errors"></span>
+                    
+                                <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">Acción</th>
+                                            <th>Artículo</th>
+                                            <th width="6%">Cant.</th>
+                                            <th width="9%">Costo U.</th>
+                                            <th width="9%">Descuento</th>
+                                            <th width="9%">Exenta</th>
+                                            <th width="9%">Gravada</th>
+                                            <th width="6%">IVA</th>
+                                            <th width="9%">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($errors->any())
+                                            @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
+                                                <tr>
+                                                    <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                                    <td>{{old('tab_articulo_nombre.'.$i)}}</td>
+                                                    <td>{{old('tab_cantidad.'.$i)}}</td>
+                                                    <td>{{old('tab_costo_unitario.'.$i)}}</td>
+                                                    <td>{{old('tab_monto_descuento.'.$i)}}</td>
+                                                    <td>{{old('tab_exenta.'.$i)}}</td>
+                                                    <td>{{old('tab_gravada.'.$i)}}</td>
+                                                    <td>{{old('tab_iva.'.$i)}}</td>
+                                                    <td>{{old('tab_subtotal.'.$i)}}</td>
+                                                </tr>
+                                            @endfor
+                                        @endif
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Total</th>
+                                            <th class="total">0</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                                <table id="tab-hidden" class="hidden">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">Acción</th>
+                                            <th>Artículo ID</th>
+                                            <th>Nombre Artículo</th>
+                                            <th width="6%">Cant.</th>
+                                            <th width="9%">Costo U.</th>
+                                            <th width="9%">% Descuento</th>
+                                            <th width="9%">Monto Descuento</th>
+                                            <th width="9%">% IVA</th>
+                                            <th width="9%">Exenta</th>
+                                            <th width="9%">Gravada</th>
+                                            <th width="6%">IVA</th>
+                                            <th width="9%">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($errors->any())
+                                            @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
+                                                <tr>
+                                                    <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                                    <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
+                                                </tr>
+                                            @endfor
+                                        @endif
+                                    </tbody>
+                                </table>
                             </div>
-                            <span class="help-block with-errors"></span>
-                 
-                            <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th width="5%">Acción</th>
-                                        <th>Artículo</th>
-                                        <th width="6%">Cant.</th>
-                                        <th width="9%">Costo U.</th>
-                                        <th width="9%">Descuento</th>
-                                        <th width="9%">Exenta</th>
-                                        <th width="9%">Gravada</th>
-                                        <th width="6%">IVA</th>
-                                        <th width="9%">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if ($errors->any())
-                                        @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
-                                            <tr>
-                                                <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
-                                                <td>{{old('tab_articulo_nombre.'.$i)}}</td>
-                                                <td>{{old('tab_cantidad.'.$i)}}</td>
-                                                <td>{{old('tab_costo_unitario.'.$i)}}</td>
-                                                <td>{{old('tab_monto_descuento.'.$i)}}</td>
-                                                <td>{{old('tab_exenta.'.$i)}}</td>
-                                                <td>{{old('tab_gravada.'.$i)}}</td>
-                                                <td>{{old('tab_iva.'.$i)}}</td>
-                                                <td>{{old('tab_subtotal.'.$i)}}</td>
-                                            </tr>
-                                        @endfor
-                                    @endif
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th>Total</th>
-                                        <th class="total">0</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                            <div id="menu1" class="tab-pane fade">
+                                <div class="form-group">
+                                    <br>
+                                    <label for="lista_costo_id" class="col-md-1 control-label">Forma de Pago</label>
+                                    <div class="col-md-4">
+                                        <select id="select2-forma-pago" name="forma_pago_id" class="form-control" style="width: 100%" >
 
-                            <table id="tab-hidden" class="hidden">
-                                <thead>
-                                    <tr>
-                                        <th width="5%">Acción</th>
-                                        <th>Artículo ID</th>
-                                        <th>Nombre Artículo</th>
-                                        <th width="6%">Cant.</th>
-                                        <th width="9%">Costo U.</th>
-                                        <th width="9%">% Descuento</th>
-                                        <th width="9%">Monto Descuento</th>
-                                        <th width="9%">% IVA</th>
-                                        <th width="9%">Exenta</th>
-                                        <th width="9%">Gravada</th>
-                                        <th width="6%">IVA</th>
-                                        <th width="9%">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if ($errors->any())
-                                        @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
-                                            <tr>
-                                                <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
-                                                <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></th>
-                                                <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
-                                            </tr>
-                                        @endfor
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="menu1" class="tab-pane fade">
-                            <h3> En Construcción xD </h3>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a data-toggle="tooltip" data-placement="top" title="Importe"><input type="text" id="importe" name="importe" class="form-control" placeholder="Importe"></a>
+                                    </div>
+                                    <!--
+                                    <div class="col-md-1">
+                                        <a data-toggle="tooltip" data-placement="top" title="% Descuento">
+                                        <input type="number" id="porcentaje_descuento" name="porcentaje_descuento" class="form-control" placeholder="% Desc." min="0" max="100" onchange="calcularSubtotal()"></a>
 
-                        </div>
-                        <div id="menu2" class="tab-pane fade">
-                        <h3> En Construcción xD </h3>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a data-toggle="tooltip" data-placement="top" title="Subtotal">
+                                        <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
+                                    </div>
+                                    <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
+                                    <div class="col-md-1">
+                                        <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                    </div>
+                                    -->
+                                </div>
+                                <span class="help-block with-errors"></span>
+                    
+                                <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">Acción</th>
+                                            <th>Artículo</th>
+                                            <th width="6%">Cant.</th>
+                                            <th width="9%">Costo U.</th>
+                                            <th width="9%">Descuento</th>
+                                            <th width="9%">Exenta</th>
+                                            <th width="9%">Gravada</th>
+                                            <th width="6%">IVA</th>
+                                            <th width="9%">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($errors->any())
+                                            @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
+                                                <tr>
+                                                    <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                                    <td>{{old('tab_articulo_nombre.'.$i)}}</td>
+                                                    <td>{{old('tab_cantidad.'.$i)}}</td>
+                                                    <td>{{old('tab_costo_unitario.'.$i)}}</td>
+                                                    <td>{{old('tab_monto_descuento.'.$i)}}</td>
+                                                    <td>{{old('tab_exenta.'.$i)}}</td>
+                                                    <td>{{old('tab_gravada.'.$i)}}</td>
+                                                    <td>{{old('tab_iva.'.$i)}}</td>
+                                                    <td>{{old('tab_subtotal.'.$i)}}</td>
+                                                </tr>
+                                            @endfor
+                                        @endif
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Total</th>
+                                            <th class="total">0</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
 
-                        </div>
+                                <table id="tab-hidden" class="hidden">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">Acción</th>
+                                            <th>Artículo ID</th>
+                                            <th>Nombre Artículo</th>
+                                            <th width="6%">Cant.</th>
+                                            <th width="9%">Costo U.</th>
+                                            <th width="9%">% Descuento</th>
+                                            <th width="9%">Monto Descuento</th>
+                                            <th width="9%">% IVA</th>
+                                            <th width="9%">Exenta</th>
+                                            <th width="9%">Gravada</th>
+                                            <th width="6%">IVA</th>
+                                            <th width="9%">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($errors->any())
+                                            @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
+                                                <tr>
+                                                    <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                                    <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></th>
+                                                    <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
+                                                </tr>
+                                            @endfor
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <br>
