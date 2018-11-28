@@ -792,6 +792,37 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver una Factura de Venta del sistema';
         $permission->save();
 
+        //Notas Credito - Ventas
+        $permission = new Permission();
+        $permission->name = 'Cargar Nota de Crédito Venta';
+        $permission->slug = 'notaCreditoVentas.create';
+        $permission->description = 'Permite la carga de una Nota de Crédito de venta en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Nota de Crédito Venta';
+        $permission->slug = 'notaCreditoVentas.destroy';
+        $permission->description = 'Permite la eliminación de una Nota de Crédito de venta del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Nota de Crédito Venta';
+        $permission->slug = 'notaCreditoVentas.edit';
+        $permission->description = 'Permite modificar los valores de una Nota de Crédito del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Notas de Crédito Ventas';
+        $permission->slug = 'notaCreditoVentas.index';
+        $permission->description = 'Permite ver el listado de Notas de Crédito Ventas del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Nota de Crédito Venta';
+        $permission->slug = 'notaCreditoVentas.show';
+        $permission->description = 'Permite ver una Nota de Crédito Venta del sistema';
+        $permission->save();
+
         //Ajustes - Inventarios
         $permission = new Permission();
         $permission->name = 'Cargar Ajuste de inventario';

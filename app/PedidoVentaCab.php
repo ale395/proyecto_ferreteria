@@ -118,4 +118,8 @@ class PedidoVentaCab extends Model
         return $this->hasMany('App\PedidoVentaDet', 'pedido_cab_id');
     }
 
+    public function pedidoFactura(){
+        return $this->hasOne('App\PedidoFactura', 'pedido_cabecera_id', 'id');
+    }
+
 }

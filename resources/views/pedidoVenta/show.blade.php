@@ -37,6 +37,7 @@
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$pedido_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
                     </div>
+                    
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente</label>
                         <div class="col-md-6">
@@ -68,6 +69,12 @@
                         <div class="col-md-2">
                             <input type="text" id="estado" name="estado" class="form-control" value="{{old('valor_cambio', $pedido_cab->getEstadoNombre())}}" readonly>
                         </div>
+                        @if(!is_null($pedido_cab->pedidoFactura))
+                            <label for="factura_nro" class="col-md-2 control-label">Factura Número</label>
+                            <div class="col-md-2">
+                                <input type="text" id="factura_nro" name="factura_nro" class="form-control" value="{{$pedido_cab->pedidoFactura->factura->getNroFacturaIndex()}}" readonly>
+                            </div>
+                        @endif
                     </div>
                     <br>
                     <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">

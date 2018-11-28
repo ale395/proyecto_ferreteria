@@ -123,6 +123,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('facturacionVentas', 'FacturaVentaController');
 	Route::get('api/facturacionVentas', 'FacturaVentaController@apiFacturacionVentas')->name('api.facturacion.ventas');
 
+	//RUTA PARA EL CONTROLADOR DE NOTA DE CREDITO - VENTAS
+	Route::resource('notaCreditoVentas', 'NotaCreditoVentaController');
+	Route::get('api/notaCreditoVentas', 'NotaCreditoVentaController@apiNotaCreditoVentas')->name('api.nota.credito.ventas');
+
 	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
 	Route::resource('ajustesInventarios', 'AjusteInventarioController');
 	Route::get('api/ajustesInventarios', 'AjusteInventarioController@apiAjustesInventarios')->name('api.ajustes.inventarios');

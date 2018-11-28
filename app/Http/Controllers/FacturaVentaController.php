@@ -49,8 +49,9 @@ class FacturaVentaController extends Controller
             ->where('tipo_comprobante', 'F')->first();
         $serie_factura = $configuracion_empresa->getCodigoEstablecimiento().'-'.$sucursal->getCodigoPuntoExpedicion();
         $nro_factura = str_pad($serie->getNroActual()+1, 7, "0", STR_PAD_LEFT);
+        $nro_fact_exte = $serie_factura.' '.$nro_factura;
         $clientes = Cliente::where('activo', true)->get();
-        return view('facturaVenta.create', compact('fecha_actual', 'moneda', 'lista_precio', 'cambio', 'serie', 'serie_factura', 'nro_factura', 'clientes'));
+        return view('facturaVenta.create', compact('fecha_actual', 'moneda', 'lista_precio', 'cambio', 'serie', 'serie_factura', 'nro_factura', 'clientes', 'nro_fact_exte'));
     }
 
     /**
@@ -278,9 +279,9 @@ class FacturaVentaController extends Controller
                         $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $facturas->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
                         if ($facturas->estado == 'P') {
-                            return $puede_ver.$puede_editar;
+                            return $puede_ver/*.$puede_editar*/;
                         } else {
-                            return $puede_ver.$no_puede_editar;
+                            return $puede_ver/*.$no_puede_editar*/;
                         }
                     })->make(true);
             } else {
@@ -314,9 +315,9 @@ class FacturaVentaController extends Controller
                         $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $facturas->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
                         if ($facturas->estado == 'P') {
-                            return $no_puede_ver.$puede_editar;
+                            return $no_puede_ver/*.$puede_editar*/;
                         } else {
-                            return $no_puede_ver.$no_puede_editar;
+                            return $no_puede_ver/*.$no_puede_editar*/;
                         }
                     })->make(true);
             }
@@ -350,7 +351,7 @@ class FacturaVentaController extends Controller
                     ->addColumn('action', function($facturas){
                         $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $facturas->id .')" class="btn btn-primary btn-sm" title="Ver Factura"><i class="fa fa-eye"></i></a> ';
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                        return $puede_ver.$no_puede_editar;
+                        return $puede_ver/*.$no_puede_editar*/;
                     })->make(true);
             } else {
                 return Datatables::of($facturas)
@@ -381,7 +382,7 @@ class FacturaVentaController extends Controller
                     ->addColumn('action', function($facturas){
                         $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Factura" disabled><i class="fa fa-eye"></i></a> ';
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                        return $no_puede_ver.$no_puede_editar;
+                        return $no_puede_ver/*.$no_puede_editar*/;
                     })->make(true);
             }
         }
