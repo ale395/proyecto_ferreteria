@@ -15,6 +15,7 @@ use App\FacturaVentaDet;
 use App\ExistenciaArticulo;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class FacturaVentaController extends Controller
@@ -235,6 +236,58 @@ class FacturaVentaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function apiFacturasCliente($cliente_id){
+        if (empty($cliente_id)) {
+            return [];
+        } else {
+            $facturas = FacturaVentaCab::where('cliente_id', $cliente_id)->
+                where('estado', 'P')->get();
+            return Datatables::of($facturas)
+                    ->addColumn('nro_factura', function($facturas){
+                        return $facturas->getNroFacturaIndex();
+                    })
+                    ->addColumn('fecha', function($facturas){
+                        return $facturas->getFechaEmision();
+                    })
+                    ->addColumn('moneda', function($facturas){
+                        return $facturas->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($facturas){
+                        return $facturas->getMontoTotal();
+                    })
+                    ->addColumn('comentario', function($facturas){
+                        return $facturas->getComentario();
+                    })->make(true);
+        }
+        
+    }
+
+    public function apiFacturaDetalle($array_pedidos){
+        $cast_array = explode(",",($array_pedidos));
+
+        /*PROBANDO CON DB*/
+        $factura_detalle = DB::table('facturas_ventas_det')
+            ->join('facturas_ventas_cab', 'facturas_ventas_det.factura_cab_id', '=', 'facturas_ventas_cab.id')
+            ->join('articulos', 'facturas_ventas_det.articulo_id', '=', 'articulos.id')
+            ->leftJoin('existencia_articulos', 'facturas_ventas_det.articulo_id', '=', 'existencia_articulos.articulo_id')
+            ->select('facturas_ventas_det.articulo_id', 'articulos.codigo', 'articulos.descripcion', 'facturas_ventas_det.porcentaje_iva', 
+            DB::raw('ROUND(AVG(existencia_articulos.cantidad), 2) as cantidad_existencia'),
+            DB::raw('ROUND(MIN(facturas_ventas_det.precio_unitario), 2) as precio_unitario'),
+            DB::raw('ROUND(MAX(facturas_ventas_det.porcentaje_descuento), 2) as porcentaje_descuento'),
+            DB::raw('ROUND(SUM(facturas_ventas_det.cantidad), 2) as cantidad'), 
+            DB::raw('ROUND(SUM(facturas_ventas_det.monto_descuento), 2) as monto_descuento'), 
+            DB::raw('ROUND(SUM(facturas_ventas_det.monto_exenta), 2) as monto_exenta'), 
+            DB::raw('ROUND(SUM(facturas_ventas_det.monto_gravada), 2) as monto_gravada'), 
+            DB::raw('ROUND(SUM(facturas_ventas_det.monto_iva), 2) as monto_iva'), 
+            DB::raw('ROUND(SUM(facturas_ventas_det.monto_total), 2) as monto_total'))
+            ->whereIn('facturas_ventas_det.factura_cab_id', $cast_array)
+            ->where('facturas_ventas_cab.estado', 'P')
+            ->where('existencia_articulos.sucursal_id', Auth::user()->empleado->sucursalDefault->getId())
+            ->groupBy('facturas_ventas_det.articulo_id', 'articulos.codigo', 'articulos.descripcion', 'facturas_ventas_det.porcentaje_iva', 'existencia_articulos.cantidad')
+            ->get();
+        return $factura_detalle;
     }
 
     public function apiFacturacionVentas(){
