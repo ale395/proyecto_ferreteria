@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA BANCOS
 	Route::resource('bancos', 'BancoController');
 	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');
+	Route::get('api/bancos/compraspagos', 'BancoController@apiBancosComprasPagos')->name('api.bancos.compraspagos');
 
 	//RUTAS PARA DEPOSITO
 	Route::resource('depositos', 'DepositoController');

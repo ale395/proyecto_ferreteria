@@ -131,6 +131,24 @@ class BancoController extends Controller
         return Banco::destroy($id);
     }
 
+    public function apiBancosComprasPagos(Request $request){
+        $articulos_array = [];
+
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $bancos = Banco::where('descripcion', 'ilike', "%$search%")
+                ->get();
+        } else {
+            $bancos = Banco::all();
+        }
+
+        foreach ($bancos as $banco) {
+             $bancos_array[] = array('id'=> $banco->getId(), 'text'=> $banco->getNombreSelect());
+        }
+
+        return json_encode($bancos_array);
+    }
+
     public function apiBancos()
     {
         $permiso_editar = Auth::user()->can('bancos.edit');

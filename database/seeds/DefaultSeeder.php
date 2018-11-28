@@ -15,6 +15,7 @@ use App\DatosDefault;
 use App\Impuesto;
 use App\FormaPago;
 use App\Cotizacion;
+use App\Banco;
 
 class DefaultSeeder extends Seeder
 {
@@ -177,6 +178,37 @@ class DefaultSeeder extends Seeder
         $forma_pago->descripcion = 'Retencion';
         $forma_pago->control_valor = 1;
         $forma_pago->save();
+
+        //Formas de Pago (y de cobro creo yo)
+        $banco = new Banco();
+        $banco->codigo = 'ITA';
+        $banco->nombre = 'Itau';
+        $banco->activo = true;
+        $banco->save();
+
+        $banco = new Banco();
+        $banco->codigo = 'VIS';
+        $banco->nombre = 'Vision Banco';
+        $banco->activo = true;
+        $banco->save();
+
+        $banco = new Banco();
+        $banco->codigo = 'SUD';
+        $banco->nombre = 'Sudameris';
+        $banco->activo = true;
+        $banco->save();
+
+        $banco = new Banco();
+        $banco->codigo = 'GNB';
+        $banco->nombre = 'Banco GNB';
+        $banco->activo = true;
+        $banco->save();
+
+        $banco = new Banco();
+        $banco->codigo = 'BAS';
+        $banco->nombre = 'Banco BASA';
+        $banco->activo = true;
+        $banco->save();
 
         //seeder de la forma de pago
 
