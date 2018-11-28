@@ -60,5 +60,29 @@ class ArticuloTableSeeder extends Seeder
         $articulo->ultimo_costo = 157000.00;
         $articulo->costo_promedio = 155012.94;
         $articulo->save();
+
+        $articulo = new Articulo();
+        $articulo->codigo = '0000150';
+        $articulo->descripcion = 'Descuento con IVA 10%';
+        $articulo->impuesto_id = Impuesto::where('codigo', '10')->first()->id;
+        $articulo->vendible = true;
+        $articulo->control_existencia = false;
+        $articulo->save();
+
+        $articulo = new Articulo();
+        $articulo->codigo = '0000300';
+        $articulo->descripcion = 'Descuento con IVA 5%';
+        $articulo->impuesto_id = Impuesto::where('codigo', '5')->first()->id;
+        $articulo->vendible = true;
+        $articulo->control_existencia = false;
+
+        $articulo->save();
+        $articulo = new Articulo();
+        $articulo->codigo = '0006500';
+        $articulo->descripcion = 'Descuento exenta';
+        $articulo->impuesto_id = Impuesto::where('codigo', '0')->first()->id;
+        $articulo->vendible = true;
+        $articulo->control_existencia = false;
+        $articulo->save();
     }
 }

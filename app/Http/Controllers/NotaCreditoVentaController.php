@@ -35,7 +35,22 @@ class NotaCreditoVentaController extends Controller
      */
     public function create()
     {
-        //
+        $fecha_actual = date("d/m/Y");
+        $datos_default = DatosDefault::get()->first();
+        $lista_precio = $datos_default->listaPrecio;
+        $moneda = $datos_default->moneda;
+        $cambio = 1;
+        $configuracion_empresa = Empresa::first();
+        $sucursal = Auth::user()->empleado->sucursalDefault;
+        $vendedor = Auth::user()->empleado;
+        $serie = Serie::where('vendedor_id', $vendedor->getId())
+            ->where('sucursal_id', $sucursal->getId())
+            ->where('tipo_comprobante', 'N')->first();
+        $serie_ncre = $configuracion_empresa->getCodigoEstablecimiento().'-'.$sucursal->getCodigoPuntoExpedicion();
+        $nro_ncre = str_pad($serie->getNroActual()+1, 7, "0", STR_PAD_LEFT);
+        $nro_ncre_exte = $serie_ncre.' '.$nro_ncre;
+        $clientes = Cliente::where('activo', true)->get();
+        return view('notaCreditoVenta.create', compact('fecha_actual', 'moneda', 'lista_precio', 'cambio', 'serie', 'serie_ncre', 'nro_ncre', 'clientes', 'nro_ncre_exte'));
     }
 
     /**
@@ -57,7 +72,8 @@ class NotaCreditoVentaController extends Controller
      */
     public function show($id)
     {
-        //
+        $ncre_cab = NotaCreditoVentaCab::findOrFail($id);
+        return view('notaCreditoVenta.show', compact('ncre_cab'));
     }
 
     /**
