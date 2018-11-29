@@ -43,14 +43,14 @@
                         <div class="col-md-3">
                             <div id="tipo_factura" class="btn-group" data-toggle="buttons">
                                 @if(old('tipo_factura') === 'CR')
-                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="$('#MyTabSelector').disableTab(2);">
+                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
                                     <input id="radioContado" type="radio" name="tipo_factura" value="CO">Contado</label>
-                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="$('#MyTabSelector').disableTab(1);>
+                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
                                     <input type="radio" name="tipo_factura" value="CR" checked> Crédito</label>
                                 @else
-                                    <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="verificaModalidaPagoContado()">
+                                    <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" >
                                     <input id="radioContado" type="radio" name="tipo_factura" value="CO" checked>&nbsp;Contado&nbsp;</label>
-                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="verificaModalidaPagoCredito()">
+                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" >
                                     <input type="radio" name="tipo_factura" value="CR"> Crédito </label>
                                 @endif
                             </div>
@@ -112,8 +112,8 @@
                     <div class="form-group">
                         <ul class="nav nav-tabs" id='MyTabSelector'>
                             <li class="active"><a data-toggle="tab" href="#home">Detalle</a></li>
-                            <li><a data-toggle="tab" href="#menu1">Efectivo</a></li>
-                            <li><a data-toggle="tab" href="#menu2">Cheque</a></li>
+                            <li><a data-toggle="tab" href="#menu1">Cheque</a></li>
+                            <li><a data-toggle="tab" href="#menu2">Efectivo</a></li>
                         </ul>
 
                         <div class="tab-content">
@@ -236,6 +236,103 @@
                             <div id="menu1" class="tab-pane fade">
                                 <div class="form-group">
                                     <br>
+                                    <label for="bancos_id" class="col-md-1 control-label">Banco</label>
+                                    <div class="col-md-2">
+                                        <select id="select2-banco-pago" name="bancos_id" class="form-control" style="width: 100%" >
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a data-toggle="tooltip" data-placement="top" title="Nro. Cuenta"><input type="text" id="nro-cuenta" name="nro_cuenta" class="form-control" placeholder="Cuenta"></a>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a data-toggle="tooltip" data-placement="top" title="Librador"><input type="text" id="liibrador" name="librador" class="form-control" placeholder="Librador"></a>
+                                    </div>
+                                    <label for="fecha_emision" class="col-md-1 control-label">Vencimiento </label>
+                                    <div class="col-md-2">
+                                        <input type="text" id="fecha-vencimiento" name="fecha_vencimiento" class="form-control dpfecha" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
+                                    </div>     
+                                </div>
+                                <span class="help-block with-errors"></span>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <a data-toggle="tooltip" data-placement="top" title="Importe"><input type="text" id="importe-che" name="importe" class="form-control" placeholder="Importe"></a>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <a id="btn-add-forma-pago" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir forma de pago" onclick="addFormaPago()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                    </div>
+
+                                </div>
+                                <span class="help-block with-errors"></span>
+                    
+                                <table id="#cheques-pago-detalle" class="table table-striped table-responsive display" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%">Acción</th>
+                                            <th>Banco</th>
+                                            <th width="15%">Cuenta</th>
+                                            <th width="30%">Librador</th>
+                                            <th width="9%">Vencimiento</th>
+                                            <th width="9%">Importe</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($errors->any())
+                                            @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
+                                                <tr>
+                                                    <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                                    <td>{{old('tab_banco_nombre.'.$i)}}</td>
+                                                    <td>{{old('tab_cuenta.'.$i)}}</td>
+                                                    <td>{{old('tab_librador.'.$i)}}</td>
+                                                    <td>{{old('tab_fecha_venc.'.$i)}}</td>
+                                                    <td>{{old('tab_importe_che.'.$i)}}</td>
+                                                </tr>
+                                            @endfor
+                                        @endif
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Total</th>
+                                            <th class="total-fp">0</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                                <table id="tab-hidden-che" class="hidden">
+                                    <thead>
+                                        <tr>
+                                            <th>Id Banco</th>
+                                            <th>Banco</th>
+                                            <th>Numero de Cuenta</th>
+                                            <th>Fecha de Vencimiento</th>
+                                            <th>Librador</th>
+                                            <th>Importe</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($errors->any())
+                                            @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
+                                                <tr>
+                                                    <td>{{old('tab_banco_id.'.$i)}}</td>
+                                                    <td>{{old('tab_banco_nombre.'.$i)}}</td>
+                                                    <td>{{old('tab_cuenta.'.$i)}}</td>
+                                                    <td>{{old('tab_librador.'.$i)}}</td>
+                                                    <td>{{old('tab_fecha_venc.'.$i)}}</td>
+                                                    <td>{{old('tab_importe_che.'.$i)}}</td>
+                                                </tr>
+                                            @endfor
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>                            
+                            <div id="menu2" class="tab-pane fade">
+                                <div class="form-group">
+                                    <br>
                                     <label for="lista_costo_id" class="col-md-1 control-label">Forma de Pago</label>
                                     <div class="col-md-2">
                                         <select id="select2-forma-pago" name="forma_pago_id" class="form-control" style="width: 100%" >
@@ -349,170 +446,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div id="menu2" class="tab-pane fade">
-                                <div class="form-group">
-                                    <br>
-                                    <label for="lista_costo_id" class="col-md-1 control-label">Banco</label>
-                                    <div class="col-md-2">
-                                        <select id="select2-chequepago-pago" name="bancos_id" class="form-control" style="width: 100%" >
 
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a data-toggle="tooltip" data-placement="top" title="Nro. Cuenta"><input type="text" id="nro_cuenta" name="nro_cuenta" class="form-control" placeholder="Cuenta"></a>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a data-toggle="tooltip" data-placement="top" title="Librador"><input type="text" id="Librador" name="librador" class="form-control" placeholder="Librador"></a>
-                                    </div>
-                                    <label for="fecha_emision" class="col-md-1 control-label">Vencimiento </label>
-                                    <div class="col-md-2">
-                                        <input type="text" id="fecha_vencimiento" name="fecha_vencimiento" class="form-control dpfecha" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
-                                    </div>     
-                                </div>
-                                <span class="help-block with-errors"></span>
-                                <div class="form-group">
-                                    <div class="col-md-3">
-                                        <a data-toggle="tooltip" data-placement="top" title="Importe"><input type="text" id="importe" name="importe" class="form-control" placeholder="Importe"></a>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <a id="btn-add-forma-pago" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir forma de pago" onclick="addFormaPago()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                                    </div>
-
-                                </div>
-                                <span class="help-block with-errors"></span>
-                    
-                                <table id="forma-pago-detalle" class="table table-striped table-responsive display" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th width="5%">Acción</th>
-                                            <th>Forma de Pago</th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th width="6%">Importe</th>
-                                            <!--    
-                                            <th width="9%">Costo U.</th>
-                                            <th width="9%">Descuento</th>
-                                            <th width="9%">Exenta</th>
-                                            <th width="9%">Gravada</th>
-                                            <th width="6%">IVA</th>
-                                            <th width="9%">Total</th>
-                                            -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if ($errors->any())
-                                            @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
-                                                <tr>
-                                                    <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
-                                                    <td>{{old('tab_forma_pago_nombre.'.$i)}}</td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>{{old('tab_importe.'.$i)}}</td>
-                                                    <!--
-                                                    <td>{{old('tab_costo_unitario.'.$i)}}</td>
-                                                    <td>{{old('tab_monto_descuento.'.$i)}}</td>
-                                                    <td>{{old('tab_exenta.'.$i)}}</td>
-                                                    <td>{{old('tab_gravada.'.$i)}}</td>
-                                                    <td>{{old('tab_iva.'.$i)}}</td>
-                                                    <td>{{old('tab_subtotal.'.$i)}}</td>
-                                                    -->
-                                                </tr>
-                                            @endfor
-                                        @endif
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th>Total</th>
-                                            <th class="total-fp">0</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-
-                                <table id="tab-hidden" class="hidden">
-                                    <thead>
-                                        <tr>
-                                            <th width="5%">Acción</th>
-                                            <th>Forma de pago ID</th>
-                                            <th>Forma de Pago</th>
-                                            <th width="9%">importe</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if ($errors->any())
-                                            @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
-                                                <tr>
-                                                    <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
-                                                    <th><input type="text" id="tab_forma_pago_id" name="tab_articulo_id[]" value="{{old('tab_forma_pago_id.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_forma_pago_nombre[]" value="{{old('tab_forma_pago_nombre.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_importe[]" value="{{old('tab_importe.'.$i)}}"></th>
-                                                </tr>
-                                            @endfor
-                                        @endif
-                                    </tbody>
-                                </table>
-
-                                <table id="tab-hidden-che" class="hidden">
-                                    <thead>
-                                        <tr>
-                                            <th>Id Banco</th>
-                                            <th>Banco</th>
-                                            <th>Numero de Cuenta</th>
-                                            <th>Fecha de Vencimiento</th>
-                                            <th>Librador</th>
-                                            <th>Importe</th>
-                                            <th></th>
-                                            <th></th>
-                                            <th width="6%">Importe</th>
-                                            <th width="9%">Costo U.</th>
-                                            <th width="9%">Descuento</th>
-                                            <th width="9%">Exenta</th>
-                                            <th width="9%">Gravada</th>
-                                            <th width="6%">IVA</th>
-                                            <th width="9%">Total</th>
-                                            -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if ($errors->any())
-                                            @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
-                                                <tr>
-                                                    <td>{{old('tab_forma_pago_nombre.'.$i)}}</td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td>{{old('tab_importe.'.$i)}}</td>
-                                                    <!--
-                                                    <td>{{old('tab_costo_unitario.'.$i)}}</td>
-                                                    <td>{{old('tab_monto_descuento.'.$i)}}</td>
-                                                    <td>{{old('tab_exenta.'.$i)}}</td>
-                                                    <td>{{old('tab_gravada.'.$i)}}</td>
-                                                    <td>{{old('tab_iva.'.$i)}}</td>
-                                                    <td>{{old('tab_subtotal.'.$i)}}</td>
-                                                    -->
-                                                </tr>
-                                            @endfor
-                                        @endif
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                     <br>
@@ -589,8 +523,9 @@
         "searching": false,
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
-          { className: "dt-center", "targets": [0,2,3,4,5,6,7,8] },
-          { className: "dt-left", "targets": [1] }
+          { className: "dt-center", "targets": [0,2,3,4] },
+          { className: "dt-left", "targets": [1] },
+          { className: "dt-right", "targets": [5] }
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -606,7 +541,7 @@
  
             // Total over all pages
             total = api
-                .column(8)
+                .column(5)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -614,20 +549,20 @@
  
             // Total over this page
             pageTotal = api
-                .column( 8, { page: 'current'} )
+                .column( 5, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 8 ).footer() ).html(
+            $( api.column( 5 ).footer() ).html(
                 $.number(total,decimales, ',', '.')
             );
         }
     });
 
-        var table = $('#forma-pago-detalle').DataTable({
+    var table = $('#forma-pago-detalle').DataTable({
         "paging":   false,
         "ordering": false,
         "info":     false,
@@ -815,88 +750,68 @@
     
     };
 
-    function addFormaPago() {
+    function addChequePago() {
         var indexColumn = 0;
-        var formaspago_detalle = $('input[name="tab_forma_pago_id[]"]').map(function () {
+        var banco_detalle = $('input[name="tab_banco_id[]"]').map(function () {
+            return this.value;
+        }).get();
+        var cuenta_detalle = $('input[name="tab_cuenta[]"]').map(function () {
+            return this.value;
+        }).get();
+        var fecha_detalle = $('input[name="tab_fecha_venc[]"]').map(function () {
             return this.value;
         }).get();
 
-        /*Se obtienen los valores de los campos correspondientes*/
-        var cantidad = $("#cantidad").val();
         //console.log('Antes de add: '+articulos_detalle);
-        
-        var decimales = 0;
-            var formapago = $('#select2-forma-pago').select2('data')[0].text;
-            var formapago_id = $('#select2-forma-pago').select2('data')[0].id;
-            if (formaspago_detalle.includes(formapago_id)) {
-                var obj = $.alert({
-                    title: 'Atención',
-                    content: 'Ya se ingresó esta forma de pago',
-                    icon: 'fa fa-exclamation-triangle',
-                    type: 'orange',
-                    backgroundDismiss: true,
-                    theme: 'modern',
-                });
-                setTimeout(function(){
-                    obj.close();
-                },3000); 
-            } else {
-                articulos_detalle.push(articulo_id);
-                //console.log('Despues de add: '+articulos_detalle);
-                //var cantidad = $("#cantidad").val();
-                var costo_unitario = $("#costo_unitario").val();
-                var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-                var monto_descuento = cantidad * costo_unitario.replace(".", "") * (porcentaje_descuento/100);
-                var subtotal = $("#subtotal").val();
-                var porcentaje_iva = $("#porcentaje_iva" ).val();
-                var exenta = 0;
-                var gravada = 0;
-                var iva = 0;
-                if (porcentaje_iva == 0) {
-                    exenta = subtotal;
-                } else {
-                    gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
-                    iva = Math.round(gravada*(porcentaje_iva/100));
-                }
-                /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
-                costo_unitario = $.number(costo_unitario,decimales, ',', '.');
-                cantidad = $.number(cantidad,decimales, ',', '.');
-                monto_descuento = $.number(monto_descuento,decimales, ',', '.');
-                exenta = $.number(exenta,decimales, ',', '.');
-                gravada = $.number(gravada,decimales, ',', '.');
-                iva = $.number(iva,decimales, ',', '.');
-                subtotal = $.number(subtotal,decimales, ',', '.');  
-                
-                /*Se agrega una fila a la tabla*/
-                var tabla = $("#pedido-detalle").DataTable();
-                tabla.row.add( [
-                    "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
-                    articulo,
-                    cantidad,
-                    costo_unitario,
-                    monto_descuento,
-                    exenta,
-                    gravada,
-                    iva,
-                    subtotal
-                ] ).draw( false );
+       
+        var banco = $('#select2-banco-pago').select2('data')[0].text;
+        var banco_id = $('#select2-banco-pago').select2('data')[0].id;
+        var cuenta = $('#nro-cuenta').val();
+        var fecha_vencimiento = $('#fecha-vencimiento').val();
+        if (banco_detalle.includes(banco_id) && cuenta_detalle.includes(cuenta) && fecha_detalle.includes(fehca_vencimiento))  {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'Ya se ingresó este cheque',
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000); 
+        } else {
+            banco_detalle.push(banco_id);
+            //console.log('Despues de add: '+articulos_detalle);
+            //var cantidad = $("#cantidad").val();
+            var importe = $("#importe-che").val();
+            var librador = $('#librador').val();
+            /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+            importe = $.number(importe,decimales, ',', '.');
+            
+            /*Se agrega una fila a la tabla*/
+            var tabla = $("#pedido-detalle").DataTable();
+            tabla.row.add( [
+                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+                banco,
+                cuenta,
+                librador,
+                fecha_vencimiento,
+                importe
+            ] ).draw( false );
 
-                var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
-                $("#tab-hidden").append(markup);
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_banco_id' name='tab_banco_id[]' value='" + banco_id + "'></th> <th> <input type='text' name='tab_banco_nombre[]' value='" + banco + "'></th> <th> <input type='text' name='tab_cuenta[]' value='" + cuenta + "'></th> <th> <input type='text' name='tab_librador[]' value='" + librador+ "'></th> <th> <input type='text' name='tab_fecha_venc[]' value='" + fecha_vencimiento + "'> </th> <th> <input type='text' name='tab_importe_che[]' value='" + importe + "'> </th> </tr>";
+            $("#tab-hidden").append(markup);
 
-                /*Se restauran a nulos los valores del bloque para la selección del articulo*/
-                $('#cantidad').number(false);
-                $('#costo_unitario').number(false);
-                $('#subtotal').number(false);
-                
-                $('#cantidad').val("");
-                $('#costo_unitario').val("");
-                $('#porcentaje_descuento').val("");
-                $('#porcentaje_iva').val("");
-                $('#subtotal').val("");
-                $('#select2-articulos').val(null).trigger('change');
-                $("#select2-articulos").focus();
-            }
+            /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+            $('#importe-che').number(false);
+            
+            $('#nro-cuenta').val("");
+            $('#librador').val("");
+            $('#fecha-vencimiento').val("");
+            $('#select2-banco-pago').val(null).trigger('change');
+            $("#select2-banco-pago").focus();
+        }
     
     };
 
@@ -909,6 +824,17 @@
             .remove()
             .draw();
         $("#tab-hidden tr:eq("+row+")").remove();
+    } );
+
+    /*Elimina el cheque del detalle del pago*/
+    var tabla = $("#cheques-pago-detalle").DataTable();
+    $('#cheques-pago-detalle tbody').on( 'click', 'a.btn-delete-row', function () {
+        var row = $(this).parent().index('#cheques-pago-detalle tbody tr');
+        tabla
+            .row( $(this).parents('tr') )
+            .remove()
+            .draw();
+        $("#tab-hidden-che tr:eq("+row+")").remove();
     } );
 
 </script>
@@ -939,6 +865,7 @@
                 cache: true
             }
         });
+
         $('#select2-articulos').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
@@ -962,6 +889,7 @@
                 cache: true
             }
         });
+
         $('#select2-forma-pago').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
@@ -985,6 +913,7 @@
                 cache: true
             }
         });
+
         $('#select2-banco-pago').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
@@ -1008,6 +937,7 @@
                 cache: true
             }
         });
+
         $('#select2-monedas').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
@@ -1030,11 +960,9 @@
                 cache: true
             }
         });
-
-     
-    });
-
     
+    });
+   
 
     /*JS para el DatePicker de fecha_emision*/
     $(function() {
@@ -1046,9 +974,9 @@
         autoclose: true
       });
       $('#fecha_emision').click(function(e){
-                e.stopPropagation();
-                $('.dpfecha').datepicker('update');
-            });  
+            e.stopPropagation();
+            $('.dpfecha').datepicker('update');
+        });  
     });
 </script>
 @endsection
