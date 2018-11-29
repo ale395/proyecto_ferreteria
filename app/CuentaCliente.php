@@ -26,6 +26,14 @@ class CuentaCliente extends Model
     	$this->monto_saldo = $monto_saldo;
     }
 
+    public function getMontoSaldo(){
+        return $this->monto_saldo;
+    }
+
+    public function getMontoComprobante(){
+        return $this->monto_saldo;
+    }
+
     public function factura(){
     	return $this->belongsTo('App\FacturaVentaCab', 'comprobante_id');
     }

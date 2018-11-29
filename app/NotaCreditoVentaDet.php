@@ -9,7 +9,7 @@ class NotaCreditoVentaDet extends Model
     protected $table = 'nota_credito_ventas_det';
 
     public function setNotaCreditoCabeceraId($nota_credito_cabecera_id){
-        $this->nota_credito_cab_id = $nota_credito_cab_id;
+        $this->nota_credito_cab_id = $nota_credito_cabecera_id;
     }
 
     public function setArticuloId($articulo_id){

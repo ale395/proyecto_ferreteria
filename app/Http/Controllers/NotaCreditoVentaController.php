@@ -78,11 +78,9 @@ class NotaCreditoVentaController extends Controller
             'tipo_nota_credito' => 'required',
             'serie_id' => 'required',
             'nro_nota_credito' => 'required',
-            'lista_precio_id' => 'required',
             'cliente_id' => 'required',
             'sucursal_id' => 'required',
             'moneda_id' => 'required',
-            'lista_precio_id' => 'required',
             'valor_cambio' => 'required|numeric|min:1',
             'fecha_emision' => 'required|date_format:d/m/Y',
             'tab_articulo_id' => 'required|array|min:1|max:'.NotaCreditoVentaCab::MAX_LINEAS_DETALLE,
@@ -90,15 +88,19 @@ class NotaCreditoVentaController extends Controller
 
         $mensajes = [
             'valor_cambio.min' => 'El valor de cambio no puede ser menor que :min !',
-            'tab_articulo_id.required' => 'No se puede guardar una factura sin artículos en el detalle!',
-            'tab_articulo_id.min' => 'Como mínimo se debe asignar :min producto(s) a la factura!',
-            'tab_articulo_id.max' => 'Ha superado la cantidad máxima de líneas en una factura. La cantidad máxima es de :max!',
+            'tab_articulo_id.required' => 'No se puede guardar una nota de crédito sin registros en el detalle!',
+            'tab_articulo_id.min' => 'Como mínimo se debe cargar :min registro(s) a la nota de crédito!',
+            'tab_articulo_id.max' => 'Ha superado la cantidad máxima de líneas en una nota de crédito. La cantidad máxima es de :max!',
             'cliente_id.required' => 'Debe seleccionar un cliente!',
         ];
 
         $request['valor_cambio'] = str_replace('.', '', $request['valor_cambio']);
 
         $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        if (count($array_pedidos) == 0) {
+            return redirect()->back()->withErrors('No puede guardar una nota de crédito sin relacionar a una factura!')->withInput();
+        }
 
         $serie = Serie::findOrFail($request['serie_id']);
         $cliente = Cliente::findOrFail($request['cliente_id']);
@@ -107,11 +109,13 @@ class NotaCreditoVentaController extends Controller
             $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
         }
 
-        /*if ($request['tipo_factura'] == 'CR') {
-            if ($cliente->getLimiteCredito() < $total) {
-                return redirect()->back()->withErrors('La factura supera el límite de crédito del cliente! Su límite es de Gs '.$cliente->getLimiteCreditoNumber())->withInput();
+        foreach ($array_pedidos as $nro_factura) {
+            $factura_cab = FacturaVentaCab::findOrFail($nro_factura);
+            $total_factura = $factura_cab->getMontoSaldo();
+            if ($total_factura < $total) {
+                return redirect()->back()->withErrors('La nota de crédito no puede ser mayor al saldo de la factura! El saldo de la factura es de Gs '.$factura_cab->getMontoSaldoFormat())->withInput();
             }
-        }*/
+        }
 
         $cabecera->setTipoNotaCredito($request['tipo_nota_credito']);
         $cabecera->setSerieId($request['serie_id']);
@@ -119,7 +123,7 @@ class NotaCreditoVentaController extends Controller
         $cabecera->setClienteId($request['cliente_id']);
         $cabecera->setSucursalId($request['sucursal_id']);
         $cabecera->setMonedaId($request['moneda_id']);
-        $cabecera->setListaPrecioId($request['lista_precio_id']);
+        //$cabecera->setListaPrecioId($request['lista_precio_id']);
         $cabecera->setValorCambio($request['valor_cambio']);
         $cabecera->setFechaEmision($request['fecha_emision']);
         $cabecera->setComentario($request['comentario']);
@@ -148,12 +152,12 @@ class NotaCreditoVentaController extends Controller
                 //Actualizacion de existencia
                 $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
                     ->where('sucursal_id', $sucursal->getId())->first();
-                $existencia->actualizaStock('-', $detalle->getCantidad());
+                $existencia->actualizaStock('+', $detalle->getCantidad());
                 $existencia->update();
             }
         }
 
-        if (count($array_pedidos) > 0) {
+        /*if (count($array_pedidos) > 0) {
             foreach ($array_pedidos as $nro_pedido) {
                 $pedido_cab = PedidoVentaCab::findOrFail($nro_pedido);
                 $pedido_cab->setEstado('F');
@@ -164,23 +168,31 @@ class NotaCreditoVentaController extends Controller
                 $pedido_factura->setFacturaId($cabecera->getId());
                 $pedido_factura->save();
             }
+        }*/
+        /*Actualiza el saldo de la factura relacionada a la nota de credito*/
+        foreach ($array_pedidos as $nro_factura) {
+            $cuenta_factura = CuentaCliente::where('tipo_comprobante', 'F')
+                ->where('comprobante_id', $nro_factura)->first();
+            $cuenta_factura->setMontoSaldo($cuenta_factura->getMontoSaldo() - str_replace('.', '', $cabecera->getMontoTotal()));
+            $cuenta_factura->update();
         }
 
+        /*Actualiza el numero de comprobante utilizado para la serie*/
         $serie->setNroActual($serie->getNroActual()+1);
         $serie->update();
 
         //Actualizacion de saldo cliente
         $cuenta = new CuentaCliente;
-        $cuenta->setTipoComprobante('F');
+        $cuenta->setTipoComprobante('N');
         $cuenta->setComprobanteId($cabecera->getId());
-        $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
-        $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
+        $cuenta->setMontoComprobante(str_replace('.', '', str_replace('.', '', $cabecera->getMontoTotal())*-1));
+        $cuenta->setMontoSaldo(0);
         $cuenta->save();
 
-        $cliente->setMontoSaldo($cliente->getMontoSaldo()+str_replace('.', '', $cabecera->getMontoTotal()));
+        $cliente->setMontoSaldo($cliente->getMontoSaldo() - str_replace('.', '', $cabecera->getMontoTotal()));
         $cliente->update();
 
-        return redirect()->route('facturacionVentas.show', ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
+        return redirect()->route('notaCreditoVentas.show', ['notaCreditoVenta' => $cabecera->getId()])->with('status', 'Nota de Crédito guardada correctamente!');
     }
 
     /**
@@ -235,6 +247,7 @@ class NotaCreditoVentaController extends Controller
         $permiso_ver = Auth::user()->can('notaCreditoVentas.show');
         $sucursal_actual = Auth::user()->empleado->sucursales->first();
         $notas = NotaCreditoVentaCab::where('sucursal_id',$sucursal_actual->getId())->get();
+
         if ($permiso_ver) {
             return Datatables::of($notas)
                 ->addColumn('tipo_nota_cred', function($notas){
@@ -257,12 +270,12 @@ class NotaCreditoVentaController extends Controller
                 })
                 ->addColumn('estado', function($notas){
                     if ($notas->estado == 'P') {
-                        return 'Pendiente';
+                        return 'Cancelada';
                     } elseif ($notas->estado == 'A') {
                         return 'Anulada';
                     }
                 })
-                ->addColumn('action', function($facturas){
+                ->addColumn('action', function($notas){
                     return '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Nota de Crédito"><i class="fa fa-eye"></i></a>';
                 })->make(true);
         } else {
@@ -287,12 +300,12 @@ class NotaCreditoVentaController extends Controller
                 })
                 ->addColumn('estado', function($notas){
                     if ($notas->estado == 'P') {
-                        return 'Pendiente';
+                        return 'Cancelada';
                     } elseif ($notas->estado == 'A') {
                         return 'Anulada';
                     }
                 })
-                ->addColumn('action', function($facturas){
+                ->addColumn('action', function($notas){
                     return '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Nota de Crédito" disabled><i class="fa fa-eye"></i></a> ';
                 })->make(true);
         }
