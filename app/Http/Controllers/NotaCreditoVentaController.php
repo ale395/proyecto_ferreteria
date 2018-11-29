@@ -61,7 +61,126 @@ class NotaCreditoVentaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $sucursal = Auth::user()->empleado->sucursalDefault;
+        $usuario = Auth::user();
+        $cabecera = new NotaCreditoVentaCab();
+        $total = 0;
+        $array_pedidos = [];
+        if ($request['pedidos_id'] != null) {
+            $array_pedidos = explode(",",($request['pedidos_id']));
+        }
+
+        if (!empty('sucursal')) {
+            $request['sucursal_id'] = $sucursal->getId();
+        }
+
+        $rules = [
+            'tipo_nota_credito' => 'required',
+            'serie_id' => 'required',
+            'nro_nota_credito' => 'required',
+            'lista_precio_id' => 'required',
+            'cliente_id' => 'required',
+            'sucursal_id' => 'required',
+            'moneda_id' => 'required',
+            'lista_precio_id' => 'required',
+            'valor_cambio' => 'required|numeric|min:1',
+            'fecha_emision' => 'required|date_format:d/m/Y',
+            'tab_articulo_id' => 'required|array|min:1|max:'.NotaCreditoVentaCab::MAX_LINEAS_DETALLE,
+        ];
+
+        $mensajes = [
+            'valor_cambio.min' => 'El valor de cambio no puede ser menor que :min !',
+            'tab_articulo_id.required' => 'No se puede guardar una factura sin artículos en el detalle!',
+            'tab_articulo_id.min' => 'Como mínimo se debe asignar :min producto(s) a la factura!',
+            'tab_articulo_id.max' => 'Ha superado la cantidad máxima de líneas en una factura. La cantidad máxima es de :max!',
+            'cliente_id.required' => 'Debe seleccionar un cliente!',
+        ];
+
+        $request['valor_cambio'] = str_replace('.', '', $request['valor_cambio']);
+
+        $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        $serie = Serie::findOrFail($request['serie_id']);
+        $cliente = Cliente::findOrFail($request['cliente_id']);
+
+        for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+            $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
+        }
+
+        /*if ($request['tipo_factura'] == 'CR') {
+            if ($cliente->getLimiteCredito() < $total) {
+                return redirect()->back()->withErrors('La factura supera el límite de crédito del cliente! Su límite es de Gs '.$cliente->getLimiteCreditoNumber())->withInput();
+            }
+        }*/
+
+        $cabecera->setTipoNotaCredito($request['tipo_nota_credito']);
+        $cabecera->setSerieId($request['serie_id']);
+        $cabecera->setNroNotaCredito($request['nro_nota_credito']);
+        $cabecera->setClienteId($request['cliente_id']);
+        $cabecera->setSucursalId($request['sucursal_id']);
+        $cabecera->setMonedaId($request['moneda_id']);
+        $cabecera->setListaPrecioId($request['lista_precio_id']);
+        $cabecera->setValorCambio($request['valor_cambio']);
+        $cabecera->setFechaEmision($request['fecha_emision']);
+        $cabecera->setComentario($request['comentario']);
+        $cabecera->setMontoTotal($total);
+        $cabecera->setUsuarioId($usuario->id);
+
+        $cabecera->save();
+
+        for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+            $detalle = new NotaCreditoVentaDet;
+            $detalle->setNotaCreditoCabeceraId($cabecera->getId());
+            $detalle->setArticuloId($request['tab_articulo_id'][$i]);
+            
+            $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+            $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_precio_unitario'][$i]));
+            $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
+            $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
+            $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
+            $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
+            $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
+            $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
+            $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
+            $detalle->save();
+
+            if ($detalle->articulo->getControlExistencia() == true) {
+                //Actualizacion de existencia
+                $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
+                    ->where('sucursal_id', $sucursal->getId())->first();
+                $existencia->actualizaStock('-', $detalle->getCantidad());
+                $existencia->update();
+            }
+        }
+
+        if (count($array_pedidos) > 0) {
+            foreach ($array_pedidos as $nro_pedido) {
+                $pedido_cab = PedidoVentaCab::findOrFail($nro_pedido);
+                $pedido_cab->setEstado('F');
+                $pedido_cab->update();
+
+                $pedido_factura = new PedidoFactura;
+                $pedido_factura->setPedidoId($pedido_cab->getId());
+                $pedido_factura->setFacturaId($cabecera->getId());
+                $pedido_factura->save();
+            }
+        }
+
+        $serie->setNroActual($serie->getNroActual()+1);
+        $serie->update();
+
+        //Actualizacion de saldo cliente
+        $cuenta = new CuentaCliente;
+        $cuenta->setTipoComprobante('F');
+        $cuenta->setComprobanteId($cabecera->getId());
+        $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
+        $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
+        $cuenta->save();
+
+        $cliente->setMontoSaldo($cliente->getMontoSaldo()+str_replace('.', '', $cabecera->getMontoTotal()));
+        $cliente->update();
+
+        return redirect()->route('facturacionVentas.show', ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
     }
 
     /**

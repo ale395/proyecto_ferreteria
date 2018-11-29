@@ -559,7 +559,7 @@
         cantidad = cantidad.replace(",", ".");
         var existencia = $("#existencia").val();
         
-        if (Number(cantidad) > Number(existencia)) {
+        /*if (Number(cantidad) > Number(existencia)) {
             var obj = $.alert({
                 title: 'Atención',
                 content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
@@ -571,7 +571,7 @@
             setTimeout(function(){
                 obj.close();
             },3000); 
-        } else {
+        } else {*/
             var decimales = 0;
             var articulo = $('#select2-articulos').select2('data')[0].text;
             var articulo_id = $('#select2-articulos').select2('data')[0].id;
@@ -642,7 +642,7 @@
             $('#subtotal').val("");
             $('#select2-articulos').val(null).trigger('change');
             $("#select2-articulos").focus();
-            }
+            /*}*/
         }
     };
 
