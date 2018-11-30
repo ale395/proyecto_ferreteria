@@ -17,14 +17,17 @@ class CreateAjustesInventariosDetTable extends Migration
             $table->increments('id');
             $table->integer('ajuste_inventario_cab_id')->unsigned();
             $table->integer('articulo_id')->unsigned();
-            $table->integer('cantidad');
-            $table->integer('existencia_id');
-            $table->integer('cantidad_total');
+            $table->integer('existencia_id')->nullable();
+            $table->decimal('cantidad', 14, 2);
+            $table->integer('diferencia_inventario')->nullable();
+            $table->decimal('costo_unitario', 14, 2);
+            $table->decimal('sub_total', 14, 2);
             $table->timestamps();
 
+            $table->foreign('ajuste_inventario_cab_id')->references('id')->on('ajustes_inventarios_cab');
             $table->foreign('articulo_id')->references('id')->on('articulos');
             $table->foreign('existencia_id')->references('id')->on('existencia_articulos');
-            $table->foreign('ajuste_inventario_cab_id')->references('id')->on('ajustes_inventarios_cab');
+
         });
     }
 

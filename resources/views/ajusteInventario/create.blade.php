@@ -41,29 +41,19 @@
                     <div class="form-group">
                         <label for="nro_ajuste" class="col-md-1 control-label">Número Ajuste</label>
                         <div class="col-md-2">
-                            <input type="number" id="nro_ajuste" name="nro_ajuste" class="form-control" readonly="readonly">
+                            <input type="text" id="nro_ajuste" name="nro_ajuste" class="form-control" value="{{old('nro_ajuste', $nro_ajuste)}}"  readonly="readonly">
                         </div>
 
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
-                        </div>
-                        <label for="sucursal_id" class="col-md-1 control-label">Sucursal *</label>
-                          <div class="col-md-5">
-                            <select id="select2-sucursales" name="sucursal_id" class="form-control" style="width: 100%">
-                            <option></option>
-                                @foreach($sucursales as $id => $sucursal)
-                                  <option value="{{ $sucursal->id }}">({{ $sucursal->codigo}}) {{ $sucursal->nombre }}</option>
-                                @endforeach
-                            </select>    
-                        </div>
-                    
+                        </div>                   
                     </div>
                     <label for="concepto_ajuste_id" class="col-md-1 control-label">Concepto de Ajuste *</label>
                           <div class="col-md-5">
                             <select id="select2-conceptosAjustes" name="concepto_ajuste_id" class="form-control" style="width: 100%">
                             <option></option>
-                                @foreach($conceptos_ajustes as $id => $concepto_ajuste)
+                                @foreach($concepto_ajuste as $id => $concepto_ajuste)
                                   <option value="{{ $concepto_ajuste->id }}"> {{ $concepto_ajuste->descripcion }}</option>
                                 @endforeach
                             </select>    
@@ -76,10 +66,10 @@
                        </div>
                    </div>
                     <div class="form-group">
-                         <label for="empleado_id" class="col-md-1 control-label">Registrado por: </label>
+                         <label class="col-md-1 control-label">Registrado por: </label>
                          <div class="col-md-5">
                             <h4>{{ Auth::user()->name }}</h4>
-                            </div>
+                         </div>
                     </div>
                     <div class="form-group">
                         
@@ -88,31 +78,32 @@
                     <div class="form-group">
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
-                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
+                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" onchange="setCantidadCosto()">
 
                             </select>
                         </div>
-                        <div class="col-md-1">
-                            <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
-                        </div>
-                        <input type="hidden" id="existencia" name="existencia">
-
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Subtotal">
-                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
+                             <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
                         </div>
                         <div class="col-md-1">
-                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <span class="help-block with-errors"></span>
 
-                    <table id="ajuste_inventario-detalle" class="table table-striped table-responsive display" style="width:100%">
+                    <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
                         <thead>
                             <tr>
                                 <th width="5%">Acción</th>
                                 <th>Artículo</th>
                                 <th width="6%">Cant.</th>
+                                <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
                             </tr>
                         </thead>
@@ -123,6 +114,7 @@
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
+                                        <td>{{old('tab_costounitario.'.$i)}}</td>>
                                         <td>{{old('tab_subtotal.'.$i)}}</td>
                                     </tr>
                                 @endfor
@@ -130,10 +122,6 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -150,6 +138,7 @@
                                 <th>Artículo ID</th>
                                 <th>Nombre Artículo</th>
                                 <th width="6%">Cant.</th>
+                                <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
                             </tr>
                         </thead>
@@ -161,6 +150,7 @@
                                         <th><input type="text" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_costounitario[]" value="{{old('tab_costounitario.'.$i)}}"></th>
                                         <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
                                     </tr>
                                 @endfor
@@ -172,16 +162,80 @@
         </form>
     </div>
 </div>
-@include('cliente.create-persona-fisica')
-@include('cliente.create-persona-juridica')
 
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
    
+   function setCantidadCosto() {
+        var articulo_id = $("#select2-articulos" ).val();
+        $.ajax({
+          type: "GET",
+          url: "{{ url('api/articulos') }}" + '/costo/' + articulo_id,
+          datatype: "json",
+          //async: false,
+          success: function(data){
+            $("#costo_unitario" ).val(data).change();
+        }
+    });
 
-    $("#btn-add-articulo").attr("disabled", true);
-    
+    if($("#cantidad" ).val().length === 0){
+            $("#cantidad" ).val(1).change();
+        }
+        $("#cantidad").focus();
+    };
+ 
+    function calcularSubtotal() {
+        var cantidad = $("#cantidad" ).val();
+        cantidad = cantidad.replace(".", "");
+        var calculo = cantidad * $("#costo_unitario" ).val();
+        if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
+            $("#subtotal" ).val(calculo).change();
+        }
+    };
+
+    function addArticulo() {
+        /*Se obtienen los valores de los campos correspondientes*/
+            var decimales = 0;
+            var articulo = $('#select2-articulos').select2('data')[0].text;
+            var articulo_id = $('#select2-articulos').select2('data')[0].id;
+            var cantidad = $("#cantidad").val();
+            var costo_unitario = $("#costo_unitario").val();
+            var subtotal = $("#subtotal").val();
+
+            /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+            costo_unitario = $.number(costo_unitario,decimales, ',', '.');
+            cantidad = $.number(cantidad,decimales, ',', '.');
+            subtotal = $.number(subtotal,decimales, ',', '.');  
+            
+            /*Se agrega una fila a la tabla*/
+            var tabla = $("#pedido-detalle").DataTable();
+            tabla.row.add( [
+                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+                articulo,
+                cantidad,
+                costo_unitario,
+                subtotal
+            ] ).draw( false );
+
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costounitario[]' value='" + precio_unitario + "'></th> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+            $("#tab-hidden").append(markup);
+
+            /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+            $('#cantidad').number(false);
+            $('#costo_unitario').number(false);
+            $('#subtotal').number(false);
+            
+            $('#cantidad').val("");
+            $('#costo_unitario').val("");
+            $('#porcentaje_descuento').val("");
+            $('#porcentaje_iva').val("");
+            $('#subtotal').val("");
+            $('#select2-articulos').val(null).trigger('change');
+            $("#select2-articulos").focus();
+        };
+
+        $("#btn-add-articulo").attr("disabled", true);
     var table = $('#pedido-detalle').DataTable({
         "paging":   false,
         "ordering": false,
@@ -189,8 +243,7 @@
         "searching": false,
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
-          { className: "dt-center", "targets": [0,2,3,4,5,6,7,8] },
-          { className: "dt-left", "targets": [1] }
+        {"className": "dt-center", "targets": "_all"}
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -206,7 +259,7 @@
  
             // Total over all pages
             total = api
-                .column(8)
+                .column(4)//se refiere a la columna del datatable donde está el sub-total
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -214,130 +267,19 @@
  
             // Total over this page
             pageTotal = api
-                .column( 8, { page: 'current'} )
+                .column( 4, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 8 ).footer() ).html(
+            $( api.column( 4 ).footer() ).html(
                 $.number(total,decimales, ',', '.')
             );
         }
     });
-
-    /*Evento onchange del select de artículos, para que recupere el precio si es seleccionado algún artículo distinto a nulo*/
-    $("#select2-articulos").change(function (e) {
-        var valor = $(this).val();
-        
-        if (valor != null) {
-            var articulo_id = $("#select2-articulos" ).val();
-            {{--var lista_precio_id = $("#select2-lista-precios" ).val();--}}
-            {{--$.ajax({--}}
-              {{--type: "GET",--}}
-              {{--url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,--}}
-              {{--datatype: "json",--}}
-              {{--success: function(data){--}}
-                {{--$("#existencia" ).val(data.existencia).change();--}}
-                {{--$("#btn-add-articulo").attr("disabled", false);--}}
-              {{--}--}}
-            {{--});--}}
-
-            $("#cantidad" ).val(1).change();
-            $("#cantidad").focus();
-        } else {
-            $("#btn-add-articulo").attr("disabled", true);
-        }
-    });
-
-    function calcularSubtotal() {
-        var cantidad = $("#cantidad" ).val();
-        cantidad = cantidad.replace(".", "");
-        precio_unitario = precio_unitario.replace(".", "");
-        var calculo = cantidad * (precio_unitario - (precio_unitario * (porcentaje_descuento/100)));
-        if($("#cantidad" ).val().length != 0 && $("#precio_unitario" ).val().length != 0){
-            $("#subtotal" ).val(calculo).change();
-        }
-    };
-
-    function addArticulo() {
-        /*Se obtienen los valores de los campos correspondientes*/
-        var cantidad = $("#cantidad" ).val();
-        var existencia = $("#existencia" ).val();
-        
-        if (Number(cantidad) > Number(existencia)) {
-            console.log('Cantidad es mayor que existencia: '+cantidad+' - '+existencia);
-            var obj = $.alert({
-                title: 'Atención',
-                content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
-                icon: 'fa fa-exclamation-triangle',
-                type: 'orange',
-                backgroundDismiss: true,
-                theme: 'modern',
-            });
-            setTimeout(function(){
-                obj.close();
-            },4000); 
-        } else {
-            var decimales = 0;
-            var articulo = $('#select2-articulos').select2('data')[0].text;
-            var articulo_id = $('#select2-articulos').select2('data')[0].id;
-            //var cantidad = $("#cantidad").val();
-            var precio_unitario = $("#precio_unitario").val();
-            var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-            var monto_descuento = cantidad * precio_unitario.replace(".", "") * (porcentaje_descuento/100);
-            var subtotal = $("#subtotal").val();
-            var porcentaje_iva = $("#porcentaje_iva" ).val();
-            var exenta = 0;
-            var gravada = 0;
-            var iva = 0;
-            if (porcentaje_iva == 0) {
-                exenta = subtotal;
-            } else {
-                gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
-                iva = Math.round(gravada*(porcentaje_iva/100));
-            }
-            /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
-            precio_unitario = $.number(precio_unitario,decimales, ',', '.');
-            cantidad = $.number(cantidad,decimales, ',', '.');
-            monto_descuento = $.number(monto_descuento,decimales, ',', '.');
-            exenta = $.number(exenta,decimales, ',', '.');
-            gravada = $.number(gravada,decimales, ',', '.');
-            iva = $.number(iva,decimales, ',', '.');
-            subtotal = $.number(subtotal,decimales, ',', '.');  
-            
-            /*Se agrega una fila a la tabla*/
-            var tabla = $("#pedido-detalle").DataTable();
-            tabla.row.add( [
-                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
-                articulo,
-                cantidad,
-                precio_unitario,
-                monto_descuento,
-                exenta,
-                gravada,
-                iva,
-                subtotal
-            ] ).draw( false );
-
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
-            $("#tab-hidden").append(markup);
-
-            /*Se restauran a nulos los valores del bloque para la selección del articulo*/
-            $('#cantidad').number(false);
-            $('#precio_unitario').number(false);
-            $('#subtotal').number(false);
-            
-            $('#cantidad').val("");
-            $('#precio_unitario').val("");
-            $('#porcentaje_descuento').val("");
-            $('#porcentaje_iva').val("");
-            $('#subtotal').val("");
-            $('#select2-articulos').val(null).trigger('change');
-            $("#select2-articulos").focus();
-        }
-    };
+    
 
     /*Elimina el articulo del pedido*/
     var tabla = $("#pedido-detalle").DataTable();
@@ -349,34 +291,21 @@
             .draw();
         $("#tab-hidden tr:eq("+row+")").remove();
     } );
-
 </script>
 <script type="text/javascript">
-    //JS para que al abrir el modal de persona fisica se quede en foco en el campo nro_cedula
-    $('#modal-form-fisica').on('shown.bs.modal', function() {
-      $("#nro_cedula").focus();
-    });
-    //JS para que al abrir el modal de persona jurídica se quede en foco en el campo ruc
-    $('#modal-form-juridica').on('shown.bs.modal', function() {
-      $("#ruc_juridica").focus();
-    });
-    $('#cliente-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
-    $('#cliente-form-juridica').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
-    //JS para el formato con separador de miles al ingresar el nro de cedula
-    $('#nro_cedula').number(true, 0, ',', '.');
-    /*JS para la inclusión del guión en el campo RUC del modal para persona física*/
-    $("#ruc").on({
+       $("#cantidad").on({
         "focus": function (event) {
             $(event.target).select();
         },
         "keyup": function (event) {
             $(event.target).val(function (index, value ) {
                 return value.replace(/\D/g, "")
-                            .replace(/([0-9])([0-9]{1})$/, '$1-$2');
+                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
             });
         }
     });
-    /*JS para la inclusión del guión en el campo RUC del modal para persona jurídica*/
+
+
     $("#ruc_juridica").on({
         "focus": function (event) {
             $(event.target).select();
@@ -388,21 +317,38 @@
             });
         }
     });
-    $('#valor_cambio').number(true, 0, ',', '.');
-    $('#cantidad').number(true, 2, ',', '.');
-    $('#precio_unitario').number(true, 0, ',', '.');
-    $('#subtotal').number(true, 0, ',', '.');
-</script>
 
+</script>
 <script type="text/javascript">
-    /*JS del componente Select2*/
-    $(document).ready(function(){
-        $('#select2-clientes').select2({
+   $(document).ready(function(){
+    $('#select2-conceptosAjustes').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            ajax: {
+                url: "{{ route('api.conceptosAjustes.buscador') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+    $('#select2-articulos').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
             minimumInputLength: 4,
             ajax: {
-                url: "{{ route('api.clientes.ventas') }}",
+                url: "{{ route('api.articulos.ventas') }}",
                 delay: 250,
                 data: function (params) {
                     var queryParameters = {
@@ -442,56 +388,11 @@
                 cache: true
             }
         });
-        $('#select2-conceptosAjustes').select2({
-            placeholder: 'Seleccione una opción',
-            language: "es",
-            ajax: {
-                url: "{{ route('api.conceptosAjustes.buscador') }}",
-                delay: 250,
-                data: function (params) {
-                    var queryParameters = {
-                      q: params.term
-                    }
+ 
 
-                    return queryParameters;
-                  },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            }
-        });
-        $('#select2-articulos').select2({
-            placeholder: 'Seleccione una opción',
-            language: "es",
-            minimumInputLength: 4,
-            ajax: {
-                url: "{{ route('api.articulos.ventas') }}",
-                delay: 250,
-                data: function (params) {
-                    var queryParameters = {
-                      q: params.term
-                    }
-
-                    return queryParameters;
-                  },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            }
-        });
-    
 
     });
 
-    /*JS para el DatePicker de fecha_emision*/
     $(function() {
       $('.dpfecha').datepicker({
         format: 'dd/mm/yyyy',

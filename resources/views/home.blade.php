@@ -259,8 +259,8 @@
                                       <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajustes</a>
                                       </li>
                                     @endcan
-                                    @can('ajustesInventarios.create')
-                                        <li class="sub_menu"><a href="{{route('ajustesInventarios.create')}}">Ajustes de Inventario</a>
+                                    @can('ajustesInventarios.index')
+                                        <li class="sub_menu"><a href="{{route('ajustesInventarios.index')}}">Ajustes de Inventario</a>
                                         </li>
                                     @endcan
                                 </ul>
