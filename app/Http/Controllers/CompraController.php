@@ -122,6 +122,8 @@ class CompraController extends Controller
                 //para traer despues el costo promedio
                 $articulo = Articulo::findOrFail($request['tab_articulo_id'][$i]);
 
+                //$costo_pp = str_replace('.', '', $articulo->getCostoPromedio());
+
                 $detalle = new ComprasDet();
 
                 $detalle->setCompraCabeceraId($cabecera->getId());
@@ -129,7 +131,7 @@ class CompraController extends Controller
                 $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
                 $detalle->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
                 $detalle->setCostoPromedio(str_replace('.', '', $articulo->getCostoPromedio()));
-                $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_;descuento'][$i]));
+                $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
                 $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
                 $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
                 $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
@@ -167,13 +169,21 @@ class CompraController extends Controller
                 //----------------para el costo promedio-----------------------------------
                 $id =  $request['tab_articulo_id'][$i]; 
 
-                $total_costos = DB::table('compras_det as o')
+                $r_total_costos = DB::table('compras_det as o')
                 ->select( DB::raw("sum(o.costo_unitario*o.cantidad) as costo_unitario"))
                 ->where('o.articulo_id','=',$id)->first();
 
-                $total_cantidades = DB::table('compras_det as o')
+                $total_costos = $r_total_costos->costo_unitario;
+                
+                //var_dump($total_costos);
+
+                $r_total_cantidades = DB::table('compras_det as o')
                 ->select( DB::raw("sum(o.cantidad) as cantidad"))
                 ->where('o.articulo_id','=',$id)->first();
+
+                $total_cantidades = $r_total_cantidades->cantidad;
+
+                //var_dump($total_cantidades);
 
                 $articulo_costo = Articulo::findOrFail($id);
 
@@ -184,7 +194,7 @@ class CompraController extends Controller
                     $articulo_costo->costo_promedio = str_replace('.', '', $request['tab_costo_unitario'][$i]);
                 }
 
-                $articulo_costo = update();
+                $articulo_costo->update();
                 //----------------para el costo promedio-----------------------------------
 
                 //$detale_costo = ComprasDet::where('articulo_id', $request['tab_articulo_id'][$i])->get();
@@ -194,7 +204,7 @@ class CompraController extends Controller
                 //aca va todo lo referente a pagos!
             } else {
                 //Actualizacion de saldo proveedor
-                $cuenta = new CuentaCliente;
+                $cuenta = new CuentaProveedor;
                 $cuenta->setTipoComprobante('F');
                 $cuenta->setComprobanteId($cabecera->getId());
                 $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
@@ -278,13 +288,13 @@ class CompraController extends Controller
                         return $compras->getTipoFacturaIndex();
                     })
                     ->addColumn('nro_factura', function($compras){
-                        return $compras->getNroFacturaIndex();
+                        return $compras->getNroFactura();
                     })
                     ->addColumn('fecha', function($compras){
                         return $compras->getFechaEmision();
                     })
                     ->addColumn('proveedor', function($compras){
-                        return $compras->provedor->getNombreIndex();
+                        return $compras->proveedor->getNombreIndex();
                     })
                     ->addColumn('moneda', function($compras){
                         return $compras->moneda->getDescripcion();

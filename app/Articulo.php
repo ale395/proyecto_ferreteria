@@ -71,10 +71,10 @@ class Articulo extends Model
     }
 
     public function getUltimoCosto(){
-        return number_format($this->ultimo_costo, 2, ',', '.');
+        return number_format($this->ultimo_costo, 0, ',', '.');
     }
 
     public function getCostoPromedio(){
-        return number_format($this->costo_promedio, 2, ',', '.');
+        return number_format($this->costo_promedio, 0, ',', '.');
     }
 }
