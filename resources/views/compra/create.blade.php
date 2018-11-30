@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('CompraController@store')}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('CompraController@store')}}" onsubmit="return Validar()" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Compra
@@ -43,15 +43,15 @@
                         <div class="col-md-3">
                             <div id="tipo_factura" class="btn-group" data-toggle="buttons">
                                 @if(old('tipo_factura') === 'CR')
-                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" >
                                     <input id="radioContado" type="radio" name="tipo_factura" value="CO">Contado</label>
-                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                    <input type="radio" name="tipo_factura" value="CR" checked> Crédito</label>
+                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="habilitarFP()">
+                                    <input id="radioCredito" type="radio" name="tipo_factura" value="CR" checked> Crédito</label>
                                 @else
                                     <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" >
                                     <input id="radioContado" type="radio" name="tipo_factura" value="CO" checked>&nbsp;Contado&nbsp;</label>
-                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" >
-                                    <input type="radio" name="tipo_factura" value="CR"> Crédito </label>
+                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="deshabilitarFP()">
+                                    <input id="radioCredito" type="radio" name="tipo_factura" value="CR"> Crédito </label>
                                 @endif
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                         -->
                         <label for="timbrado" class="col-md-3 control-label">Timbrado</label>
                         <div class="col-md-2">
-                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('nro_factura')}}" >  
+                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('timbrado')}}" >  
                         </div>
                     </div>
                     <div class="form-group">
@@ -259,7 +259,7 @@
                                         <a data-toggle="tooltip" data-placement="top" title="Importe"><input type="text" id="importe-che" name="importe" class="form-control" placeholder="Importe"></a>
                                     </div>
                                     <div class="col-md-1">
-                                        <a id="btn-add-forma-pago" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir forma de pago" onclick="addFormaPago()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                                        <a id="btn-add-forma-pago-che" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir forma de pago" onclick="addFormaPago()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                                     </div>
 
                                 </div>
@@ -469,7 +469,7 @@
 
     
     $("#btn-add-articulo").attr("disabled", true);
-      
+    $("#btn-add-forma-pago-che").attr("disabled", true);
     
     var table = $('#pedido-detalle').DataTable({
         "paging":   false,
@@ -636,6 +636,38 @@
         }
     });
 
+    /*Evento onchange del select de artículos, para que recupere el costo si es seleccionado algún artículo distinto a nulo*/
+    $("#select2-banco-pago").change(function (e) {
+        var valor = $(this).val();
+        
+        if (valor != null) {
+            /*    
+            var articulo_id = $("#select2-articulos" ).val();
+            $.ajax({
+                type: "GET",
+                url: "{{ url('api/articulos') }}" + '/costo/' + articulo_id,
+                datatype: "json",
+                //async: false,
+                success: function(data){
+                    $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
+                    $("#costo_unitario" ).val(data.ultimo_costo).change();                    
+                    $("#porcentaje_descuento" ).val(0).change();
+                    $("#btn-add-articulo").attr("disabled", false);
+                }
+            });
+            */    
+            $("#btn-add-articulo").attr("disabled", false);
+            /*
+            if($("#cantidad" ).val().length === 0){
+                $("#cantidad" ).val(1).change();
+            }
+            $("#cantidad").focus();CON
+            */CON
+        } else {
+            $("#btn-add-articulo").attr("disabled", true);
+        }
+    });
+
     //Función para recuperar el valor de cambio al cambiar de moneda (?)
     function setValorCambio() {
         var moneda_id = $("#select2-monedas" ).val();
@@ -664,6 +696,71 @@
         }
     };
 
+    function deshabilitarFP(){
+        //$( ".nav nav-tabs" ).tabs( "disable", [1, 2] );
+    };
+
+    function habilitarFP(){
+        //$( ".nav nav-tabs" ).tabs( "enable", [1, 2] );
+    };
+
+    function Validar(){
+
+        var modalidad_con = "";
+        var modalidad_cre = "";
+
+        if (document.getElementById('radioContado').checked) {
+            modalidad_con = document.getElementById("radioContado").value;        
+        }
+
+        if (document.getElementById('radioContado').checked) {
+            modalidad_cre = document.getElementById("radioCredito").value;
+        }
+
+
+        cheques_detalle = $('input[name="tab_banco_id[]"]').map(function () {
+            return this.value;
+        }).get();
+
+        if (modalidad_cre == "CRE" && cheques_detalle.length > 0 ) {
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'La modalidad de pago es crédito, no se debe ingresar la forma de pago',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000);
+
+                return false; 
+        }
+        else {
+            if (modalidad_con == "CO" && cheques_detalle.length == 0 ) {
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'Debe ingresar la forma de pago.',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000);
+
+                return false; 
+            }
+            else {
+
+
+                return true
+            }
+        }
+    };
+
     function addArticulo() {
         var indexColumn = 0;
         var articulos_detalle = $('input[name="tab_articulo_id[]"]').map(function () {
@@ -672,7 +769,7 @@
 
         /*Se obtienen los valores de los campos correspondientes*/
         var cantidad = $("#cantidad").val();
-        var existencia = $("#existencia").val();
+        //var existencia = $("#existencia").val();
         console.log('Antes de add: '+articulos_detalle);
         
         var decimales = 0;
@@ -790,7 +887,7 @@
             importe = $.number(importe,decimales, ',', '.');
             
             /*Se agrega una fila a la tabla*/
-            var tabla = $("#pedido-detalle").DataTable();
+            var tabla = $("#cheques-pago-detalle").DataTable();
             tabla.row.add( [
                 "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
                 banco,
@@ -801,7 +898,7 @@
             ] ).draw( false );
 
             var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_banco_id' name='tab_banco_id[]' value='" + banco_id + "'></th> <th> <input type='text' name='tab_banco_nombre[]' value='" + banco + "'></th> <th> <input type='text' name='tab_cuenta[]' value='" + cuenta + "'></th> <th> <input type='text' name='tab_librador[]' value='" + librador+ "'></th> <th> <input type='text' name='tab_fecha_venc[]' value='" + fecha_vencimiento + "'> </th> <th> <input type='text' name='tab_importe_che[]' value='" + importe + "'> </th> </tr>";
-            $("#tab-hidden").append(markup);
+            $("#tab-hidden-che").append(markup);
 
             /*Se restauran a nulos los valores del bloque para la selección del articulo*/
             $('#importe-che').number(false);
