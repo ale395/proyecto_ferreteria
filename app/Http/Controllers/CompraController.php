@@ -17,9 +17,11 @@ use App\DatosDefault;
 use App\Impuesto;
 use App\Cotizacion;
 use App\ExistenciaArticulo;
+use App\CuentaProveedor;
 use DB;
 use Response;
 use Illuminate\Support\Collections;
+use PhpParser\Node\Stmt\Else_;
 
 
 class CompraController extends Controller
@@ -70,8 +72,10 @@ class CompraController extends Controller
             $usuario = Auth::user();
             $cabecera = new ComprasCab();
             $total = 0;
+
+            $modalidad_pago = $request['tipo_factura'];
             
-           if (!empty('sucursal')) {
+            if (!empty('sucursal')) {
                 $request['sucursal_id'] = $sucursal->getId();
             }
             
@@ -126,17 +130,17 @@ class CompraController extends Controller
                 }
             }
   
-
-            //Actualizacion de saldo proveedor
-            $cuenta = new CuentaCliente;
-            $cuenta->setTipoComprobante('F');
-            $cuenta->setComprobanteId($cabecera->getId());
-            $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
-            $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
-            $cuenta->save();
-    
-            $proveedor->setMontoSaldo($proveedor->getMontoSaldo()+str_replace('.', '', $cabecera->getMontoTotal()));
-            $proveedor->update();
+            if ($modalidad_pago == 'CON'){
+                //aca va todo lo referente a pagos!
+            } else {
+                //Actualizacion de saldo proveedor
+                $cuenta = new CuentaCliente;
+                $cuenta->setTipoComprobante('F');
+                $cuenta->setComprobanteId($cabecera->getId());
+                $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
+                $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
+                $cuenta->save();
+            }
     
             DB::commit();
             
