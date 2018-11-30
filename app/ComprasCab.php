@@ -32,6 +32,10 @@ class ComprasCab extends Model
         }
     }
 
+    public function setUsuarioId($usuario_id){
+        $this->usuario_id = $usuario_id;
+    }
+
     public function setTipoFactura($tipo_factura){
     	$this->tipo_factura = $tipo_factura;
     }
@@ -40,10 +44,10 @@ class ComprasCab extends Model
     	return $this->nro_factura;
     }
 
-    public function getNroFacturaIndex(){
-        $serie = "";
-        return $serie.' '.str_pad($this->nro_factura, 7, "0", STR_PAD_LEFT);
+    public function setNroFactura($nro_factura){
+    	$this->nro_factura = $nro_factura;
     }
+
     public function setProveedorId($proveedor_id){
         $this->proveedor_id = $proveedor_id;
     }
