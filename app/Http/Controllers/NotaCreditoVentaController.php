@@ -115,6 +115,7 @@ class NotaCreditoVentaController extends Controller
             if ($total_factura < $total) {
                 return redirect()->back()->withErrors('La nota de crédito no puede ser mayor al saldo de la factura! El saldo de la factura es de Gs '.$factura_cab->getMontoSaldoFormat())->withInput();
             }
+            $cabecera->setFacturaId($nro_factura);
         }
 
         $cabecera->setTipoNotaCredito($request['tipo_nota_credito']);
@@ -123,7 +124,6 @@ class NotaCreditoVentaController extends Controller
         $cabecera->setClienteId($request['cliente_id']);
         $cabecera->setSucursalId($request['sucursal_id']);
         $cabecera->setMonedaId($request['moneda_id']);
-        //$cabecera->setListaPrecioId($request['lista_precio_id']);
         $cabecera->setValorCambio($request['valor_cambio']);
         $cabecera->setFechaEmision($request['fecha_emision']);
         $cabecera->setComentario($request['comentario']);

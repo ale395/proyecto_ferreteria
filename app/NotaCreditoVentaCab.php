@@ -106,7 +106,7 @@ class NotaCreditoVentaCab extends Model
 
     public function getEstadoNombre(){
         if ($this->estado == 'P') {
-            return 'Aplicada';
+            return 'Cancelada';
         } elseif ($this->estado == 'A') {
             return 'Anulada';
         }
@@ -114,6 +114,10 @@ class NotaCreditoVentaCab extends Model
 
     public function setEstado($estado){
         $this->estado = $estado;
+    }
+
+    public function setFacturaId($factura_cab_id){
+        $this->factura_cab_id = $factura_cab_id;
     }
 
     public function serie()
@@ -148,5 +152,10 @@ class NotaCreditoVentaCab extends Model
 
     public function notaCreditoDetalle(){
         return $this->hasMany('App\NotaCreditoVentaDet', 'nota_credito_cab_id');
+    }
+
+    public function factura()
+    {
+        return $this->hasOne('App\FacturaVentaCab', 'id', 'factura_cab_id');
     }
 }
