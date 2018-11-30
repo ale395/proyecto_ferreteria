@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Empresa;
+use App\CuentaCliente;
 use Illuminate\Database\Eloquent\Model;
 
 class FacturaVentaCab extends Model
@@ -113,6 +114,18 @@ class FacturaVentaCab extends Model
         } elseif ($this->estado == 'A') {
             return 'Anulada';
         }
+    }
+
+    public function getMontoSaldo(){
+        $cuenta_cliente = CuentaCliente::where('tipo_comprobante', 'F')
+            ->where('comprobante_id', $this->id)->first();
+        return $cuenta_cliente->getMontoSaldo();
+    }
+
+    public function getMontoSaldoFormat(){
+        $cuenta_cliente = CuentaCliente::where('tipo_comprobante', 'F')
+            ->where('comprobante_id', $this->id)->first();
+        return number_format($cuenta_cliente->getMontoSaldo(), 0, ',', '.');
     }
 
     public function setEstado($estado){

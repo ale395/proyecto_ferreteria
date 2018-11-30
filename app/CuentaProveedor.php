@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CuentaCliente extends Model
+class CuentaProveedor extends Model
 {
     protected $table = 'cuenta_clientes';
     
@@ -34,11 +34,7 @@ class CuentaCliente extends Model
         return $this->monto_saldo;
     }
 
-    public function factura(){
-    	return $this->belongsTo('App\FacturaVentaCab', 'comprobante_id');
+    public function compra(){
+    	return $this->belongsTo('App\ComprasCab', 'comprobante_id');
     }
-
-    /*public function notaCredito(){
-    	return $this->belongsTo('App\NotaCreditoVentaCab', 'comprobante_id');
-    }*/
 }

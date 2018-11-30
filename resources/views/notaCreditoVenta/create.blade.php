@@ -76,13 +76,14 @@
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
-                        <label for="lista_precio_id" class="col-md-2 control-label">Lista Precio*</label>
+                        <label for="factura_nro" class="col-md-2 control-label">Factura*</label>
                         <div class="col-md-3">
-                            <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
+                            <!--<a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
                                 <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%">
                                     <option value="{{$lista_precio->getId()}}">{{$lista_precio->getNombre()}}</option>
                                 </select>
-                            </a>
+                            </a>-->
+                            <input type="text" id="factura_nro" class="form-control text-right" name="factura_nro" value="{{old('factura_nro')}}" readonly>
                         </div>
                         <div class="col-md-1">
                             <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Factura"><i class="fa fa-search" aria-hidden="true"></i></a>
@@ -127,7 +128,7 @@
                     </div>
                     <br>
                     <div class="form-group">
-                        <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
+                        <label for="articulo_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
                             <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
 
@@ -515,10 +516,10 @@
         
         if (valor != null) {
             var articulo_id = $("#select2-articulos" ).val();
-            var lista_precio_id = $("#select2-lista-precios" ).val();
+            //var lista_precio_id = $("#select2-lista-precios" ).val();
             $.ajax({
               type: "GET",
-              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,
+              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + 1,
               datatype: "json",
               success: function(data){
                 $("#existencia" ).val(data.existencia).change();
@@ -530,7 +531,7 @@
             });
 
             $("#cantidad" ).val(1).change();
-            $("#cantidad").focus();
+            $("#precio_unitario").focus();
         } else {
             $("#btn-add-articulo").attr("disabled", true);
         }
@@ -559,7 +560,7 @@
         cantidad = cantidad.replace(",", ".");
         var existencia = $("#existencia").val();
         
-        if (Number(cantidad) > Number(existencia)) {
+        /*if (Number(cantidad) > Number(existencia)) {
             var obj = $.alert({
                 title: 'Atención',
                 content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
@@ -571,7 +572,7 @@
             setTimeout(function(){
                 obj.close();
             },3000); 
-        } else {
+        } else {*/
             var decimales = 0;
             var articulo = $('#select2-articulos').select2('data')[0].text;
             var articulo_id = $('#select2-articulos').select2('data')[0].id;
@@ -642,7 +643,7 @@
             $('#subtotal').val("");
             $('#select2-articulos').val(null).trigger('change');
             $("#select2-articulos").focus();
-            }
+            /*}*/
         }
     };
 
@@ -662,8 +663,10 @@
         var i;
         var array_pedidos = [];
         var tipo_ncre = document.querySelector('input[name="tipo_nota_credito"]:checked').value;
+        //console.log(datos);
         for (i = 0; i < datos.length; i++) {
             array_pedidos.push(datos[i].id);
+            document.getElementById("factura_nro").value = datos[i].nro_factura;
         }
         if (array_pedidos.length > 0) {
             if (tipo_ncre == 'DV') {
@@ -858,7 +861,7 @@
             }
         });
 
-        $('#select2-lista-precios').select2({
+        /*$('#select2-lista-precios').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
             ajax: {
@@ -879,7 +882,7 @@
                 },
                 cache: true
             }
-        });
+        });*/
 
         $('#select2-series').select2({
             placeholder : 'Seleccione una opción',

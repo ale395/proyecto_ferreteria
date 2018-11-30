@@ -92,12 +92,12 @@ class ComprasDet extends Model
         return number_format($this->monto_iva, 0, ',', '.');
     }
 
-    public function setMontoTotal($monto_total){
-        $this->monto_total = $monto_total;
+    public function setMontoTotal($sub_total){
+        $this->sub_total = $sub_total;
     }
 
     public function getMontoTotal(){
-        return number_format($this->monto_total, 0, ',', '.');
+        return number_format($this->sub_total, 0, ',', '.');
     }
 
     public function articulo()

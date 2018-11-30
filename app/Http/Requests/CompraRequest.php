@@ -35,40 +35,40 @@ class CompraRequest extends FormRequest
             case 'POST':
             {
                 return [
-                    'nro_factura'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado', 
+                    'nro_factura'=>'required|unique_with:compras_cab,proveedor_id,timbrado', 
                     'timbrado'=>'required', 
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
-                    'tab_costounitario'=>'required'
+                    'tab_costo_unitario'=>'required'
                 ];
             }
             case 'PUT':
             {
                 return [
-                    'nro_factura'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado,'.$this->id, 
+                    'nro_factura'=>'required|unique_with:compras_cab,proveedor_id,timbrado,'.$this->id, 
                     'timbrado'=>'required',
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
-                    'tab_costounitario'=>'required'
+                    'tab_costo_unitario'=>'required'
                 ];
             }
             case 'PATCH':
             {
                 return [
-                    'nro_factura'=>'required|unique_with:compras_cab,nro_factura,proveedor_id,timbrado,'.$this->id, 
+                    'nro_factura'=>'required|unique_with:compras_cab,proveedor_id,timbrado,'.$this->id, 
                     'timbrado'=>'required',
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
-                    'tab_costounitario'=>'required'
+                    'tab_costo_unitario'=>'required'
                 ];
             }
             default:break;
@@ -83,9 +83,10 @@ class CompraRequest extends FormRequest
             'nro_factura.unique' => 'Comprobante ya existe.',
             'timbrado.required' => 'Ingrese el timbrado',
             'proveedor_id.required' => 'Ingrese el proveedor.',
-            'costo_unitario.required' => 'El artículo no tiene costo',
+            'tab_costo_unitario.required' => 'El artículo no tiene costo',
             'moneda.required' => 'Debe seleccionar una moneda.',
-            'articulo_id.required' => 'Ingrese al menos un artículo.',
+            'tab_articulo_id.required' => 'Ingrese al menos un artículo.',
+            'tab_cantidad.required' => 'Ingrese la cantidad.',
             'fecha_emision.required' => 'Ingrese la fecha.'
         ];
 

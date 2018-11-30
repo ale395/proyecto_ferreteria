@@ -25,8 +25,12 @@ class Proveedor extends Model
     }
     
     public function getNombreIndex(){
-            return $this->apellido. ', '.$this->nombre;
+            return $this->razon_social. ', '.$this->nombre;
     }
+
+    public function getNombreSelect(){
+        return $this->codigo. ', '.$this->razon_social;
+}
 
     public function tipoProveedor()
     {

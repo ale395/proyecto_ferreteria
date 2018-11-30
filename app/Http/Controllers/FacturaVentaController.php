@@ -71,7 +71,6 @@ class FacturaVentaController extends Controller
         if ($request['pedidos_id'] != null) {
             $array_pedidos = explode(",",($request['pedidos_id']));
         }
-        //dd(count($array_pedidos));
         //Implementar que cuando el cliente se deja en blanco, se busque al registro de cliente ocasional para poder guardarlo
 
         if (!empty('sucursal')) {
@@ -244,6 +243,10 @@ class FacturaVentaController extends Controller
         } else {
             $facturas = FacturaVentaCab::where('cliente_id', $cliente_id)->
                 where('estado', 'P')->get();
+            /*Filtra por las facturas que tienen saldo.*/
+            $facturas = $facturas->filter(function ($factura) {
+                return ($factura->getMontoSaldo() > 0);
+            });
             return Datatables::of($facturas)
                     ->addColumn('nro_factura', function($facturas){
                         return $facturas->getNroFacturaIndex();
@@ -255,7 +258,7 @@ class FacturaVentaController extends Controller
                         return $facturas->moneda->getDescripcion();
                     })
                     ->addColumn('monto_total', function($facturas){
-                        return $facturas->getMontoTotal();
+                        return $facturas->getMontoSaldoFormat();
                     })
                     ->addColumn('comentario', function($facturas){
                         return $facturas->getComentario();

@@ -24,7 +24,6 @@
                                 <th>Cliente</th>
                                 <th>Moneda</th>
                                 <th>Total</th>
-                                <th>Estado</th>
                                 <th width="70">Acciones</th>
                             </tr>
                         </thead>

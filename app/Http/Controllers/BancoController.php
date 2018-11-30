@@ -136,7 +136,8 @@ class BancoController extends Controller
 
         if($request->has('q')){
             $search = strtolower($request->q);
-            $bancos = Banco::where('descripcion', 'ilike', "%$search%")
+            $bancos = Banco::where('nombre', 'ilike', "%$search%")
+                ->orWhere('codigo', 'ilike', "%$search%")
                 ->get();
         } else {
             $bancos = Banco::all();
