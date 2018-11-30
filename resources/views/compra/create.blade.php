@@ -98,7 +98,7 @@
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio')}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio, $valor_cambio')}}">
                         </div>
                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
                         <div class="col-md-4">
@@ -245,16 +245,27 @@
                                     <div class="col-md-2">
                                         <a data-toggle="tooltip" data-placement="top" title="Nro. Cuenta"><input type="text" id="nro-cuenta" name="nro_cuenta" class="form-control" placeholder="Cuenta"></a>
                                     </div>
-                                    <div class="col-md-4">
+                                    <label for="moneda_id" class="col-md-1 control-label">Moneda</label>
+                                    <div class="col-md-2">
+                                        <select id="select2-monedas-che" name="moneda_che_id" class="form-control" style="width: 100%">
+                                            <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
                                         <a data-toggle="tooltip" data-placement="top" title="Librador"><input type="text" id="liibrador" name="librador" class="form-control" placeholder="Librador"></a>
                                     </div>
-                                    <label for="fecha_emision" class="col-md-1 control-label">Vencimiento </label>
-                                    <div class="col-md-2">
-                                        <input type="text" id="fecha-vencimiento" name="fecha_vencimiento" class="form-control dpfecha" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
-                                    </div>     
+
                                 </div>
                                 <span class="help-block with-errors"></span>
                                 <div class="form-group">
+                                <label for="fecha_emision" class="col-md-1 control-label">Emisión </label>
+                                    <div class="col-md-2">
+                                        <input type="text" id="fecha-emision-che" name="fecha_emision_che" class="form-control dpfecha" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
+                                    </div>   
+                                    <label for="fecha_vencimiento" class="col-md-1 control-label">Vencimiento </label>
+                                    <div class="col-md-2">
+                                        <input type="text" id="fecha-vencimiento" name="fecha_vencimiento" class="form-control dpfecha" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'">
+                                    </div>   
                                     <div class="col-md-3">
                                         <a data-toggle="tooltip" data-placement="top" title="Importe"><input type="text" id="importe-che" name="importe" class="form-control" placeholder="Importe"></a>
                                     </div>
@@ -272,6 +283,8 @@
                                             <th>Banco</th>
                                             <th width="15%">Cuenta</th>
                                             <th width="30%">Librador</th>
+                                            <th width="9%">Moneda</th>
+                                            <th width="9%">Emisión</th>
                                             <th width="9%">Vencimiento</th>
                                             <th width="9%">Importe</th>
 
@@ -279,12 +292,14 @@
                                     </thead>
                                     <tbody>
                                         @if ($errors->any())
-                                            @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
+                                            @for ($i=0; $i < collect(old('tab_banco_id'))->count(); $i++)
                                                 <tr>
                                                     <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                                     <td>{{old('tab_banco_nombre.'.$i)}}</td>
                                                     <td>{{old('tab_cuenta.'.$i)}}</td>
                                                     <td>{{old('tab_librador.'.$i)}}</td>
+                                                    <td>{{old('tab_moneda_che.'.$i)}}</td>
+                                                    <td>{{old('tab_fecha_emi.'.$i)}}</td>
                                                     <td>{{old('tab_fecha_venc.'.$i)}}</td>
                                                     <td>{{old('tab_importe_che.'.$i)}}</td>
                                                 </tr>
@@ -293,6 +308,8 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                             <th></th>
                                             <th></th>
@@ -308,20 +325,24 @@
                                         <tr>
                                             <th>Id Banco</th>
                                             <th>Banco</th>
-                                            <th>Numero de Cuenta</th>
-                                            <th>Fecha de Vencimiento</th>
-                                            <th>Librador</th>
-                                            <th>Importe</th>
+                                            <th width="15%">Cuenta</th>
+                                            <th width="30%">Librador</th>
+                                            <th width="9%">Moneda</th>
+                                            <th width="9%">Emisión</th>
+                                            <th width="9%">Vencimiento</th>
+                                            <th width="9%">Importe</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @if ($errors->any())
-                                            @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
+                                            @for ($i=0; $i < collect(old('tab_banco_id'))->count(); $i++)
                                                 <tr>
                                                     <td>{{old('tab_banco_id.'.$i)}}</td>
                                                     <td>{{old('tab_banco_nombre.'.$i)}}</td>
                                                     <td>{{old('tab_cuenta.'.$i)}}</td>
                                                     <td>{{old('tab_librador.'.$i)}}</td>
+                                                    <td>{{old('tab_moneda_che.'.$i)}}</td>
+                                                    <td>{{old('tab_fecha_emi.'.$i)}}</td>
                                                     <td>{{old('tab_fecha_venc.'.$i)}}</td>
                                                     <td>{{old('tab_importe_che.'.$i)}}</td>
                                                 </tr>
@@ -434,7 +455,7 @@
                                     </thead>
                                     <tbody>
                                         @if ($errors->any())
-                                            @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
+                                            @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
                                                 <tr>
                                                     <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                                     <th><input type="text" id="tab_forma_pago_id" name="tab_articulo_id[]" value="{{old('tab_forma_pago_id.'.$i)}}"></th>
@@ -523,9 +544,9 @@
         "searching": false,
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
-          { className: "dt-center", "targets": [0,2,3,4] },
+          { className: "dt-center", "targets": [0,2,3,4,5,6] },
           { className: "dt-left", "targets": [1] },
-          { className: "dt-right", "targets": [5] }
+          { className: "dt-right", "targets": [7] }
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -541,7 +562,7 @@
  
             // Total over all pages
             total = api
-                .column(5)
+                .column(7)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -549,14 +570,14 @@
  
             // Total over this page
             pageTotal = api
-                .column( 5, { page: 'current'} )
+                .column( 7, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 5 ).footer() ).html(
+            $( api.column( 7 ).footer() ).html(
                 $.number(total,decimales, ',', '.')
             );
         }
@@ -633,6 +654,33 @@
 
         } else {
             $("#btn-add-articulo").attr("disabled", true);
+        }
+    });
+
+    /*Evento onchange del select de monedas, para que recupere la última cotización cotización*/
+    $("#select2-monedas").change(function (e) {
+        var valor = $(this).val();
+        //api/cotizaciones/venta/{moneda}
+        if (valor != null) {
+            var moneda_id = $("#select2-monedas" ).val();
+
+            $.ajax({
+                type: "GET",
+                url: "{{ url('api/cotizaciones') }}" + '/venta/' + moneda_id,
+                datatype: "json",
+                success: function(data) {
+                    $("#valor_cambio" ).val(data).change();
+            },
+            error : function() {
+                $.alert({
+                    title: 'Atención!',
+                    content: 'No se encontraron datos!',
+                    icon: 'fa fa-exclamation-circle',
+                    type: 'orange',
+                });
+            }
+            });
+
         }
     });
 
@@ -864,6 +912,9 @@
         var banco = $('#select2-banco-pago').select2('data')[0].text;
         var banco_id = $('#select2-banco-pago').select2('data')[0].id;
         var cuenta = $('#nro-cuenta').val();
+        var moneda_id = $('#select2-moneda-che').select2('data')[0].id;
+        var moneda = $('#select2-moneda-che').select2('data')[0].text;
+        var fecha_emision = $('#fecha-emision-che').val();
         var fecha_vencimiento = $('#fecha-vencimiento').val();
         if (banco_detalle.includes(banco_id) && cuenta_detalle.includes(cuenta) && fecha_detalle.includes(fehca_vencimiento))  {
             var obj = $.alert({
@@ -893,6 +944,8 @@
                 banco,
                 cuenta,
                 librador,
+                moneda,
+                fecha_emision,
                 fecha_vencimiento,
                 importe
             ] ).draw( false );
@@ -1036,6 +1089,29 @@
         });
 
         $('#select2-monedas').select2({
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            ajax: {
+                url: "{{ route('api.monedas.select') }}",
+                delay: 250,
+                data: function (params) {
+                    var queryParameters = {
+                      q: params.term
+                    }
+
+                    return queryParameters;
+                  },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $('#select2-monedas-che').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
             ajax: {
