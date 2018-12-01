@@ -92,13 +92,13 @@
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
-                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
+                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%" onchange="setValorCambio()">
                                 <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
                             </select>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $valor_cambio)}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio, $valor_cambio')}}">
                         </div>
                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
                         <div class="col-md-4">
@@ -663,49 +663,24 @@
         //api/cotizaciones/venta/{moneda}
         if (valor != null) {
             var moneda_id = $("#select2-monedas" ).val();
-            var valor_cambio = 0
 
-            var url_cotizacion = "{{ url('api/cotizaciones') }}" + '/venta/' + moneda_id
-            
             $.ajax({
                 type: "GET",
-                url: url_cotizacion,
+                url: "{{ url('api/cotizaciones') }}" + '/venta/' + moneda_id,
                 datatype: "json",
-                success: function(data){
-                    //$("#valor_cambio").val(data).change();
-                    valor_cambio = data;
-                }
+                success: function(data) {
+                    $("#valor_cambio" ).val(data).change();
+            },
+            error : function() {
+                $.alert({
+                    title: 'Atención!',
+                    content: 'No se encontraron datos!',
+                    icon: 'fa fa-exclamation-circle',
+                    type: 'orange',
+                });
+            }
             });
 
-            if( valor_cambio == 0 ){
-                var obj = $.alert({
-                    title: 'Atención',
-                    content: 'Moneda no tiene cotización cargada!.',
-                    icon: 'fa fa-exclamation-triangle',
-                    type: 'orange',
-                    backgroundDismiss: true,
-                    theme: 'modern',
-                });
-                setTimeout(function(){
-                    obj.close();
-                },3000);
-            } else {
-                $("#valor_cambio").val(valor_cambio).change();
-            }
-
-        }
-        else {
-            var obj = $.alert({
-                    title: 'Atención',
-                    content: 'No seleccionó una moneda!.',
-                   icon: 'fa fa-exclamation-triangle',
-                    type: 'orange',
-                    backgroundDismiss: true,
-                    theme: 'modern',
-                });
-                setTimeout(function(){
-                    obj.close();
-                },3000);
         }
     });
 
