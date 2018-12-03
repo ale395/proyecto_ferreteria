@@ -89,26 +89,39 @@ class DefaultSeeder extends Seeder
        	//Concepto ajuste por default - ajuste de existencia
         $conceptoajuste = new ConceptoAjuste();
         $conceptoajuste->num_concepto = '001';
-        $conceptoajuste->descripcion = 'DEVOLUCION';
+        $conceptoajuste->descripcion = 'Consignacion';
         $conceptoajuste->signo = '+';
         $conceptoajuste->save();
 
+
         $conceptoajuste = new ConceptoAjuste();
         $conceptoajuste->num_concepto = '002';
-        $conceptoajuste->descripcion = 'CONTEO MANUAL';
+        $conceptoajuste->descripcion = 'Faltante Inventario';
         $conceptoajuste->signo = '-';
         $conceptoajuste->save();
 
         $conceptoajuste = new ConceptoAjuste();
         $conceptoajuste->num_concepto = '003';
-        $conceptoajuste->descripcion = 'TRANSLADO';
+        $conceptoajuste->descripcion = 'Sobrante Inventario';
+        $conceptoajuste->signo = '+';
+        $conceptoajuste->save();
+
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '004';
+        $conceptoajuste->descripcion = 'Traslado-Salida';
         $conceptoajuste->signo = '-';
+        $conceptoajuste->save();
+
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '005';
+        $conceptoajuste->descripcion = 'Traslado-Entrada';
+        $conceptoajuste->signo = '+';
         $conceptoajuste->save();
 
 
         $conceptoajuste = new ConceptoAjuste();
-        $conceptoajuste->num_concepto = '004';
-        $conceptoajuste->descripcion = 'AVERIA';
+        $conceptoajuste->num_concepto = '006';
+        $conceptoajuste->descripcion = 'Averia o Rotura';
         $conceptoajuste->signo = '-';
         $conceptoajuste->save();
         //tipo proveedor 

@@ -78,7 +78,7 @@
                     <div class="form-group">
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
-                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" onchange="setCantidadCosto()">
+                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" >
 
                             </select>
                         </div>
@@ -114,7 +114,7 @@
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
-                                        <td>{{old('tab_costounitario.'.$i)}}</td>>
+                                        <td>{{old('tab_costo_unitario.'.$i)}}</td>
                                         <td>{{old('tab_subtotal.'.$i)}}</td>
                                     </tr>
                                 @endfor
@@ -150,7 +150,7 @@
                                         <th><input type="text" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_costounitario[]" value="{{old('tab_costounitario.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
                                         <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
                                     </tr>
                                 @endfor
@@ -166,28 +166,39 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
-   
-   function setCantidadCosto() {
-        var articulo_id = $("#select2-articulos" ).val();
-        $.ajax({
-          type: "GET",
-          url: "{{ url('api/articulos') }}" + '/costo/' + articulo_id,
-          datatype: "json",
-          //async: false,
-          success: function(data){
-            $("#costo_unitario" ).val(data).change();
+       /*Evento onchange del select de artículos, para que recupere el costo si es seleccionado algún artículo distinto a nulo*/
+       $("#select2-articulos").change(function (e) {
+        var valor = $(this).val();
+        
+        if (valor != null) {
+            var articulo_id = $("#select2-articulos" ).val();
+            $.ajax({
+                type: "GET",
+                url: "{{ url('api/articulos') }}" + '/costo/' + articulo_id,
+                datatype: "json",
+                //async: false,
+                success: function(data){
+                    $("#costo_unitario" ).val(data.ultimo_costo).change();                    
+                    $("#btn-add-articulo").attr("disabled", false);
+                }
+            });
+
+            if($("#cantidad" ).val().length === 0){
+                $("#cantidad" ).val(1).change();
+            }
+            $("#cantidad").focus();
+
+        } else {
+            $("#btn-add-articulo").attr("disabled", true);
         }
     });
-
-    if($("#cantidad" ).val().length === 0){
-            $("#cantidad" ).val(1).change();
-        }
-        $("#cantidad").focus();
-    };
+ 
  
     function calcularSubtotal() {
         var cantidad = $("#cantidad" ).val();
+        var costo_unitario = $("#costo_unitario" ).val();
         cantidad = cantidad.replace(".", "");
+        costo_unitario = costo_unitario.replace(".", "");
         var calculo = cantidad * $("#costo_unitario" ).val();
         if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
             $("#subtotal" ).val(calculo).change();
@@ -195,14 +206,36 @@
     };
 
     function addArticulo() {
+        var indexColumn = 0;
+        var articulos_detalle = $('input[name="tab_articulo_id[]"]').map(function () {
+            return this.value;
+        }).get();
+
         /*Se obtienen los valores de los campos correspondientes*/
+        var cantidad = $("#cantidad").val();
+        //var existencia = $("#existencia").val();
+        console.log('Antes de add: '+articulos_detalle);
+
             var decimales = 0;
             var articulo = $('#select2-articulos').select2('data')[0].text;
             var articulo_id = $('#select2-articulos').select2('data')[0].id;
-            var cantidad = $("#cantidad").val();
+            if (articulos_detalle.includes(articulo_id)) {
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'El artículo que intenta agregar ya está incluido en el detalle de la factura!',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000); 
+            } else {
+                articulos_detalle.push(articulo_id);
+                console.log('Despues de add: '+articulos_detalle);
             var costo_unitario = $("#costo_unitario").val();
             var subtotal = $("#subtotal").val();
-
             /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
             costo_unitario = $.number(costo_unitario,decimales, ',', '.');
             cantidad = $.number(cantidad,decimales, ',', '.');
@@ -218,7 +251,7 @@
                 subtotal
             ] ).draw( false );
 
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costounitario[]' value='" + precio_unitario + "'></th> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
             $("#tab-hidden").append(markup);
 
             /*Se restauran a nulos los valores del bloque para la selección del articulo*/
@@ -233,6 +266,8 @@
             $('#subtotal').val("");
             $('#select2-articulos').val(null).trigger('change');
             $("#select2-articulos").focus();
+           }
+
         };
 
         $("#btn-add-articulo").attr("disabled", true);
@@ -305,19 +340,6 @@
         }
     });
 
-
-    $("#ruc_juridica").on({
-        "focus": function (event) {
-            $(event.target).select();
-        },
-        "keyup": function (event) {
-            $(event.target).val(function (index, value ) {
-                return value.replace(/\D/g, "")
-                            .replace(/([0-9])([0-9]{1})$/, '$1-$2');
-            });
-        }
-    });
-
 </script>
 <script type="text/javascript">
    $(document).ready(function(){
@@ -343,6 +365,7 @@
                 cache: true
             }
         });
+
     $('#select2-articulos').select2({
             placeholder: 'Seleccione una opción',
             language: "es",

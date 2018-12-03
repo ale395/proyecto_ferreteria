@@ -22,8 +22,8 @@
                                 <th>Fecha</th>
                                 <th>Sucursal</th>
                                 <th>Concepto Ajuste</th>
+ 
                                 <th>Total</th>
-                                <th>Motivo</th>
                                 <th width="50">Acciones</th>
                             </tr>
                         </thead>
@@ -41,7 +41,7 @@
                       language: { url: '/datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.facturacion.ventas') }}",
+                      ajax: "{{ route('api.ajustes.inventarios') }}",
                       'columnDefs': [
                         {
                             "targets": 0,
@@ -56,15 +56,11 @@
                             "className": "text-center",
                        },
                        {
-                            "targets": 4,
+                            "targets": 3,
                             "className": "text-center",
                        },
                        {
-                            "targets": 5,
-                            "className": "text-right",
-                       },
-                       {
-                            "targets": 6,
+                            "targets": 4,
                             "className": "text-center",
                        }],
                       columns: [
@@ -73,7 +69,6 @@
                         {data: 'sucursal', name: 'sucursal'},
                         {data: 'concepto_ajuste', name: 'concepto_ajuste'},
                         {data: 'monto_total', name: 'monto_total'},
-                        {data: 'motivo', name: 'motivo'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ],
                       "order": [[ 1, "desc" ]],
