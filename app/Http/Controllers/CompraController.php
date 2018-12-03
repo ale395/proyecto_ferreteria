@@ -51,8 +51,11 @@ class CompraController extends Controller
         ->first();
         // $cotizacion;
         $proveedores = Proveedor::where('activo', true)->get();
-        $cambio = $cotizacion->getValorVenta();
-        return view('compra.create', compact('fecha_actual', 'moneda', 'cambio', 'proveedores'));
+        $valor_cambio = $cotizacion->getValorVenta();
+        
+        //var_dump($valor_cambio);
+        
+        return view('compra.create', compact('fecha_actual', 'moneda', 'valor_cambio', 'proveedores'));
     }
 
     /**
@@ -194,6 +197,8 @@ class CompraController extends Controller
                     $articulo_costo->costo_promedio = str_replace('.', '', $request['tab_costo_unitario'][$i]);
                 }
 
+                $articulo_costo->ultimo_costo = str_replace('.', '', $request['tab_costo_unitario'][$i]);
+
                 $articulo_costo->update();
                 //----------------para el costo promedio-----------------------------------
 
@@ -202,6 +207,15 @@ class CompraController extends Controller
   
             if ($modalidad_pago == 'CON'){
                 //aca va todo lo referente a pagos!
+                for ($i=0; $i < collect($request['tab_banco_id'])->count(); $i++){
+                
+                    //var_dump(str_replace('.', '', $request['tab_subtotal'][$i]));
+    
+                    $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
+                    $total_exenta = $total_exenta + str_replace('.', '', $request['tab_exenta'][$i]);
+                    $total_gravada = $total_gravada + str_replace('.', '', $request['tab_gravada'][$i]);
+                    $total_iva = $total_iva + str_replace('.', '', $request['tab_iva'][$i]);
+                }
             } else {
                 //Actualizacion de saldo proveedor
                 $cuenta = new CuentaProveedor;
@@ -221,7 +235,7 @@ class CompraController extends Controller
             DB::rollback();
             //volvemos para atras y retornamos un mensaje de error
             //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
-            return back()->withErrors( $e->getMessage() .' - '.$e->getFile() )->withInput();
+            return back()->withErrors( $e->getMessage() .' - '.$e->getFile(). ' - '.$e->getLine() )->withInput();
             //return back()->withErrors( $e->getTraceAsString() )->withInput();
 
         }
@@ -275,7 +289,8 @@ class CompraController extends Controller
     }
 
     public function apiCompras(){
-        $permiso_editar = Auth::user()->can('compra.edit');
+        //en vez de editar, eliminamos en seco si algo se cargó mal
+        $permiso_editar = Auth::user()->can('compra.destroy');
         //$permiso_eliminar = Auth::user()->can('compra.destroy');
         $permiso_ver = Auth::user()->can('compra.show');
         $sucursal_actual = Auth::user()->empleado->sucursales->first();
