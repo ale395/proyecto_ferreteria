@@ -38,8 +38,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-save">Ver Reporte</button>
-                    <a href="{{route('empleados.index')}}" type="button" class="btn btn-default">Descargar</a>
+                    <button type="submit" formtarget="_blank" class="btn btn-primary btn-save">Ver Reporte <i class="fa fa-file-text-o" aria-hidden="true"></i></button>
                 </div>
             </div>
             </form>

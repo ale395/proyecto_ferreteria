@@ -2,7 +2,7 @@
 
 @section('content')
 
-  <div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
     @include('cliente.create-persona-fisica')
     @include('cliente.create-persona-juridica')
 @endsection
