@@ -206,18 +206,7 @@ class CompraController extends Controller
                 //$detale_costo = ComprasDet::where('articulo_id', $request['tab_articulo_id'][$i])->get();
             }
   
-            if ($modalidad_pago == 'CON'){
-                //aca va todo lo referente a pagos!
-                for ($i=0; $i < collect($request['tab_banco_id'])->count(); $i++){
-                
-                    //var_dump(str_replace('.', '', $request['tab_subtotal'][$i]));
-    
-                    $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
-                    $total_exenta = $total_exenta + str_replace('.', '', $request['tab_exenta'][$i]);
-                    $total_gravada = $total_gravada + str_replace('.', '', $request['tab_gravada'][$i]);
-                    $total_iva = $total_iva + str_replace('.', '', $request['tab_iva'][$i]);
-                }
-            } else {
+            if ($modalidad_pago != 'CON'){
                 //Actualizacion de saldo proveedor
                 $cuenta = new CuentaProveedor;
                 $cuenta->setTipoComprobante('F');
@@ -225,8 +214,9 @@ class CompraController extends Controller
                 $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
                 $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
                 $cuenta->save();
-            }
-    
+            
+            } 
+
             DB::commit();
             
         }
@@ -252,7 +242,8 @@ class CompraController extends Controller
      */
     public function show($id)
     {
-        //
+        $factura_cab = ComprasCab::findOrFail($id);
+        return view('compra.show', compact('factura_cab'));
     }
 
     /**
