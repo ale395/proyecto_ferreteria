@@ -10,7 +10,7 @@
                     <h4>Ver Ajuste
                     <div class="pull-right btn-group">
                         <a data-toggle="tooltip" data-placement="top" title="Imprimir Ajuste" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('AjustesInventarios.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ajustesInventarios.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
@@ -26,16 +26,16 @@
                     </div>
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
-                    <input type="hidden" id="id" name="id" value="{{$ajuste_cab->getId()}}">
+                    <input type="hidden" id="id" name="id" value="{{$ajuste_inventario_cab->getId()}}">
                     <div class="form-group">
 
                         <label for="nro_ajuste" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="text" id="nro_ajuste" name="nro_ajuste" class="form-control" readonly="readonly" value="{{$ajuste_cab->getId()}}">
+                            <input type="text" id="nro_ajuste" name="nro_ajuste" class="form-control" readonly="readonly" value="{{$ajuste_inventario_cab->getId()}}">
                         </div>
                         <label for="fecha_emision" class="col-md-2 control-label">Fecha</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$ajuste_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$ajuste_inventario_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
                     </div>
                     <br>
@@ -43,15 +43,15 @@
                     <div class="form-group">
                         <label for="sucursal_id" class="col-md-1 control-label">Sucursal</label>
                         <div class="col-md-3">
-                            <input id="select2-sucursales" name="sucursal_id" class="form-control" value="{{$ajuste_cab->sucursal->getNombre()}}" readonly>
+                            <input id="select2-sucursales" name="sucursal_id" class="form-control" value="{{$ajuste_inventario_cab->sucursal->getNombre()}}" readonly>
                         </div>
                         <label for="concepto_ajuste_id" class="col-md-1 control-label">Concepto Ajuste</label>
                         <div class="col-md-2">
-                        <input id="select2-conceptosAjustes" name="concepto_ajuste_id" class="form-control" value="{{$ajuste_cab->conceptoAjuste->getDescripcion()}}" readonly>
+                        <input id="select2-conceptosAjustes" name="concepto_ajuste_id" class="form-control" value="{{$ajuste_inventario_cab->conceptoAjuste->getDescripcion()}}" readonly>
                         </div>
                          <label for="motivo" class="col-md-1 control-label">Motivo</label>
                         <div class="col-md-4">
-                            <textarea class="form-control" rows="2" id="motivo" name="motivo" readonly>{{$ajuste_cab->getMotivo()}}</textarea>
+                            <textarea class="form-control" rows="2" id="motivo" name="motivo" readonly>{{$ajuste_inventario_cab->getMotivo()}}</textarea>
                         </div>
                     </div>
                     <br>
@@ -65,12 +65,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($ajuste_cab->ajusteDetalle as $ajuste_det)
+                            @foreach ($ajuste_inventario_cab->ajusteInventarioDetalle as $ajuste_inventario_det)
                                 <tr>
-                                    <td>{{$ajuste_det->articulo->getNombreSelect()}}</td>
-                                    <td>{{$ajuste_det->getCantidadNumber()}}</td>
-                                    <td>{{$ajuste_det->getCostoUnitario()}}</td>
-                                    <td>{{$ajuste_det->getMontoTotal()}}</td>
+                                    <td>{{$ajuste_inventario_det->articulo->getNombreSelect()}}</td>
+                                    <td>{{$ajuste_inventario_det->getCantidad()}}</td>
+                                    <td>{{$ajuste_inventario_det->getCostoUnitario()}}</td>
+                                    <td>{{$ajuste_inventario_det->getSubTotal()}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -83,7 +83,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>Total</th>
-                                <th>{{$ajuste_cab->getMontoTotal()}}</th>
+                                <th>{{$ajuste_inventario_cab->getMontoTotal()}}</th>
                             </tr>
                         </tfoot>
                     </table>

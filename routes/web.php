@@ -132,7 +132,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/notaCreditoVentas', 'NotaCreditoVentaController@apiNotaCreditoVentas')->name('api.nota.credito.ventas');
 
 	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
-	Route::resource('ajustesInventarios', 'AjusteInventarioController');
+	Route::resource('ajustesInventarios', 'AjusteInventarioController', ['parameters'=>['ajustesInventarios'=>'ajusteInventario']]);
 	Route::get('api/ajustesInventarios', 'AjusteInventarioController@apiAjustesInventarios')->name('api.ajustes.inventarios');
 
 	//RUTAS PARA MODELO SUCURSALES

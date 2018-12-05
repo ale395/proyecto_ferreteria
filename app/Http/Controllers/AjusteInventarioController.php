@@ -266,12 +266,12 @@ class AjusteInventarioController extends Controller
     }
 
     public function apiAjustesInventarios() {
-        $permiso_editar = Auth::user()->can('ajusteInventario.edit');
+        $permiso_editar = Auth::user()->can('ajustesInventarios.edit');
       //  $permiso_eliminar = Auth::user()->can('ajusteInventario.destroy');
-        $permiso_ver = Auth::user()->can('ajusteInventario.show');
-        $ajuste_inventario = AjusteInventarioCab::all();
-
-        if ($permiso_editar) {
+        $permiso_ver = Auth::user()->can('ajustesInventarios.show');
+       $ajuste_inventario = AjusteInventarioCab::all();
+       //dd($permiso_ver);
+       if ($permiso_editar) {
                 if ($permiso_ver) {
                     return Datatables::of($ajuste_inventario)
                     ->addColumn('fecha', function($ajuste_inventario){
@@ -290,11 +290,12 @@ class AjusteInventarioController extends Controller
                         $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $ajuste_inventario->id .')" class="btn btn-primary btn-sm" title="Ver Factura"><i class="fa fa-eye"></i></a> ';
                         $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        return $puede_ver;
 
-                                        })->make(true);
-  
-                
-            } else {
+                                        })->make(true);              
+
+
+                                    } else {
                     return Datatables::of($ajuste_inventario)
                     ->addColumn('fecha', function($ajuste_inventario){
                         return $ajuste_inventario->getFechaEmision();
@@ -309,10 +310,11 @@ class AjusteInventarioController extends Controller
                         return $ajuste_inventario->getMontoTotal();
                     })
                     ->addColumn('action', function($ajuste_inventario){
-                               $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Factura" disabled><i class="fa fa-eye"></i></a> ';
-                               $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
-                               $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-         })->make(true);
+                        $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Factura" disabled><i class="fa fa-eye"></i></a> ';
+                        $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        return $puede_ver;
+                    })->make(true);
                 }
         } else {
             if ($permiso_ver) {
