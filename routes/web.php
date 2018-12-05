@@ -194,4 +194,8 @@ Route::middleware(['auth'])->group(function() {
 	//Para ver los errores de PHP
 	Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
+	/*REPORTES*/
+	Route::get('reporte/extractocliente', 'ReportesCuentasPorCobrarController@viewExtractoCliente')->name('cuentasporcobrar.extractocliente');
+	Route::post('reporte/extractocliente', 'ReportesCuentasPorCobrarController@verExtractoCliente')->name('cuentasporcobrar.verextractocliente');
+
 });

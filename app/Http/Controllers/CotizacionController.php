@@ -146,12 +146,14 @@ class CotizacionController extends Controller
             ->orderBy('fecha_cotizacion', 'desc')
             ->first();
 
+            /*
             if (!empty($cotizacion)){
                 $valor_venta = $cotizacion->getValorVenta();
             } else {
                 $valor_venta = 0;
             }
-
+            */
+            $valor_venta = $cotizacion->getValorVenta();
 
             return $valor_venta;
    

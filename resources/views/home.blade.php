@@ -102,8 +102,8 @@
                           </li>
                           <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                              <li class="sub_menu"><a href="#">Reporte 1</a>
-                              </li>
+                              <li class="sub_menu"><a href="{{route('cuentasporcobrar.extractocliente')}}">Extracto de Cliente</a>
+                                  </li>
                             </ul>
                           </li>
                     </ul>
