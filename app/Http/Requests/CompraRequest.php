@@ -40,9 +40,10 @@ class CompraRequest extends FormRequest
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
+                    'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
-                    'tab_costo_unitario'=>'required'
+                    'tab_costo_unitario'=>'required',
                 ];
             }
             case 'PUT':
@@ -53,6 +54,7 @@ class CompraRequest extends FormRequest
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
+                    'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
                     'tab_costo_unitario'=>'required'
@@ -66,6 +68,7 @@ class CompraRequest extends FormRequest
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
+                    'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
                     'tab_costo_unitario'=>'required'

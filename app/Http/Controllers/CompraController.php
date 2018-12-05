@@ -51,11 +51,12 @@ class CompraController extends Controller
         ->first();
         // $cotizacion;
         $proveedores = Proveedor::where('activo', true)->get();
+        $monedas = Moneda::all();
         $valor_cambio = $cotizacion->getValorVenta();
         
         //var_dump($valor_cambio);
         
-        return view('compra.create', compact('fecha_actual', 'moneda', 'valor_cambio', 'proveedores'));
+        return view('compra.create', compact('fecha_actual', 'moneda', 'valor_cambio', 'proveedores', 'monedas'));
     }
 
     /**
