@@ -270,7 +270,198 @@ class CompraController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+
+            DB::beginTransaction();
+
+            $sucursal = Auth::user()->empleado->sucursalDefault;
+            $usuario = Auth::user();
+            $cabecera = new ComprasCab();
+            $total = 0;
+            $total_exenta = 0;
+            $total_gravada = 0;
+            $total_iva = 0;
+
+            $modalidad_pago = $request['tipo_factura'];
+            
+            if (!empty('sucursal')) {
+                $request['sucursal_id'] = $sucursal->getId();
+            }
+            
+            $proveedor = Proveedor::findOrFail($request['proveedor_id']);
+
+
+            if (!empty($cuenta ) && $modalidad_pago == 'CO') {
+                $cuenta = CuentaProveedor::findOrFail($cabecera->getId());
+                
+                $cuenta->delete();
+            }
+   
+            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+                
+                //var_dump(str_replace('.', '', $request['tab_subtotal'][$i]));
+
+                $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
+                $total_exenta = $total_exenta + str_replace('.', '', $request['tab_exenta'][$i]);
+                $total_gravada = $total_gravada + str_replace('.', '', $request['tab_gravada'][$i]);
+                $total_iva = $total_iva + str_replace('.', '', $request['tab_iva'][$i]);
+            }
+    
+            $cabecera->setTipoFactura($request['tipo_factura']);
+            $cabecera->setNroFactura($request['nro_factura']);
+            $cabecera->setProveedorId($request['proveedor_id']);
+            $cabecera->setTimbrado($request['timbrado']);
+            $cabecera->setSucursalId($request['sucursal_id']);
+            $cabecera->setMonedaId($request['moneda_id']);
+            $cabecera->setValorCambio($request['valor_cambio']);
+            $cabecera->setFechaEmision($request['fecha_emision']);
+            $cabecera->setComentario($request['comentario']);
+            $cabecera->setMontoTotal($total);
+            $cabecera->setTotalExenta($total_exenta);
+            $cabecera->setTotalGravada($total_gravada);
+            $cabecera->setTotalIva($total_iva);
+            $cabecera->setUsuarioId($usuario->id);
+    
+            $cabecera->update();
+            $cabecera->comprasDetalle()->delete();
+
+            //revertimos los artículos que entraron
+            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+
+                //seleccionamos el artículo
+                $articulo = Articulo::findOrFail($request['tab_articulo_id'][$i]);
+             
+                    //controlamos existencia
+                if ($articulo->getControlExistencia() == true) {
+                    //Actualizacion de existencia
+                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
+                        ->where('sucursal_id', $sucursal->getId())->first();
+
+                    
+                    if (!empty($existencia)){
+                        $existencia->actualizaStock('-', $detalle->getCantidad());
+                        $existencia->update();                        
+
+                    }   
+
+                }
+               
+            }
+    
+            //volvemos a insertar el detalle
+            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+
+                //para traer despues el costo promedio
+                $articulo = Articulo::findOrFail($request['tab_articulo_id'][$i]);
+
+                //$costo_pp = str_replace('.', '', $articulo->getCostoPromedio());
+
+                $detalle = new ComprasDet();
+
+                $detalle->setCompraCabeceraId($cabecera->getId());
+                $detalle->setArticuloId($request['tab_articulo_id'][$i]);
+                $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                $detalle->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
+                $detalle->setCostoPromedio(str_replace('.', '', $articulo->getCostoPromedio()));
+                $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
+                $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
+                $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
+                $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
+                $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
+                $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
+                $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
+
+                //var_dump($detalle);
+
+                $detalle->save();
+    
+                //controlamos existencia
+                if ($detalle->articulo->getControlExistencia() == true) {
+                    //Actualizacion de existencia
+                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
+                        ->where('sucursal_id', $sucursal->getId())->first();
+
+                    //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
+                    if (!empty($existencia)){
+                        $existencia->actualizaStock('+', $detalle->getCantidad());
+                        $existencia->update();                        
+                    } else {
+                        $existencia_nuevo = new ExistenciaArticulo();
+
+                        $existencia_nuevo->setArticuloId($detalle->articulo->getId());
+                        $existencia_nuevo->setSucursalId($sucursal->getId());
+                        $existencia_nuevo->setCantidad($detalle->getCantidad());
+                        $existencia_nuevo->setFechaUltimoInventario($request['fecha_emision']);
+
+                        $existencia_nuevo->save();  
+                    }   
+
+                }
+
+                //----------------para el costo promedio-----------------------------------
+                $id =  $request['tab_articulo_id'][$i]; 
+
+                $r_total_costos = DB::table('compras_det as o')
+                ->select( DB::raw("sum(o.costo_unitario*o.cantidad) as costo_unitario"))
+                ->where('o.articulo_id','=',$id)->first();
+
+                $total_costos = $r_total_costos->costo_unitario;
+                
+                //var_dump($total_costos);
+
+                $r_total_cantidades = DB::table('compras_det as o')
+                ->select( DB::raw("sum(o.cantidad) as cantidad"))
+                ->where('o.articulo_id','=',$id)->first();
+
+                $total_cantidades = $r_total_cantidades->cantidad;
+
+                //var_dump($total_cantidades);
+
+                $articulo_costo = Articulo::findOrFail($id);
+
+                //si aún no hay compras, el costo promedio va a a ser igual al último costo
+                if (!empty( $total_costos) && !empty( $total_cantidades)) {
+                    $articulo_costo->costo_promedio = ($total_costos / $total_cantidades);
+                } else {
+                    $articulo_costo->costo_promedio = str_replace('.', '', $request['tab_costo_unitario'][$i]);
+                }
+
+                $articulo_costo->ultimo_costo = str_replace('.', '', $request['tab_costo_unitario'][$i]);
+
+                $articulo_costo->update();
+                //----------------para el costo promedio-----------------------------------
+
+                //$detale_costo = ComprasDet::where('articulo_id', $request['tab_articulo_id'][$i])->get();
+            }
+  
+            if ($modalidad_pago != 'CON'){
+                //Actualizacion de saldo proveedor
+                $cuenta = new CuentaProveedor;
+                $cuenta->setTipoComprobante('F');
+                $cuenta->setComprobanteId($cabecera->getId());
+                $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
+                $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
+                $cuenta->save();
+            
+            } else {
+
+            }
+
+            DB::commit();
+            
+        }
+        catch (\Exception $e) {
+            //$error = $e->getMessage();
+            //Deshacemos la transaccion
+            DB::rollback();
+            //volvemos para atras y retornamos un mensaje de error
+            //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
+            return back()->withErrors( $e->getMessage() .' - '.$e->getFile(). ' - '.$e->getLine() )->withInput();
+            //return back()->withErrors( $e->getTraceAsString() )->withInput();
+
+        }
+
+        return redirect(route('compra.edit'))->with('status', 'Datos guardados correctamente!');
     }
 
     /**

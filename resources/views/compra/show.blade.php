@@ -40,6 +40,10 @@
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$factura_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
+                        <label for="timbrado" class="col-md-3 control-label">Timbrado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" readonly="readonly" value="{{$factura_cab->getTimbrado()}}" >  
+                        </div>
                     </div>
                     <br>
                     <div class="form-group">
