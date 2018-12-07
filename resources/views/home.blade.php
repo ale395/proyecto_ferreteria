@@ -298,6 +298,9 @@
                                         </li>
                                       @endcan
                                     @endif
+                                    <li class="sub_menu">
+                                      <a href="{{route('anulacionComprobantes.index')}}">Anulación de Comprobantes</a>
+                                    </li>
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
