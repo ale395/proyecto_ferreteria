@@ -34,7 +34,7 @@
                         </div>
                         <label for="nro_factura" class="col-md-1 control-label">Número</label>
                         <div class="col-md-3">
-                            <input type="text" id="nro_factura" name="nro_factura" class="form-control" readonly="readonly" value="{{$factura_cab->getNroFacturaIndex()}}">
+                            <input type="text" id="nro_factura" name="nro_factura" class="form-control" readonly="readonly" value="{{$factura_cab->getNroFactura()}}">
                         </div>
                         <label for="fecha_emision" class="col-md-2 control-label">Fecha</label>
                         <div class="col-md-2">
@@ -83,11 +83,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($factura_cab->facturaDetalle as $factura_det)
+                            @foreach ($factura_cab->comprasdetalle as $factura_det)
                                 <tr>
                                     <td>{{$factura_det->articulo->getNombreSelect()}}</td>
                                     <td>{{$factura_det->getCantidadNumber()}}</td>
-                                    <td>{{$factura_det->getPrecioUnitario()}}</td>
+                                    <td>{{$factura_det->getCostoUnitario()}}</td>
                                     <td>{{$factura_det->getMontoDescuento()}}</td>
                                     <td>{{$factura_det->getMontoExenta()}}</td>
                                     <td>{{$factura_det->getMontoGravada()}}</td>

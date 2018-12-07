@@ -254,7 +254,11 @@ class CompraController extends Controller
      */
     public function edit($id)
     {
-        //
+        $factura_cab = ComprasCab::findOrFail($id);
+        $proveedores = Proveedor::where('activo', true)->get();
+        $monedas = Moneda::all();
+
+        return view('compra.show', compact('factura_cab', 'proveedores', 'monedas'));
     }
 
     /**
