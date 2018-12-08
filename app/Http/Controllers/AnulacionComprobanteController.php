@@ -16,7 +16,8 @@ class AnulacionComprobanteController extends Controller
      */
     public function index()
     {
-        return view('anulacionComprobante.index');
+        $fecha_actual = date("d/m/Y");
+        return view('anulacionComprobante.index', compact('fecha_actual'));
     }
 
     /**

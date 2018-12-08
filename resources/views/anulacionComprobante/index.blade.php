@@ -26,7 +26,8 @@
                 </div>
             </div>
         </div>
-
+@include('anulacionComprobante.formAnulacionFactura')
+@include('anulacionComprobante.formAnulacionNotaCredito')
 @endsection
 
 @section('ajax_datatables')
@@ -71,27 +72,49 @@
     }
 
     function anularFactura(id) {
-        //save_method = "add";
         $('#error-block').hide();
         $('input[name=_method]').val('POST');
+        
         $('#modal-form-factura').modal('show');
-
-        //$('#modal-form-factura form')[0].reset();
-
-        $('.modal-title').text('Anular Comprobante');
+        $('#modal-form-factura form')[0].reset();
+        $('.modal-title').text('Motivo de anulación - Factura');
+        $('#tipo_comprobante_fact').val("F");
+        $('#comprobante_id_fact').val(id);
     }
 
     function anularNotaCredito(id) {
-        $('#error-block').hide();
+        $('#error-block-nota-cred').hide();
         $('input[name=_method]').val('POST');
         $('#modal-form-nota').modal('show');
-
-        //$('#modal-form-nota form')[0].reset();
-
-        $('.modal-title').text('Anular Comprobante');
+        $('#modal-form-nota form')[0].reset();
+        $('#tipo_comprobante').val("N");
+        $('#comprobante_id').val(id);
+        $('.modal-title').text('Motivo de anulación - Nota de Crédito');
     }
 
-    $('#select2-motivos').select2({
+    $('#select2-motivos-fact').select2({
+        placeholder: 'Seleccione una opción',
+        language: "es",
+        ajax: {
+            url: "{{ route('api.motivos.anulacion') }}",
+            delay: 250,
+            data: function (params) {
+                var queryParameters = {
+                    q: params.term
+                }
+                return queryParameters;
+            },
+            dataType: 'json',
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#select2-motivos-nota').select2({
         placeholder: 'Seleccione una opción',
         language: "es",
         ajax: {

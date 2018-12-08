@@ -11,17 +11,16 @@
                 </div>
 
                 <div class="modal-body">
-                    <input type="hidden" id="tipo_comprobante" name="tipo_comprobante">
-                    <input type="hidden" id="comprobante_id" name="comprobante_id">
-                    <input type="hidden" id="fecha_anulacion" name="fecha_anulacion">
+                    <input type="hidden" id="tipo_comprobante_fact" name="tipo_comprobante">
+                    <input type="hidden" id="comprobante_id_fact" name="comprobante_id">
+                    <input type="hidden" id="fecha_anulacion_fact" name="fecha_anulacion" value="{{$fecha_actual}}">
                     <div class="form-group">
                         <div id="error-block" class="alert alert-danger"></div>
                     </div>
                     <div class="form-group">
-                            <label for="sucursal_id" class="control-label col-md-3 col-sm-3 col-xs-12">Motivo*</label>
+                            <label for="motivo_anulacion_id" class="control-label col-md-3 col-sm-3 col-xs-12">Motivo*</label>
                           <div class="col-md-6">
-                            <select name="motivo_anulacion_id" id="select2-motivos" class="form-control" style="width: 100%">
-                                
+                            <select name="motivo_anulacion_id" id="select2-motivos-fact" class="form-control" style="width: 100%">
                             </select>
                           </div>
                     </div>
