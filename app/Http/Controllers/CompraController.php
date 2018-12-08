@@ -249,7 +249,7 @@ class CompraController extends Controller
         $proveedores = Proveedor::where('activo', true)->get();
         $monedas = Moneda::all();
 
-        return view('compra.show', compact('factura_cab', 'proveedores', 'monedas'));
+        return view('compra.edit', compact('factura_cab', 'proveedores', 'monedas'));
     }
 
     /**
@@ -281,13 +281,12 @@ class CompraController extends Controller
             
             $proveedor = Proveedor::findOrFail($request['proveedor_id']);
 
-
             if (!empty($cuenta ) && $modalidad_pago == 'CO') {
                 $cuenta = CuentaProveedor::findOrFail($cabecera->getId());
                 
                 $cuenta->delete();
             }
-   
+            /*
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
                 
                 //var_dump(str_replace('.', '', $request['tab_subtotal'][$i]));
@@ -297,73 +296,28 @@ class CompraController extends Controller
                 $total_gravada = $total_gravada + str_replace('.', '', $request['tab_gravada'][$i]);
                 $total_iva = $total_iva + str_replace('.', '', $request['tab_iva'][$i]);
             }
-    
+            */
+
+            //Solamente datos de cabecera, menos los importes y la moneda.
+            //si eso está mal, eliminamos y volvemos a cargar.
             $cabecera->setTipoFactura($request['tipo_factura']);
             $cabecera->setNroFactura($request['nro_factura']);
             $cabecera->setProveedorId($request['proveedor_id']);
             $cabecera->setTimbrado($request['timbrado']);
             $cabecera->setSucursalId($request['sucursal_id']);
-            $cabecera->setMonedaId($request['moneda_id']);
-            $cabecera->setValorCambio($request['valor_cambio']);
+            //$cabecera->setMonedaId($request['moneda_id']);
+            //$cabecera->setValorCambio($request['valor_cambio']);
             $cabecera->setFechaEmision($request['fecha_emision']);
             $cabecera->setComentario($request['comentario']);
-            $cabecera->setMontoTotal($total);
-            $cabecera->setTotalExenta($total_exenta);
-            $cabecera->setTotalGravada($total_gravada);
-            $cabecera->setTotalIva($total_iva);
-            $cabecera->setUsuarioId($usuario->id);
+            //$cabecera->setMontoTotal($total);
+            //$cabecera->setTotalExenta($total_exenta);
+            //$cabecera->setTotalGravada($total_gravada);
+            //$cabecera->setTotalIva($total_iva);
+            //$cabecera->setUsuarioId($usuario->id);
     
             $cabecera->update();
 
-            //antes de borrar el detalle, revertimos las existencias
-            foreach ( $cabecera->comprasdetalle() as $detalle) {
-                //seleccionamos el artículo
-                $articulo = Articulo::findOrFail($detalle->articulo->getId());
-                        
-                //controlamos existencia
-                if ($articulo->getControlExistencia() == true) {
-                    //Actualizacion de existencia
-                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
-                        ->where('sucursal_id', $sucursal->getId())->first();
-                    
-                    if (!empty($existencia)){
-                        $existencia->actualizaStock('-', $detalle->getCantidad());
-                        $existencia->update();                        
-
-                    }   
-
-                }   
-            }
-
-            //ahora sí borramos el detalle
-            $cabecera->comprasdetalle()->delete();
-
             /*
-            -------------------------NO SE APLICA!----------------------------
-            //revertimos los artículos que entraron
-            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
-
-                //seleccionamos el artículo
-                $articulo = Articulo::findOrFail($request['tab_articulo_id'][$i]);
-             
-                    //controlamos existencia
-                if ($articulo->getControlExistencia() == true) {
-                    //Actualizacion de existencia
-                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
-                        ->where('sucursal_id', $sucursal->getId())->first();
-                    
-                    if (!empty($existencia)){
-                        $existencia->actualizaStock('-', $detalle->getCantidad());
-                        $existencia->update();                        
-
-                    }   
-
-                }
-               
-            }
-            --------------------------------------------------------------------
-            */
-    
             //volvemos a insertar el detalle
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
 
@@ -446,7 +400,8 @@ class CompraController extends Controller
                 //----------------para el costo promedio-----------------------------------
 
             }
-  
+            */
+
             if ($modalidad_pago != 'CON' && empty($modalidad_pago)){
                 //Actualizacion de saldo proveedor
                 $cuenta = new CuentaProveedor;
