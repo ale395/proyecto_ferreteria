@@ -135,6 +135,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('anulacionComprobantes', 'AnulacionComprobanteController');
 	Route::get('api/comprobantesVentas', 'AnulacionComprobanteController@apiComprobantesVentas')->name('api.comprobantes.ventas');
 
+	Route::resource('motivoAnulacion', 'MotivoAnulacionController');
+	Route::get('api/motivos/anulaciones', 'MotivoAnulacionController@apiMotivosAnulaciones')->name('api.motivos.anulacion');	
+
 	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
 	Route::resource('ajustesInventarios', 'AjusteInventarioController', ['parameters'=>['ajustesInventarios'=>'ajusteInventario']]);
 	Route::get('api/ajustesInventarios', 'AjusteInventarioController@apiAjustesInventarios')->name('api.ajustes.inventarios');
