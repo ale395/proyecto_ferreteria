@@ -18,7 +18,7 @@
                                 <th>Cliente</th>
                                 <th>Total</th>
                                 <th>Estado</th>
-                                <th width="50">Acciones</th>
+                                <th width="80">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -26,7 +26,8 @@
                 </div>
             </div>
         </div>
-
+@include('anulacionComprobante.formAnulacionFactura')
+@include('anulacionComprobante.formAnulacionNotaCredito')
 @endsection
 
 @section('ajax_datatables')
@@ -38,18 +39,18 @@
         ajax: "{{ route('api.comprobantes.ventas') }}",
         'columnDefs': [
             {"targets": 0,
-            "className": "text-center",},
+            "className": "text-left",},
             {"targets": 1,
             "className": "text-center",},
             {"targets": 2, "className": "text-center",},
             {"targets": 4, "className": "text-center",},
-            {"targets": 5, "className": "text-right",},
+            {"targets": 5, "className": "text-center",},
             {"targets": 6, "className": "text-center",
         }],
         columns: [
             {data: 'tipo_comp', name: 'tipo_comp'},
             {data: 'nro_comp', name: 'nro_comp'},
-            {data: 'fecha', name: 'fecha'},
+            {data: 'fecha_emision', name: 'fecha_emision'},
             {data: 'cliente', name: 'cliente'},
             {data: 'monto_total', name: 'monto_total'},
             {data: 'estado', name: 'estado'},
@@ -62,12 +63,77 @@
         $('[data-toggle="tooltip"]').tooltip();
     })
 
-    function showForm(id) {
+    function showFactura(id) {
         window.location="{{ url('facturacionVentas') }}" + '/' + id;
     }
 
-    function editForm(id) {
-        window.location="{{ url('facturacionVentas') }}" + '/' + id +'/edit';
+    function showNotaCredito(id) {
+        window.location="{{ url('notaCreditoVentas') }}" + '/' + id;
     }
+
+    function anularFactura(id) {
+        $('#error-block').hide();
+        $('input[name=_method]').val('POST');
+        
+        $('#modal-form-factura').modal('show');
+        $('#modal-form-factura form')[0].reset();
+        $('.modal-title').text('Motivo de anulación - Factura');
+        $('#tipo_comprobante_fact').val("F");
+        $('#comprobante_id_fact').val(id);
+    }
+
+    function anularNotaCredito(id) {
+        $('#error-block-nota-cred').hide();
+        $('input[name=_method]').val('POST');
+        $('#modal-form-nota').modal('show');
+        $('#modal-form-nota form')[0].reset();
+        $('#tipo_comprobante').val("N");
+        $('#comprobante_id').val(id);
+        $('.modal-title').text('Motivo de anulación - Nota de Crédito');
+    }
+
+    $('#select2-motivos-fact').select2({
+        placeholder: 'Seleccione una opción',
+        language: "es",
+        ajax: {
+            url: "{{ route('api.motivos.anulacion') }}",
+            delay: 250,
+            data: function (params) {
+                var queryParameters = {
+                    q: params.term
+                }
+                return queryParameters;
+            },
+            dataType: 'json',
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#select2-motivos-nota').select2({
+        placeholder: 'Seleccione una opción',
+        language: "es",
+        ajax: {
+            url: "{{ route('api.motivos.anulacion') }}",
+            delay: 250,
+            data: function (params) {
+                var queryParameters = {
+                    q: params.term
+                }
+                return queryParameters;
+            },
+            dataType: 'json',
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        }
+    });
 </script>    
 @endsection

@@ -82,4 +82,21 @@ class MotivoAnulacionController extends Controller
     {
         //
     }
+
+    public function apiMotivosAnulaciones(Request $request){
+        $motivos_array = [];
+
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $motivos = MotivoAnulacion::where('nombre', 'ilike', "%$search%")->get();
+        } else {
+            $motivos = MotivoAnulacion::all();
+        }
+
+        foreach ($motivos as $motivo) {
+            $motivos_array[] = ['id'=> $motivo->getId(), 'text'=> $motivo->getNombre()];
+        }
+
+        return json_encode($motivos_array);
+    }
 }

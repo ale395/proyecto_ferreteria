@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,7 +16,8 @@ class AnulacionComprobanteController extends Controller
      */
     public function index()
     {
-        return view('anulacionComprobante.index');
+        $fecha_actual = date("d/m/Y");
+        return view('anulacionComprobante.index', compact('fecha_actual'));
     }
 
     /**
@@ -90,7 +92,7 @@ class AnulacionComprobanteController extends Controller
             ->join('sucursales', 'facturas_ventas_cab.sucursal_id', '=', 'sucursales.id')
             ->join('clientes', 'facturas_ventas_cab.cliente_id', '=', 'clientes.id')
             ->crossJoin('empresa')
-            ->select(DB::raw("'Factura' as tipo_comp"), 
+            ->select('facturas_ventas_cab.id',DB::raw("'Factura' as tipo_comp"), 
                 DB::raw("empresa.codigo_establecimiento||'-'||sucursales.codigo_punto_expedicion||' '||lpad(CAST(facturas_ventas_cab.nro_factura AS CHAR), 7, '0') as nro_comp"),
                 DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
                 DB::raw("CASE WHEN clientes.tipo_persona = 'F' THEN clientes.nombre||', '||clientes.apellido WHEN clientes.tipo_persona = 'J' THEN clientes.razon_social END as cliente"),
@@ -103,7 +105,7 @@ class AnulacionComprobanteController extends Controller
             ->join('sucursales', 'nota_credito_ventas_cab.sucursal_id', '=', 'sucursales.id')
             ->join('clientes', 'nota_credito_ventas_cab.cliente_id', '=', 'clientes.id')
             ->crossJoin('empresa')
-            ->select(DB::raw("'Nota de Crédito' as tipo_comp"), 
+            ->select('nota_credito_ventas_cab.id', DB::raw("'Nota de Crédito' as tipo_comp"), 
                 DB::raw("empresa.codigo_establecimiento||'-'||sucursales.codigo_punto_expedicion||' '||lpad(CAST(nota_credito_ventas_cab.nro_nota_credito AS CHAR), 7, '0') as nro_comp"),
                 DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
                 DB::raw("CASE WHEN clientes.tipo_persona = 'F' THEN clientes.nombre||', '||clientes.apellido WHEN clientes.tipo_persona = 'J' THEN clientes.razon_social END as cliente"),
@@ -112,21 +114,18 @@ class AnulacionComprobanteController extends Controller
             ->where('nota_credito_ventas_cab.estado', 'P')
             ->where('nota_credito_ventas_cab.sucursal_id', $sucursal_actual->getId())
             ->union($facturas);
-        /*$registros = DB::table('cuenta_clientes')
-            ->join('nota_credito_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'nota_credito_ventas_cab.id')
-            ->crossJoin('empresa')
-            ->join('sucursales', 'nota_credito_ventas_cab.sucursal_id', '=', 'sucursales.id')
-            ->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
-                DB::raw("'Nota de Crédito' as descripcion"), 
-                DB::raw("empresa.codigo_establecimiento||'-'||sucursales.codigo_punto_expedicion||' '||lpad(CAST(nota_credito_ventas_cab.nro_nota_credito AS CHAR), 7, '0') as nro_comp"), 
-                DB::raw("TO_CHAR(ROUND(nota_credito_ventas_cab.monto_total), '999G999G999') as credito"), 
-                DB::raw("'0' as debito"), 'cuenta_clientes.created_at')
-            ->where('cuenta_clientes.tipo_comprobante', 'N')
-            ->where('nota_credito_ventas_cab.cliente_id', $cliente_id)
-            ->where('nota_credito_ventas_cab.fecha_emision', '<=', $fecha_final)
-            ->union($facturas);*/
-        //$registros->orderBy('created_at');
+        
+        $registros->orderBy('fecha_emision');
         $registros = $registros->get();
-        return $registros;
+        return Datatables::of($registros)
+            ->addColumn('action', function($registros){
+                $factura = '<a data-toggle="tooltip" data-placement="top" onclick="showFactura('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" onclick="anularFactura('. $registros->id .')" class="btn btn-danger btn-sm" title="Anular comprobante"><i class="fa fa-minus-circle"></i></a> ';
+                $notaCredito = '<a data-toggle="tooltip" data-placement="top" onclick="showNotaCredito('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" onclick="anularNotaCredito('. $registros->id .')" class="btn btn-danger btn-sm" title="Anular comprobante"><i class="fa fa-minus-circle"></i></a> ';
+                if ($registros->tipo_comp == 'Factura') {
+                    return $factura;
+                } else {
+                    return $notaCredito;
+                }
+            })->make(true);
     }
 }

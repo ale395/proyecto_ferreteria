@@ -12,6 +12,10 @@ class MotivoAnulacion extends Model
     	'nombre',
     ];
 
+    public function getId(){
+        return $this->id;
+    }
+
     public function getNombre(){
     	return $this->nombre;
     }
