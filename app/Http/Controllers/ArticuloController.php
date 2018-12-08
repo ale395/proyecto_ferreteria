@@ -54,6 +54,7 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
+        $articulo = new Articulo();
         $rules = [
 
             'control_existencia' => 'required',
@@ -71,11 +72,12 @@ class ArticuloController extends Controller
         $validator = Validator::make($request->all(), $rules);
        
         if($request->hasFile('img_producto')){
-            
+       
             $img_producto = $request->file('img_producto');
             $filename = $request['descripcion']/*.'-'.time()*/.'.'.$img_producto->getClientOriginalExtension();
             Image::make($img_producto)->resize(300, 300)->save( public_path('/images/productos/' . $filename ) );
-           
+            $articulo->img_producto = $filename;
+            
             
         }
 
@@ -101,7 +103,6 @@ class ArticuloController extends Controller
             'familia_id' => $request['familia_id'],
             'linea_id' => $request['linea_id'],
             'unidad_medida_id' => $request['unidad_medida_id'],
-            'img_producto' => $filename
 
         ];
 
