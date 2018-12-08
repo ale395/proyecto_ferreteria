@@ -90,6 +90,10 @@ class FacturaVentaCab extends Model
         return number_format($this->monto_total, 0, ',', '.');
     }
 
+    public function getMontoTotalNumber(){
+        return $this->monto_total;
+    }
+
     public function setMontoTotal($monto_total){
         $this->monto_total = $monto_total;
     }
@@ -164,5 +168,9 @@ class FacturaVentaCab extends Model
 
     public function facturaDetalle(){
         return $this->hasMany('App\FacturaVentaDet', 'factura_cab_id');
+    }
+
+    public function facturaPedidos(){
+        return $this->hasMany('App\PedidoFactura', 'factura_cabecera_id', 'id');
     }
 }

@@ -88,6 +88,10 @@ class NotaCreditoVentaCab extends Model
         return number_format($this->monto_total, 0, ',', '.');
     }
 
+    public function getMontoTotalNumber(){
+        return $this->monto_total;
+    }
+
     public function setMontoTotal($monto_total){
         $this->monto_total = $monto_total;
     }

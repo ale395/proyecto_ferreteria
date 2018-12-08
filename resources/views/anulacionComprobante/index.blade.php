@@ -9,6 +9,11 @@
                     <h4>Lista de Comprobantes</h4>
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        <div id="mesagge-block" class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                        </div>
+                    </div>
                     <table id="pedidos-table" class="table-striped table-responsive row-border" style="width:100%">
                         <thead>
                             <tr>
@@ -32,6 +37,7 @@
 
 @section('ajax_datatables')
 <script type="text/javascript">
+    $('#mesagge-block').hide();
     var table = $('#pedidos-table').DataTable({
         language: { url: '/datatables/translation/spanish' },
         processing: true,
@@ -80,6 +86,7 @@
         $('.modal-title').text('Motivo de anulación - Factura');
         $('#tipo_comprobante_fact').val("F");
         $('#comprobante_id_fact').val(id);
+        $('#select2-motivos-fact').val("").change();
     }
 
     function anularNotaCredito(id) {
@@ -90,7 +97,87 @@
         $('#tipo_comprobante').val("N");
         $('#comprobante_id').val(id);
         $('.modal-title').text('Motivo de anulación - Nota de Crédito');
+        $('#select2-motivos-nota').val("").change();
     }
+
+    $(function(){
+        $('#modal-form-factura form').validator().on('submit', function (e) {
+            if (!e.isDefaultPrevented()){
+                /*var id = $('#id').val();
+                if (save_method == 'add') url = "{{ url('clientes') }}";
+                else url = "{{ url('clientes') . '/' }}" + id;*/
+                url = "{{ url('anulacionComprobantes') }}";
+
+                $.ajax({
+                    url : url,
+                    type : "POST",
+                    data : $('#modal-form-factura form').serialize(),
+                    success : function($data) {
+                        $('#modal-form-factura').modal('hide');
+                        $('#mesagge-block').show().html('Factura anulada correctamente!');
+                        table.ajax.reload();
+                    },
+                    error : function(data){
+                        var errors = '';
+                        var errores = '';
+                        if(data.status === 422) {
+                            var errors = data.responseJSON;
+                            $.each(data.responseJSON.errors, function (key, value) {
+                                errores += '<li>' + value + '</li>';
+                            });
+                            $('#error-block').show().html(errores);
+                        }else{
+                            $.alert({
+                            title: 'Atención!',
+                            content: 'Ocurrió un error durante el proceso!',
+                            icon: 'fa fa-times-circle-o',
+                            type: 'red',
+                            });
+                        }    
+                    }
+                });
+                return false;
+            }
+        });
+    });
+
+
+    $(function(){
+        $('#modal-form-nota form').validator().on('submit', function (e) {
+            if (!e.isDefaultPrevented()){
+                url = "{{ url('anulacionComprobantes') }}";
+                $.ajax({
+                    url : url,
+                    type : "POST",
+                    data : $('#modal-form-nota form').serialize(),
+                    success : function($data) {
+                        $('#modal-form-nota').modal('hide');
+                        $('#mesagge-block').show().html('Nota de Crédito anulada correctamente!');
+                        table.ajax.reload();
+                    },
+                    error : function(data){
+                        var errors = '';
+                        var errores = '';
+                        if(data.status === 422) {
+                            var errors = data.responseJSON;
+                            $.each(data.responseJSON.errors, function (key, value) {
+                                errores += '<li>' + value + '</li>';
+                            });
+                            $('#error-block').show().html(errores);
+                        }else{
+                            $.alert({
+                            title: 'Atención!',
+                            content: 'Ocurrió un error durante el proceso!',
+                            icon: 'fa fa-times-circle-o',
+                            type: 'red',
+                            });
+                        }    
+                    }
+                });
+                return false;
+            }
+        });
+    });
 
     $('#select2-motivos-fact').select2({
         placeholder: 'Seleccione una opción',

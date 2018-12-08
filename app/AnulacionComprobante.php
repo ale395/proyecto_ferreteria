@@ -36,6 +36,14 @@ class AnulacionComprobante extends Model
     	$this->tipo_comprobante = $tipo_comprobante;
     }
 
+    public function setComprobanteId($comprobante_id){
+        $this->comprobante_id = $comprobante_id;
+    }
+
+    public function setMotivoAnulacionId($motivo_id){
+        $this->motivo_anulacion_id = $motivo_id;
+    }
+
     public function factura(){
     	return $this->belongsTo('App\FacturaVentaCab', 'comprobante_id');
     }

@@ -31,7 +31,7 @@ class CuentaCliente extends Model
     }
 
     public function getMontoComprobante(){
-        return $this->monto_saldo;
+        return $this->monto_comprobante;
     }
 
     public function factura(){

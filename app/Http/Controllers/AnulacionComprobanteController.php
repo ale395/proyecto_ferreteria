@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+use App\CuentaCliente;
+use App\FacturaVentaCab;
+use App\NotaCreditoVentaCab;
+use App\NotaCreditoVentaDet;
 use Illuminate\Http\Request;
+use App\AnulacionComprobante;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +44,69 @@ class AnulacionComprobanteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $anulacion = new AnulacionComprobante;
+
+        $rules = [
+            'motivo_anulacion_id' => 'required',
+        ];
+
+        $mensajes = [
+            'motivo_anulacion_id.required' => 'De seleccionar el motivo de anulación del comprobante!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        $anulacion->setTipoComprobante($request['tipo_comprobante']);
+        $anulacion->setComprobanteId($request['comprobante_id']);
+        $anulacion->setFechaAnulacion($request['fecha_anulacion']);
+        $anulacion->setMotivoAnulacionId($request['motivo_anulacion_id']);
+        $anulacion->save();
+
+        if ($request['tipo_comprobante'] == 'F') {
+            $factura = FacturaVentaCab::findOrFail($request['comprobante_id']);
+            $factura->setEstado('A');
+            $factura->update();
+            //Deberia verificar tambien facturas relacionadas a pedidos
+            if (!empty($factura->facturaPedidos)) {
+                foreach ($factura->facturaPedidos as $factura_pedido) {
+                    //
+                }
+            }
+        } else {
+            $nota_credito = NotaCreditoVentaCab::findOrFail($request['comprobante_id']);
+            $nota_credito->setEstado('A');
+            $nota_credito->update();
+
+            if ($nota_credito->getTipoNotaCredito() == 'DV') {
+                $detalles = $nota_credito->notaCreditoDetalle;
+                foreach ($detalles as $detalle) {
+                    if ($detalle->articulo->getControlExistencia()) {
+                        $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())->where('sucursal_id', Auth::user()->empleado->sucursalDefault->getId())
+                            ->first();
+                        $existencia->setCantidad($existencia->getCantidadNumber() - $detalle->getCantidad());
+                        $existencia->update();
+                    }
+                }
+            }
+
+            $factura = $nota_credito->factura;
+            $factura->setEstado('P');
+            $factura->update();
+
+            $cuenta_cliente_factura = CuentaCliente::where('tipo_comprobante', 'F')
+            ->where('comprobante_id', $factura->getId())
+            ->first();
+            $saldo = $cuenta_cliente_factura->getMontoSaldo() + $nota_credito->getMontoTotalNumber();
+            $cuenta_cliente_factura->setMontoSaldo($saldo);
+            $cuenta_cliente_factura->update();
+        }
+
+        $cuenta_cliente = CuentaCliente::where('tipo_comprobante', $request['tipo_comprobante'])
+            ->where('comprobante_id', $request['comprobante_id'])
+            ->first();
+        $cuenta_cliente->delete();
+
+        return;
     }
 
     /**

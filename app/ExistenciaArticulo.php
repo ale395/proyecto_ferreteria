@@ -12,6 +12,10 @@ class ExistenciaArticulo extends Model
     	return number_format($this->cantidad, 0, ',', '.');
     }
 
+    public function getCantidadNumber(){
+        return $this->cantidad;
+    }
+
     public function setCantidad($cantidad){
     	$this->cantidad = $cantidad;
     }
