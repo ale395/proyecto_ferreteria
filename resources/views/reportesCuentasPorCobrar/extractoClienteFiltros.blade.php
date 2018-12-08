@@ -1,6 +1,21 @@
 @extends('home')
 
 @section('content')
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" action="#" class="form-horizontal" data-toggle="validator">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Extracto de cuenta del cliente
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        @if (session('status'))
+                            <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                {{ session('status') }}
     <div class="row">
         <div class="col-md-12">
             <form method="post" action="{{action('ReportesCuentasPorCobrarController@verExtractoCliente')}}" class="form-horizontal" data-toggle="validator">
@@ -24,12 +39,30 @@
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <div class="form-group">
+                        <label for="fecha_corte" class="col-md-2 control-label">Fecha de corte</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_corte" name="fecha_corte" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$fecha_actual}}" data-inputmask="'mask': '99/99/9999'" readonly>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="cliente_id" class="col-md-1 control-label">Cliente</label>
                         <label for="cliente_id" class="col-md-2 control-label">Cliente*</label>
+
                         <div class="col-md-7">
                             <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%">
                             </select>
                         </div>
                     </div>
+
+                    <div class="col-md-7 text-center">
+                        <a type="button" href="#">Ejecutar</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
                     <div class="form-group">
                         <label for="fecha_emision" class="col-md-2 control-label">Fecha Final*</label>
                         <div class="col-md-2">
@@ -56,7 +89,7 @@
             delay: 250,
             data: function (params) {
                 var queryParameters = {
-                    q: params.term
+                  q: params.term
                 }
                 return queryParameters;
             },
@@ -78,10 +111,10 @@
         todayHighlight: true,
         autoclose: true
       });
-      $('#fecha_emision').click(function(e){
-                e.stopPropagation();
-                $('.dpfecha').datepicker('update');
-            });  
+        $('#fecha_corte').click(function(e){
+            e.stopPropagation();
+            $('.dpfecha').datepicker('update');
+        });  
     });
 </script>
 @endsection

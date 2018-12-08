@@ -7,10 +7,12 @@
         <form method="post" action="#" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Ver Factura
+                    <h4>Ver Compra
                     <div class="pull-right btn-group">
+                        <!--
                         <a data-toggle="tooltip" data-placement="top" title="Imprimir Factura" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('facturacionVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        -->
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('compra.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
@@ -32,16 +34,22 @@
                         <div class="col-md-2">
                             <input type="text" id="tipo_factura" name="tipo_factura" class="form-control" readonly="readonly" value="{{$factura_cab->getTipoFacturaIndex()}}">
                         </div>
-                        <label for="nro_factura" class="col-md-1 control-label">Número</label>
-                        <div class="col-md-3">
-                            <input type="text" id="nro_factura" name="nro_factura" class="form-control" readonly="readonly" value="{{$factura_cab->getNroFacturaIndex()}}">
-                        </div>
                         <label for="fecha_emision" class="col-md-2 control-label">Fecha</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$factura_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
+
                     </div>
-                    <br>
+                    <div class="form-group">
+                        <label for="nro_factura" class="col-md-1 control-label">Número</label>
+                        <div class="col-md-3">
+                            <input type="text" id="nro_factura" name="nro_factura" class="form-control" readonly="readonly" value="{{$factura_cab->getNroFactura()}}">
+                        </div>
+                        <label for="timbrado" class="col-md-1 control-label">Timbrado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" readonly="readonly" value="{{$factura_cab->getTimbrado()}}" >  
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="proveedor_id" class="col-md-1 control-label">Proveedor</label>
                         <div class="col-md-6">
@@ -83,11 +91,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($factura_cab->facturaDetalle as $factura_det)
+                            @foreach ($factura_cab->comprasdetalle as $factura_det)
                                 <tr>
                                     <td>{{$factura_det->articulo->getNombreSelect()}}</td>
                                     <td>{{$factura_det->getCantidadNumber()}}</td>
-                                    <td>{{$factura_det->getPrecioUnitario()}}</td>
+                                    <td>{{$factura_det->getCostoUnitario()}}</td>
                                     <td>{{$factura_det->getMontoDescuento()}}</td>
                                     <td>{{$factura_det->getMontoExenta()}}</td>
                                     <td>{{$factura_det->getMontoGravada()}}</td>

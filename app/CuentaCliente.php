@@ -31,14 +31,14 @@ class CuentaCliente extends Model
     }
 
     public function getMontoComprobante(){
-        return $this->monto_saldo;
+        return $this->monto_comprobante;
     }
 
     public function factura(){
     	return $this->belongsTo('App\FacturaVentaCab', 'comprobante_id');
     }
 
-    /*public function notaCredito(){
+    public function notaCredito(){
     	return $this->belongsTo('App\NotaCreditoVentaCab', 'comprobante_id');
-    }*/
+    }
 }

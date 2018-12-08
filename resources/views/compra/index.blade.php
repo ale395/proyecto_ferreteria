@@ -18,10 +18,10 @@
                     <table id="pedidos-table" class="table-striped table-responsive row-border" style="width:100%">
                         <thead>
                             <tr>
-                                <th width="65">Tipo Fact.</th>
+                                <th width="20">Tipo</th>
                                 <th width="100">Nro Factura</th>
                                 <th>Fecha</th>
-                                <th>Cliente</th>
+                                <th>Proveedor</th>
                                 <th>Moneda</th>
                                 <th>Total</th>
                                 <th width="70">Acciones</th>

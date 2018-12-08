@@ -43,7 +43,8 @@ class CompraRequest extends FormRequest
                     'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
-                    'tab_costo_unitario'=>'required',
+                    'tab_costo_unitario'=>'required'
+
                 ];
             }
             case 'PUT':

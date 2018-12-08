@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ComprasCab extends Model
 {
-    CONST MAX_LINEAS_DETALLE = 3;
+    CONST MAX_LINEAS_DETALLE = 25;
 
     protected $table = 'compras_cab';
 
@@ -127,6 +127,24 @@ class ComprasCab extends Model
 
     public function setUsuario($usuario_id){
         $this->usuario_id = $usuario_id;
+    }
+
+    public function getEstado(){
+        return $this->estado;
+    }
+
+    public function setEstado($estado){
+        $this->estado = $esatdo;
+    }
+
+    public function getEstadoNombre(){
+        if ($this->estado == 'P') {
+            return 'Pendiente';
+        } elseif ($this->estado == 'C') {
+            return 'Cobrada';
+        } elseif ($this->estado == 'A') {
+            return 'Anulada';
+        }
     }
 
     public function proveedor()
