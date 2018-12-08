@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('CompraController@update')}}" onsubmit="return Validar()" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('CompraController@update', $factura_cab->getId())}}" onsubmit="return Validar()" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Compra
@@ -35,35 +35,35 @@
                             </div>
                         @endif
                     </div>
-                    <input name="_method" type="hidden" value="POST">
+                    <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
-                    <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="id" name="id" value="{{$factura_cab->getId()}}">
                     <div class="form-group">
                         <label for="tipo_factura" class="col-md-1 control-label">Tipo Fac.</label>
                         <div class="col-md-3">
                             <div id="tipo_factura" class="btn-group" data-toggle="buttons">
-                                @if(old('tipo_factura') === 'CR')
+                                @if(('$factura_cab->getTipoFactura') === 'CR')
                                     <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" >
                                     <input id="radioContado" type="radio" name="tipo_factura" value="CO">Contado</label>
-                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="habilitarFP()">
+                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" >
                                     <input id="radioCredito" type="radio" name="tipo_factura" value="CR" checked> Crédito</label>
                                 @else
                                     <label class="btn btn-default active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" >
                                     <input id="radioContado" type="radio" name="tipo_factura" value="CO" checked>&nbsp;Contado&nbsp;</label>
-                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" onclick="deshabilitarFP()">
+                                    <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default" >
                                     <input id="radioCredito" type="radio" name="tipo_factura" value="CR"> Crédito </label>
                                 @endif
                             </div>
                         </div>
                         <label for="nro_factura" class="col-md-2 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="text" id="nro_factura" name="nro_factura" class="form-control text-right" value="{{old('nro_factura')}}" >  
+                            <input type="text" id="nro_factura" name="nro_factura" class="form-control text-right" value="{{old('nro_factura', $factura_cab->getNroFactura())}}" >  
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $factura_cab->getFechaEmision())}}" data-inputmask="'mask': '99/99/9999'">
                         </div>                        
                         <!--
                         <div class="col-md-1">
@@ -72,12 +72,12 @@
                         -->
                         <label for="timbrado" class="col-md-3 control-label">Timbrado</label>
                         <div class="col-md-2">
-                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('timbrado')}}" >  
+                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('timbrado', $factura_cab->getTimbrado())}}" >  
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="proveedor_id" class="col-md-1 control-label">Proveedor *</label>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
                                 @if ($errors->any())
                                     @foreach($proveedores as $proveedor)
@@ -85,13 +85,15 @@
                                             <option value="{{old('proveedor_id')}}" selected>{{$proveedor->getNombreSelect()}}</option>
                                         @endif
                                     @endforeach
-                                @endif
+                                @else
+                                    <option value="{{$factura_cab->proveedor->getId()}}">{{$factura_cab->proveedor->getNombreIndex()}}</option>
+                                 @endif
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
                                 @if ($errors->any())
                                     @foreach($monedas as $moneda_err)
@@ -100,139 +102,165 @@
                                         @endif
                                     @endforeach
                                 @else
-                                    <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
+                                    <option value="{{$factura_cab->moneda->getId()}}">{{$factura_cab->moneda->getDescripcion()}}</option>
                                 @endif
                             </select>
                         </div>
-                        <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
+                        <label for="valor_cambio" class="col-md-3 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $valor_cambio)}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $factura_cab->getValorCambio())}}">
                         </div>
-                        <label for="comentario" class="col-md-1 control-label">Comentario</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado" class="col-md-1 control-label">Estado*</label>
+                        <div class="col-md-3">
+                            <select id="select2-estados" name="estado" class="form-control" style="width: 100%">
+                                @if ($factura_cab->getEstado() == 'P')
+                                    <option value="P" selected>Pendiente</option>
+                                    <option value="C">Cancelado</option>
+                                    <option value="V">Vencido</option>
+                                @elseif ($factura_cab->getEstado() == 'C')
+                                    <option value="P">Pendiente</option>
+                                    <option value="C" selected>Cancelado</option>
+                                    <option value="V">Vencido</option>
+                                @elseif ($factura_cab->getEstado() == 'V')
+                                    <option value="P">Pendiente</option>
+                                    <option value="C">Cancelado</option>
+                                    <option value="V" selected>Vencido</option>
+                                @endif
+                                <option value="F" disabled>Facturado</option>                                
+                            </select>
+                            
+                        </div>
+                        <label for="comentario" class="col-md-2 control-label">Comentario</label>
                         <div class="col-md-4">
-                            <textarea class="form-control" rows="2" id="comentario" name="comentario"></textarea>
+                            <textarea class="form-control" rows="2" id="comentario" name="comentario" value="$factura_cab->getComentario()"></textarea>
                         </div>
                     </div>
-                    <div class="form-group">
-                        
-                    </div>
                     <br>
-                    <div class="form-group">
-                                    <br>
-                                    <label for="articulo_id" class="col-md-1 control-label">Artículo</label>
-                                    <div class="col-md-4">
-                                        <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" >
+                    <div class="form-group" readonly="readonly">
+                        <br>
+                        <label for="articulo_id" class="col-md-1 control-label">Artículo</label>
+                        <div class="col-md-4">
+                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" >
 
-                                        </select>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()"></a>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <a data-toggle="tooltip" data-placement="top" title="% Descuento">
-                                        <input type="number" id="porcentaje_descuento" name="porcentaje_descuento" class="form-control" placeholder="% Desc." min="0" max="100" onchange="calcularSubtotal()"></a>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()"></a>
+                        </div>
+                        <div class="col-md-1">
+                            <a data-toggle="tooltip" data-placement="top" title="% Descuento">
+                            <input type="number" id="porcentaje_descuento" name="porcentaje_descuento" class="form-control" placeholder="% Desc." min="0" max="100" onchange="calcularSubtotal()"></a>
 
-                                    </div>
-                                    <div class="col-md-2">
-                                        <a data-toggle="tooltip" data-placement="top" title="Subtotal">
-                                        <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
-                                    </div>
-                                    <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
-                                    <div class="col-md-1">
-                                        <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-                                    </div>
-                                </div>
-                                <span class="help-block with-errors"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="Subtotal">
+                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
+                        </div>
+                        <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
+                        <div class="col-md-1">
+                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                        </div>
+                        </div>
+                        <span class="help-block with-errors"></span>
                     
-                                <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
-                                    <thead>
+                        <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%" readonly="readonly">
+                            <thead>
+                                <tr>
+                                    <th>Artículo</th>
+                                    <th width="6%">Cant.</th>
+                                    <th width="9%">Costo U.</th>
+                                    <th width="9%">Descuento</th>
+                                    <th width="9%">Exenta</th>
+                                    <th width="9%">Gravada</th>
+                                    <th width="6%">IVA</th>
+                                    <th width="9%">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($errors->any())
+                                    @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                         <tr>
-                                            <th width="5%">Acción</th>
-                                            <th>Artículo</th>
-                                            <th width="6%">Cant.</th>
-                                            <th width="9%">Costo U.</th>
-                                            <th width="9%">Descuento</th>
-                                            <th width="9%">Exenta</th>
-                                            <th width="9%">Gravada</th>
-                                            <th width="6%">IVA</th>
-                                            <th width="9%">Total</th>
+                                            <td>{{old('tab_articulo_nombre.'.$i)}}</td>
+                                            <td>{{old('tab_cantidad.'.$i)}}</td>
+                                            <td>{{old('tab_costo_unitario.'.$i)}}</td>
+                                            <td>{{old('tab_monto_descuento.'.$i)}}</td>
+                                            <td>{{old('tab_exenta.'.$i)}}</td>
+                                            <td>{{old('tab_gravada.'.$i)}}</td>
+                                            <td>{{old('tab_iva.'.$i)}}</td>
+                                            <td>{{old('tab_subtotal.'.$i)}}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if ($errors->any())
-                                            @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
-                                                <tr>
-                                                    <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
-                                                    <td>{{old('tab_articulo_nombre.'.$i)}}</td>
-                                                    <td>{{old('tab_cantidad.'.$i)}}</td>
-                                                    <td>{{old('tab_costo_unitario.'.$i)}}</td>
-                                                    <td>{{old('tab_monto_descuento.'.$i)}}</td>
-                                                    <td>{{old('tab_exenta.'.$i)}}</td>
-                                                    <td>{{old('tab_gravada.'.$i)}}</td>
-                                                    <td>{{old('tab_iva.'.$i)}}</td>
-                                                    <td>{{old('tab_subtotal.'.$i)}}</td>
-                                                </tr>
-                                            @endfor
-                                        @endif
-                                    </tbody>
-                                    <tfoot>
+                                    @endfor
+                                @else
+                                    @foreach ($factura_cab->comprasdetalle as $pedido_det)
                                         <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th>Total</th>
-                                            <th class="total">0</th>
+                                            <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
+                                            <td>{{$pedido_det->getCantidadNumber()}}</td>
+                                            <td>{{$pedido_det->getCostoUnitario()}}</td>
+                                            <td>{{$pedido_det->getMontoDescuento()}}</td>
+                                            <td>{{$pedido_det->getMontoExenta()}}</td>
+                                            <td>{{$pedido_det->getMontoGravada()}}</td>
+                                            <td>{{$pedido_det->getMontoIva()}}</td>
+                                            <td>{{$pedido_det->getMontoTotal()}}</td>
                                         </tr>
-                                    </tfoot>
-                                </table>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th class="total">0</th>
+                                </tr>
+                            </tfoot>
+                        </table>
 
-                                <table id="tab-hidden" class="hidden">
-                                    <thead>
+                        <table id="tab-hidden" class="hidden">
+                            <thead>
+                                <tr>
+                                    <th>Artículo ID</th>
+                                    <th>Nombre Artículo</th>
+                                    <th width="6%">Cant.</th>
+                                    <th width="9%">Costo U.</th>
+                                    <th width="9%">% Descuento</th>
+                                    <th width="9%">Monto Descuento</th>
+                                    <th width="9%">% IVA</th>
+                                    <th width="9%">Exenta</th>
+                                    <th width="9%">Gravada</th>
+                                    <th width="6%">IVA</th>
+                                    <th width="9%">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($errors->any())
+                                    @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                         <tr>
-                                            <th width="5%">Acción</th>
-                                            <th>Artículo ID</th>
-                                            <th>Nombre Artículo</th>
-                                            <th width="6%">Cant.</th>
-                                            <th width="9%">Costo U.</th>
-                                            <th width="9%">% Descuento</th>
-                                            <th width="9%">Monto Descuento</th>
-                                            <th width="9%">% IVA</th>
-                                            <th width="9%">Exenta</th>
-                                            <th width="9%">Gravada</th>
-                                            <th width="6%">IVA</th>
-                                            <th width="9%">Total</th>
+                                            <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></th>
+                                            <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if ($errors->any())
-                                            @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
-                                                <tr>
-                                                    <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
-                                                    <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></th>
-                                                    <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
-                                                </tr>
-                                            @endfor
-                                        @endif
-                                    </tbody>
-                                </table>
-                    <br>
-
+                                    @endfor
+                                @endif
+                            </tbody>
+                        </table>
+                        <br>
                 </div>
             </div>
         </form>
@@ -277,7 +305,7 @@
  
             // Total over all pages
             total = api
-                .column(8)
+                .column(7)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -285,14 +313,14 @@
  
             // Total over this page
             pageTotal = api
-                .column( 8, { page: 'current'} )
+                .column( 7, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 8 ).footer() ).html(
+            $( api.column( 7 ).footer() ).html(
                 $.number(total,decimales, ',', '.')
             );
         }

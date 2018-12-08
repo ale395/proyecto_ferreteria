@@ -129,6 +129,14 @@ class ComprasCab extends Model
         $this->usuario_id = $usuario_id;
     }
 
+    public function getEstado(){
+        return $this->estado;
+    }
+
+    public function setEstado($estado){
+        $this->estado = $esatdo;
+    }
+
     public function getEstadoNombre(){
         if ($this->estado == 'P') {
             return 'Pendiente';
