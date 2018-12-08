@@ -173,4 +173,8 @@ class FacturaVentaCab extends Model
     public function facturaPedidos(){
         return $this->hasMany('App\PedidoFactura', 'factura_cabecera_id', 'id');
     }
+
+    public function pedidos(){
+        return $this->belongsToMany('App\PedidoVentaCab', 'pedidos_facturas', 'factura_cabecera_id', 'pedido_cabecera_id');
+    }
 }

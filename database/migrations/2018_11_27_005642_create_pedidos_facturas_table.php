@@ -14,10 +14,10 @@ class CreatePedidosFacturasTable extends Migration
     public function up()
     {
         Schema::create('pedidos_facturas', function (Blueprint $table) {
-            /*$table->increments('id');
-            $table->timestamps();*/
+            $table->increments('id');
             $table->integer('factura_cabecera_id')->unsigned();
             $table->integer('pedido_cabecera_id')->unsigned();
+            $table->timestamps();
 
             $table->foreign('factura_cabecera_id')->references('id')->on('facturas_ventas_cab');
             $table->foreign('pedido_cabecera_id')->references('id')->on('pedidos_ventas_cab');
