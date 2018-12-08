@@ -6,5 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class MotivoAnulacion extends Model
 {
-    //
+    protected $table = 'motivos_anulaciones';
+
+    protected $fillable = [
+    	'nombre',
+    ];
+
+    public function getNombre(){
+    	return $this->nombre;
+    }
+
+    public function setNombre($nombre){
+    	$this->nombre = $nombre;
+    }
 }

@@ -16,6 +16,7 @@ use App\Impuesto;
 use App\FormaPago;
 use App\Cotizacion;
 use App\Banco;
+use App\MotivoAnulacion;
 
 class DefaultSeeder extends Seeder
 {
@@ -27,7 +28,19 @@ class DefaultSeeder extends Seeder
      */
     public function run()
     {
-    	//Familia de producto por default - Generico
+    	$motivo_anulacion = new MotivoAnulacion;
+        $motivo_anulacion->setNombre('Error de impresión');
+        $motivo_anulacion->save();
+
+        $motivo_anulacion = new MotivoAnulacion;
+        $motivo_anulacion->setNombre('Datos incorrectos');
+        $motivo_anulacion->save();
+
+        $motivo_anulacion = new MotivoAnulacion;
+        $motivo_anulacion->setNombre('Cliente no acepta el comprobante');
+        $motivo_anulacion->save();
+
+        //Familia de producto por default - Generico
         $familia = new Familia();
         $familia->num_familia = '001';
         $familia->descripcion = 'GENERICO';

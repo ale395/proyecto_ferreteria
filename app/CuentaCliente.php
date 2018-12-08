@@ -38,7 +38,7 @@ class CuentaCliente extends Model
     	return $this->belongsTo('App\FacturaVentaCab', 'comprobante_id');
     }
 
-    /*public function notaCredito(){
+    public function notaCredito(){
     	return $this->belongsTo('App\NotaCreditoVentaCab', 'comprobante_id');
-    }*/
+    }
 }
