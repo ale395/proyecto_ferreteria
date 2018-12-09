@@ -106,6 +106,7 @@ class NotaCreditoVentaController extends Controller
         }
 
         $serie = Serie::findOrFail($request['serie_id']);
+        $serie_str = substr($request['nro_ncre_exte'], 0, 7);//nro_ncre_exte
         $cliente = Cliente::findOrFail($request['cliente_id']);
 
         for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
@@ -123,6 +124,7 @@ class NotaCreditoVentaController extends Controller
 
         $cabecera->setTipoNotaCredito($request['tipo_nota_credito']);
         $cabecera->setSerieId($request['serie_id']);
+        $cabecera->setSerie($serie_str);
         $cabecera->setNroNotaCredito($request['nro_nota_credito']);
         $cabecera->setClienteId($request['cliente_id']);
         $cabecera->setSucursalId($request['sucursal_id']);
@@ -175,7 +177,8 @@ class NotaCreditoVentaController extends Controller
         /*Actualiza el saldo de la factura relacionada a la nota de credito*/
         foreach ($array_pedidos as $nro_factura) {
             $cuenta_factura = CuentaCliente::where('tipo_comprobante', 'F')
-                ->where('comprobante_id', $nro_factura)->first();
+                ->where('comprobante_id', $nro_factura)
+                ->where('cliente_id', $cabecera->cliente->getId())->first();
             $cuenta_factura->setMontoSaldo($cuenta_factura->getMontoSaldo() - str_replace('.', '', $cabecera->getMontoTotal()));
             $cuenta_factura->update();
         }
@@ -188,6 +191,7 @@ class NotaCreditoVentaController extends Controller
         $cuenta = new CuentaCliente;
         $cuenta->setTipoComprobante('N');
         $cuenta->setComprobanteId($cabecera->getId());
+        $cuenta->setClienteId($cabecera->cliente->getId());
         $cuenta->setMontoComprobante(str_replace('.', '', str_replace('.', '', $cabecera->getMontoTotal())*-1));
         $cuenta->setMontoSaldo(0);
         $cuenta->save();

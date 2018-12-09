@@ -28,6 +28,14 @@ class FacturaVentaCab extends Model
         }
     }
 
+    public function getSerie(){
+        return $this->serie;
+    }
+
+    public function setSerie($serie){
+        $this->serie = $serie;
+    }
+
     public function setTipoFactura($tipo_factura){
     	$this->tipo_factura = $tipo_factura;
     }
