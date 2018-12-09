@@ -9,6 +9,7 @@ use App\PedidoVentaDet;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
 class PedidoVentaController extends Controller
@@ -224,6 +225,23 @@ class PedidoVentaController extends Controller
         $pedido = PedidoVentaCab::findOrFail($id);
         $pedido->pedidosDetalle()->delete();
         return PedidoVentaCab::destroy($id);
+    }
+
+    public function impresionPedido($pedido_id){
+        $cabecera = PedidoVentaCab::findOrFail($pedido_id);
+        $total_exenta = 0;
+        $total_gravada = 0;
+        $total_iva = 0;
+        foreach ($cabecera->pedidosDetalle as $detalle) {
+            $total_exenta = $total_exenta + $detalle->getMontoExentaNumber();
+            $total_gravada = $total_gravada + $detalle->getMontoGravadaNumber();
+            $total_iva = $total_iva + $detalle->getMontoIvaNumber();
+        }
+        $total_exenta = number_format($total_exenta, 0, ',', '.');
+        $total_gravada = number_format($total_gravada, 0, ',', '.');
+        $total_iva = number_format($total_iva, 0, ',', '.');
+        $pdf = PDF::loadView('reportesVentas.impresionPedido', compact('cabecera', 'total_exenta', 'total_gravada', 'total_iva'));
+        return $pdf->stream('PedidoVenta.pdf', array('Attachment'=>0));
     }
 
     public function apiPedidosCliente($cliente_id){

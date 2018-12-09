@@ -72,6 +72,10 @@ class PedidoVentaDet extends Model
         return number_format($this->monto_exenta, 0, ',', '.');
     }
 
+    public function getMontoExentaNumber(){
+        return $this->monto_exenta;
+    }
+
     public function setMontoGravada($monto_gravada){
         $this->monto_gravada = $monto_gravada;
     }
@@ -80,12 +84,20 @@ class PedidoVentaDet extends Model
         return number_format($this->monto_gravada, 0, ',', '.');
     }
 
+    public function getMontoGravadaNumber(){
+        return $this->monto_gravada;
+    }
+
     public function setMontoIva($monto_iva){
         $this->monto_iva = $monto_iva;
     }
 
     public function getMontoIva(){
         return number_format($this->monto_iva, 0, ',', '.');
+    }
+
+    public function getMontoIvaNumber(){
+        return $this->monto_iva;
     }
 
     public function setMontoTotal($monto_total){

@@ -241,6 +241,10 @@ class NotaCreditoVentaController extends Controller
         //
     }
 
+    public function impresionNotaCredito(){
+        //
+    }
+
     public function apiNotaCreditoVentas(){
         //$permiso_editar = Auth::user()->can('notaCreditoVentas.edit');
         //$permiso_eliminar = Auth::user()->can('notaCreditoVentas.destroy');

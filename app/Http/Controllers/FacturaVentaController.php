@@ -241,6 +241,10 @@ class FacturaVentaController extends Controller
         //
     }
 
+    public function impresionFactura(){
+        //
+    }
+
     public function apiFacturasCliente($cliente_id){
         if (empty($cliente_id)) {
             return [];

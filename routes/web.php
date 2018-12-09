@@ -121,16 +121,19 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/pedidosVentas', 'PedidoVentaController@apiPedidosVentas')->name('api.pedidos.ventas');
 	Route::get('api/pedidos/cliente/{cliente_id}', 'PedidoVentaController@apiPedidosCliente')->name('api.pedidos.cliente');
 	Route::get('api/pedidos/detalles/{array_pedidos}', 'PedidoVentaController@apiPedidosDetalles')->name('api.pedidos.detalles');
+	Route::get('pedidosVentas/impresion/{pedido}', 'PedidoVentaController@impresionPedido')->name('pedidos.ventas.impresion');
 
 	//RUTA PARA EL CONTROLADOR DE FACTURACION - VENTAS
 	Route::resource('facturacionVentas', 'FacturaVentaController');
 	Route::get('api/facturacionVentas', 'FacturaVentaController@apiFacturacionVentas')->name('api.facturacion.ventas');
 	Route::get('api/facturas/cliente/{cliente_id}', 'FacturaVentaController@apiFacturasCliente')->name('api.facturas.cliente');
 	Route::get('api/facturas/detalles/{factura_cab_id}', 'FacturaVentaController@apiFacturaDetalle')->name('api.factura.detalle');
+	Route::get('facturacionVentas/impresion/{factura}', 'FacturaVentaController@impresionFactura')->name('facturas.ventas.impresion');
 
 	//RUTA PARA EL CONTROLADOR DE NOTA DE CREDITO - VENTAS
 	Route::resource('notaCreditoVentas', 'NotaCreditoVentaController');
 	Route::get('api/notaCreditoVentas', 'NotaCreditoVentaController@apiNotaCreditoVentas')->name('api.nota.credito.ventas');
+	Route::get('notaCreditoVentas/impresion/{nota_credito}', 'NotaCreditoVentaController@impresionNotaCredito')->name('notas.credito.ventas.impresion');
 
 	//RUTA PARA EL CONTROLADOR DE ANULACION DE COMPROBANTES - VENTAS
 	Route::resource('anulacionComprobantes', 'AnulacionComprobanteController');
