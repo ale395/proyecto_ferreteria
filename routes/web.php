@@ -207,8 +207,12 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 	/*REPORTES*/
-	Route::get('reporte/extractocliente', 'ReportesCuentasPorCobrarController@viewExtractoCliente')->name('cuentasporcobrar.extractocliente');
+	Route::get ('reporte/extractocliente', 'ReportesCuentasPorCobrarController@viewExtractoCliente')->name('cuentasporcobrar.extractocliente');
 	Route::post('reporte/extractocliente', 'ReportesCuentasPorCobrarController@verExtractoCliente')->name('cuentasporcobrar.verextractocliente');
+
+
+	Route::get ('reporte/articuloexistencia', 'ReportesStockController@viewArticuloExistencia')->name('stock.articuloexistencia');
+	Route::post('reporte/articuloexistencia', 'ReportesStockController@verArticuloExistencia')->name('stock.verarticuloexistencia');
 
 	Route::get('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCajaView')->name('gestionCajas.habilitarCaja');
 	Route::get('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCajaView')->name('gestionCajas.cerrarCaja');
