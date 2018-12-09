@@ -973,5 +973,18 @@ class PermissionTableSeeder extends Seeder
         $permission->slug = 'compra.show';
         $permission->description = 'Permite ver la Orden de Compra Cargada';
         $permission->save();
+
+        //GESTION DE CAJAS
+        $permission = new Permission();
+        $permission->name = 'Habilitar Caja';
+        $permission->slug = 'gestionCajas.habilitarCaja';
+        $permission->description = 'Permite habilitar caja para el inicio de las gestiones de cobranzas';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Cerrar Caja';
+        $permission->slug = 'gestionCajas.cerrarCaja';
+        $permission->description = 'Permite cerrar caja cuando finaliza el turno del cajero';
+        $permission->save();
     }
 }

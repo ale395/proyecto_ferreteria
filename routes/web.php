@@ -210,4 +210,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('reporte/extractocliente', 'ReportesCuentasPorCobrarController@viewExtractoCliente')->name('cuentasporcobrar.extractocliente');
 	Route::post('reporte/extractocliente', 'ReportesCuentasPorCobrarController@verExtractoCliente')->name('cuentasporcobrar.verextractocliente');
 
+	Route::get('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCajaView')->name('gestionCajas.habilitarCaja');
+	Route::get('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCajaView')->name('gestionCajas.cerrarCaja');
+
 });

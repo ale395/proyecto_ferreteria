@@ -14,10 +14,10 @@
                     <table id="tabla-facturas" class="table table-striped" width="100%">
                         <thead>
                             <tr>
-                                <th>Nro Factura</th>
-                                <th>Fecha</th>
-                                <th>Moneda</th>
-                                <th>Total</th>
+                                <th width="15%">Nro Factura</th>
+                                <th width="15%">Fecha</th>
+                                <th width="15%">Moneda</th>
+                                <th width="15%">Total</th>
                                 <th>Comentario</th>
                             </tr>
                         </thead>
