@@ -108,12 +108,8 @@ class FacturaVentaController extends Controller
         $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
 
         $serie = Serie::findOrFail($request['serie_id']);
+        $serie_str = substr($request['nro_fact_exte'], 0, 7);
         $cliente = Cliente::findOrFail($request['cliente_id']);
-        
-        /*if ($validator->fails())
-        {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }*/
 
         for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
             $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
@@ -127,6 +123,7 @@ class FacturaVentaController extends Controller
 
         $cabecera->setTipoFactura($request['tipo_factura']);
         $cabecera->setSerieId($request['serie_id']);
+        $cabecera->setSerie($serie_str);
         $cabecera->setNroFactura($request['nro_factura']);
         $cabecera->setClienteId($request['cliente_id']);
         $cabecera->setSucursalId($request['sucursal_id']);
@@ -185,6 +182,7 @@ class FacturaVentaController extends Controller
         $cuenta = new CuentaCliente;
         $cuenta->setTipoComprobante('F');
         $cuenta->setComprobanteId($cabecera->getId());
+        $cuenta->setClienteId($cabecera->cliente->getId());
         $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
         $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
         $cuenta->save();
@@ -303,7 +301,6 @@ class FacturaVentaController extends Controller
 
     public function apiFacturacionVentas(){
         $permiso_editar = Auth::user()->can('facturacionVentas.edit');
-        //$permiso_eliminar = Auth::user()->can('facturacionVentas.destroy');
         $permiso_ver = Auth::user()->can('facturacionVentas.show');
         $sucursal_actual = Auth::user()->empleado->sucursales->first();
         $facturas = FacturaVentaCab::where('sucursal_id',$sucursal_actual->getId())->get();

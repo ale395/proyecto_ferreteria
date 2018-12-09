@@ -37,7 +37,7 @@ class ReportesCuentasPorCobrarController extends Controller
         $codigo_establecimiento = Empresa::first();
         $codigo_establecimiento = $codigo_establecimiento->getCodigoEstablecimiento();
         
-        $facturas = DB::table('cuenta_clientes')
+        /*$facturas = DB::table('cuenta_clientes')
         	->join('facturas_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'facturas_ventas_cab.id')
         	->join('sucursales', 'facturas_ventas_cab.sucursal_id', '=', 'sucursales.id')
         	->crossJoin('empresa')
@@ -48,9 +48,19 @@ class ReportesCuentasPorCobrarController extends Controller
         		DB::raw("TO_CHAR(ROUND(facturas_ventas_cab.monto_total), '999G999G999') as debito"), 'cuenta_clientes.created_at')
         	->where('cuenta_clientes.tipo_comprobante', 'F')
         	->where('facturas_ventas_cab.cliente_id', $cliente_id)
-        	->where('facturas_ventas_cab.fecha_emision', '<=', $fecha_final);
+        	->where('facturas_ventas_cab.fecha_emision', '<=', $fecha_final);*/
+        $facturas = DB::table('cuenta_clientes')
+            ->join('facturas_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'facturas_ventas_cab.id')
+            ->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
+                DB::raw("'Factura' as descripcion"), 
+                DB::raw("facturas_ventas_cab.serie||' '||lpad(CAST(facturas_ventas_cab.nro_factura AS CHAR), 7, '0') as nro_comp"), 
+                DB::raw("'0' as credito"), 
+                DB::raw("TO_CHAR(ROUND(facturas_ventas_cab.monto_total), '999G999G999') as debito"), 'cuenta_clientes.created_at')
+            ->where('cuenta_clientes.tipo_comprobante', 'F')
+            ->where('cuenta_clientes.cliente_id', $cliente_id)
+            ->where('facturas_ventas_cab.fecha_emision', '<=', $fecha_final);
 
-        $registros = DB::table('cuenta_clientes')
+        /*$registros = DB::table('cuenta_clientes')
         	->join('nota_credito_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'nota_credito_ventas_cab.id')
         	->crossJoin('empresa')
         	->join('sucursales', 'nota_credito_ventas_cab.sucursal_id', '=', 'sucursales.id')
@@ -62,7 +72,18 @@ class ReportesCuentasPorCobrarController extends Controller
         	->where('cuenta_clientes.tipo_comprobante', 'N')
         	->where('nota_credito_ventas_cab.cliente_id', $cliente_id)
         	->where('nota_credito_ventas_cab.fecha_emision', '<=', $fecha_final)
-        	->union($facturas);
+        	->union($facturas);*/
+        $registros = DB::table('cuenta_clientes')
+            ->join('nota_credito_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'nota_credito_ventas_cab.id')
+            ->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
+                DB::raw("'Nota de Crédito' as descripcion"), 
+                DB::raw("nota_credito_ventas_cab.serie||' '||lpad(CAST(nota_credito_ventas_cab.nro_nota_credito AS CHAR), 7, '0') as nro_comp"), 
+                DB::raw("TO_CHAR(ROUND(nota_credito_ventas_cab.monto_total), '999G999G999') as credito"), 
+                DB::raw("'0' as debito"), 'cuenta_clientes.created_at')
+            ->where('cuenta_clientes.tipo_comprobante', 'N')
+            ->where('cuenta_clientes.cliente_id', $cliente_id)
+            ->where('nota_credito_ventas_cab.fecha_emision', '<=', $fecha_final)
+            ->union($facturas);
         $registros->orderBy('created_at');
 
         $total_debito = DB::table('cuenta_clientes')

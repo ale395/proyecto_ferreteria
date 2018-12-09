@@ -48,6 +48,14 @@ class NotaCreditoVentaCab extends Model
         $this->serie_id = $serie_id;
     }
 
+    public function getSerie(){
+        return $this->serie;
+    }
+
+    public function setSerie($serie){
+        $this->serie = $serie;
+    }
+
     public function setClienteId($cliente_id){
         $this->cliente_id = $cliente_id;
     }
