@@ -79,6 +79,10 @@
                        {
                             "targets": 6,
                             "className": "text-center",
+                       },
+                       {
+                            "targets": 7,
+                            "className": "text-center",
                        }],
                       columns: [
                         {data: 'tipo_factura', name: 'tipo_factura'},

@@ -46,6 +46,9 @@ class NotaCreditoVentaController extends Controller
         $serie = Serie::where('vendedor_id', $vendedor->getId())
             ->where('sucursal_id', $sucursal->getId())
             ->where('tipo_comprobante', 'N')->first();
+        if (empty($configuracion_empresa) or empty($serie)) {
+            return redirect()->back()->withErrors('Datos insuficientes para cargar notas de crédito. Falta parametrizar datos en Empresa o asignar una Serie para la sucursal y vendedor/a actual!');
+        }
         $serie_ncre = $configuracion_empresa->getCodigoEstablecimiento().'-'.$sucursal->getCodigoPuntoExpedicion();
         $nro_ncre = str_pad($serie->getNroActual()+1, 7, "0", STR_PAD_LEFT);
         $nro_ncre_exte = $serie_ncre.' '.$nro_ncre;
