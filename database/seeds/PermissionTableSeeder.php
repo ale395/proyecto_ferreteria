@@ -986,5 +986,43 @@ class PermissionTableSeeder extends Seeder
         $permission->slug = 'gestionCajas.cerrarCaja';
         $permission->description = 'Permite cerrar caja cuando finaliza el turno del cajero';
         $permission->save();
+
+        //ANULACION DE COMPROBANTES
+        $permission = new Permission();
+        $permission->name = 'Ver listado de comprobantes para anular';
+        $permission->slug = 'anulacioncomprobantes.index';
+        $permission->description = 'Permite ver el listado de comprobantes pendientes que pueden ser anulados';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Anular Comprobante';
+        $permission->slug = 'anulacioncomprobantes.anular';
+        $permission->description = 'Permite anular el comprobante';
+        $permission->save();
+
+        //MOTIVOS DE ANULACION
+        $permission = new Permission();
+        $permission->name = 'Crear Motivo de Anulacion';
+        $permission->slug = 'motivoanulacion.create';
+        $permission->description = 'Permite crear un motivo de anulación';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Motivo de Anulacion';
+        $permission->slug = 'motivoanulacion.destroy';
+        $permission->description = 'Permite borrar un motivo de anulación';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Motivo de Anulacion';
+        $permission->slug = 'motivoanulacion.edit';
+        $permission->description = 'Permite editar un motivo de anulación';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Motivos de Anulaciones';
+        $permission->slug = 'motivoanulacion.index';
+        $permission->description = 'Permite listar los motivos de anulaciones';
+        $permission->save();
     }
 }

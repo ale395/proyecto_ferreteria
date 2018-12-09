@@ -168,6 +168,7 @@ class AnulacionComprobanteController extends Controller
     }
 
     public function apiComprobantesVentas(){
+        $permiso_anular = Auth::user()->can('anulacioncomprobantes.anular');
         $sucursal_actual = Auth::user()->empleado->sucursalDefault;
         $facturas = DB::table('facturas_ventas_cab')
             ->join('sucursales', 'facturas_ventas_cab.sucursal_id', '=', 'sucursales.id')
@@ -198,15 +199,28 @@ class AnulacionComprobanteController extends Controller
         
         $registros->orderBy('fecha_emision');
         $registros = $registros->get();
-        return Datatables::of($registros)
-            ->addColumn('action', function($registros){
-                $factura = '<a data-toggle="tooltip" data-placement="top" onclick="showFactura('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" onclick="anularFactura('. $registros->id .')" class="btn btn-danger btn-sm" title="Anular comprobante"><i class="fa fa-minus-circle"></i></a> ';
-                $notaCredito = '<a data-toggle="tooltip" data-placement="top" onclick="showNotaCredito('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" onclick="anularNotaCredito('. $registros->id .')" class="btn btn-danger btn-sm" title="Anular comprobante"><i class="fa fa-minus-circle"></i></a> ';
-                if ($registros->tipo_comp == 'Factura') {
-                    return $factura;
-                } else {
-                    return $notaCredito;
-                }
+        if ($permiso_anular) {
+            return Datatables::of($registros)
+                ->addColumn('action', function($registros){
+                    $factura = '<a data-toggle="tooltip" data-placement="top" onclick="showFactura('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" onclick="anularFactura('. $registros->id .')" class="btn btn-danger btn-sm" title="Anular comprobante"><i class="fa fa-minus-circle"></i></a> ';
+                    $notaCredito = '<a data-toggle="tooltip" data-placement="top" onclick="showNotaCredito('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" onclick="anularNotaCredito('. $registros->id .')" class="btn btn-danger btn-sm" title="Anular comprobante"><i class="fa fa-minus-circle"></i></a> ';
+                    if ($registros->tipo_comp == 'Factura') {
+                        return $factura;
+                    } else {
+                        return $notaCredito;
+                    }
             })->make(true);
+        } else {
+            return Datatables::of($registros)
+                ->addColumn('action', function($registros){
+                    $factura = '<a data-toggle="tooltip" data-placement="top" onclick="showFactura('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Anular comprobante" disabled><i class="fa fa-minus-circle"></i></a> ';
+                    $notaCredito = '<a data-toggle="tooltip" data-placement="top" onclick="showNotaCredito('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Anular comprobante" disabled><i class="fa fa-minus-circle"></i></a> ';
+                    if ($registros->tipo_comp == 'Factura') {
+                        return $factura;
+                    } else {
+                        return $notaCredito;
+                    }
+            })->make(true);
+        }
     }
 }

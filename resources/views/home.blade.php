@@ -188,8 +188,9 @@
                               <li class="sub_menu"><a href="{{route('conceptocaja.index')}}">Conceptos de Caja</a>
                               </li>
                             @endcan
-                            <li class="sub_menu"><a href="{{route('motivoAnulacion.index')}}">Motivos de Anulaciones</a>
-                              </li>
+                            @can('motivoanulacion.index')
+                              <li class="sub_menu"><a href="{{route('motivoAnulacion.index')}}">Motivos de Anulaciones</a></li>
+                            @endcan
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -308,9 +309,9 @@
                                         </li>
                                       @endcan
                                     @endif
-                                    <li class="sub_menu">
-                                      <a href="{{route('anulacionComprobantes.index')}}">Anulación de Comprobantes</a>
-                                    </li>
+                                    @can('anulacioncomprobantes.index')
+                                        <li class="sub_menu"><a href="{{route('anulacionComprobantes.index')}}">Anulación de Comprobantes</a></li>
+                                    @endcan
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>

@@ -226,6 +226,16 @@ class RoleTableSeeder extends Seeder
         $permiso_habilitar_caja = Permission::where('slug', 'gestionCajas.habilitarCaja')->first();
         $permiso_cerrar_caja = Permission::where('slug', 'gestionCajas.cerrarCaja')->first();
 
+        //ANULACION DE COMPROBANTES
+        $permiso_anular_index = Permission::where('slug', 'anulacioncomprobantes.index')->first();
+        $permiso_anular_comprobante = Permission::where('slug', 'anulacioncomprobantes.anular')->first();
+
+        //MOTIVOS DE ANULACION
+        $permiso_listar_motivos = Permission::where('slug', 'motivoanulacion.index')->first();
+        $permiso_crear_motivos = Permission::where('slug', 'motivoanulacion.create')->first();
+        $permiso_editar_motivos = Permission::where('slug', 'motivoanulacion.edit')->first();
+        $permiso_eliminar_motivos = Permission::where('slug', 'motivoanulacion.destroy')->first();
+
         $role = new Role();
         $role->name = 'Administrador';
         $role->slug = 'administrador';
@@ -426,6 +436,14 @@ class RoleTableSeeder extends Seeder
 
         $role->assignPermission($permiso_habilitar_caja->id);
         $role->assignPermission($permiso_cerrar_caja->id);
+
+        $role->assignPermission($permiso_anular_index->id);
+        $role->assignPermission($permiso_anular_comprobante->id);
+
+        $role->assignPermission($permiso_listar_motivos->id);
+        $role->assignPermission($permiso_editar_motivos->id);
+        $role->assignPermission($permiso_crear_motivos->id);
+        $role->assignPermission($permiso_eliminar_motivos->id);
 
         $role->save();
 

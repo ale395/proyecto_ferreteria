@@ -147,11 +147,34 @@ class MotivoAnulacionController extends Controller
     }
 
     public function apiMotivosAnulacionesIndex(){
+        $permiso_editar = Auth::user()->can('motivoanulacion.edit');
+        $permiso_borrar = Auth::user()->can('motivoanulacion.destroy');
         $motivos = MotivoAnulacion::all();
-        return Datatables::of($motivos)
-            ->addColumn('action', function($motivos){
-                    return '<a onclick="editForm('. $motivos->id .')" class="btn btn-warning btn-sm" title="Editar Motivo"><i class="fa fa-pencil-square-o"></i></a> ' .
-                           '<a onclick="deleteData('. $motivos->id .')" class="btn btn-danger btn-sm" title="Eliminar Motivo"><i class="fa fa-trash-o"></i></a>';
+
+        if ($permiso_editar) {
+            if ($permiso_borrar) {
+                return Datatables::of($motivos)
+                ->addColumn('action', function($motivos){
+                    return '<a onclick="editForm('. $motivos->id .')" class="btn btn-warning btn-sm" title="Editar Motivo"><i class="fa fa-pencil-square-o"></i></a>'.'<a onclick="deleteData('. $motivos->id .')" class="btn btn-danger btn-sm" title="Eliminar Motivo"><i class="fa fa-trash-o"></i></a>';
                 })->make(true);
+            } else {
+                return Datatables::of($motivos)
+                ->addColumn('action', function($motivos){
+                    return '<a onclick="editForm('. $motivos->id .')" class="btn btn-warning btn-sm" title="Editar Motivo"><i class="fa fa-pencil-square-o"></i></a>'.'<a class="btn btn-danger btn-sm" title="Eliminar Motivo" disabled><i class="fa fa-trash-o"></i></a>';
+                })->make(true);
+            }
+        } else {
+            if ($permiso_borrar) {
+                return Datatables::of($motivos)
+                ->addColumn('action', function($motivos){
+                    return '<a class="btn btn-warning btn-sm" title="Editar Motivo" disabled><i class="fa fa-pencil-square-o"></i></a>'.'<a onclick="deleteData('. $motivos->id .')" class="btn btn-danger btn-sm" title="Eliminar Motivo"><i class="fa fa-trash-o"></i></a>';
+                })->make(true);
+            } else {
+                return Datatables::of($motivos)
+                ->addColumn('action', function($motivos){
+                    return '<a class="btn btn-warning btn-sm" title="Editar Motivo" disabled><i class="fa fa-pencil-square-o"></i></a>'.'<a class="btn btn-danger btn-sm" title="Eliminar Motivo" disabled><i class="fa fa-trash-o"></i></a>';
+                })->make(true);
+            }
+        }
     }
 }

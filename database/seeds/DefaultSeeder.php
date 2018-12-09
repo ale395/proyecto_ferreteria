@@ -17,6 +17,7 @@ use App\FormaPago;
 use App\Cotizacion;
 use App\Banco;
 use App\MotivoAnulacion;
+use App\Empresa;
 
 class DefaultSeeder extends Seeder
 {
@@ -235,6 +236,19 @@ class DefaultSeeder extends Seeder
         $banco->nombre = 'Banco BASA';
         $banco->activo = true;
         $banco->save();
+
+        //EMPRESA
+        $empresa = new Empresa;
+        $empresa->setRazonSocial('Ferreteria XYZ');
+        $empresa->setRuc('8000112200-2');
+        $empresa->setDireccion('Mcal Lopez 1024 - Asunción');
+        $empresa->setTelefono('0972800900');
+        $empresa->setSitioWeb('www.ferreteriaxyz.com.py');
+        $empresa->setCorreoElectronico('ferreteriaxyz@gmail.com');
+        $empresa->setRubro('Ferreteria');
+        $empresa->setCodigoEstablecimiento('001');
+        $empresa->setMonedaNacionalId(1);
+        $empresa->save();
 
         //seeder de la forma de pago
 

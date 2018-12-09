@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Lista de Motivos de Anulación
-                        @can('sucursales.create')
+                        @can('motivoanulacion.create')
                           <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
@@ -19,7 +19,7 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th width="110">Acciones</th>
+                                <th width="80">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
