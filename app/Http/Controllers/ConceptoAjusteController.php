@@ -40,7 +40,8 @@ class ConceptoAjusteController extends Controller
     {
         $data = [
             'num_concepto' => $request['num_concepto'],
-            'descripcion' => $request['descripcion']
+            'descripcion' => $request['descripcion'],
+            'signo' => $request['signo'],
         ];
 
         return ConceptoAjuste::create($data);
@@ -79,6 +80,7 @@ class ConceptoAjusteController extends Controller
     {
         $concepto->num_concepto = $request['num_concepto'];
         $concepto->descripcion = $request['descripcion'];
+        $concepto->signo = $request['signo'];
         
         $concepto->update();
 
