@@ -28,6 +28,14 @@
                       </div>
                     </div>
 
+                     <div class="form-group">
+                      <label for="signo" class="col-md-3 control-label">Singo</label>
+                      <div class="col-md-6">
+                          <input type="text" id="signo" name="signo" class="form-control" style="text-transform:uppercase" required>
+                          <span class="help-block with-errors"></span>
+                      </div>
+                    </div>
+
                 </div>
 
                 <div class="modal-footer">

@@ -110,7 +110,31 @@ class AjusteInventarioController extends Controller
 
             }
              //-----------------------------------------------------------
+ //controlamos existencia
+ if ($ajuste_inventario_det->articulo->getControlExistencia() == true) {
+    //Actualizacion de existencia
+    $existencia = ExistenciaArticulo::where('articulo_id', $ajuste_inventario_det->articulo->getId())
+        ->where('sucursal_id', $sucursal->getId())->first();
 
+    //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
+    if (!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='+'){
+        $existencia->actualizaStock('+', $ajuste_inventario_det->getCantidad());
+        $existencia->update();   
+    }elseif(!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='-') {
+        $existencia->actualizaStock('-', $ajuste_inventario_det->getCantidad());
+        $existencia->update();                     
+    } else {
+        $existencia_nuevo = new ExistenciaArticulo();
+
+        $existencia_nuevo->setArticuloId($ajuste_inventario_det->articulo->getId());
+        $existencia_nuevo->setSucursalId($sucursal->getId());
+        $existencia_nuevo->setCantidad($ajuste_inventario_det->getCantidad());
+        $existencia_nuevo->setFechaUltimoInventario($request['fecha_emision']);
+
+        $existencia_nuevo->save();  
+    }   
+
+}
             DB::commit();
         } catch (\Exception $e) {
 
