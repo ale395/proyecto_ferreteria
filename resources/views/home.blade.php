@@ -98,6 +98,14 @@
                                   <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
                                   </li>
                                 @endcan
+                                @if(Auth::user()->empleado->esCajero())
+                                  @can('gestionCajas.habilitarCaja')
+                                    <li class="sub_menu"><a href="{{route('gestionCajas.habilitarCaja')}}">Habilitación de Caja</a></li>
+                                  @endcan
+                                  @can('gestionCajas.cerrarCaja')
+                                    <li class="sub_menu"><a href="{{route('gestionCajas.cerrarCaja')}}">Cierre de Caja</a></li>
+                                  @endcan
+                                @endif
                             </ul>
                           </li>
                           <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -180,6 +188,8 @@
                               <li class="sub_menu"><a href="{{route('conceptocaja.index')}}">Conceptos de Caja</a>
                               </li>
                             @endcan
+                            <li class="sub_menu"><a href="{{route('motivoAnulacion.index')}}">Motivos de Anulaciones</a>
+                              </li>
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>

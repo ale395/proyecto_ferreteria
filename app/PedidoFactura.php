@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class PedidoFactura extends Model
 {
     protected $table = 'pedidos_facturas';
-    public $timestamps = false;
-    protected $primaryKey = null;
-	public $incrementing = false;
 
     public function setPedidoId($pedido_id){
     	$this->pedido_cabecera_id = $pedido_id;

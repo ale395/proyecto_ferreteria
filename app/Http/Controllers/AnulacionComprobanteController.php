@@ -7,6 +7,7 @@ use App\CuentaCliente;
 use App\FacturaVentaCab;
 use App\NotaCreditoVentaCab;
 use App\NotaCreditoVentaDet;
+use App\ExistenciaArticulo;
 use Illuminate\Http\Request;
 use App\AnulacionComprobante;
 use Yajra\DataTables\Datatables;
@@ -67,11 +68,23 @@ class AnulacionComprobanteController extends Controller
             $factura->setEstado('A');
             $factura->update();
             //Deberia verificar tambien facturas relacionadas a pedidos
-            if (!empty($factura->facturaPedidos)) {
+            if ($factura->facturaPedidos->count() > 0) {
                 foreach ($factura->facturaPedidos as $factura_pedido) {
-                    //
+                    $pedido = $factura_pedido->pedido;
+                    $pedido->setEstado('P');
+                    $pedido->update();
+                }
+                $factura->pedidos()->detach();
+            }
+            $detalles_fact = $factura->facturaDetalle;
+            foreach ($detalles_fact as $detalle) {
+                if ($detalle->articulo->getControlExistencia()) {
+                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())->where('sucursal_id', Auth::user()->empleado->sucursalDefault->getId())->first();
+                    $existencia->setCantidad($existencia->getCantidadNumber() + $detalle->getCantidad());
+                    $existencia->update();
                 }
             }
+
         } else {
             $nota_credito = NotaCreditoVentaCab::findOrFail($request['comprobante_id']);
             $nota_credito->setEstado('A');

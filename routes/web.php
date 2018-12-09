@@ -121,23 +121,27 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/pedidosVentas', 'PedidoVentaController@apiPedidosVentas')->name('api.pedidos.ventas');
 	Route::get('api/pedidos/cliente/{cliente_id}', 'PedidoVentaController@apiPedidosCliente')->name('api.pedidos.cliente');
 	Route::get('api/pedidos/detalles/{array_pedidos}', 'PedidoVentaController@apiPedidosDetalles')->name('api.pedidos.detalles');
+	Route::get('pedidosVentas/impresion/{pedido}', 'PedidoVentaController@impresionPedido')->name('pedidos.ventas.impresion');
 
 	//RUTA PARA EL CONTROLADOR DE FACTURACION - VENTAS
 	Route::resource('facturacionVentas', 'FacturaVentaController');
 	Route::get('api/facturacionVentas', 'FacturaVentaController@apiFacturacionVentas')->name('api.facturacion.ventas');
 	Route::get('api/facturas/cliente/{cliente_id}', 'FacturaVentaController@apiFacturasCliente')->name('api.facturas.cliente');
 	Route::get('api/facturas/detalles/{factura_cab_id}', 'FacturaVentaController@apiFacturaDetalle')->name('api.factura.detalle');
+	Route::get('facturacionVentas/impresion/{factura}', 'FacturaVentaController@impresionFactura')->name('facturas.ventas.impresion');
 
 	//RUTA PARA EL CONTROLADOR DE NOTA DE CREDITO - VENTAS
 	Route::resource('notaCreditoVentas', 'NotaCreditoVentaController');
 	Route::get('api/notaCreditoVentas', 'NotaCreditoVentaController@apiNotaCreditoVentas')->name('api.nota.credito.ventas');
+	Route::get('notaCreditoVentas/impresion/{nota_credito}', 'NotaCreditoVentaController@impresionNotaCredito')->name('notas.credito.ventas.impresion');
 
 	//RUTA PARA EL CONTROLADOR DE ANULACION DE COMPROBANTES - VENTAS
 	Route::resource('anulacionComprobantes', 'AnulacionComprobanteController');
 	Route::get('api/comprobantesVentas', 'AnulacionComprobanteController@apiComprobantesVentas')->name('api.comprobantes.ventas');
 
 	Route::resource('motivoAnulacion', 'MotivoAnulacionController');
-	Route::get('api/motivos/anulaciones', 'MotivoAnulacionController@apiMotivosAnulaciones')->name('api.motivos.anulacion');	
+	Route::get('api/motivos/anulaciones', 'MotivoAnulacionController@apiMotivosAnulaciones')->name('api.motivos.anulacion');
+	Route::get('api/motivos/anulaciones/index', 'MotivoAnulacionController@apiMotivosAnulacionesIndex')->name('api.motivos.anulacion.index');
 
 	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
 	Route::resource('ajustesInventarios', 'AjusteInventarioController', ['parameters'=>['ajustesInventarios'=>'ajusteInventario']]);
@@ -205,5 +209,8 @@ Route::middleware(['auth'])->group(function() {
 	/*REPORTES*/
 	Route::get('reporte/extractocliente', 'ReportesCuentasPorCobrarController@viewExtractoCliente')->name('cuentasporcobrar.extractocliente');
 	Route::post('reporte/extractocliente', 'ReportesCuentasPorCobrarController@verExtractoCliente')->name('cuentasporcobrar.verextractocliente');
+
+	Route::get('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCajaView')->name('gestionCajas.habilitarCaja');
+	Route::get('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCajaView')->name('gestionCajas.cerrarCaja');
 
 });

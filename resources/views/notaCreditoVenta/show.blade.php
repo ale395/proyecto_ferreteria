@@ -9,7 +9,7 @@
                 <div class="panel-heading">
                     <h4>Ver Nota de Crédito
                     <div class="pull-right btn-group">
-                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Nota de Crédito" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Nota de Crédito" href="{{route('notas.credito.ventas.impresion', $ncre_cab->getId())}}" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('notaCreditoVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     

@@ -222,6 +222,10 @@ class RoleTableSeeder extends Seeder
         $permiso_eliminar_compra = Permission::where('slug', 'compra.destroy')->first();
         $permiso_ver_compra = Permission::where('slug', 'compra.show')->first();
 
+        //GESTION DE CAJAS - CUENTAS POR COBRAR
+        $permiso_habilitar_caja = Permission::where('slug', 'gestionCajas.habilitarCaja')->first();
+        $permiso_cerrar_caja = Permission::where('slug', 'gestionCajas.cerrarCaja')->first();
+
         $role = new Role();
         $role->name = 'Administrador';
         $role->slug = 'administrador';
@@ -419,6 +423,9 @@ class RoleTableSeeder extends Seeder
 
         $role->assignPermission($permiso_listar_empresa->id);
         $role->assignPermission($permiso_editar_empresa->id);
+
+        $role->assignPermission($permiso_habilitar_caja->id);
+        $role->assignPermission($permiso_cerrar_caja->id);
 
         $role->save();
 
