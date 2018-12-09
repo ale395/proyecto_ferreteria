@@ -48,6 +48,10 @@ class FacturaVentaController extends Controller
         $serie = Serie::where('vendedor_id', $vendedor->getId())
             ->where('sucursal_id', $sucursal->getId())
             ->where('tipo_comprobante', 'F')->first();
+        if (empty($configuracion_empresa) or empty($serie)) {
+            return redirect()->back()->withErrors('Datos insuficientes para cargar facturas. Falta parametrizar datos en Empresa o asignar una Serie para la sucursal y vendedor/a actual!');
+        }
+
         $serie_factura = $configuracion_empresa->getCodigoEstablecimiento().'-'.$sucursal->getCodigoPuntoExpedicion();
         $nro_factura = str_pad($serie->getNroActual()+1, 7, "0", STR_PAD_LEFT);
         $nro_fact_exte = $serie_factura.' '.$nro_factura;
