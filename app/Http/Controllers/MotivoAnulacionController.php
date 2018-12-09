@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\MotivoAnulacion;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
+use Illuminate\Support\Facades\Auth;
 
 class MotivoAnulacionController extends Controller
 {
@@ -14,7 +17,7 @@ class MotivoAnulacionController extends Controller
      */
     public function index()
     {
-        //
+        return view('motivoAnulacion.index');
     }
 
     /**
@@ -35,7 +38,28 @@ class MotivoAnulacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'nombre' => 'required|max:100',
+        ];
+
+        $mensajes = [
+            'nombre.required' => 'El campo Nombre es obligatorio!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
+        $data = [
+            'nombre' => $request['nombre'],
+        ];
+
+        return MotivoAnulacion::create($data);
     }
 
     /**
@@ -55,9 +79,10 @@ class MotivoAnulacionController extends Controller
      * @param  \App\MotivoAnulacion  $motivoAnulacion
      * @return \Illuminate\Http\Response
      */
-    public function edit(MotivoAnulacion $motivoAnulacion)
+    public function edit($id)
     {
-        //
+        $motivo = MotivoAnulacion::findOrFail($id);
+        return $motivo;
     }
 
     /**
@@ -67,9 +92,30 @@ class MotivoAnulacionController extends Controller
      * @param  \App\MotivoAnulacion  $motivoAnulacion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MotivoAnulacion $motivoAnulacion)
+    public function update(Request $request, $id)
     {
-        //
+        $motivo = MotivoAnulacion::findOrFail($id);
+
+        $rules = [
+            'nombre' => 'required|max:100',
+        ];
+
+        $mensajes = [
+            'nombre.required' => 'El campo Nombre es obligatorio!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $errors =  json_decode($errors);
+            return response()->json(['errors' => $errors], 422); // Status code here
+        }
+
+        $motivo->setNombre($request['nombre']);
+        $motivo->update();
+
+        return $motivo;
     }
 
     /**
@@ -78,9 +124,9 @@ class MotivoAnulacionController extends Controller
      * @param  \App\MotivoAnulacion  $motivoAnulacion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MotivoAnulacion $motivoAnulacion)
+    public function destroy($id)
     {
-        //
+        return MotivoAnulacion::destroy($id);
     }
 
     public function apiMotivosAnulaciones(Request $request){
@@ -98,5 +144,14 @@ class MotivoAnulacionController extends Controller
         }
 
         return json_encode($motivos_array);
+    }
+
+    public function apiMotivosAnulacionesIndex(){
+        $motivos = MotivoAnulacion::all();
+        return Datatables::of($motivos)
+            ->addColumn('action', function($motivos){
+                    return '<a onclick="editForm('. $motivos->id .')" class="btn btn-warning btn-sm" title="Editar Motivo"><i class="fa fa-pencil-square-o"></i></a> ' .
+                           '<a onclick="deleteData('. $motivos->id .')" class="btn btn-danger btn-sm" title="Eliminar Motivo"><i class="fa fa-trash-o"></i></a>';
+                })->make(true);
     }
 }

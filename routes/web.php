@@ -140,7 +140,8 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/comprobantesVentas', 'AnulacionComprobanteController@apiComprobantesVentas')->name('api.comprobantes.ventas');
 
 	Route::resource('motivoAnulacion', 'MotivoAnulacionController');
-	Route::get('api/motivos/anulaciones', 'MotivoAnulacionController@apiMotivosAnulaciones')->name('api.motivos.anulacion');	
+	Route::get('api/motivos/anulaciones', 'MotivoAnulacionController@apiMotivosAnulaciones')->name('api.motivos.anulacion');
+	Route::get('api/motivos/anulaciones/index', 'MotivoAnulacionController@apiMotivosAnulacionesIndex')->name('api.motivos.anulacion.index');
 
 	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
 	Route::resource('ajustesInventarios', 'AjusteInventarioController', ['parameters'=>['ajustesInventarios'=>'ajusteInventario']]);

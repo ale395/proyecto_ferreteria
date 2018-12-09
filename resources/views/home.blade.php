@@ -180,6 +180,8 @@
                               <li class="sub_menu"><a href="{{route('conceptocaja.index')}}">Conceptos de Caja</a>
                               </li>
                             @endcan
+                            <li class="sub_menu"><a href="{{route('motivoAnulacion.index')}}">Motivos de Anulaciones</a>
+                              </li>
                           </ul>
                         </li>
                         <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
