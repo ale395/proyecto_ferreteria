@@ -259,7 +259,7 @@ class CompraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CompraRequest $request, $id)
     {
         try {
 
@@ -281,11 +281,13 @@ class CompraController extends Controller
             
             $proveedor = Proveedor::findOrFail($request['proveedor_id']);
 
+            /*
             if (!empty($cuenta ) && $modalidad_pago == 'CO') {
                 $cuenta = CuentaProveedor::findOrFail($cabecera->getId());
                 
                 $cuenta->delete();
             }
+            */
             /*
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
                 
@@ -444,7 +446,65 @@ class CompraController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+
+            DB::beginTransaction();
+
+            $cabecera = ComprasCab::findOrFail($id);
+
+            if (!empty($cuenta ) && $modalidad_pago == 'CO') {
+                $cuenta = CuentaProveedor::findOrFail($cabecera->getId());
+                
+                $cuenta->delete();
+            }
+
+            foreach ($cabecera->pedidosDetalle() as $detalle) {
+
+                //controlamos existencia
+                if ($detalle->articulo->getControlExistencia() == true) {
+                    //Actualizacion de existencia
+                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
+                        ->where('sucursal_id', $sucursal->getId())->first();
+
+                    //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
+                    if (!empty($existencia)){
+                        $existencia->actualizaStock('-', $detalle->getCantidad());
+                        $existencia->update();                        
+                    }   
+
+                }
+
+            }
+
+            if ($modalidad_pago != 'CON'){
+                //Actualizacion de saldo proveedor
+                $cuenta = new CuentaProveedor;
+                $cuenta->setTipoComprobante('F');
+                $cuenta->setComprobanteId($cabecera->getId());
+                $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
+                $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
+                $cuenta->save();
+            
+            }   
+
+            $cabecera->pedidosDetalle()->delete();
+
+            $cabecera->delete();
+
+            DB::commit();
+            
+        }
+        catch (\Exception $e) {
+            //Deshacemos la transaccion
+            DB::rollback();
+
+            //volvemos para atras y retornamos un mensaje de error
+            //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
+            return back()->withErrors( $e->getMessage() .' - '.$e->getFile(). ' - '.$e->getLine() )->withInput();
+            //return back()->withErrors( $e->getTraceAsString() )->withInput();
+
+        }
+
     }
 
     public function apiCompras(){
