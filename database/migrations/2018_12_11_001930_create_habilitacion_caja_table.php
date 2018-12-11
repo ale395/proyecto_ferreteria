@@ -17,8 +17,8 @@ class CreateHabilitacionCajaTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('caja_id')->unsigned();
-            $table->dateTime('fecha_hora_habilitacion')->useCurrent();
-            $table->dateTime('fecha_hora_cierre')->nullable();
+            $table->timestamp('fecha_hora_habilitacion')->useCurrent();
+            $table->timestamp('fecha_hora_cierre')->nullable();
             $table->decimal('saldo_inicial', 10, 0)->default(0);
             $table->decimal('saldo_final', 10, 0)->nullable();
             $table->timestamps();

@@ -215,6 +215,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::post('reporte/articuloexistencia', 'ReportesStockController@verArticuloExistencia')->name('stock.verarticuloexistencia');
 
 	Route::get('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCajaView')->name('gestionCajas.habilitarCaja');
+	Route::post('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCaja')->name('gestionCajas.habilitarCaja.metodo');
 	Route::get('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCajaView')->name('gestionCajas.cerrarCaja');
 
 });
