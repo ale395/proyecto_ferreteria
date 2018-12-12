@@ -17,7 +17,6 @@ class GestionCajasController extends Controller
     }
 
     public function habilitarCaja(Request $request){
-    	//FALTA AGREGAR QUE VERIFIQUE SI LA CAJA YA NO ESTE ABIERTA
     	$sucursal_actual = Auth::user()->empleado->sucursalDefault;
         $cajas_sucursal_actual = Caja::where('sucursal_id', $sucursal_actual->getId())->where('activo', true)->get();
         $habilitacion = new HabilitacionCaja;
@@ -54,10 +53,27 @@ class GestionCajasController extends Controller
         $habilitacion->setSaldoInicial(str_replace('.', '', $request['saldo_inicial']));
         $habilitacion->save();
 
-        return redirect()->back()->with('status', 'Caja habilitada correctamente! N° de habilitacion: '.$habilitacion->getId());
+        return redirect('')->back()->with('status', 'Caja habilitada correctamente! N° de habilitacion: '.$habilitacion->getId());
     }
 
     public function cerrarCajaView(){
-    	//
+        $sucursal_actual = Auth::user()->empleado->sucursalDefault;
+    	$cajas_sucursal_actual = Caja::where('sucursal_id', $sucursal_actual->getId())->where('activo', true)->get();
+
+        $habilitacion = HabilitacionCaja::where('user_id', Auth::user()->getId())
+            ->whereNull('fecha_hora_cierre')
+            ->whereIn('caja_id', $cajas_sucursal_actual->pluck('id')->toArray())->first();
+        $saldo_final = 0;
+        return view('gestionCobranza.cerrarCaja', compact('habilitacion', 'saldo_final'));
+    }
+
+    public function cerrarCaja(Request $request){
+        $habilitacion = HabilitacionCaja::findOrFail($request['id']);
+        $fecha_hora_cierre = date('Y-m-d H:i:s');
+        $habilitacion->setSaldoFinal(str_replace('.', '', $request['saldo_final']));
+        $habilitacion->setFechaHoraCierre($fecha_hora_cierre);
+        $habilitacion->update();
+
+        return redirect('/gestionCajas/habilitarCaja')->with('status', 'Caja cerrada correctamente! N° de habilitacion: '.$habilitacion->getId());
     }
 }

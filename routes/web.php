@@ -221,5 +221,6 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCajaView')->name('gestionCajas.habilitarCaja');
 	Route::post('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCaja')->name('gestionCajas.habilitarCaja.metodo');
 	Route::get('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCajaView')->name('gestionCajas.cerrarCaja');
+	Route::post('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCaja')->name('gestionCajas.cerrarCaja.metodo');
 
 });
