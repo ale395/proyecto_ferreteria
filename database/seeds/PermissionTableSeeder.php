@@ -974,6 +974,37 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver la Orden de Compra Cargada';
         $permission->save();
 
+        //Notas Credito - Compra
+        $permission = new Permission();
+        $permission->name = 'Cargar Nota de Crédito Compra';
+        $permission->slug = 'notacreditocompras.create';
+        $permission->description = 'Permite la carga de una Nota de Crédito de Compra en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Nota de Crédito Compra';
+        $permission->slug = 'notacreditocompras.destroy';
+        $permission->description = 'Permite la eliminación de una Nota de Crédito de Compra del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Nota de Crédito Compra';
+        $permission->slug = 'notacreditocompras.edit';
+        $permission->description = 'Permite modificar los valores de una Nota de Compra del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Notas de Crédito Compra';
+        $permission->slug = 'notacreditocompras.index';
+        $permission->description = 'Permite ver el listado de Notas de Crédito de Compra del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Nota de Crédito Compra';
+        $permission->slug = 'notacreditocompras.show';
+        $permission->description = 'Permite ver una Nota de Crédito Compra del sistema';
+        $permission->save();
+
         //GESTION DE CAJAS
         $permission = new Permission();
         $permission->name = 'Habilitar Caja';
