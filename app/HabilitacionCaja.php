@@ -47,11 +47,11 @@ class HabilitacionCaja extends Model
 
     public function caja()
     {
-        return $this->belongsTo('App\Caja');
+        return $this->belongsTo('App\Caja', 'caja_id');
     }
 
     public function usuario()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'user_id');
     }
 }
