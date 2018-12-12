@@ -17,6 +17,14 @@ class HabilitacionCaja extends Model
     	return $this->id;
     }
 
+    public function setUsuarioId($user_id){
+        $this->user_id = $user_id;
+    }
+
+    public function setCajaId($caja_id){
+        $this->caja_id = $caja_id;
+    }
+
     public function getFechaHoraHabilitacion(){
     	return $this->fecha_hora_habilitacion;
     }
@@ -29,7 +37,21 @@ class HabilitacionCaja extends Model
         return $this->saldo_inicial;
     }
 
+    public function setSaldoInicial($saldo_inicial){
+        $this->saldo_inicial = $saldo_inicial;
+    }
+
     public function getSaldoFinalNumber(){
     	return $this->saldo_final;
+    }
+
+    public function caja()
+    {
+        return $this->belongsTo('App\Caja');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo('App\User');
     }
 }
