@@ -7,11 +7,11 @@
         <form method="post" action="{{action('NotaCreditoVentaController@store')}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Nota de Crédito
+                    <h4>Nota de Crédito - Compras
                     <div class="pull-right btn-group">
                         <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('notaCreditoVentas.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('notaCreditoVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('notacreditocompra.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('notacreditocompra.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     </h4>
                 </div>
@@ -54,59 +54,42 @@
                                 @endif
                             </div>
                         </div>
-                        <label for="nro_ncre_exte" class="col-md-2 control-label">Número</label>
+                        <label for="nro_nota_credito" class="col-md-2 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="text" id="nro_ncre_exte" name="nro_ncre_exte" class="form-control text-right" readonly="readonly" value="{{old('nro_ncre_exte', $nro_ncre_exte)}}">
+                            <input type="text" id="nro_nota_credito" name="nro_nota_credito" class="form-control text-right" value="{{old('nro_nota_credito')}}" >  
                         </div>
-                        <!--<label for="serie_id" class="col-md-1 control-label">Serie*</label>
-                        <div class="col-md-2">-->
-                            <a class="hidden" data-toggle="tooltip" data-placement="top" title="Serie">
-                                <select id="select2-series" name="serie_id" class="form-control" style="width: 100%">
-                                    <option value="{{$serie->getId()}}">{{$serie_ncre}}</option>
-                                </select>
-                            </a>
-                        <!--</div>
-                        <label for="nro_factura" class="col-md-2 control-label">Número</label>
-                        <div class="col-md-2">-->
-                            <input type="number" id="nro_nota_credito" name="nro_nota_credito" class="form-control text-right hidden" readonly="readonly" value="{{old('nro_nota_credito', $nro_ncre)}}">
-                        <!--</div>-->
+                       
                     </div>
                     <div class="form-group">
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
-                        <label for="factura_nro" class="col-md-2 control-label">Factura*</label>
+                        <label for="compra_nro" class="col-md-3 control-label">Factura*</label>
                         <div class="col-md-3">
-                            <!--<a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
-                                <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%">
-                                    <option value="{{$lista_precio->getId()}}">{{$lista_precio->getNombre()}}</option>
-                                </select>
-                            </a>-->
-                            <input type="text" id="factura_nro" class="form-control text-right" name="factura_nro" value="{{old('factura_nro')}}" readonly>
+                            <input type="text" id="compra_nro" class="form-control text-right" name="compra_nro" value="{{old('compra_nro')}}" readonly>
                         </div>
                         <div class="col-md-1">
                             <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Factura"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
-                        <input type="text" id="pedidos_id" class="hidden" name="pedidos_id" value="{{old('pedidos_id')}}">
+                        <input type="text" id="compras_id" class="hidden" name="compras_id" value="{{old('compras_id')}}">
                     </div>
+
                     <div class="form-group">
-                        <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
+                        <label for="proveedor_id" class="col-md-1 control-label">Proveedor *</label>
                         <div class="col-md-7">
-                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%">
+                            <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
                                 @if ($errors->any())
-                                    @foreach($clientes as $cliente)
-                                        @if(old('cliente_id') == $cliente->getId())
-                                            <option value="{{old('cliente_id')}}" selected>{{$cliente->getNombreSelect()}}</option>
+                                    @foreach($proveedores as $proveedor)
+                                        @if(old('proveedor_id') == $proveedor->id)
+                                            <option value="{{old('proveedor_id')}}" selected>{{$proveedor->getNombreSelect()}}</option>
                                         @endif
                                     @endforeach
                                 @endif
                             </select>
                         </div>
-                        <div class="col-md-1">
-                            <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
-                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
@@ -116,7 +99,7 @@
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $valor_cambio)}}">
                         </div>
                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
                         <div class="col-md-4">
@@ -246,8 +229,6 @@
         </form>
     </div>
 </div>
-@include('cliente.create-persona-fisica')
-@include('cliente.create-persona-juridica')
 @include('notaCreditoVenta.facturasForm')
 
 @endsection
@@ -260,168 +241,13 @@
         trigger : 'hover'
     });
 
-    function addForm() {
-        $.confirm({
-            title: 'Tipo de Persona',
-            content: 'Por favor seleccione el tipo de persona a registrar',
-            type: 'blue',
-            backgroundDismiss: true,
-            theme: 'modern',
-            buttons: {
-                confirm: {
-                    text: "Física",
-                    btnClass: 'btn-blue',
-                    action: function(){
-                        save_method = "add";
-                        $('#error-block').hide();
-                        $('input[name=_method]').val('POST');
-                        $('#tipo_persona_fisica').val('F');
-                        $('#modal-form-fisica').modal('show');
-                        $('#modal-form-fisica form')[0].reset();
-                        $('.modal-title').text('Nuevo Cliente - Persona Física');
-                    }
-                },
-                cancel: {
-                    text: "Jurídica",
-                    btnClass: 'btn-default',
-                    action: function(){
-                        save_method = "add";
-                        $('#error-block-juridica').hide();
-                        $('input[name=_method]').val('POST');
-                        $('#tipo_persona_juridica').val('J');
-                        $('#modal-form-juridica').modal('show');
-                        $('#modal-form-juridica form')[0].reset();
-                        $('.modal-title').text('Nuevo Cliente - Persona Jurídica');
-                    }
-                }
-            }
-        });
-    }
-
-    $(function(){
-            $('#modal-form-fisica form').validator().on('submit', function (e) {
-                if (!e.isDefaultPrevented()){
-                    var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('clientes') }}";
-                    else url = "{{ url('clientes') . '/' }}" + id;
-
-                    $.ajax({
-                        url : url,
-                        type : "POST",
-                        data : $('#modal-form-fisica form').serialize(),
-                        success : function($data) {
-                            $('#modal-form-fisica').modal('hide');
-                            var data = {
-                                id: $data.id,
-                                text: $data.nro_cedula + ' - ' + $data.nombre + ', ' + $data.apellido
-                            };
-                            $('#select2-clientes').val(null).trigger('change');
-                            var newOption = new Option(data.text, data.id, true, true);
-                            $('#select2-clientes').append(newOption).trigger('change');
-                            var obj = $.alert({
-                                title: 'Información',
-                                content: 'Cliente guardado correctamente!',
-                                icon: 'fa fa-check',
-                                type: 'green',
-                                backgroundDismiss: true,
-                                theme: 'modern',
-                            });
-                            setTimeout(function(){
-                                obj.close();
-                            },4000); 
-                        },
-                        error : function(data){
-                            var errors = '';
-                            var errores = '';
-                            if(data.status === 422) {
-                                var errors = data.responseJSON;
-                                $.each(data.responseJSON.errors, function (key, value) {
-                                    errores += '<li>' + value + '</li>';
-                                });
-                                $('#error-block').show().html(errores);
-                            }else{
-                              $.alert({
-                              title: 'Atención!',
-                              content: 'Ocurrió un error durante el proceso!',
-                              icon: 'fa fa-times-circle-o',
-                              type: 'red',
-                              theme: 'modern',
-                            });
-                          }
-                            
-                        }
-                    });
-                    return false;
-                }
-            });
-        });
-
-    $(function(){
-            $('#modal-form-juridica form').validator().on('submit', function (e) {
-                if (!e.isDefaultPrevented()){
-                    var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('clientes') }}";
-                    else url = "{{ url('clientes') . '/' }}" + id;
-
-                    $.ajax({
-                        url : url,
-                        type : "POST",
-                        data : $('#modal-form-juridica form').serialize(),
-                        success : function($data) {
-                            $('#modal-form-juridica').modal('hide');
-                            var data = {
-                                id: $data.id,
-                                text: $data.ruc + ' - ' + $data.razon_social
-                            };
-                            $('#select2-clientes').val(null).trigger('change');
-                            var newOption = new Option(data.text, data.id, true, true);
-                            $('#select2-clientes').append(newOption).trigger('change');
-
-                            var obj = $.alert({
-                                title: 'Información',
-                                content: 'Cliente guardado correctamente!',
-                                icon: 'fa fa-check',
-                                type: 'green',
-                                backgroundDismiss: true,
-                                theme: 'modern',
-                            });
-                            setTimeout(function(){
-                                obj.close();
-                            },4000);
-                        },
-                        error : function(data){
-                            var errors = '';
-                            var errores = '';
-                            if(data.status === 422) {
-                                var errors = data.responseJSON;
-                                $.each(data.responseJSON.errors, function (key, value) {
-                                    errores += '<li>' + value + '</li>';
-                                });
-                                $('#error-block-juridica').show().html(errores);
-                            }else{
-                                $.alert({
-                                  title: 'Atención!',
-                                  content: 'Ocurrió un error durante el proceso!',
-                                  icon: 'fa fa-times-circle-o',
-                                  type: 'red',
-                                  theme: 'modern',
-                                });
-                          }
-                            
-                        }
-                    });
-                    return false;
-                }
-            });
-        });
-
     $("#btn-add-articulo").attr("disabled", true);
 
-    var cliente_id = $('#select2-clientes').val();
+    var cliente_id = $('#select2-proveedores').val();
     var tablePedidos = null;
 
     function showPedidosForm(){
-        if ($('#select2-clientes').val() == null) {
+        if ($('#select2-proveedores').val() == null) {
             var obj = $.alert({
                 title: 'Atención',
                 content: 'Debe seleccionar el cliente para buscar las facturas relacionados al mismo!',
@@ -444,7 +270,7 @@
                 language: { url: '/datatables/translation/spanish' },
                 processing: true,
                 serverSide: true,
-                ajax: {"url": "/api/facturas/cliente/"+$('#select2-clientes').val()},
+                ajax: {"url": "/api/facturas/cliente/"+$('#select2-proveedores').val()},
                 select: {
                     style: 'single'
                 },
@@ -510,32 +336,48 @@
         }
     });
 
-    /*Evento onchange del select de artículos, para que recupere el precio si es seleccionado algún artículo distinto a nulo*/
+    /*Evento onchange del select de artículos, para que recupere el costo si es seleccionado algún artículo distinto a nulo*/
     $("#select2-articulos").change(function (e) {
         var valor = $(this).val();
         
         if (valor != null) {
             var articulo_id = $("#select2-articulos" ).val();
-            //var lista_precio_id = $("#select2-lista-precios" ).val();
             $.ajax({
-              type: "GET",
-              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + 1,
-              datatype: "json",
-              success: function(data){
-                $("#existencia" ).val(data.existencia).change();
-                $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
-                $("#precio_unitario" ).val(data.precio).change();
-                $("#porcentaje_descuento" ).val(0).change();
-                $("#btn-add-articulo").attr("disabled", false);
-              }
+                type: "GET",
+                url: "{{ url('api/articulos') }}" + '/costo/' + articulo_id,
+                datatype: "json",
+                //async: false,
+                success: function(data){
+                    $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
+                    $("#costo_unitario" ).val(data.ultimo_costo).change();                    
+                    $("#porcentaje_descuento" ).val(0).change();
+                    $("#btn-add-articulo").attr("disabled", false);
+                }
             });
 
-            $("#cantidad" ).val(1).change();
-            $("#precio_unitario").focus();
+            if($("#cantidad" ).val().length === 0){
+                $("#cantidad" ).val(1).change();
+            }
+            $("#cantidad").focus();
+
         } else {
             $("#btn-add-articulo").attr("disabled", true);
         }
     });
+
+    //Función para recuperar el valor de cambio al cambiar de moneda (?)
+    function setValorCambio() {
+        var moneda_id = $("#select2-monedas" ).val();
+        $.ajax({
+          type: "GET",
+          url: "{{ url('api/cotizaciones') }}" + '/venta/' + moneda_id,
+          datatype: "json",
+          //async: false,
+          success: function(data){
+            $("#valor_cambio" ).val(data).change();
+          }
+        });
+    };
 
     function calcularSubtotal() {
         var cantidad = $("#cantidad" ).val();
@@ -548,6 +390,28 @@
             $("#subtotal" ).val(calculo).change();
         }
     };
+
+        function Validar(){
+
+            var valor_cambio = document.getElementById("valor_cambio").value;   
+
+            if (valor_cambio == 0 ) {
+                    var obj = $.alert({
+                        title: 'Atención',
+                        content: 'El valor de cambio no puede ser cero!',
+                        icon: 'fa fa-exclamation-triangle',
+                        type: 'orange',
+                        backgroundDismiss: true,
+                        theme: 'modern',
+                    });
+                    setTimeout(function(){
+                        obj.close();
+                    },3000);
+
+                    return false; 
+            }
+
+        };
 
     function addArticulo() {
         var indexColumn = 0;
@@ -666,7 +530,7 @@
         //console.log(datos);
         for (i = 0; i < datos.length; i++) {
             array_pedidos.push(datos[i].id);
-            document.getElementById("factura_nro").value = datos[i].nro_factura;
+            document.getElementById("compra_nro").value = datos[i].nro_factura;
         }
         if (array_pedidos.length > 0) {
             if (tipo_ncre == 'DV') {
@@ -747,42 +611,6 @@
 
 </script>
 <script type="text/javascript">
-    //JS para que al abrir el modal de persona fisica se quede en foco en el campo nro_cedula
-    $('#modal-form-fisica').on('shown.bs.modal', function() {
-      $("#nro_cedula").focus();
-    });
-    //JS para que al abrir el modal de persona jurídica se quede en foco en el campo ruc
-    $('#modal-form-juridica').on('shown.bs.modal', function() {
-      $("#ruc_juridica").focus();
-    });
-    $('#cliente-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
-    $('#cliente-form-juridica').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
-    //JS para el formato con separador de miles al ingresar el nro de cedula
-    $('#nro_cedula').number(true, 0, ',', '.');
-    /*JS para la inclusión del guión en el campo RUC del modal para persona física*/
-    $("#ruc").on({
-        "focus": function (event) {
-            $(event.target).select();
-        },
-        "keyup": function (event) {
-            $(event.target).val(function (index, value ) {
-                return value.replace(/\D/g, "")
-                            .replace(/([0-9])([0-9]{1})$/, '$1-$2');
-            });
-        }
-    });
-    /*JS para la inclusión del guión en el campo RUC del modal para persona jurídica*/
-    $("#ruc_juridica").on({
-        "focus": function (event) {
-            $(event.target).select();
-        },
-        "keyup": function (event) {
-            $(event.target).val(function (index, value ) {
-                return value.replace(/\D/g, "")
-                            .replace(/([0-9])([0-9]{1})$/, '$1-$2');
-            });
-        }
-    });
     $('#valor_cambio').number(true, 0, ',', '.');
     $('#cantidad').number(true, 2, ',', '.');
     $('#precio_unitario').number(true, 0, ',', '.');
@@ -792,12 +620,12 @@
 <script type="text/javascript">
     /*JS del componente Select2*/
     $(document).ready(function(){
-        $('#select2-clientes').select2({
+        $('#select2-proveedores').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
             minimumInputLength: 4,
             ajax: {
-                url: "{{ route('api.clientes.ventas') }}",
+                url: "{{ route('api.proveedores.buscador') }}",
                 delay: 250,
                 data: function (params) {
                     var queryParameters = {
@@ -815,6 +643,7 @@
                 cache: true
             }
         });
+
         $('#select2-articulos').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
@@ -861,35 +690,6 @@
             }
         });
 
-        /*$('#select2-lista-precios').select2({
-            placeholder: 'Seleccione una opción',
-            language: "es",
-            ajax: {
-                url: "{{ route('api.listaPrecios.select') }}",
-                delay: 250,
-                data: function (params) {
-                    var queryParameters = {
-                      q: params.term
-                    }
-
-                    return queryParameters;
-                  },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            }
-        });*/
-
-        $('#select2-series').select2({
-            placeholder : 'Seleccione una opción',
-            tags: false,
-            width: 'resolve',
-            language: "es"
-        });
     });
 
     /*JS para el DatePicker de fecha_emision*/
