@@ -38,10 +38,11 @@ class ReportesStockController extends Controller
         $sucursal = Sucursal::findOrFail($sucursal_id);
 
         $registros = DB::table('existencia_articulos')
+        ->join('articulos', 'existencia_articulos.articulo_id', '=', 'articulos.id')
         	->where('existencia_articulos.sucursal_id', $sucursal_id);
 
             $registros = $registros->get();
-        $pdf = PDF::loadView('reportesStock.existenciaArticuloReporte', compact('registros','articulo', 'sucursal', 'fecha_final'));
+        $pdf = PDF::loadView('reportesStock.existenciaArticuloReporte', compact('registros','articulos', 'sucursal', 'fecha_final'));
 
         return $pdf->stream('ArticuloExistencia.pdf',array('Attachment'=>0));
     }

@@ -20,15 +20,16 @@
                     <thead>
                         <tr class="active">
                             <th class="text-center">Articulo nombre</th>
-                            <th>Cantidad</th>
+                            <th>Cantidad Logica</th>
+                            <th>Cantidad Fisica</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($registros as $registro)
                             <tr>
-                            <td>{{$registro->cantidad}}</td>
-                                <td>{{$registro->articulo_id}}</td>
-
+                                <td>{{$registro->descripcion}}</td>
+                                 <td>{{$registro->cantidad}}</td>
+                                 <td></td>
                             </tr>
                         @endforeach
                     </tbody>
