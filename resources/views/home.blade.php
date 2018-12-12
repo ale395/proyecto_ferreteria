@@ -68,6 +68,10 @@
                                     <li class="sub_menu"><a href="{{route('compra.index')}}">Compra</a>
                                     </li>
                                 @endcan
+                                @can('notacreditocompras.index')
+                                    <li class="sub_menu"><a href="{{route('notacreditocompra.index')}}">Devolución de Compra</a>
+                                    </li>
+                                @endcan
                                 <!-- Pablo - comento para usar en otras cosas, y porque esto ya está en Parámetros generales
                                 @can('sucursales.index')
                                     <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
