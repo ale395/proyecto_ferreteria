@@ -65,7 +65,7 @@
                                       </li>
                                 @endcan
                                 @can('compra.index')
-                                    <li class="sub_menu"><a href="{{route('compra.index')}}">Compra</a>
+                                    <li class="sub_menu"><a href="{{route('compra.index')}}">Facturas de Proveedores</a>
                                     </li>
                                 @endcan
                                 @can('notacreditocompras.index')

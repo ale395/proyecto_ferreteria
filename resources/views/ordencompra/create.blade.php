@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('OrdenCompraController@store')}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('OrdenCompraController@store')}}" onsubmit="return Validar()" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Orden de Compra
@@ -36,7 +36,7 @@
                         <div class="col-md-2">
                             <input type="text" id="nro_orden" name="nro_orden" class="form-control" value="{{old('nro_orden', $nro_orden)}}" readonly="readonly">
                         </div>
-                        <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
+                        <label for="fecha_emision" class="col-md-3 control-label">Fecha *</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
@@ -51,10 +51,18 @@
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
                             <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
-                                <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
+                                @if ($errors->any())
+                                    @foreach($monedas as $moneda_err)
+                                        @if(old('moneda_id') == $moneda_err->id)
+                                        <option value="{{$moneda_err->getId()}}">{{$moneda_err->getDescripcion()}}</option>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
+                                @endif
                             </select>
                         </div>
-                        <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
+                        <label for="valor_cambio" class="col-md-2 control-label">Cambio*</label>
                         <div class="col-md-2">
                             <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
                         </div>
@@ -66,7 +74,7 @@
                     <div class="form-group">
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
-                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" onchange="setCantidadCosto()">
+                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
 
                             </select>
                         </div>
@@ -89,7 +97,7 @@
                                 <th width="5%">Acción</th>
                                 <th>Artículo</th>
                                 <th width="6%">Cant.</th>
-                                <th width="9%">Precio U.</th>
+                                <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
                             </tr>
                         </thead>
@@ -152,6 +160,38 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
+
+    $("#btn-add-articulo").attr("disabled", true);
+
+   /*Evento onchange del select de artículos, para que recupere el costo si es seleccionado algún artículo distinto a nulo*/
+   $("#select2-articulos").change(function (e) {
+        var valor = $(this).val();
+        
+        if (valor != null) {
+            var articulo_id = $("#select2-articulos" ).val();
+            $.ajax({
+                type: "GET",
+                url: "{{ url('api/articulos') }}" + '/costo/' + articulo_id,
+                datatype: "json",
+                //async: false,
+                success: function(data){
+                    $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
+                    $("#costo_unitario" ).val(data.ultimo_costo).change();                    
+                    $("#porcentaje_descuento" ).val(0).change();
+                    $("#btn-add-articulo").attr("disabled", false);
+                }
+            });
+
+            if($("#cantidad" ).val().length === 0){
+                $("#cantidad" ).val(1).change();
+            }
+            $("#cantidad").focus();
+
+        } else {
+            $("#btn-add-articulo").attr("disabled", true);
+        }
+    });
+
  
     function setCantidadCosto() {
         var articulo_id = $("#select2-articulos" ).val();
@@ -266,6 +306,42 @@
         }
     });
 
+    /*Evento onchange del select de monedas, para que recupere la última cotización cotización*/
+    $("#select2-monedas").change(function (e) {
+        var valor = $(this).val();
+        //api/cotizaciones/venta/{moneda}
+        if (valor != null) {
+            var moneda_id = $("#select2-monedas" ).val();
+            var valor_cambio = 0
+
+            var url_cotizacion = "{{ url('api/cotizaciones') }}" + '/venta/' + moneda_id
+            
+            $.ajax({
+                type: "GET",
+                url: url_cotizacion,
+                datatype: "json",
+                success: function (data){
+                    $("#valor_cambio").val(data).change();
+                    //valor_cambio = data;
+                },
+                error: function (data){
+                    var obj = $.alert({
+                    title: 'Atención',
+                    content: 'Moneda no tiene cotización cargada!.',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                    });
+                    setTimeout(function(){
+                        obj.close();
+                    },3000);
+                    
+                    $("#valor_cambio").val(0).change();
+                }
+            });
+        }
+    });
 
     /*Elimina el articulo del pedido*/
     var tabla = $("#pedido-detalle").DataTable();
@@ -277,6 +353,83 @@
             .draw();
         $("#tab-hidden tr:eq("+row+")").remove();
     } );
+
+        function Validar(){
+
+            //var modalidad_con = "";
+            //var modalidad_cre = "";
+            var valor_cambio = document.getElementById("valor_cambio").value;   
+
+            /*
+            if (document.getElementById('radioContado').checked) {
+                modalidad_con = document.getElementById("radioContado").value;        
+            }
+
+            if (document.getElementById('radioContado').checked) {
+                modalidad_cre = document.getElementById("radioCredito").value;
+            }
+            */
+
+            if (valor_cambio == 0 ) {
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'El valor de cambio no puede ser cero!',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000);
+
+                return false; 
+            }
+
+            /*
+            cheques_detalle = $('input[name="tab_banco_id[]"]').map(function () {
+                return this.value;
+            }).get();
+
+            if (modalidad_cre == "CRE" && cheques_detalle.length > 0 ) {
+                    var obj = $.alert({
+                        title: 'Atención',
+                        content: 'La modalidad de pago es crédito, no se debe ingresar la forma de pago',
+                        icon: 'fa fa-exclamation-triangle',
+                        type: 'orange',
+                        backgroundDismiss: true,
+                        theme: 'modern',
+                    });
+                    setTimeout(function(){
+                        obj.close();
+                    },3000);
+
+                    return false; 
+            }
+            else {
+                if (modalidad_con == "CO" && cheques_detalle.length == 0 ) {
+                    var obj = $.alert({
+                        title: 'Atención',
+                        content: 'Debe ingresar la forma de pago.',
+                        icon: 'fa fa-exclamation-triangle',
+                        type: 'orange',
+                        backgroundDismiss: true,
+                        theme: 'modern',
+                    });
+                    setTimeout(function(){
+                        obj.close();
+                    },3000);
+
+                    return false; 
+                }
+                else {
+
+
+                    return true
+                }
+            }
+            */
+            };
 </script>
 <script type="text/javascript">
     /*
@@ -409,30 +562,7 @@
             }
         });
 
-        /*
-        $('#select2-lista-precios').select2({
-            placeholder: 'Seleccione una opción',
-            language: "es",
-            ajax: {
-                url: "{{ route('api.listaPrecios.select') }}",
-                delay: 250,
-                data: function (params) {
-                    var queryParameters = {
-                      q: params.term
-                    }
-
-                    return queryParameters;
-                  },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            }
-        });
-        */
+       
 
     });
 
