@@ -53,7 +53,7 @@ class FacturaVentaController extends Controller
             return redirect()->back()->withErrors('Datos insuficientes para cargar facturas. Falta parametrizar datos en Empresa o asignar una Serie para la sucursal y vendedor/a actual!');
         }
         //dd(strtotime($fecha_actual."+ 20 days"));
-        if ($serie->timbrado->getFechaFinVigencia() < date("Y-m-d", strtotime($fecha_actual."+ 20 days"))) {
+        if ($serie->timbrado->getFechaFinVigencia() < $fecha_actual) {
             return redirect()->back()->withErrors('La serie habilitada tiene el timbrado vencido! No podrá cargar facturas sin un timbrado válido. El Nro de Timbrado es: '.$serie->timbrado->getNroTimbrado());
         }
 

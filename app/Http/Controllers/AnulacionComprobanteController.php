@@ -181,6 +181,7 @@ class AnulacionComprobanteController extends Controller
             ->select('facturas_ventas_cab.id',DB::raw("'Factura' as tipo_comp"), 
                 DB::raw("empresa.codigo_establecimiento||'-'||sucursales.codigo_punto_expedicion||' '||lpad(CAST(facturas_ventas_cab.nro_factura AS CHAR), 7, '0') as nro_comp"),
                 DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
+                DB::raw('facturas_ventas_cab.fecha_emision as fecha_emision_sf'),
                 DB::raw("CASE WHEN clientes.tipo_persona = 'F' THEN clientes.nombre||', '||clientes.apellido WHEN clientes.tipo_persona = 'J' THEN clientes.razon_social END as cliente"),
                 DB::raw("TO_CHAR(ROUND(facturas_ventas_cab.monto_total), '999G999G999') as monto_total"),
                 DB::raw("CASE WHEN facturas_ventas_cab.estado = 'P' THEN 'Pendiente' END as estado"))
@@ -194,6 +195,7 @@ class AnulacionComprobanteController extends Controller
             ->select('nota_credito_ventas_cab.id', DB::raw("'Nota de Crédito' as tipo_comp"), 
                 DB::raw("empresa.codigo_establecimiento||'-'||sucursales.codigo_punto_expedicion||' '||lpad(CAST(nota_credito_ventas_cab.nro_nota_credito AS CHAR), 7, '0') as nro_comp"),
                 DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
+                DB::raw('nota_credito_ventas_cab.fecha_emision as fecha_emision_sf'),
                 DB::raw("CASE WHEN clientes.tipo_persona = 'F' THEN clientes.nombre||', '||clientes.apellido WHEN clientes.tipo_persona = 'J' THEN clientes.razon_social END as cliente"),
                 DB::raw("TO_CHAR(ROUND(nota_credito_ventas_cab.monto_total), '999G999G999') as monto_total"),
                 DB::raw("CASE WHEN nota_credito_ventas_cab.estado = 'P' THEN 'Pendiente' END as estado"))
@@ -206,12 +208,25 @@ class AnulacionComprobanteController extends Controller
         if ($permiso_anular) {
             return Datatables::of($registros)
                 ->addColumn('action', function($registros){
+                    $fecha_actual = date('Y-m-d');
+                    $primer_dia_mes = date('Y-m-01', strtotime($fecha_actual));
+                    $ultimo_dia_mes = date('Y-m-t', strtotime($fecha_actual));
                     $factura = '<a data-toggle="tooltip" data-placement="top" onclick="showFactura('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" onclick="anularFactura('. $registros->id .')" class="btn btn-danger btn-sm" title="Anular comprobante"><i class="fa fa-minus-circle"></i></a> ';
-                    $notaCredito = '<a data-toggle="tooltip" data-placement="top" onclick="showNotaCredito('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" onclick="anularNotaCredito('. $registros->id .')" class="btn btn-danger btn-sm" title="Anular comprobante"><i class="fa fa-minus-circle"></i></a> ';
+                    $factura_no_anular = '<a data-toggle="tooltip" data-placement="top" onclick="showFactura('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Anular comprobante" disabled><i class="fa fa-minus-circle"></i></a> ';
+                    $notaCredito = '<a data-toggle="tooltip" data-placement="top" onclick="showNotaCredito('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" onclick="anularNotaCredito('. $registros->id .')" class="btn btn-danger btn-sm" title="Anular comprobante"><i class="fa fa-minus-circle"></i></a>';
+                    $notaCredito_no_anular = '<a data-toggle="tooltip" data-placement="top" onclick="showNotaCredito('.$registros->id.')" class="btn btn-default btn-sm" title="Ver Comprobante"><i class="fa fa-eye"></i></a> '.'<a data-toggle="tooltip" data-placement="top" class="btn btn-danger btn-sm" title="Anular comprobante" disabled><i class="fa fa-minus-circle"></i></a>';
                     if ($registros->tipo_comp == 'Factura') {
-                        return $factura;
+                        if ($registros->fecha_emision_sf > $ultimo_dia_mes or $registros->fecha_emision_sf < $primer_dia_mes) {
+                            return $factura_no_anular;
+                        } else {
+                            return $factura;
+                        }
                     } else {
-                        return $notaCredito;
+                        if ($registros->fecha_emision_sf > $ultimo_dia_mes or $registros->fecha_emision_sf < $primer_dia_mes) {
+                            return $notaCredito_no_anular;
+                        } else {
+                            return $notaCredito;
+                        }
                     }
             })->make(true);
         } else {
