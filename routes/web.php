@@ -203,8 +203,8 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/compra', 'CompraController@apiCompras')->name('api.compra');
 
 	//Rutas para Nota de Crédito de Compras
-	Route::resource('notacreditocompras', 'NotaCreditoComprasController');
-	Route::get('api/notacreditocompras', 'NotaCreditoComprasController@apiNotaCreditoCompras')->name('api.nota.credito.compras');
+	Route::resource('notacreditocompra', 'NotaCreditoComprasController');
+	Route::get('api/notacreditocompra', 'NotaCreditoComprasController@apiNotaCreditoCompras')->name('api.nota.credito.compras');
 
 	//Para ver los errores de PHP
 	Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
@@ -220,5 +220,6 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCajaView')->name('gestionCajas.habilitarCaja');
 	Route::post('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCaja')->name('gestionCajas.habilitarCaja.metodo');
 	Route::get('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCajaView')->name('gestionCajas.cerrarCaja');
+	Route::post('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCaja')->name('gestionCajas.cerrarCaja.metodo');
 
 });

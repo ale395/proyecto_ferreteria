@@ -170,6 +170,10 @@ class AnulacionComprobanteController extends Controller
     public function apiComprobantesVentas(){
         $permiso_anular = Auth::user()->can('anulacioncomprobantes.anular');
         $sucursal_actual = Auth::user()->empleado->sucursalDefault;
+        $fecha_actual = date('Y-m-d');
+        $primer_dia_mes = date('Y-m-01', strtotime($fecha_actual));
+        $ultimo_dia_mes = date('Y-m-t', strtotime($fecha_actual));
+        
         $facturas = DB::table('facturas_ventas_cab')
             ->join('sucursales', 'facturas_ventas_cab.sucursal_id', '=', 'sucursales.id')
             ->join('clientes', 'facturas_ventas_cab.cliente_id', '=', 'clientes.id')

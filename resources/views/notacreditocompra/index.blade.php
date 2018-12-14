@@ -6,9 +6,9 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Notas de Crédito
-                        @can('notaCreditoVentas.create')
-                          <a onclick="window.location='{{route('notaCreditoVentas.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                    <h4>Lista de Notas de Crédito - Compras
+                        @can('notacreditocompras.create')
+                          <a onclick="window.location='{{route('notacreditocompra.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
@@ -33,7 +33,7 @@
                                 <th width="65">Tipo</th>
                                 <th width="100">Número</th>
                                 <th>Fecha</th>
-                                <th>Cliente</th>
+                                <th>Proveedor</th>
                                 <th>Moneda</th>
                                 <th>Total</th>
                                 <th>Estado</th>
@@ -85,7 +85,7 @@
                         {data: 'tipo_nota_cred', name: 'tipo_nota_cred'},
                         {data: 'nro_nota_cred', name: 'nro_nota_cred'},
                         {data: 'fecha', name: 'fecha'},
-                        {data: 'cliente', name: 'cliente'},
+                        {data: 'proveedor', name: 'proveedor'},
                         {data: 'moneda', name: 'moneda'},
                         {data: 'monto_total', name: 'monto_total'},
                         {data: 'estado', name: 'estado'},
@@ -99,11 +99,11 @@
       })
 
       function showForm(id) {
-        window.location="{{ url('notaCreditoVentas') }}" + '/' + id;
+        window.location="{{ url('notacreditocompra') }}" + '/' + id;
       }
 
       function editForm(id) {
-        window.location="{{ url('notaCreditoVentas') }}" + '/' + id +'/edit';
+        window.location="{{ url('notacreditocompra') }}" + '/' + id +'/edit';
       }
 
       function deleteData(id){
@@ -121,7 +121,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('notaCreditoVentas') }}" + '/' + id,
+                                  url : "{{ url('notacreditocompra') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {

@@ -9,7 +9,7 @@ class HabilitacionCaja extends Model
     protected $table = 'habilitacion_caja';
 
     protected $fillable = [
-    'user_id', 'caja_id','fecha_hora_habilitacion', 'fecha_hora_cierre', 'saldo_inicial', 'saldo_final',
+        'user_id', 'caja_id','fecha_hora_habilitacion', 'fecha_hora_cierre', 'saldo_inicial', 'saldo_final',
     ];
 
     public function getId()
@@ -33,6 +33,10 @@ class HabilitacionCaja extends Model
     	return $this->fecha_hora_cierre();
     }
 
+    public function setFechaHoraCierre($fecha_hora_cierre){
+        $this->fecha_hora_cierre = $fecha_hora_cierre;
+    }
+
     public function getSaldoInicialNumber(){
         return $this->saldo_inicial;
     }
@@ -45,13 +49,17 @@ class HabilitacionCaja extends Model
     	return $this->saldo_final;
     }
 
+    public function setSaldoFinal($saldo_final){
+        $this->saldo_final = $saldo_final;
+    }
+
     public function caja()
     {
-        return $this->belongsTo('App\Caja');
+        return $this->belongsTo('App\Caja', 'caja_id');
     }
 
     public function usuario()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'user_id');
     }
 }
