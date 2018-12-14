@@ -107,10 +107,11 @@
                             <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
                         </div>
                     </div>
+                    <input type="hidden" name="moneda_id" value="{{$moneda->getId()}}">
                     <div class="form-group">
-                        <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
+                        <label for="moneda_select" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
-                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
+                            <select id="select2-monedas" name="moneda_select" class="form-control" style="width: 100%">
                                 <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
                             </select>
                         </div>
@@ -604,7 +605,7 @@
                 },3000); 
             } else {
             articulos_detalle.push(articulo_id);
-            console.log('Despues de add: '+articulos_detalle);
+            /*console.log('Despues de add: '+articulos_detalle);*/
             //var cantidad = $("#cantidad").val();
             var precio_unitario = $("#precio_unitario").val();
             var porcentaje_descuento = $("#porcentaje_descuento" ).val();
