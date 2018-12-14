@@ -48,8 +48,13 @@ class FacturaVentaController extends Controller
         $serie = Serie::where('vendedor_id', $vendedor->getId())
             ->where('sucursal_id', $sucursal->getId())
             ->where('tipo_comprobante', 'F')->first();
+
         if (empty($configuracion_empresa) or empty($serie)) {
             return redirect()->back()->withErrors('Datos insuficientes para cargar facturas. Falta parametrizar datos en Empresa o asignar una Serie para la sucursal y vendedor/a actual!');
+        }
+        //dd(strtotime($fecha_actual."+ 20 days"));
+        if ($serie->timbrado->getFechaFinVigencia() < date("Y-m-d", strtotime($fecha_actual."+ 20 days"))) {
+            return redirect()->back()->withErrors('La serie habilitada tiene el timbrado vencido! No podrá cargar facturas sin un timbrado válido. El Nro de Timbrado es: '.$serie->timbrado->getNroTimbrado());
         }
 
         $serie_factura = $configuracion_empresa->getCodigoEstablecimiento().'-'.$sucursal->getCodigoPuntoExpedicion();
