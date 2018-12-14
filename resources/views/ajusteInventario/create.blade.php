@@ -60,7 +60,7 @@
                         </div>
                     <div class="form-group">
                        
-                       <label for="motivo" class="col-md-1 control-label">Motivo</label>
+                       <label for="motivo" class="col-md-1 control-label">Observacion</label>
                        <div class="col-md-4">
                            <textarea class="form-control" rows="2" id="motivo" name="motivo"></textarea>
                        </div>

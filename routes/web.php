@@ -29,10 +29,9 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('cotizaciones', 'CotizacionController', ['parameters'=>['cotizaciones'=>'cotizacion']]);
 	Route::get('api/cotizaciones', 'CotizacionController@apiCotizaciones')->name('api.cotizaciones');
 	Route::get('api/cotizaciones/venta/{moneda}', 'CotizacionController@apiCotizacionValorVenta')->name('api.cotizaciones.valorventa');
-
+	
 	//RUTAS PARA IMPUESTOS
 	Route::resource('articulos', 'ArticuloController');
-	Route::post('api/articulos/{articulo_id}', 'ArticuloController@apiArticulos')->name('api.articulos');
 	Route::get('api/articulos', 'ArticuloController@apiArticulos')->name('api.articulos');
 	Route::get('api/articulos/cotizacion/{articulo}/{lista_precio}', 'ArticuloController@apiArticulosCotizacion')->name('api.articulos.cotizacion');
 	Route::get('api/articulos/costo/{articulo}', 'ArticuloController@apiArticulosCosto')->name('api.articulos.costo');

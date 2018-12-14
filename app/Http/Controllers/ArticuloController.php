@@ -43,7 +43,15 @@ class ArticuloController extends Controller
      */
     public function create()
     {
-        //
+        $impuestos = Impuesto::all();
+        $rubros = Rubro::all();
+        $familias = Familia::all();
+        $lineas = Linea::all();
+        $unidadesMedidas = UnidadMedida::all();
+
+        return view('articulo.create', 
+        compact('impuestos', 'rubros', 'familias', 'lineas','unidadesMedidas'));
+  
     }
 
     /**
@@ -54,6 +62,7 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
+
         $articulo = new Articulo();
         $rules = [
 
@@ -77,36 +86,31 @@ class ArticuloController extends Controller
             $filename = $request['descripcion']/*.'-'.time()*/.'.'.$img_producto->getClientOriginalExtension();
             Image::make($img_producto)->resize(300, 300)->save( public_path('/images/productos/' . $filename ) );
             $articulo->img_producto = $filename;
-            
-            
+                  
         }
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            $errors =  json_decode($errors);
+        $articulo->setCodigo ($request['codigo']);
+        $articulo->setDescripcion($request['descripcion']);
+        $articulo->setCodigoBarra($request['codigo_barra']);
+        $articulo->setUltimoCosto($request['ultimo_costo']);
+        $articulo->setCostoPromedio($request['costo_promedio']);
+        $articulo->setPorcentajeGanancia($request['porcentaje_ganancia']);
+        $articulo->setControExistencia($request['control_existencia']);
+        $articulo->setVendible($request['vendible']);
+        $articulo->setActivo($request['activo']);
+        $articulo->setImpuestoId($request['impuesto_id']);
+        $articulo->setRubroId($request['rubro_id']);
+        $articulo->setFamiliaId($request['familia_id']);
+        $articulo->setLineaId($request['linea_id']);
+        $articulo->setUnidadMedidaId($request['unidad_medida_id']);
+        $articulo->setComentario ( $request['comentario']);
+        
+        $articulo->save();
 
-            return response()->json(['errors' => $errors], 422); // Status code here
-        }
 
-        $data = [
-            'codigo' => $request['codigo'],
-            'descripcion' => $request['descripcion'],
-            'codigo_barra' => $request['codigo_barra'],
-            'ultimo_costo' => $request['ultimo_costo'],
-            'costo_promedio' => $request['costo_promedio'],
-            'porcentaje_ganancia' => $request['porcentaje_ganancia'],
-            'control_existencia' => $request['control_existencia'],
-            'vendible' => $request['vendible'],
-            'activo' => $request['activo'],
-            'impuesto_id' => $request['impuesto_id'],
-            'rubro_id' => $request['rubro_id'],
-            'familia_id' => $request['familia_id'],
-            'linea_id' => $request['linea_id'],
-            'unidad_medida_id' => $request['unidad_medida_id'],
 
-        ];
+        return redirect('/articulos')->with('status', 'Datos guardados correctamente!');
 
-        return Articulo::create($data);
     }
 
     /**
@@ -130,7 +134,14 @@ class ArticuloController extends Controller
     public function edit($id)
     {
         $articulo = Articulo::findOrFail($id);
-        return $articulo;
+        $impuestos = Impuesto::all();
+        $rubros = Rubro::all();
+        $familias = Familia::all();
+        $lineas = Linea::all();
+        $unidadesMedidas = UnidadMedida::all();
+        return view('articulo.edit', 
+        compact('impuestos', 'rubros', 'familias', 'lineas','unidadesMedidas', 'articulo'));
+  
     }
 
     /**
@@ -168,31 +179,30 @@ class ArticuloController extends Controller
             
         }
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            $errors =  json_decode($errors);
+        $articulo->setCodigo ($request['codigo']);
+        $articulo->setDescripcion($request['descripcion']);
+        $articulo->setCodigoBarra($request['codigo_barra']);
+        $articulo->setUltimoCosto($request['ultimo_costo']);
+        $articulo->setCostoPromedio($request['costo_promedio']);
+        $articulo->setPorcentajeGanancia($request['porcentaje_ganancia']);
+        $articulo->setControExistencia($request['control_existencia']);
+        $articulo->setVendible($request['vendible']);
+        $articulo->setActivo($request['activo']);
+        $articulo->setImpuestoId($request['impuesto_id']);
+        $articulo->setRubroId($request['rubro_id']);
+        $articulo->setFamiliaId($request['familia_id']);
+        $articulo->setLineaId($request['linea_id']);
+        $articulo->setUnidadMedidaId($request['unidad_medida_id']);
+        $articulo->setComentario ( $request['comentario']);
 
-            return response()->json(['errors' => $errors], 422); // Status code here
-        }
-
-        $articulo->codigo = $request['codigo'];
-        $articulo->descripcion = $request['descripcion'];
-        $articulo->codigo_barra = $request['codigo_barra'];
-        $articulo->ultimo_costo = $request['ultimo_costo'];
-        $articulo->costo_promedio = $request['costo_promedio'];
-        $articulo->comentario = $request['comentario'];
-        $articulo->porcentaje_ganancia = $request['porcentaje_ganancia'];
-        $articulo->impuesto_id = $request['impuesto_id'];
-        $articulo->rubro_id = $request['rubro_id'];
-        $articulo->familia_id = $request['familia_id'];
-        $articulo->linea_id = $request['linea_id'];
-        $articulo->unidad_medida_id = $request['unidad_medida_id'];
-        $articulo->control_existencia = $request['control_existencia'];
-        $articulo->vendible = $request['vendible'];
-        $articulo->activo = $request['activo'];
         $articulo->update();
+        
 
-        return $articulo;
+        return redirect('/articulos')->with('status', 'Datos guardados correctamente!');
+
+
+
+        
     }
 
     /**
