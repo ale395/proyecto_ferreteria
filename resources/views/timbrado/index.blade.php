@@ -135,6 +135,7 @@
             title: '¿De verdad lo quieres eliminar?',
             content: 'No podrás volver atras',
             type: 'red',
+            theme: 'modern',
             buttons: {   
                 ok: {
                     text: "Eliminar",

@@ -49,6 +49,7 @@ class SerieController extends Controller
      */
     public function store(Request $request)
     {
+
         $rules = [
             'tipo_comprobante' => 'required',
             'timbrado_id' => 'required',
