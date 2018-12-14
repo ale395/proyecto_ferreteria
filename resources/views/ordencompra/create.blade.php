@@ -27,6 +27,12 @@
                                 </ul>
                             </div>
                         @endif
+                                                @if (session('status'))
+                            <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                {{ session('status') }}
+                            </div>
+                        @endif
                     </div>
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
@@ -44,7 +50,15 @@
                     <div class="form-group">
                         <label for="proveedor_id" class="col-md-1 control-label">Proveedor *</label>
                         <div class="col-md-5">
-                            <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%"></select>
+                            <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
+                                @if ($errors->any())
+                                    @foreach($proveedores as $proveedor)
+                                        @if(old('proveedor_id') == $proveedor->id)
+                                            <option value="{{old('proveedor_id')}}" selected>{{$proveedor->getNombreSelect()}}</option>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">

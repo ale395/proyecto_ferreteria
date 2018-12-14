@@ -81,6 +81,10 @@ class CompraController extends Controller
             $total_iva = 0;
 
             $modalidad_pago = $request['tipo_factura'];
+
+            $valor_cambio = $request['valor_cambio'];
+            var_dump($valor_cambio);
+            $valor_cambio = number_format($valor_cambio, 2, '.', '');
             
             if (!empty('sucursal')) {
                 $request['sucursal_id'] = $sucursal->getId();

@@ -231,8 +231,11 @@ class OrdenCompraController extends Controller
         return view('ordencompra.edit',compact('orden_compra'));
         */
         try {
+            $proveedores = Proveedor::where('activo', true)->get();
+            $monedas = Moneda::all();
+
             $orden_compra = OrdenCompraCab::findOrFail($id);
-            return view('ordencompra.edit',compact('orden_compra'));
+            return view('ordencompra.edit',compact('orden_compra', 'proveedores', 'monedas'));
     
         } catch (\Exception $e) {
             return redirect()->back()->with('warning', 'Ocurrió un error!');
