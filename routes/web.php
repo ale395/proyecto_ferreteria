@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/articulos', 'ArticuloController@apiArticulos')->name('api.articulos');
 	Route::get('api/articulos/cotizacion/{articulo}/{lista_precio}', 'ArticuloController@apiArticulosCotizacion')->name('api.articulos.cotizacion');
 	Route::get('api/articulos/costo/{articulo}', 'ArticuloController@apiArticulosCosto')->name('api.articulos.costo');
+	Route::get('api/articulos/existencia/{articulo}/{sucursal}', 'ArticuloController@apiArticulosExistencia')->name('api.articulos.existencia');
 
 	//RUTAS PARA Monedas
 	Route::resource('monedas', 'MonedaController');
@@ -145,6 +146,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
 	Route::resource('ajustesInventarios', 'AjusteInventarioController', ['parameters'=>['ajustesInventarios'=>'ajusteInventario']]);
 	Route::get('api/ajustesInventarios', 'AjusteInventarioController@apiAjustesInventarios')->name('api.ajustes.inventarios');
+	Route::get('ajustesInventarios/impresion/{ajuste_inventario}', 'AjusteInventarioController@impresionAjuste')->name('ajustes.inventarios.impresion');
 
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');

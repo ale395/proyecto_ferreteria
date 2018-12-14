@@ -13,7 +13,7 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                <label>Cliente: {{$sucursal->getNombre()}}</label>
+                <label>Sucursal: {{$sucursal->getNombre()}}</label>
                 </div>
                 <div class="form-group"><label>Fecha: {{$fecha_final}}</label></div>
                 <table class="table table-bordered">

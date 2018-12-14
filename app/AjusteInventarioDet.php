@@ -9,7 +9,7 @@ class AjusteInventarioDet extends Model
     protected $table = 'ajustes_inventarios_det';
 
     protected $fillable = [
-        'ajuste_inventario_cab_id', 'articulo_id', 'cantidad', 'monto_total'
+        'ajuste_inventario_cab_id', 'articulo_id', 'cantidad', 'monto_total','existencia'
     ];
 
     public function setAjusteInventarioCabId($ajuste_inventario_cab_id){
@@ -26,6 +26,13 @@ class AjusteInventarioDet extends Model
 
     public function getCantidad(){
         return $this->cantidad;
+    }
+    public function setExistencia($existencia){
+        $this->existencia = $existencia;
+    }
+
+    public function getExistencia(){
+        return $this->existencia;
     }
     public function setCostoUnitario($costo_unitario){
         $this->costo_unitario = $costo_unitario;

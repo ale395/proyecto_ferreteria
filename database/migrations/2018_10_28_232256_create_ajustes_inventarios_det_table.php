@@ -17,6 +17,7 @@ class CreateAjustesInventariosDetTable extends Migration
             $table->increments('id');
             $table->integer('ajuste_inventario_cab_id')->unsigned();
             $table->integer('articulo_id')->unsigned();
+            $table->integer('existencia')->nullable();
             $table->integer('existencia_id')->nullable();
             $table->decimal('cantidad', 14, 2);
             $table->integer('diferencia_inventario')->nullable();

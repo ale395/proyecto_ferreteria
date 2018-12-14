@@ -20,7 +20,7 @@ class CreateAjustesInventariosCabTable extends Migration
             $table->integer('sucursal_id')->unsigned();
             $table->integer('concepto_ajuste_id')->unsigned();
             $table->date('fecha_emision');
-            $table->string('motivo');
+            $table->string('motivo')->nullable();
             $table->integer('usuario_id')->unsigned();
             $table->decimal('monto_total', 14, 2)->default(0);
             $table->timestamps();

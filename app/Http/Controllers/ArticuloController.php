@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Image;
 use Validator;
 use App\Articulo;
+use App\Sucursal;
 use App\Impuesto;
 use App\Rubro;
 use App\Familia;
@@ -262,10 +263,22 @@ class ArticuloController extends Controller
             } else {
                 $articulo->put('existencia', $existencia->getCantidad());
             }
-            
-            $articulo->put('iva', $articulo_obj->impuesto);
-            return $articulo;
+             return $articulo;
         };
+    }
+
+    public function apiArticulosExistencia($articulo_id, $sucursal_id){
+        $articulo_obj = Articulo::findOrFail($articulo_id);
+        $sucursal_obj = Sucursal::findOrFail($sucursal_id);
+
+        $existencia = ExistenciaArticulo::where('articulo_id', $articulo_obj->id)
+        ->where('sucursal_id', $sucursal_obj->id)->first();
+            if (empty($existencia)) {
+               // $articulo_obj->put('existencia', 0);
+            } else {
+              //  $articulo_obj->put('existencia', $existencia->getCantidad());
+                return ($existencia);
+            }
     }
 
     public function apiArticulosCosto($articulo_id){

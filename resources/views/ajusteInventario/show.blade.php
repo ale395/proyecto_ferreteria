@@ -9,7 +9,7 @@
                 <div class="panel-heading">
                     <h4>Ver Ajuste
                     <div class="pull-right btn-group">
-                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Ajuste" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Ajuste"  href="{{route('ajustes.inventarios.impresion', $ajuste_inventario_cab->getId())}}" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ajustesInventarios.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
@@ -49,7 +49,7 @@
                         <div class="col-md-2">
                         <input id="select2-conceptosAjustes" name="concepto_ajuste_id" class="form-control" value="{{$ajuste_inventario_cab->conceptoAjuste->getDescripcion()}}" readonly>
                         </div>
-                         <label for="motivo" class="col-md-1 control-label">Motivo</label>
+                         <label for="motivo" class="col-md-1 control-label">Observacion</label>
                         <div class="col-md-4">
                             <textarea class="form-control" rows="2" id="motivo" name="motivo" readonly>{{$ajuste_inventario_cab->getMotivo()}}</textarea>
                         </div>

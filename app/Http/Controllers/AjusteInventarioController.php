@@ -43,6 +43,7 @@ class AjusteInventarioController extends Controller
         $fecha_actual = date("d/m/Y");
         $datos_default = DatosDefault::get()->first();
         $concepto_ajuste =   ConceptoAjuste::all();
+        $sucursal = Auth::user()->empleado->sucursales->first();
        // $sucursales = Sucursal::where('activo',true)->get();  
         $nro_ajuste_inventario = AjusteInventarioCab::max('nro_ajuste');
 
@@ -55,7 +56,7 @@ class AjusteInventarioController extends Controller
         }
         
 
-        return view('ajusteInventario.create', compact('fecha_actual', 'nro_ajuste','concepto_ajuste'));
+        return view('ajusteInventario.create', compact('fecha_actual', 'nro_ajuste','concepto_ajuste','sucursal'));
     }
 
     /**
@@ -72,11 +73,11 @@ class AjusteInventarioController extends Controller
             //instanciamos la clase
             $ajuste_inventario_cab = new AjusteInventarioCab();
             $monto_total = 0;
-            $sucursal = Auth::user()->empleado->sucursales->first();
+           // $sucursal = Auth::user()->empleado->sucursales->first();
             $usuario = Auth::user();
-            if (!empty('sucursal')) {
-                $request['sucursal_id'] = $sucursal->getId();
-            }
+          //  if (!empty('sucursal')) {
+            //    $request['sucursal_id'] = $sucursal->getId();
+           // }
 
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
                 $monto_total = $monto_total + str_replace('.', '', $request['tab_subtotal'][$i]);
@@ -102,6 +103,7 @@ class AjusteInventarioController extends Controller
            
                 $ajuste_inventario_det->setAjusteInventarioCabId( $ajuste_inventario_cab->getId()); 
                 $ajuste_inventario_det->setArticuloId($request['tab_articulo_id'][$i]);            
+                $ajuste_inventario_det->setExistencia(str_replace(',', '.', str_replace('.', '', $request['tab_existencia'][$i])));
                 $ajuste_inventario_det->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
                 $ajuste_inventario_det->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i])); 
                 $ajuste_inventario_det->setSubTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
@@ -110,11 +112,11 @@ class AjusteInventarioController extends Controller
 
             }
              //-----------------------------------------------------------
- //controlamos existencia
+             //controlamos existencia
  if ($ajuste_inventario_det->articulo->getControlExistencia() == true) {
     //Actualizacion de existencia
     $existencia = ExistenciaArticulo::where('articulo_id', $ajuste_inventario_det->articulo->getId())
-        ->where('sucursal_id', $sucursal->getId())->first();
+        ->where('sucursal_id', $request['sucursal_id'])->first();
 
     //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
     if (!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='+'){
@@ -127,7 +129,7 @@ class AjusteInventarioController extends Controller
         $existencia_nuevo = new ExistenciaArticulo();
 
         $existencia_nuevo->setArticuloId($ajuste_inventario_det->articulo->getId());
-        $existencia_nuevo->setSucursalId($sucursal->getId());
+        $existencia_nuevo->setSucursalId($request['sucursal_id']);
         $existencia_nuevo->setCantidad($ajuste_inventario_det->getCantidad());
         $existencia_nuevo->setFechaUltimoInventario($request['fecha_emision']);
 
@@ -228,11 +230,15 @@ class AjusteInventarioController extends Controller
             //desde aca va el nuevo detalle-----------------------------------         
             //lo que trae directamente del request
             $tab_articulo_id = $request['tab_articulo_id'];
+            $tab_existencia = $request['tab_existencia'];
             $tab_cantidad = $request['tab_cantidad'];
             $tab_costounitario = $request['tab_costounitario'];        
             $tab_subtotal = $request['tab_subtotal'];
            
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+
+                $existencia = $tab_existencia[$i];
+                $existencia = str_replace('.', '', $existencia);
 
                 $cantidad = $tab_cantidad[$i];
                 $cantidad = str_replace('.', '', $cantidad);
@@ -250,6 +256,7 @@ class AjusteInventarioController extends Controller
 
                 $ajuste_inventario_det->ajuste_inventario_cab_id = $ajuste_inventario->id; 
                 $ajuste_inventario_det->articulo_id = $tab_articulo_id[$i];
+                $ajuste_inventario_det->existencia = $existencia;
                 $ajuste_inventario_det->cantidad = $cantidad;
                 $ajuste_inventario_det->costo_unitario = $costo_unitario;
 
@@ -289,6 +296,12 @@ class AjusteInventarioController extends Controller
         return AjusteInventarioCab::destroy($id);
     }
 
+    public function impresionAjuste($id){
+        $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
+        $pdf = \PDF::loadView('reportesAjustes.impresionAjuste', compact('ajuste_inventario_cab'));
+        return $pdf->stream('AjusteInventario.pdf', array('Attachment'=>0));
+    }
+    
     public function apiAjustesInventarios() {
         $permiso_editar = Auth::user()->can('ajustesInventarios.edit');
       //  $permiso_eliminar = Auth::user()->can('ajusteInventario.destroy');
