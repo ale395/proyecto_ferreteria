@@ -75,7 +75,7 @@
                     <div class="form-group">
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
                         <label for="lista_precio_id" class="col-md-2 control-label">Lista Precio*</label>
                         <div class="col-md-3">
@@ -116,7 +116,7 @@
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}" readonly>
                         </div>
                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
                         <div class="col-md-4">
@@ -559,12 +559,25 @@
         var cantidad = $("#cantidad").val();
         cantidad = cantidad.replace(",", ".");
         var existencia = $("#existencia").val();
-        console.log('Antes de add: '+articulos_detalle);
+        /*console.log('Antes de add: '+articulos_detalle);*/
         
         if (Number(cantidad) > Number(existencia)) {
             var obj = $.alert({
                 title: 'Atención',
                 content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000); 
+        } 
+        if ($("#precio_unitario").val() == 0) {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'El artículo no tiene precio asignado en la lista de precios actual! No lo podrá agregar.',
                 icon: 'fa fa-exclamation-triangle',
                 type: 'orange',
                 backgroundDismiss: true,
@@ -831,6 +844,7 @@
         $('#select2-monedas').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
+            disabled: true,
             ajax: {
                 url: "{{ route('api.monedas.select') }}",
                 delay: 250,
@@ -883,7 +897,7 @@
     });
 
     /*JS para el DatePicker de fecha_emision*/
-    $(function() {
+    /*$(function() {
       $('.dpfecha').datepicker({
         format: 'dd/mm/yyyy',
         language: 'es',
@@ -895,6 +909,6 @@
                 e.stopPropagation();
                 $('.dpfecha').datepicker('update');
             });  
-    });
+    });*/
 </script>
 @endsection
