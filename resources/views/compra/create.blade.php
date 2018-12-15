@@ -77,7 +77,7 @@
                     </div>
                     <div class="form-group">
                         <label for="proveedor_id" class="col-md-1 control-label">Proveedor *</label>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
                                 @if ($errors->any())
                                     @foreach($proveedores as $proveedor)
@@ -88,6 +88,10 @@
                                 @endif
                             </select>
                         </div>
+                        <div class="col-md-1">
+                            <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        </div>
+                        <input type="text" id="pedidos_id" class="hidden" name="pedidos_id" value="{{old('pedidos_id')}}">
                     </div>
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
@@ -238,6 +242,7 @@
         </form>
     </div>
 </div>
+@include('compra.ordencompraform')
 
 @endsection
 @section('otros_scripts')
@@ -249,6 +254,55 @@
         trigger : 'hover'
     });
 
+    //-----------------ORDENES DE COMPRA----
+    var cliente_id = $('#select2-proveedores').val();
+    var tablePedidos = null;
+
+    function showPedidosForm(){
+        if ($('#select2-proveedores').val() == null) {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'Debe seleccionar el proveedor para buscar los pedidos relacionados al mismo!',
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000); 
+        } else {
+            if ($.fn.DataTable.isDataTable('#tabla-pedidos')) {
+                $('#tabla-pedidos').DataTable().clear();
+                $('#tabla-pedidos').DataTable().destroy();    
+            }
+
+            tablePedidos = $('#tabla-pedidos').DataTable({
+                
+                language: { url: '/datatables/translation/spanish' },
+                processing: true,
+                serverSide: true,
+                ajax: {"url": "/api/ordencompra/proveedor/"+$('#select2-proveedores').val()},
+                select: {
+                    style: 'multi'
+                },
+                columns: [
+                    {data: 'nro_orden'},
+                    {data: 'fecha'},
+                    {data: 'moneda'},
+                    {data: 'monto_total'},
+                    {data: 'comentario'}
+                    ],
+                'columnDefs': [
+                { className: "dt-center", "targets": [1,2,3,4] }]
+            });
+            
+            $('#modal-pedido-venta').modal('show');
+            $('#modal-pedido-venta form')[0].reset();
+            $('.modal-title').text('Lista de Ordenes de Compra');
+        }
+    }
+    //--------------------------------------
     
     $("#btn-add-articulo").attr("disabled", true);
     $("#btn-add-forma-pago-che").attr("disabled", true);

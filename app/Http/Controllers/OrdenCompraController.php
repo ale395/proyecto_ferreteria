@@ -374,6 +374,65 @@ class OrdenCompraController extends Controller
         return OrdenCompraCab::destroy($id);
     }
 
+    //--------------------------------------------------------------------
+    public function apiOrdenCompraProveedores($cliente_id){
+        if (empty($cliente_id)) {
+            return [];
+        } else {
+            $pedidos = OrdenCompraCab::where('proveedor_id', $cliente_id)->
+                where('estado', 'A')->get();
+
+            dd($pedidos);
+            
+            return Datatables::of($pedidos)
+                    ->addColumn('nro_pedido', function($pedidos){
+                        return $pedidos->getNroPedido();
+                    })
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('comentario', function($pedidos){
+                        return $pedidos->getComentario();
+                    })->make(true);
+        }
+        
+    }
+
+    public function apiOrdenCompraDetalles($array_pedidos){
+        $cast_array = explode(",",($array_pedidos));
+
+        /*PROBANDO CON DB*/
+        $pedidos = DB::table('pedidos_ventas_det')
+            ->join('pedidos_ventas_cab', 'pedidos_ventas_det.pedido_cab_id', '=', 'pedidos_ventas_cab.id')
+            ->join('articulos', 'pedidos_ventas_det.articulo_id', '=', 'articulos.id')
+            ->leftJoin('existencia_articulos', 'pedidos_ventas_det.articulo_id', '=', 'existencia_articulos.articulo_id')
+            ->select('pedidos_ventas_det.articulo_id', 'articulos.codigo', 'articulos.descripcion', 'pedidos_ventas_det.porcentaje_iva', 
+            DB::raw('ROUND(AVG(existencia_articulos.cantidad), 2) as cantidad_existencia'),
+            DB::raw('ROUND(MIN(pedidos_ventas_det.precio_unitario), 2) as precio_unitario'),
+            DB::raw('ROUND(MAX(pedidos_ventas_det.porcentaje_descuento), 2) as porcentaje_descuento'),
+            DB::raw('ROUND(SUM(pedidos_ventas_det.cantidad), 2) as cantidad'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_descuento), 2) as monto_descuento'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_exenta), 2) as monto_exenta'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_gravada), 2) as monto_gravada'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_iva), 2) as monto_iva'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_total), 2) as monto_total'))
+            ->whereIn('pedidos_ventas_det.pedido_cab_id', $cast_array)
+            ->where('pedidos_ventas_cab.estado', 'P')
+            ->where('existencia_articulos.sucursal_id', Auth::user()->empleado->sucursalDefault->getId())
+            ->groupBy('pedidos_ventas_det.articulo_id', 'articulos.codigo', 'articulos.descripcion', 'pedidos_ventas_det.porcentaje_iva', 'existencia_articulos.cantidad')
+            ->get();
+        return $pedidos;
+    }
+
+
+    //--------------------------------------------------------------------
+
     public function apiOrdenCompra()
     {
         $permiso_editar = Auth::user()->can('ordencompra.edit');

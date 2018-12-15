@@ -182,4 +182,8 @@ class ComprasCab extends Model
     public function comprasdetalle(){
         return $this->hasMany('App\ComprasDet', 'compra_cab_id');
     }
+
+    public function ordencompra(){
+        return $this->hasOne('App\OrdenCompraCab', 'orden_compra_id');
+    }
 }
