@@ -158,11 +158,7 @@ class SucursalController extends Controller
 
         if($request->has('q')){
             $search = strtolower($request->q);
-            $sucursales = Sucursal::where('nombre', 'ilike', "%$search%")
-                //->orWhere('razon_social', 'ilike', "%$search%")
-                //->orWhere('ruc', 'ilike', "%$search%")
-                //->orWhere('nro_cedula', 'LIKE', "%$search%")
-                ->get();
+            $sucursales = Sucursal::where('nombre', 'ilike', "%$search%")->get();
         } else {
             $sucursales = Sucursal::all();
         }
@@ -175,6 +171,7 @@ class SucursalController extends Controller
 
         return json_encode($sucursales_array);
     }
+    
     public function apiSucursales()
     {
         $permiso_editar = Auth::user()->can('sucursales.edit');
