@@ -263,7 +263,8 @@ class ArticuloController extends Controller
             } else {
                 $articulo->put('existencia', $existencia->getCantidad());
             }
-             return $articulo;
+            $articulo->put('iva', $articulo_obj->impuesto);
+            return $articulo;
         };
     }
 
