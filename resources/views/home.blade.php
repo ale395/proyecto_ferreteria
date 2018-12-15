@@ -320,7 +320,7 @@
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+                                  <li class="sub_menu"><a href="{{route('reporte.ver.ventas')}}">Reporte de Ventas</a>
                                   </li>
                                 </ul>
                               </li>

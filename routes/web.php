@@ -219,6 +219,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::get ('reporte/articuloexistencia', 'ReportesStockController@viewArticuloExistencia')->name('stock.articuloexistencia');
 	Route::post('reporte/articuloexistencia', 'ReportesStockController@verArticuloExistencia')->name('stock.verarticuloexistencia');
 
+	//VENTAS
+	Route::get ('reporte/ventas', 'ReportesVentasController@viewReporteVentas')->name('reporte.ventas');
+	Route::post('reporte/ventas', 'ReportesVentasController@verReporteVentas')->name('reporte.ver.ventas');
+
 	Route::get('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCajaView')->name('gestionCajas.habilitarCaja');
 	Route::post('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCaja')->name('gestionCajas.habilitarCaja.metodo');
 	Route::get('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCajaView')->name('gestionCajas.cerrarCaja');
