@@ -82,6 +82,10 @@ class Empleado extends Model
     	$this->fecha_nacimiento = $fecha_nacimiento;
     }
 
+    public function getActivo(){
+        return $this->activo;
+    }
+
     public function zona()
     {
         return $this->belongsTo('App\Zona');

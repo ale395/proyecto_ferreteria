@@ -202,6 +202,26 @@ class EmpleadoController extends Controller
         return Empleado::destroy($id);
     }
 
+    public function apiVendedoresSelect(Request $request){
+        $vendedores_array = [];
+
+        if($request->has('q')){
+            $search = strtolower($request->q);
+            $empleados = Empleado::where('nombre', 'ilike', "%$search%")
+                ->orWhere('apellido', 'ilike', "%$search%")->get();
+        } else {
+            $empleados = Empleado::all();
+        }
+
+        foreach ($empleados as $empleado) {
+            if ($empleado->getActivo() and $empleado->esVendedor()) {
+                $vendedores_array[] = ['id'=> $empleado->getId(), 'text'=> $empleado->getNombre().' '.$empleado->getApellido()];
+            }
+        }
+
+        return json_encode($vendedores_array);
+    }
+
     public function agregarSucursal(Request $request){
         $empleado = Empleado::findOrFail($request['empleado_id']);
         $empleado->sucursales()->attach($request['sucursal']);

@@ -71,6 +71,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA VENDEDORES
 	Route::resource('vendedores', 'VendedorController');
 	Route::get('api/Vendedores', 'VendedorController@apiVendedores')->name('api.vendedores');
+	Route::get('api/vendedores/select', 'EmpleadoController@apiVendedoresSelect')->name('api.vendedores.select');
 
 	//RUTAS PARA CLIENTES
 	Route::resource('clientes', 'ClienteController');

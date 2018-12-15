@@ -24,16 +24,40 @@
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <div class="form-group">
-                        <label for="fecha_emision" class="col-md-2 control-label">Fecha Final*</label>
+                        <label for="fecha_inicial" class="col-md-2 control-label">Fecha Inicial*</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_final" name="fecha_final" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_final', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_inicial" name="fecha_inicial" class="form-control dpfechaini" placeholder="dd/mm/aaaa" value="{{old('fecha_inicial', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                        </div>
+                        <label for="fecha_final" class="col-md-2 control-label">Fecha Final*</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_final" name="fecha_final" class="form-control dpfechafin" placeholder="dd/mm/aaaa" value="{{old('fecha_final', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
                     </div>
-                    <br>
                     <div class="form-group">
-                        <label for="cliente_id" class="col-md-2 control-label">Cliente*</label>
+                        <label for="cliente_id" class="col-md-2 control-label">Cliente</label>
                         <div class="col-md-7">
-                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%">
+                            <select id="select2-clientes" name="cliente_id[]" class="form-control" style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sucursal_id" class="col-md-2 control-label">Sucursal</label>
+                        <div class="col-md-7">
+                            <select id="select2-sucursales" name="sucursal_id[]" class="form-control" style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="vendedor_id" class="col-md-2 control-label">Vendedor</label>
+                        <div class="col-md-7">
+                            <select id="select2-vendedores" name="vendedor_id" class="form-control" style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="articulo_id" class="col-md-2 control-label">Articulo</label>
+                        <div class="col-md-7">
+                            <select id="select2-articulos" name="articulo_id[]" class="form-control" style="width: 100%">
                             </select>
                         </div>
                     </div>
@@ -49,9 +73,10 @@
 @section('otros_scripts')
 <script type="text/javascript">
     $('#select2-clientes').select2({
-        placeholder: 'Seleccione una opción',
+        placeholder: 'Elija una o varias opciones',
         language: "es",
         minimumInputLength: 4,
+        multiple: true,
         ajax: {
             url: "{{ route('api.clientes.ventas') }}",
             delay: 250,
@@ -71,18 +96,101 @@
         }
     });
 
+    $('#select2-sucursales').select2({
+        placeholder: 'Elija una o varias opciones',
+        language: "es",
+        multiple: true,
+        ajax: {
+            url: "{{ route('api.sucursales.buscador') }}",
+            delay: 250,
+            data: function (params) {
+                var queryParameters = {
+                  q: params.term
+                }
+                return queryParameters;
+            },
+            dataType: 'json',
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#select2-vendedores').select2({
+        placeholder: 'Elija una opción',
+        language: "es",
+        ajax: {
+            url: "{{ route('api.vendedores.select') }}",
+            delay: 250,
+            data: function (params) {
+                var queryParameters = {
+                  q: params.term
+                }
+                return queryParameters;
+            },
+            dataType: 'json',
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#select2-articulos').select2({
+        placeholder: 'Seleccione una o varias opciones',
+        language: "es",
+        minimumInputLength: 4,
+        multiple: true,
+        ajax: {
+            url: "{{ route('api.articulos.ventas') }}",
+            delay: 250,
+            data: function (params) {
+                var queryParameters = {
+                    q: params.term
+                }
+                return queryParameters;
+            },
+            dataType: 'json',
+            processResults: function (data) {
+                return {
+                    results: data
+                };
+            },
+            cache: true
+        }
+    });
+
     $(function() {
-      $('.dpfecha').datepicker({
+      $('.dpfechaini').datepicker({
         format: 'dd/mm/yyyy',
         language: 'es',
         todayBtn: true,
         todayHighlight: true,
         autoclose: true
       });
-        $('#fecha_corte').click(function(e){
+        $('#fecha_inicial').click(function(e){
             e.stopPropagation();
-            $('.dpfecha').datepicker('update');
+            $('.dpfechaini').datepicker('update');
         });  
+    });
+
+    $(function() {
+      $('.dpfechafin').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        todayBtn: true,
+        todayHighlight: true,
+        autoclose: true
+      });
+        $('#fecha_final').click(function(e){
+            e.stopPropagation();
+            $('.dpfechafin').datepicker('update');
+        });
     });
 </script>
 @endsection
