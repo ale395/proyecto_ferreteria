@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     <h4>Lista de Articulos
                         @can('articulos.create')
-                        <a onclick="window.location='{{route('articulos.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
@@ -61,15 +61,14 @@
                     });
 
       function addForm() {
-        save_method = "add";
+
+
+window.location='{{route('articulos.create')}}'
+save_method = "add";
         $('#error-block').hide();
+        $('#activo').attr('checked', true);
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
-
-      $('#modal-form form')[0].reset();
-
-        $('.modal-title').text('Nuevo Articulo');
-
       }
 
 
@@ -130,8 +129,8 @@
             });
         });
 
-      function editForm(id) {
-          
+      function editForm(id) {       
+     
         window.location="{{ url('articulos') }}" + '/' + id +'/edit';
       }
 
@@ -193,6 +192,8 @@
           
         });
     </script>
+    <script type="text/javascript">
+    </script>
   <script type="text/javascript">
     $('#articulo-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
@@ -253,5 +254,8 @@
                 language: "es"
             });
         });
+  </script>
+   <script type="text/javascript">
+    $('#articulo-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
 @endsection

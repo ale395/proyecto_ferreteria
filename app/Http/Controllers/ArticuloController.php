@@ -85,7 +85,7 @@ class ArticuloController extends Controller
        
             $img_producto = $request->file('img_producto');
             $filename = $request['descripcion']/*.'-'.time()*/.'.'.$img_producto->getClientOriginalExtension();
-            Image::make($img_producto)->resize(300, 300)->save( public_path('/images/productos/' . $filename ) );
+            Image::make($img_producto)->resize(300, 300)->save( public_path('/images/articulos/' . $filename ) );
             $articulo->img_producto = $filename;
                   
         }
@@ -175,7 +175,7 @@ class ArticuloController extends Controller
             
             $img_producto = $request->file('img_producto');
             $filename = $request['descripcion']/*.'-'.time()*/.'.'.$img_producto->getClientOriginalExtension();
-            Image::make($img_producto)->resize(300, 300)->save( public_path('/images/productos/' . $filename ) );
+            Image::make($img_producto)->resize(300, 300)->save( public_path('/images/articulos/' . $filename ) );
             $articulo->img_producto = $filename;
             
         }
