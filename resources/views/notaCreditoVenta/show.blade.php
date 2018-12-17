@@ -10,6 +10,7 @@
                     <h4>Ver Nota de Crédito
                     <div class="pull-right btn-group">
                         <a data-toggle="tooltip" data-placement="top" title="Imprimir Nota de Crédito" href="{{route('notas.credito.ventas.impresion', $ncre_cab->getId())}}" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Nueva Factura" href="{{route('notaCreditoVentas.create')}}" type="button" class="btn btn-info"><i class="fa fa-plus" aria-hidden="true"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('notaCreditoVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
@@ -32,16 +33,27 @@
                         <div class="col-md-2">
                             <input type="text" id="tipo_nota_credito" name="tipo_nota_credito" class="form-control" readonly="readonly" value="{{$ncre_cab->getTipoNotaCreditoIndex()}}">
                         </div>
-                        <label for="nro_nota_credito" class="col-md-1 control-label">Número</label>
-                        <div class="col-md-3">
+                        <label for="nro_nota_credito" class="col-md-2 control-label">Número</label>
+                        <div class="col-md-2">
                             <input type="text" id="nro_nota_credito" name="nro_nota_credito" class="form-control" readonly="readonly" value="{{$ncre_cab->getNroNotaCreditoIndex()}}">
                         </div>
-                        <label for="fecha_emision" class="col-md-2 control-label">Fecha</label>
+                        <label for="nro_timbrado" class="col-md-2 control-label">N° Timbrado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="nro_timbrado" name="nro_timbrado" class="form-control text-right" readonly="readonly" value="{{$ncre_cab->serie->timbrado->getNroTimbrado()}}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fecha_emision" class="col-md-1 control-label">Fecha</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$ncre_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
+                        <label for="fecha_vigencia" class="col-md-6 control-label">Vigencia</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_vigencia" name="fecha_vigencia" class="form-control text-right" placeholder="dd/mm/aaaa" value="{{$ncre_cab->serie->timbrado->getFechaFinVigencia()}}" data-inputmask="'mask': '99/99/9999'" readonly>
+                        </div>
                     </div>
-                    <br>
+                    
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente</label>
                         <div class="col-md-6">

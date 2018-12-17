@@ -45,7 +45,7 @@
                         </div>
                         <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
                     </div>
                     <div class="form-group">
@@ -65,16 +65,17 @@
                             </a>
                         </div>
                     </div>
+                    <input type="hidden" name="moneda_id" value="{{$moneda->getId()}}">
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
-                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
+                            <select id="select2-monedas" name="moneda_select" class="form-control" style="width: 100%">
                                 <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
                             </select>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}" readonly>
                         </div>
                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
                         <div class="col-md-4">
@@ -656,6 +657,7 @@
         $('#select2-monedas').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
+            disabled: true,
             ajax: {
                 url: "{{ route('api.monedas.select') }}",
                 delay: 250,
@@ -701,7 +703,7 @@
     });
 
     /*JS para el DatePicker de fecha_emision*/
-    $(function() {
+    /*$(function() {
       $('.dpfecha').datepicker({
         format: 'dd/mm/yyyy',
         language: 'es',
@@ -713,6 +715,6 @@
                 e.stopPropagation();
                 $('.dpfecha').datepicker('update');
             });  
-    });
+    });*/
 </script>
 @endsection
