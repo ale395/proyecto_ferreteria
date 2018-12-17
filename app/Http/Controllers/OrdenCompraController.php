@@ -382,7 +382,8 @@ class OrdenCompraController extends Controller
             $pedidos = OrdenCompraCab::where('proveedor_id', $cliente_id)->
                 where('estado', 'A')->get();
 
-            dd($pedidos);
+            //dd($pedidos);
+            //var_dump($pedidos);
             
             return Datatables::of($pedidos)
                     ->addColumn('nro_pedido', function($pedidos){
