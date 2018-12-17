@@ -70,11 +70,15 @@
                         <div class="col-md-2">-->
                             <input type="number" id="nro_nota_credito" name="nro_nota_credito" class="form-control text-right hidden" readonly="readonly" value="{{old('nro_nota_credito', $nro_ncre)}}">
                         <!--</div>-->
+                        <label for="nro_timbrado" class="col-md-2 control-label">N° Timbrado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="nro_timbrado" name="nro_timbrado" class="form-control text-right" readonly="readonly" value="{{$serie->timbrado->getNroTimbrado()}}">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
                         <label for="factura_nro" class="col-md-2 control-label">Factura*</label>
                         <div class="col-md-3">
@@ -89,6 +93,10 @@
                             <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Factura"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
                         <input type="text" id="pedidos_id" class="hidden" name="pedidos_id" value="{{old('pedidos_id')}}">
+                        <label for="fecha_vigencia" class="col-md-1 control-label">Vigencia</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_vigencia" name="fecha_vigencia" class="form-control text-right" readonly="readonly" value="{{$serie->timbrado->getFechaFinVigencia()}}">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
@@ -107,16 +115,17 @@
                             <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
                         </div>
                     </div>
+                    <input type="hidden" name="moneda_id" value="{{$moneda->getId()}}">
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
-                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
+                            <select id="select2-monedas" name="moneda_select" class="form-control" style="width: 100%">
                                 <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
                             </select>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}" readonly>
                         </div>
                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
                         <div class="col-md-4">
@@ -841,6 +850,7 @@
         $('#select2-monedas').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
+            disabled: true,
             ajax: {
                 url: "{{ route('api.monedas.select') }}",
                 delay: 250,
@@ -893,7 +903,7 @@
     });
 
     /*JS para el DatePicker de fecha_emision*/
-    $(function() {
+    /*$(function() {
       $('.dpfecha').datepicker({
         format: 'dd/mm/yyyy',
         language: 'es',
@@ -905,6 +915,6 @@
                 e.stopPropagation();
                 $('.dpfecha').datepicker('update');
             });  
-    });
+    });*/
 </script>
 @endsection

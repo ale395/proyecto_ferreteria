@@ -29,7 +29,7 @@ class Timbrado extends Model
     }
 
     public function getFechaFinVigencia(){
-        return date("d-m-Y", strtotime($this->fecha_fin_vigencia));
+        return date("d/m/Y", strtotime($this->fecha_fin_vigencia));
     }
 
 }

@@ -45,7 +45,7 @@
                         </div>
                         <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
                     </div>
                     <div class="form-group">
@@ -65,16 +65,17 @@
                             </a>
                         </div>
                     </div>
+                    <input type="hidden" name="moneda_id" value="{{$moneda->getId()}}">
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
                         <div class="col-md-3">
-                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%">
+                            <select id="select2-monedas" name="moneda_select" class="form-control" style="width: 100%">
                                 <option value="{{$moneda->getId()}}">{{$moneda->getDescripcion()}}</option>
                             </select>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $cambio)}}" readonly>
                         </div>
                         <label for="comentario" class="col-md-1 control-label">Comentario</label>
                         <div class="col-md-4">
@@ -89,9 +90,9 @@
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
                             <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
-
                             </select>
                         </div>
+                        <input type="hidden" id="indi_exis" name="indi_exis" class="form-control">
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
@@ -424,7 +425,9 @@
               url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,
               datatype: "json",
               success: function(data){
+                //console.log(data);
                 $("#existencia" ).val(data.existencia).change();
+                $("#indi_exis" ).val(data.control_existencia).change();
                 $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
                 $("#precio_unitario" ).val(data.precio).change();
                 $("#porcentaje_descuento" ).val(0).change();
@@ -455,12 +458,29 @@
         /*Se obtienen los valores de los campos correspondientes*/
         var cantidad = $("#cantidad" ).val();
         var existencia = $("#existencia" ).val();
+        var maneja_existencia = $("#indi_exis" ).val();
         
-        if (Number(cantidad) > Number(existencia)) {
-            console.log('Cantidad es mayor que existencia: '+cantidad+' - '+existencia);
+        if (maneja_existencia == "true") {
+            if (Number(cantidad) > Number(existencia)) {
+            //console.log('Cantidad es mayor que existencia: '+cantidad+' - '+existencia);
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },4000);
+            }
+        }
+        
+        if ($("#precio_unitario").val() == 0) {
             var obj = $.alert({
                 title: 'Atención',
-                content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
+                content: 'El artículo no tiene precio asignado en la lista de precios actual! No lo podrá agregar.',
                 icon: 'fa fa-exclamation-triangle',
                 type: 'orange',
                 backgroundDismiss: true,
@@ -468,7 +488,7 @@
             });
             setTimeout(function(){
                 obj.close();
-            },4000); 
+            },3000); 
         } else {
             var decimales = 0;
             var articulo = $('#select2-articulos').select2('data')[0].text;
@@ -520,6 +540,7 @@
             $('#subtotal').number(false);
             
             $('#cantidad').val("");
+            $('#indi_exis').val("").change();
             $('#precio_unitario').val("");
             $('#porcentaje_descuento').val("");
             $('#porcentaje_iva').val("");
@@ -636,6 +657,7 @@
         $('#select2-monedas').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
+            disabled: true,
             ajax: {
                 url: "{{ route('api.monedas.select') }}",
                 delay: 250,
@@ -681,7 +703,7 @@
     });
 
     /*JS para el DatePicker de fecha_emision*/
-    $(function() {
+    /*$(function() {
       $('.dpfecha').datepicker({
         format: 'dd/mm/yyyy',
         language: 'es',
@@ -693,6 +715,6 @@
                 e.stopPropagation();
                 $('.dpfecha').datepicker('update');
             });  
-    });
+    });*/
 </script>
 @endsection

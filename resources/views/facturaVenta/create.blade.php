@@ -71,6 +71,10 @@
                         <div class="col-md-2">-->
                             <input type="number" id="nro_factura" name="nro_factura" class="form-control text-right hidden" readonly="readonly" value="{{old('nro_factura', $nro_factura)}}">
                         <!--</div>-->
+                        <label for="nro_timbrado" class="col-md-2 control-label">N° Timbrado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="nro_timbrado" name="nro_timbrado" class="form-control text-right" readonly="readonly" value="{{$serie->timbrado->getNroTimbrado()}}">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
@@ -89,6 +93,10 @@
                             <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
                         <input type="text" id="pedidos_id" class="hidden" name="pedidos_id" value="{{old('pedidos_id')}}">
+                        <label for="fecha_vigencia" class="col-md-1 control-label">Vigencia</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_vigencia" name="fecha_vigencia" class="form-control text-right" readonly="readonly" value="{{$serie->timbrado->getFechaFinVigencia()}}">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
@@ -106,6 +114,7 @@
                         <div class="col-md-1">
                             <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
                         </div>
+
                     </div>
                     <input type="hidden" name="moneda_id" value="{{$moneda->getId()}}">
                     <div class="form-group">
@@ -132,9 +141,9 @@
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
                             <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
-
                             </select>
                         </div>
+                        <input type="hidden" id="indi_exis" name="indi_exis" class="form-control">
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
@@ -524,6 +533,7 @@
               datatype: "json",
               success: function(data){
                 $("#existencia" ).val(data.existencia).change();
+                $("#indi_exis" ).val(data.control_existencia).change();
                 $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
                 $("#precio_unitario" ).val(data.precio).change();
                 $("#porcentaje_descuento" ).val(0).change();
@@ -555,6 +565,7 @@
         var articulos_detalle = $('input[name="tab_articulo_id[]"]').map(function () {
             return this.value;
         }).get();
+        var maneja_existencia = $("#indi_exis" ).val();
 
         /*Se obtienen los valores de los campos correspondientes*/
         var cantidad = $("#cantidad").val();
@@ -562,19 +573,21 @@
         var existencia = $("#existencia").val();
         /*console.log('Antes de add: '+articulos_detalle);*/
         
-        if (Number(cantidad) > Number(existencia)) {
-            var obj = $.alert({
-                title: 'Atención',
-                content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
-                icon: 'fa fa-exclamation-triangle',
-                type: 'orange',
-                backgroundDismiss: true,
-                theme: 'modern',
-            });
-            setTimeout(function(){
-                obj.close();
-            },3000); 
-        } 
+        if (maneja_existencia == "true") {
+            if (Number(cantidad) > Number(existencia)) {
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'La cantidad cargada supera a la existencia actual! Existencia: '+existencia,
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000); 
+            } 
+        }
         if ($("#precio_unitario").val() == 0) {
             var obj = $.alert({
                 title: 'Atención',
@@ -654,6 +667,7 @@
             $('#subtotal').number(false);
             
             $('#cantidad').val("");
+            $('#indi_exis').val("").change();
             $('#precio_unitario').val("");
             $('#porcentaje_descuento').val("");
             $('#porcentaje_iva').val("");
@@ -677,18 +691,20 @@
 
     function cargarPedidos(){
         var datos = tablePedidos.rows( { selected: true } ).data();
-        var i;
+        //console.log(datos);
+        //var i;
         var array_pedidos = [];
         for (i = 0; i < datos.length; i++) {
             array_pedidos.push(datos[i].id);
         }
         if (array_pedidos.length > 0) {
+            //console.log(array_pedidos);
             $.ajax({
                 type: "GET",
                 url: "/api/pedidos/detalles/"+array_pedidos,
                 datatype: "json",
                 success: function(data){
-                    console.log(data);
+                    //console.log(data);
                     if(data.length > 10){
                         var obj = $.alert({
                             title: 'Atención',
@@ -702,7 +718,7 @@
                             obj.close();
                         },3000);
                     } else{
-                        document.getElementById("pedidos_id").value = array_pedidos;
+                        //document.getElementById("pedidos_id").value = array_pedidos;
                         for (i = 0; i < data.length; i++) {
                             //console.log(data[i]);
                             //INSERTAR EN LAS TABLAS DE DETALLES

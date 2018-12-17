@@ -215,7 +215,7 @@ class EmpleadoController extends Controller
 
         foreach ($empleados as $empleado) {
             if ($empleado->getActivo() and $empleado->esVendedor()) {
-                $vendedores_array[] = ['id'=> $empleado->getId(), 'text'=> $empleado->getNombre().' '.$empleado->getApellido()];
+                $vendedores_array[] = ['id'=> $empleado->user->getId(), 'text'=> $empleado->getNombre().' '.$empleado->getApellido()];
             }
         }
 

@@ -29,11 +29,11 @@ class FacturaVentaCab extends Model
     }
 
     public function getSerie(){
-        return $this->serie;
+        return $this->nume_serie;
     }
 
     public function setSerie($serie){
-        $this->serie = $serie;
+        $this->nume_serie = $serie;
     }
 
     public function setTipoFactura($tipo_factura){

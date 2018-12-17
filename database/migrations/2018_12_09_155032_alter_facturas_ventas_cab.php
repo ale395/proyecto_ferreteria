@@ -14,7 +14,7 @@ class AlterFacturasVentasCab extends Migration
     public function up()
     {
         Schema::table('facturas_ventas_cab', function (Blueprint $table) {
-            $table->char('serie', 7)->nullable();//001-002
+            $table->char('nume_serie', 7)->nullable();//001-002
         });
     }
 
@@ -26,7 +26,7 @@ class AlterFacturasVentasCab extends Migration
     public function down()
     {
         Schema::table('facturas_ventas_cab', function (Blueprint $table) {
-            $table->dropColumn('serie');
+            $table->dropColumn('nume_serie');
         });
     }
 }

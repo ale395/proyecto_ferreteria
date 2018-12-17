@@ -277,12 +277,17 @@
                 $('#tabla-pedidos').DataTable().destroy();    
             }
 
+            id_proveedor = $('#select2-proveedores').val();
+
+            url_tabla = "{{ route('api.ordencompra')}}" + "/proveedor/" + id_proveedor;
+            
+            /*"/api/ordencompra/proveedor/"+$('#select2-proveedores').val()*/
             tablePedidos = $('#tabla-pedidos').DataTable({
                 
                 language: { url: '/datatables/translation/spanish' },
                 processing: true,
                 serverSide: true,
-                ajax: {"url": "/api/ordencompra/proveedor/"+$('#select2-proveedores').val()},
+                ajax: {"url": url_tabla },
                 select: {
                     style: 'multi'
                 },
