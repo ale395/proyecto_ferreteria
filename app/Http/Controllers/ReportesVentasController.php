@@ -42,7 +42,7 @@ class ReportesVentasController extends Controller
             ->join('clientes', 'clientes.id', '=', 'facturas_ventas_cab.cliente_id')
             ->join('sucursales', 'sucursales.id', '=', 'facturas_ventas_cab.sucursal_id')
             ->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
-                DB::raw("facturas_ventas_cab.serie||' '||lpad(CAST(facturas_ventas_cab.nro_factura AS CHAR), 7, '0') as nro_comp"),
+                DB::raw("facturas_ventas_cab.nume_serie||' '||lpad(CAST(facturas_ventas_cab.nro_factura AS CHAR), 7, '0') as nro_comp"),
                 DB::raw("CASE WHEN clientes.tipo_persona = 'F' THEN clientes.nombre||', '||clientes.apellido ELSE clientes.razon_social END AS cliente"),
                 DB::raw('sucursales.nombre AS sucursal'),
                 DB::raw("SUM(facturas_ventas_det.monto_descuento) as total_descuento"),
@@ -87,7 +87,7 @@ class ReportesVentasController extends Controller
             $vendedor = 'Todos';
         }
 
-        $facturas = $facturas->groupBy('facturas_ventas_cab.fecha_emision', 'facturas_ventas_cab.serie', 'facturas_ventas_cab.nro_factura', 'sucursales.nombre', 'clientes.tipo_persona', 'clientes.nombre', 'clientes.apellido', 'clientes.razon_social');
+        $facturas = $facturas->groupBy('facturas_ventas_cab.fecha_emision', 'facturas_ventas_cab.nume_serie', 'facturas_ventas_cab.nro_factura', 'sucursales.nombre', 'clientes.tipo_persona', 'clientes.nombre', 'clientes.apellido', 'clientes.razon_social');
     	$facturas = $facturas->get();
 
     	$pdf = PDF::loadView('reportesVentas.ventasReporte', compact('facturas', 'fecha_inicial', 'fecha_final', 'sucursal', 'cliente', 'vendedor'))->setPaper('a4', 'landscape');

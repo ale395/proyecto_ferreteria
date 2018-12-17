@@ -28,6 +28,10 @@ class Timbrado extends Model
         return $this->nro_timbrado;
     }
 
+    public function getFechaInicioVigencia(){
+        return date("d/m/Y", strtotime($this->fecha_inicio_vigencia));
+    }
+
     public function getFechaFinVigencia(){
         return date("d/m/Y", strtotime($this->fecha_fin_vigencia));
     }
