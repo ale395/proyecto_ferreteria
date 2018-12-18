@@ -411,7 +411,7 @@ class OrdenCompraController extends Controller
         /*PROBANDO CON DB*/
         $pedidos = DB::table('orden_compras_cab as o')
             ->join('orden_compras_det as od', 'od.orden_compra_cab_id', '=', 'o.id')
-            ->join('articulos as a', 'od.articulo_id', '=', 'a.id')
+            ->join('articulos as a', 'a.id', '=', 'od.articulo_id')
             ->join('impuestos as i', 'i.id', '=', 'a.impuesto_id')
             ->select('od.articulo_id', 'a.codigo', 'a.descripcion', 'i.porcentaje as porcentaje_iva', 
             DB::raw('ROUND(od.costo_unitario, 2) as costo_unitario'),
@@ -423,9 +423,12 @@ class OrdenCompraController extends Controller
             DB::raw('ROUND(od.total_iva, 2) as monto_iva'), 
             DB::raw('ROUND(od.sub_total, 2) as sub_total'))
             ->whereIn('od.orden_compra_cab_id', $cast_array)
-            ->where('o.estado', "'A'")
+            ->where('o.estado', "A")
             ->get();
         
+            //var_dump( $pedidos);
+            dd( $pedidos);
+
         return $pedidos;
     }
 
