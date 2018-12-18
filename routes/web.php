@@ -151,7 +151,7 @@ Route::middleware(['auth'])->group(function() {
 	//rutas para modelo 'conceptoajuste'
 	Route::resource('conceptos', 'ConceptoAjusteController');
 	Route::get('api/conceptosajuste', 'ConceptoAjusteController@apiConceptosAjuste')->name('api.conceptos');
-	Route::get('api/conceptosAjustes/buscador', 'ConceptoAjusteController@apiConceptoAjustesBuscador')->name('api.conceptosAjustes.buscador');
+	Route::get('api/conceptosAjustes/buscador', 'ConceptoAjusteController@apiConceptoAjusteBuscador')->name('api.conceptosAjustes.buscador');
 
 	//rutas para modelo 'conceptos_caja'
 	Route::resource('conceptocaja', 'ConceptoCajaController');

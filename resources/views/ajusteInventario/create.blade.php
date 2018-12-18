@@ -178,7 +178,7 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
-   
+
 
     $("#btn-add-articulo").attr("disabled", true);
     
