@@ -202,7 +202,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/ordencompra', 'OrdenCompraController@apiOrdenCompra')->name('api.ordencompra');
 	///api/ordencompra/proveedor/
 	Route::get('api/ordencompra/proveedor/{cliente_id}', 'OrdenCompraController@apiOrdenCompraProveedores')->name('api.ordencompra.proveedor');
-	Route::get('api/ordencompra/proveedor/{array_pedidos}', 'OrdenCompraController@apiOrdenCompraDetalles')->name('api.ordencompra.detalles');
+	Route::get('api/ordencompra/proveedor/detalles/{array_pedidos}', 'OrdenCompraController@apiOrdenCompraDetalles')->name('api.ordencompra.detalles');
 
 	//Rutas para compra
 	Route::resource('compra', 'CompraController');

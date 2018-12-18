@@ -638,7 +638,7 @@
             array_pedidos.push(datos[i].id);
         }
 
-        url_tabla = "{{ route('api.ordencompra')}}" + "/proveedor/" + array_pedidos;
+        url_tabla = "{{ route('api.ordencompra')}}" + "/proveedor/detalles/" + array_pedidos;
 
         if (array_pedidos.length > 0) {
             //console.log(array_pedidos);

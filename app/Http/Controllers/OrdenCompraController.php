@@ -410,20 +410,22 @@ class OrdenCompraController extends Controller
 
         /*PROBANDO CON DB*/
         $pedidos = DB::table('orden_compras_cab as o')
-            ->join('orden_compras_det od', 'od.pedido_cab_id', '=', 'o.id')
-            ->join('articulos a ', 'od.articulo_id', '=', 'a.id')
-            ->select('od.articulo_id', 'a.codigo', 'a.descripcion', 'od.porcentaje_iva', 
-            DB::raw('ROUND(o.costo_unitario, 2) as costo_unitario'),
-            DB::raw('ROUND(od.porcentaje_descuento, 2) as porcentaje_descuento'),
+            ->join('orden_compras_det as od', 'od.orden_compra_cab_id', '=', 'o.id')
+            ->join('articulos as a', 'od.articulo_id', '=', 'a.id')
+            ->join('impuestos as i', 'i.id', '=', 'a.impuesto_id')
+            ->select('od.articulo_id', 'a.codigo', 'a.descripcion', 'i.porcentaje as porcentaje_iva', 
+            DB::raw('ROUND(od.costo_unitario, 2) as costo_unitario'),
+            DB::raw('0 as porcentaje_descuento'),
             DB::raw('ROUND(od.cantidad, 2) as cantidad'), 
-            DB::raw('ROUND(od.monto_descuento, 2) as monto_descuento'), 
-            DB::raw('ROUND(od.monto_exenta, 2) as monto_exenta'), 
-            DB::raw('ROUND(od.monto_gravada, 2) as monto_gravada'), 
-            DB::raw('ROUND(od.monto_iva, 2) as monto_iva'), 
+            DB::raw('0 as monto_descuento'), 
+            DB::raw('ROUND(od.total_exenta, 2) as monto_exenta'), 
+            DB::raw('ROUND(od.total_gravada, 2) as monto_gravada'), 
+            DB::raw('ROUND(od.total_iva, 2) as monto_iva'), 
             DB::raw('ROUND(od.sub_total, 2) as sub_total'))
-            ->whereIn('od.pedido_cab_id', $cast_array)
-            ->where('o.estado', 'A')
+            ->whereIn('od.orden_compra_cab_id', $cast_array)
+            ->where('o.estado', "'A'")
             ->get();
+        
         return $pedidos;
     }
 
