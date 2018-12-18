@@ -47,6 +47,7 @@ class AjusteInventarioController extends Controller
        // $sucursales = Sucursal::where('activo',true)->get();  
         $nro_ajuste_inventario = AjusteInventarioCab::max('nro_ajuste');
 
+        $nro_ajsute_inventario = AjusteInventarioCab::max('nro_ajuste');
 
 
         if($nro_ajuste_inventario) {
@@ -210,11 +211,14 @@ class AjusteInventarioController extends Controller
 
             //pasamos los parámetros del request
           //  $ajuste_inventario_cab->empleado_id = $request['empleado_id'];
-            $ajuste_inventario_cab->fecha_emision = $request['fecha_emision']; 
-            $ajuste_inventario_cab->concepto_ajuste_id = $request['concepto_ajuste_id'];       
-            $ajuste_inventario_cab->sucursal_id = $request['sucursal_id'];     
-            $ajuste_inventario_cab->monto_total = $monto_total;
-            $ajuste_inventario_cab->motivo = $request['motivo'];
+              //pasamos los parámetros del request
+             // $ajuste_inventario_cab->setNroAjuste( $request['nro_ajuste']);
+              $ajuste_inventario_cab->setFechaEmision($request['fecha_emision']);   
+              $ajuste_inventario_cab->setConceptoAjusteId($request['concepto_ajuste_id']);   
+              $ajuste_inventario_cab->setSucursalId($request['sucursal_id']);    
+              $ajuste_inventario_cab->setMotivo($request['motivo']); 
+              $ajuste_inventario_cab->setMontototal($monto_total); 
+              $ajuste_inventario_cab->setUsuarioId($usuario->id);
 
             //guardamos los cambios
             $ajuste_inventario_cab->update();
@@ -248,14 +252,12 @@ class AjusteInventarioController extends Controller
 
               
                 $ajuste_inventario_det = new AjusteInventarioDet();
-
-                $ajuste_inventario_det->ajuste_inventario_cab_id = $ajuste_inventario->id; 
-                $ajuste_inventario_det->articulo_id = $tab_articulo_id[$i];
-                $ajuste_inventario_det->existencia = $existencia;
-                $ajuste_inventario_det->cantidad = $cantidad;
-                $ajuste_inventario_det->costo_unitario = $costo_unitario;
-
-                $ajuste_inventario_det->sub_total = $subtotal;
+                $ajuste_inventario_det->setAjusteInventarioCabId( $ajuste_inventario_cab->getId()); 
+                $ajuste_inventario_det->setArticuloId($request['tab_articulo_id'][$i]);            
+                $ajuste_inventario_det->setExistencia(str_replace(',', '.', str_replace('.', '', $request['tab_existencia'][$i])));
+                $ajuste_inventario_det->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                $ajuste_inventario_det->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i])); 
+                $ajuste_inventario_det->setSubTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
 
                 $ajuste_inventario_det->save();
 
@@ -287,7 +289,7 @@ class AjusteInventarioController extends Controller
     public function destroy($id)
     {
         $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
-        $ajuste_inventario_cab->ajustesDetalle()->delete();
+        $ajuste_inventario_cab->AjusteInventarioDetalle()->delete();
         return AjusteInventarioCab::destroy($id);
     }
 

@@ -41,27 +41,25 @@
                     <div class="form-group">
                         <label for="nro_ajuste" class="col-md-1 control-label">Número Ajuste</label>
                         <div class="col-md-2">
-                            <input type="text" id="nro_ajuste" name="nro_ajuste" class="form-control" value="{{old('nro_ajuste', $nro_ajuste)}}">
+                            <input type="text" id="nro_ajuste" name="nro_ajuste" class="form-control" value="{{$ajuste_inventario_cab->getId()}}">
                         </div>
 
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$ajuste_inventario_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'">
                         </div>   
                         <label for="sucursal_id" class="col-md-1 control-label">Sucursal *</label>
                         <div class="col-md-3">
                             <select id="select2-sucursales" name="sucursal_id" class="form-control" style="width: 100%">
-                                <option value="{{$sucursal->getId()}}">{{$sucursal->getNombre()}}</option>
+                                <option value="{{$ajuste_inventario_cab->sucursal->getId()}}" selected>{{$ajuste_inventario_cab->sucursal->getNombre()}}</option>
                             </select>
-                        </div>                
+                        </div>  
                     </div>
                     <label for="concepto_ajuste_id" class="col-md-1 control-label">Concepto de Ajuste *</label>
                           <div class="col-md-5">
                             <select id="select2-conceptosAjustes" name="concepto_ajuste_id" class="form-control" style="width: 100%">
                             <option></option>
-                                @foreach($concepto_ajuste as $id => $concepto_ajuste)
-                                  <option value="{{ $concepto_ajuste->id }}"> {{ $concepto_ajuste->descripcion }}</option>
-                                @endforeach
+                                  <option value="{{$ajuste_inventario_cab->conceptoAjuste->getDescripcion()}}"  selected>{{$ajuste_inventario_cab->conceptoAjuste->getDescripcion()}}</option>
                             </select>    
                         </div>
                     <div class="form-group">
@@ -130,14 +128,14 @@
                                     </tr>
                                 @endfor
                                 @else
-                                @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
+                                @foreach ($ajuste_inventario_cab->ajusteInventarioDetalle as $ajuste_inventario_det)
                                     <tr>
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{$ajuste_inventario_det->articulo->getNombreSelect()}}</td>
                                         <td>{{$ajuste_inventario_det->getExistencia()}}</td>
                                         <td>{{$ajuste_inventario_det->getCantidad()}}</td>
                                         <td>{{$ajuste_inventario_det->getCostoUnitario()}}</td>
-                                        <td>{{$pedido_det->getMontoTotal()}}</td>
+                                        <td>{{$ajuste_inventario_det->getSubTotal()}}</td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -180,14 +178,14 @@
                                     </tr>
                                 @endfor
                                 @else
-                                @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
+                                @foreach ($ajuste_inventario_cab->ajusteInventarioDetalle as $ajuste_inventario_det)
                                     <tr>
                                         <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                         <th><input type="text" name="tab_articulo_id[]" value="{{$ajuste_inventario_det->articulo->getId()}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{$ajuste_inventario_det->articulo->getDescripcion()}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{$ajuste_inventario_det->getCantidad()}}"></th>
                                         <th><input type="text" name="tab_costo_unitario[]" value="{{$ajuste_inventario_det->getCostoUnitario()}}"></th>
-                                        <th><input type="text" name="tab_subtotal[]" value="{{$pedido_det->getMontoTotal()}}"></th>
+                                        <th><input type="text" name="tab_subtotal[]" value="{{$ajuste_inventario_det->getSubTotal()}}"></th>
                                     </tr>
                                 @endforeach
                             @endif
