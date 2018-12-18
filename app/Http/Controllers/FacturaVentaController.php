@@ -16,6 +16,7 @@ use App\ExistenciaArticulo;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
 class FacturaVentaController extends Controller
@@ -244,8 +245,12 @@ class FacturaVentaController extends Controller
         //
     }
 
-    public function impresionFactura(){
-        //
+    public function impresionFactura($factura_id){
+        $factura_cab = FacturaVentaCab::findOrFail($factura_id);
+        $empresa = Empresa::first();
+        $pdf = PDF::loadView('reportesVentas.impresionFactura', compact('factura_cab', 'empresa'));
+        return $pdf->stream('Factura.pdf',array('Attachment'=>1));
+        //return view('reportesVentas.impresionFactura', compact('factura_cab', 'empresa'));
     }
 
     public function apiFacturasCliente($cliente_id){
