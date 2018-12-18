@@ -53,7 +53,7 @@ class OrdenCompraController extends Controller
         $monedas = Moneda::all();
         $cambio = $cotizacion->getValorVenta();
         
-        //$nro_orden = DB::table('orden_compras_cab')->select(DB::raw('coalesce(max(nro_orden),0) + 1 as nro_orden'))->get();
+        //$nro_orden = DB::table('orden_compras_cab')->select(DB::raw('coalesce(nro_orden),0) + 1 as nro_orden'))->get();
         //$nro_orden = DB::table('orden_compras_cab')->orderBy('nro_orden', 'desc')->first();    
 
         $nro_orden_compra = OrdenCompraCab::max('nro_orden');
@@ -409,24 +409,20 @@ class OrdenCompraController extends Controller
         $cast_array = explode(",",($array_pedidos));
 
         /*PROBANDO CON DB*/
-        $pedidos = DB::table('pedidos_ventas_det')
-            ->join('pedidos_ventas_cab', 'pedidos_ventas_det.pedido_cab_id', '=', 'pedidos_ventas_cab.id')
-            ->join('articulos', 'pedidos_ventas_det.articulo_id', '=', 'articulos.id')
-            ->leftJoin('existencia_articulos', 'pedidos_ventas_det.articulo_id', '=', 'existencia_articulos.articulo_id')
-            ->select('pedidos_ventas_det.articulo_id', 'articulos.codigo', 'articulos.descripcion', 'pedidos_ventas_det.porcentaje_iva', 
-            DB::raw('ROUND(AVG(existencia_articulos.cantidad), 2) as cantidad_existencia'),
-            DB::raw('ROUND(MIN(pedidos_ventas_det.precio_unitario), 2) as precio_unitario'),
-            DB::raw('ROUND(MAX(pedidos_ventas_det.porcentaje_descuento), 2) as porcentaje_descuento'),
-            DB::raw('ROUND(SUM(pedidos_ventas_det.cantidad), 2) as cantidad'), 
-            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_descuento), 2) as monto_descuento'), 
-            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_exenta), 2) as monto_exenta'), 
-            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_gravada), 2) as monto_gravada'), 
-            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_iva), 2) as monto_iva'), 
-            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_total), 2) as monto_total'))
-            ->whereIn('pedidos_ventas_det.pedido_cab_id', $cast_array)
-            ->where('pedidos_ventas_cab.estado', 'P')
-            ->where('existencia_articulos.sucursal_id', Auth::user()->empleado->sucursalDefault->getId())
-            ->groupBy('pedidos_ventas_det.articulo_id', 'articulos.codigo', 'articulos.descripcion', 'pedidos_ventas_det.porcentaje_iva', 'existencia_articulos.cantidad')
+        $pedidos = DB::table('orden_compras_cab as o')
+            ->join('orden_compras_det od', 'od.pedido_cab_id', '=', 'o.id')
+            ->join('articulos a ', 'od.articulo_id', '=', 'a.id')
+            ->select('od.articulo_id', 'a.codigo', 'a.descripcion', 'od.porcentaje_iva', 
+            DB::raw('ROUND(o.costo_unitario, 2) as costo_unitario'),
+            DB::raw('ROUND(od.porcentaje_descuento, 2) as porcentaje_descuento'),
+            DB::raw('ROUND(od.cantidad, 2) as cantidad'), 
+            DB::raw('ROUND(od.monto_descuento, 2) as monto_descuento'), 
+            DB::raw('ROUND(od.monto_exenta, 2) as monto_exenta'), 
+            DB::raw('ROUND(od.monto_gravada, 2) as monto_gravada'), 
+            DB::raw('ROUND(od.monto_iva, 2) as monto_iva'), 
+            DB::raw('ROUND(od.sub_total, 2) as sub_total'))
+            ->whereIn('od.pedido_cab_id', $cast_array)
+            ->where('o.estado', 'A')
             ->get();
         return $pedidos;
     }

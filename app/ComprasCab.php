@@ -13,7 +13,8 @@ class ComprasCab extends Model
     protected $fillable = [
         'tipo_factura', 'nro_factura', 'proveedor_id' ,'sucursal_id', 'moneda_id', 
         'valor_cambio', 'fecha_emision', 'monto_total', 'total_exenta', 'total_gravada',
-        'total_iva', 'total_descuento','estado','comentario', 'timbrado', 'usuario_id'
+        'total_iva', 'total_descuento','estado','comentario', 
+        'timbrado', 'usuario_id', 'fecha_vigencia_timbrado'
     ];
 
     public function getId(){
@@ -74,6 +75,15 @@ class ComprasCab extends Model
 
     public function getFechaEmision(){
         return date("d-m-Y", strtotime($this->fecha_emision));
+    }
+
+    //fecha_vigencia_timbrado
+    public function setFechaVigenciaTimbrado($fecha_vigencia_timbrado){
+        $this->fecha_vigencia_timbrado = $fecha_vigencia_timbrado;
+    }
+
+    public function getFechaVigenciaTimbrado(){
+        return date("d-m-Y", strtotime($this->fecha_vigencia_timbrado));
     }
 
     public function setMontoTotal($monto_total){
