@@ -110,6 +110,7 @@ class CompraController extends Controller
             $cabecera->setMonedaId($request['moneda_id']);
             $cabecera->setValorCambio($request['valor_cambio']);
             $cabecera->setFechaEmision($request['fecha_emision']);
+            $cabecera->setFechaVigenciaTimbrado($request['fecha_vigencia_timbrado']);
             $cabecera->setComentario($request['comentario']);
             $cabecera->setMontoTotal($total);
             $cabecera->setTotalExenta($total_exenta);

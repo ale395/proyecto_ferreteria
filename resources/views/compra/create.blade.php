@@ -55,13 +55,13 @@
                                 @endif
                             </div>
                         </div>
-                        <label for="nro_factura" class="col-md-2 control-label">Número</label>
+                        <label for="nro_factura" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
                             <input type="text" id="nro_factura" name="nro_factura" class="form-control text-right" value="{{old('nro_factura')}}" >  
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
+                        <label for="fecha_emision" class="col-md-1 control-label">Fecha Cte.*</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>                        
@@ -70,9 +70,13 @@
                             <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
                         -->
-                        <label for="timbrado" class="col-md-3 control-label">Timbrado</label>
+                        <label for="timbrado" class="col-md-2 control-label">Timbrado</label>
                         <div class="col-md-2">
                             <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('timbrado')}}" >  
+                        </div>
+                        <label for="fecha_vigencia_timbrado" class="col-md-2 control-label">Validez Timbrado *</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_vigencia_timbrado" name="fecha_vigencia_timbrado" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_vigencia_timbrado')}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
                     </div>
                     <div class="form-group">
@@ -277,14 +281,19 @@
                 $('#tabla-pedidos').DataTable().destroy();    
             }
 
+            id_proveedor = $('#select2-proveedores').val();
+
+            url_tabla = "{{ route('api.ordencompra')}}" + "/proveedor/" + id_proveedor;
+            
+            /*"/api/ordencompra/proveedor/"+$('#select2-proveedores').val()*/
             tablePedidos = $('#tabla-pedidos').DataTable({
                 
                 language: { url: '/datatables/translation/spanish' },
                 processing: true,
                 serverSide: true,
-                ajax: {"url": "/api/ordencompra/proveedor/"+$('#select2-proveedores').val()},
+                ajax: {"url": url_tabla },
                 select: {
-                    style: 'multi'
+                    style: 'single'
                 },
                 columns: [
                     {data: 'nro_orden'},
@@ -620,6 +629,84 @@
         $("#tab-hidden tr:eq("+row+")").remove();
     } );
 
+    function cargarPedidos(){
+        var datos = tablePedidos.rows( { selected: true } ).data();
+        //console.log(datos);
+        //var i;
+        var array_pedidos = [];
+        for (i = 0; i < datos.length; i++) {
+            array_pedidos.push(datos[i].id);
+        }
+
+        url_tabla = "{{ route('api.ordencompra')}}" + "/proveedor/detalles/" + array_pedidos;
+
+        if (array_pedidos.length > 0) {
+            //console.log(array_pedidos);
+            $.ajax({
+                type: "GET",
+                url: url_tabla,
+                datatype: "json",
+                success: function(data){
+                    //console.log(data);
+                    if(data.length > 10){
+                        var obj = $.alert({
+                            title: 'Atención',
+                            content: 'Los pedidos seleccionados superan la cantidad de lineas de detalles permitidos en una factura!',
+                            icon: 'fa fa-exclamation-triangle',
+                            type: 'orange',
+                            backgroundDismiss: true,
+                            theme: 'modern',
+                        });
+                        setTimeout(function(){
+                            obj.close();
+                        },3000);
+                    } else{
+                        //document.getElementById("pedidos_id").value = array_pedidos;
+                        for (i = 0; i < data.length; i++) {
+                            //console.log(data[i]);
+                            //INSERTAR EN LAS TABLAS DE DETALLES
+                            var articulo = '('+data[i].codigo+') '+data[i].descripcion;
+                            var costo_unitario = data[i].costo_unitario;
+                            var cantidad = data[i].cantidad;
+                            var monto_descuento = data[i].monto_descuento;
+                            var porcentaje_iva = Number(data[i].porcentaje_iva);
+                            var porcentaje_descuento = Number(data[i].porcentaje_descuento);
+                            var exenta = 0;
+                            var gravada = 0;
+                            var iva = 0;
+                            var subtotal = (costo_unitario *  cantidad) - monto_descuento;
+                            if (porcentaje_iva == 0) {
+                                exenta = subtotal;
+                            } else {
+                                gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
+                                iva = Math.round(gravada*(porcentaje_iva/100));
+                            }
+                            cantidad = $.number(cantidad, 2, ',', '.');
+                            costo_unitario = $.number(costo_unitario, 0, ',', '.');
+                            monto_descuento = $.number(monto_descuento, 0, ',', '.');
+                            var tabla_deta = $("#pedido-detalle").DataTable();
+                            tabla_deta.row.add( [
+                                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+                                articulo,
+                                $.number(data[i].cantidad, 2, ',', '.'),
+                                $.number(data[i].costo_unitario, 0, ',', '.'),
+                                $.number(data[i].monto_descuento, 0, ',', '.'),
+                                $.number(exenta, 0, ',', '.'),
+                                $.number(gravada, 0, ',', '.'),
+                                $.number(iva, 0, ',', '.'),
+                                $.number(subtotal, 0, ',', '.')
+                            ]).draw( false );
+
+                            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + data[i].articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+                            $("#tab-hidden").append(markup);
+
+                            $('#modal-pedido-venta').modal('hide');
+                        }
+                    }
+                }
+            });
+        }
+    }
 
 </script>
 

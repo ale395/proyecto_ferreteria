@@ -59,6 +59,7 @@
                         <thead>
                             <tr>
                                 <th>Artículo</th>
+                                <th>Existencia</th>
                                 <th>Cant.</th>
                                 <th>Precio U.</th>
                                 <th>Total</th>
@@ -68,6 +69,7 @@
                             @foreach ($ajuste_inventario_cab->ajusteInventarioDetalle as $ajuste_inventario_det)
                                 <tr>
                                     <td>{{$ajuste_inventario_det->articulo->getNombreSelect()}}</td>
+                                    <td>{{$ajuste_inventario_det->getExistencia()}}</td>
                                     <td>{{$ajuste_inventario_det->getCantidad()}}</td>
                                     <td>{{$ajuste_inventario_det->getCostoUnitario()}}</td>
                                     <td>{{$ajuste_inventario_det->getSubTotal()}}</td>
@@ -76,9 +78,6 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>

@@ -14,7 +14,7 @@ class AlterTableNotasCreditoCab extends Migration
     public function up()
     {
         Schema::table('nota_credito_ventas_cab', function (Blueprint $table) {
-            $table->char('serie', 7)->nullable();//001-002
+            $table->char('nume_serie', 7)->nullable();//001-002
         });
     }
 
@@ -26,7 +26,7 @@ class AlterTableNotasCreditoCab extends Migration
     public function down()
     {
         Schema::table('nota_credito_ventas_cab', function (Blueprint $table) {
-            $table->dropColumn('serie');
+            $table->dropColumn('nume_serie');
         });
     }
 }

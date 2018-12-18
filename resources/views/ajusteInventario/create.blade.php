@@ -88,10 +88,10 @@
 
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                              <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                              <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
@@ -272,6 +272,7 @@
             var costo_unitario = $("#costo_unitario").val();
             var subtotal = $("#subtotal").val();
             /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+            existencia = $.number(existencia,decimales, ',', '.');
             costo_unitario = $.number(costo_unitario,decimales, ',', '.');
             cantidad = $.number(cantidad,decimales, ',', '.');
             subtotal = $.number(subtotal,decimales, ',', '.');  

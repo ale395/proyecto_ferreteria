@@ -84,12 +84,20 @@ class FacturaVentaDet extends Model
         return number_format($this->monto_iva, 0, ',', '.');
     }
 
+    public function getMontoIvaNumber(){
+        return $this->monto_iva;
+    }
+
     public function setMontoTotal($monto_total){
         $this->monto_total = $monto_total;
     }
 
     public function getMontoTotal(){
         return number_format($this->monto_total, 0, ',', '.');
+    }
+
+    public function getMontoTotalNumber(){
+        return $this->monto_total;
     }
 
     public function articulo()

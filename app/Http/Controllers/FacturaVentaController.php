@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use NumeroALetras;
 use App\Serie;
 use App\Empresa;
 use App\Cliente;
@@ -16,6 +17,7 @@ use App\ExistenciaArticulo;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
 class FacturaVentaController extends Controller
@@ -244,8 +246,30 @@ class FacturaVentaController extends Controller
         //
     }
 
-    public function impresionFactura(){
-        //
+    public function impresionFactura($factura_id){
+        $factura_cab = FacturaVentaCab::findOrFail($factura_id);
+        $total_grav_5 = 0;
+        $total_grav_10 = 0;
+        $total_iva_5 = 0;
+        $total_iva_10 = 0;
+        foreach ($factura_cab->facturaDetalle as $detalle) {
+            if ($detalle->getPorcentajeIva() == 5) {
+                $total_grav_5 = $total_grav_5 + $detalle->getMontoTotalNumber();
+                $total_iva_5 = $total_iva_5 + $detalle->getMontoIvaNumber();
+            } elseif ($detalle->getPorcentajeIva() == 10) {
+                $total_grav_10 = $total_grav_10 + $detalle->getMontoTotalNumber();
+                $total_iva_10 = $total_iva_10 + $detalle->getMontoIvaNumber();
+            }
+        }
+        $total_grav_10 = number_format($total_grav_10, 0, ',', '.');
+        $total_grav_5 = number_format($total_grav_5, 0, ',', '.');
+        $total_iva = number_format($total_iva_5+$total_iva_10, 0, ',', '.');
+        $total_iva_5 = number_format($total_iva_5, 0, ',', '.');
+        $total_iva_10 = number_format($total_iva_10, 0, ',', '.');
+        $total_en_letras = NumeroALetras::convertir($factura_cab->getMontoTotalNumber(), 'Guaranies');
+        $empresa = Empresa::first();
+        $pdf = PDF::loadView('reportesVentas.impresionFactura', compact('factura_cab', 'empresa', 'total_grav_5', 'total_grav_10', 'total_en_letras', 'total_iva_5', 'total_iva_10', 'total_iva'));
+        return $pdf->stream('Factura.pdf',array('Attachment'=>1));
     }
 
     public function apiFacturasCliente($cliente_id){

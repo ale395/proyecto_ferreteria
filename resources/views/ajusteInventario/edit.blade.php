@@ -4,14 +4,14 @@
 
 <div class="row">
     <div class="col-md-12">
-    <form method="post" action="{{action('AjusteInventarioController@update', $ajuste_inventario_cab->getId())}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('PedidoVentaController@update', $pedido_cab->getId())}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Ajuste de inventario
+                    <h4>Editar Pedido
                     <div class="pull-right btn-group">
                         <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                        <a data-toggle="tooltip" data-placement="top" title="Cancelar edicion"  href="{{route('ajustesInventarios.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ajustesInventarios.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar edición" href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
@@ -37,81 +37,111 @@
                     </div>
                     <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
-                    <input type="hidden" id="id" name="id" name="id" value="{{$ajuste_inventario_cab->getId()}}">
+                    <input type="hidden" id="id" name="id" value="{{$pedido_cab->getId()}}">
                     <div class="form-group">
-                        <label for="nro_ajuste" class="col-md-1 control-label">Número Ajuste</label>
+                        <label for="nro_pedido" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="text" id="nro_ajuste" name="nro_ajuste" class="form-control" value="{{$ajuste_inventario_cab->getId()}}">
+                            <input type="number" id="nro_pedido" name="nro_pedido" class="form-control" readonly="readonly" value="{{$pedido_cab->getNroPedido()}}">
                         </div>
-
-                        <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
+                        <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$ajuste_inventario_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'">
-                        </div>   
-                        <label for="sucursal_id" class="col-md-1 control-label">Sucursal *</label>
-                        <div class="col-md-3">
-                            <select id="select2-sucursales" name="sucursal_id" class="form-control" style="width: 100%">
-                                <option value="{{$ajuste_inventario_cab->sucursal->getId()}}" selected>{{$ajuste_inventario_cab->sucursal->getNombre()}}</option>
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $pedido_cab->getFechaEmision())}}" data-inputmask="'mask': '99/99/9999'">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
+                        <div class="col-md-5">
+                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%">
+                                <option value="{{$pedido_cab->cliente->getId()}}">{{$pedido_cab->cliente->getNombreIndex()}}</option>
                             </select>
-                        </div>  
-                    </div>
-                    <label for="concepto_ajuste_id" class="col-md-1 control-label">Concepto de Ajuste *</label>
-                          <div class="col-md-5">
-                            <select id="select2-conceptosAjustes" name="concepto_ajuste_id" class="form-control" style="width: 100%">
-                            <option></option>
-                                  <option value="{{$ajuste_inventario_cab->conceptoAjuste->getDescripcion()}}"  selected>{{$ajuste_inventario_cab->conceptoAjuste->getDescripcion()}}</option>
-                            </select>    
                         </div>
-                    <div class="form-group">
-                       
-                       <label for="motivo" class="col-md-1 control-label">Observacion</label>
-                       <div class="col-md-4">
-                           <textarea class="form-control" rows="2" id="motivo" name="motivo"></textarea>
-                       </div>
-                   </div>
-                    <div class="form-group">
-                         <label class="col-md-1 control-label">Registrado por: </label>
-                         <div class="col-md-5">
-                            <h4>{{ Auth::user()->name }}</h4>
-                         </div>
+                        <div class="col-md-1">
+                            <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
+                        </div>
+                        <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
+                        <div class="col-md-3">
+                            <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
+                                <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%" disabled>
+                                    <option value="{{$pedido_cab->listaPrecio->getId()}}" selected>{{$pedido_cab->listaPrecio->getNombre()}}</option>
+                                </select>
+                            </a>
+                        </div>
                     </div>
                     <div class="form-group">
-                        
+                        <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
+                        <div class="col-md-3">
+                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%" disabled>
+                                <option value="{{$pedido_cab->moneda->getId()}}" selected>{{$pedido_cab->moneda->getDescripcion()}}</option>
+                            </select>
+                        </div>
+                        <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
+                        <div class="col-md-2">
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $pedido_cab->getValorCambio())}}" readonly>
+                        </div>
+                        <label for="comentario" class="col-md-1 control-label">Comentario</label>
+                        <div class="col-md-4">
+                            <textarea class="form-control" rows="2" id="comentario" name="comentario">{{old('comentario', $pedido_cab->getComentario())}}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado" class="col-md-1 control-label">Estado*</label>
+                        <div class="col-md-3">
+                            <select id="select2-estados" name="estado" class="form-control" style="width: 100%">
+                                @if ($pedido_cab->getEstado() == 'P')
+                                    <option value="P" selected>Pendiente</option>
+                                    <option value="C">Cancelado</option>
+                                    <option value="V">Vencido</option>
+                                @elseif ($pedido_cab->getEstado() == 'C')
+                                    <option value="P">Pendiente</option>
+                                    <option value="C" selected>Cancelado</option>
+                                    <option value="V">Vencido</option>
+                                @elseif ($pedido_cab->getEstado() == 'V')
+                                    <option value="P">Pendiente</option>
+                                    <option value="C">Cancelado</option>
+                                    <option value="V" selected>Vencido</option>
+                                @endif
+                                <option value="F" disabled>Facturado</option>
+                            </select>
+                        </div>
                     </div>
                     <br>
                     <div class="form-group">
                         <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
-                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%" >
+                            <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
 
                             </select>
                         </div>
-                        <div class="col-md-2">
-                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia">
+                        <div class="col-md-1">
+                            <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
                         <div class="col-md-2">
-                             <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
+                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()" readonly></a>
                         </div>
                         <div class="col-md-1">
-                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a data-toggle="tooltip" data-placement="top" title="% Descuento">
+                            <input type="number" id="porcentaje_descuento" name="porcentaje_descuento" class="form-control" placeholder="% Desc." min="0" max="100" onchange="calcularSubtotal()"></a>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="Subtotal">
+                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
+                        </div>
+                        <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
+                        <div class="col-md-1">
+                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
-                    <span class="help-block with-errors"></span>
-
                     <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
                         <thead>
                             <tr>
                                 <th width="5%">Acción</th>
                                 <th>Artículo</th>
-                                <th width="6%">Existencia</th>
                                 <th width="6%">Cant.</th>
-                                <th width="9%">Costo U.</th>
+                                <th width="9%">Precio U.</th>
+                                <th width="9%">Descuento</th>
+                                <th width="9%">Exenta</th>
+                                <th width="9%">Gravada</th>
+                                <th width="6%">IVA</th>
                                 <th width="9%">Total</th>
                             </tr>
                         </thead>
@@ -119,29 +149,38 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
-                                        <td>{{old('tab_existencia.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
-                                        <td>{{old('tab_costo_unitario.'.$i)}}</td>
+                                        <td>{{old('tab_precio_unitario.'.$i)}}</td>
+                                        <td>{{old('tab_monto_descuento.'.$i)}}</td>
+                                        <td>{{old('tab_exenta.'.$i)}}</td>
+                                        <td>{{old('tab_gravada.'.$i)}}</td>
+                                        <td>{{old('tab_iva.'.$i)}}</td>
                                         <td>{{old('tab_subtotal.'.$i)}}</td>
                                     </tr>
                                 @endfor
-                                @else
-                                @foreach ($ajuste_inventario_cab->ajusteInventarioDetalle as $ajuste_inventario_det)
+                            @else
+                                @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
                                     <tr>
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
-                                        <td>{{$ajuste_inventario_det->articulo->getNombreSelect()}}</td>
-                                        <td>{{$ajuste_inventario_det->getExistencia()}}</td>
-                                        <td>{{$ajuste_inventario_det->getCantidad()}}</td>
-                                        <td>{{$ajuste_inventario_det->getCostoUnitario()}}</td>
-                                        <td>{{$ajuste_inventario_det->getSubTotal()}}</td>
+                                        <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
+                                        <td>{{$pedido_det->getCantidadNumber()}}</td>
+                                        <td>{{$pedido_det->getPrecioUnitario()}}</td>
+                                        <td>{{$pedido_det->getMontoDescuento()}}</td>
+                                        <td>{{$pedido_det->getMontoExenta()}}</td>
+                                        <td>{{$pedido_det->getMontoGravada()}}</td>
+                                        <td>{{$pedido_det->getMontoIva()}}</td>
+                                        <td>{{$pedido_det->getMontoTotal()}}</td>
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
                         <tfoot>
                             <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -158,9 +197,14 @@
                                 <th width="5%">Acción</th>
                                 <th>Artículo ID</th>
                                 <th>Nombre Artículo</th>
-                                <th width="6%">Exist.</th>
                                 <th width="6%">Cant.</th>
-                                <th width="9%">Costo U.</th>
+                                <th width="9%">Precio U.</th>
+                                <th width="9%">% Descuento</th>
+                                <th width="9%">Monto Descuento</th>
+                                <th width="9%">% IVA</th>
+                                <th width="9%">Exenta</th>
+                                <th width="9%">Gravada</th>
+                                <th width="6%">IVA</th>
                                 <th width="9%">Total</th>
                             </tr>
                         </thead>
@@ -168,24 +212,35 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                         <th><input type="text" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_existencia[]" value="{{old('tab_existencia.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_precio_unitario[]" value="{{old('tab_precio_unitario.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></th>
                                         <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
                                     </tr>
                                 @endfor
-                                @else
-                                @foreach ($ajuste_inventario_cab->ajusteInventarioDetalle as $ajuste_inventario_det)
+                            @else
+                                @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
                                     <tr>
                                         <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
-                                        <th><input type="text" name="tab_articulo_id[]" value="{{$ajuste_inventario_det->articulo->getId()}}"></th>
-                                        <th><input type="text" name="tab_articulo_nombre[]" value="{{$ajuste_inventario_det->articulo->getDescripcion()}}"></th>
-                                        <th><input type="text" name="tab_cantidad[]" value="{{$ajuste_inventario_det->getCantidad()}}"></th>
-                                        <th><input type="text" name="tab_costo_unitario[]" value="{{$ajuste_inventario_det->getCostoUnitario()}}"></th>
-                                        <th><input type="text" name="tab_subtotal[]" value="{{$ajuste_inventario_det->getSubTotal()}}"></th>
+                                        <th><input type="text" name="tab_articulo_id[]" value="{{$pedido_det->articulo->getId()}}"></th>
+                                        <th><input type="text" name="tab_articulo_nombre[]" value="{{$pedido_det->articulo->getDescripcion()}}"></th>
+                                        <th><input type="text" name="tab_cantidad[]" value="{{$pedido_det->getCantidad()}}"></th>
+                                        <th><input type="text" name="tab_precio_unitario[]" value="{{$pedido_det->getPrecioUnitario()}}"></th>
+                                        <th><input type="text" name="tab_porcentaje_descuento[]" value="{{$pedido_det->getPorcentajeDescuento()}}"></th>
+                                        <th><input type="text" name="tab_monto_descuento[]" value="{{$pedido_det->getMontoDescuento()}}"></th>
+                                        <th><input type="text" name="tab_porcentaje_iva[]" value="{{$pedido_det->getPorcentajeIva()}}"></th>
+                                        <th><input type="text" name="tab_exenta[]" value="{{$pedido_det->getMontoExenta()}}"></th>
+                                        <th><input type="text" name="tab_gravada[]" value="{{$pedido_det->getMontoGravada()}}"></th>
+                                        <th><input type="text" name="tab_iva[]" value="{{$pedido_det->getMontoIva()}}"></th>
+                                        <th><input type="text" name="tab_subtotal[]" value="{{$pedido_det->getMontoTotal()}}"></th>
                                     </tr>
                                 @endforeach
                             @endif

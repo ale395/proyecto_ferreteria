@@ -54,13 +54,13 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label for="articulo_id" class="col-md-2 control-label">Articulo</label>
                         <div class="col-md-7">
                             <select id="select2-articulos" name="articulo_id[]" class="form-control" style="width: 100%">
                             </select>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="modal-footer">
                     <button type="submit" formtarget="_blank" class="btn btn-primary btn-save">Ver Reporte <i class="fa fa-file-text-o" aria-hidden="true"></i></button>
