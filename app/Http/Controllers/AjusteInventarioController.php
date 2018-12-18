@@ -197,12 +197,7 @@ class AjusteInventarioController extends Controller
 
             //instanciamos la clase
             $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
-            $monto_total = 0;
-            $sucursal = Auth::user()->empleado->sucursales->first();
 
-            if (!empty('sucursal')) {
-                $request['sucursal_id'] = $sucursal->getId();
-            }
          
             for ($i=0; $i < collect($request['tab_subtotal'])->count(); $i++){
 
@@ -304,7 +299,7 @@ class AjusteInventarioController extends Controller
     
     public function apiAjustesInventarios() {
         $permiso_editar = Auth::user()->can('ajustesInventarios.edit');
-      //  $permiso_eliminar = Auth::user()->can('ajusteInventario.destroy');
+        $permiso_eliminar = Auth::user()->can('ajusteInventario.destroy');
         $permiso_ver = Auth::user()->can('ajustesInventarios.show');
        $ajuste_inventario = AjusteInventarioCab::all();
        //dd($permiso_ver);
@@ -327,7 +322,9 @@ class AjusteInventarioController extends Controller
                         $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $ajuste_inventario->id .')" class="btn btn-primary btn-sm" title="Ver Factura"><i class="fa fa-eye"></i></a> ';
                         $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                        return $puede_ver;
+                        $puede_borrar = '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $ajuste_inventario->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
+
+                        return $puede_ver.$puede_editar.$puede_borrar;
 
                                         })->make(true);              
 
@@ -350,7 +347,7 @@ class AjusteInventarioController extends Controller
                         $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Factura" disabled><i class="fa fa-eye"></i></a> ';
                         $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                        return $puede_ver;
+                        return $puede_ver.$puede_editar;
                     })->make(true);
                 }
         } else {
@@ -371,8 +368,7 @@ class AjusteInventarioController extends Controller
                 ->addColumn('action', function($ajuste_inventario){
                     $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $ajuste_inventario->id .')" class="btn btn-primary btn-sm" title="Ver Factura"><i class="fa fa-eye"></i></a> ';
                     $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                    return $puede_ver/*.$no_puede_editar*/;
-                                })->make(true);
+                    return $puede_ver.$puede_editar;                                })->make(true);
             } else{
                 return Datatables::of($ajuste_inventario)
                 ->addColumn('fecha', function($ajuste_inventario){
@@ -390,7 +386,7 @@ class AjusteInventarioController extends Controller
                 ->addColumn('action', function($ajuste_inventario){
                     $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Factura" disabled><i class="fa fa-eye"></i></a> ';
                     $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                    return $no_puede_ver/*.$no_puede_editar*/;
+                    return $no_puede_ver.$puede_editar;
                                 })->make(true);
             }
         }

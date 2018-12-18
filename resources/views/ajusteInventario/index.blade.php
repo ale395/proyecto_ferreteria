@@ -24,7 +24,7 @@
                                 <th>Concepto Ajuste</th>
  
                                 <th>Total</th>
-                                <th width="50">Acciones</th>
+                                <th width="150">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
