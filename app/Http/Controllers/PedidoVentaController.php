@@ -9,6 +9,7 @@ use App\PedidoVentaDet;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
 class PedidoVentaController extends Controller
@@ -76,11 +77,6 @@ class PedidoVentaController extends Controller
         $request['valor_cambio'] = str_replace('.', '', $request['valor_cambio']);
 
         $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
-        /*if ($validator->fails())
-        {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }*/
-        //foreach ($request['tab_subtotal'] as $subtotal) {
 
         for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
             $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
@@ -231,6 +227,23 @@ class PedidoVentaController extends Controller
         return PedidoVentaCab::destroy($id);
     }
 
+    public function impresionPedido($pedido_id){
+        $cabecera = PedidoVentaCab::findOrFail($pedido_id);
+        $total_exenta = 0;
+        $total_gravada = 0;
+        $total_iva = 0;
+        foreach ($cabecera->pedidosDetalle as $detalle) {
+            $total_exenta = $total_exenta + $detalle->getMontoExentaNumber();
+            $total_gravada = $total_gravada + $detalle->getMontoGravadaNumber();
+            $total_iva = $total_iva + $detalle->getMontoIvaNumber();
+        }
+        $total_exenta = number_format($total_exenta, 0, ',', '.');
+        $total_gravada = number_format($total_gravada, 0, ',', '.');
+        $total_iva = number_format($total_iva, 0, ',', '.');
+        $pdf = PDF::loadView('reportesVentas.impresionPedido', compact('cabecera', 'total_exenta', 'total_gravada', 'total_iva'));
+        return $pdf->stream('PedidoVenta.pdf', array('Attachment'=>0));
+    }
+
     public function apiPedidosCliente($cliente_id){
         if (empty($cliente_id)) {
             return [];
@@ -259,28 +272,26 @@ class PedidoVentaController extends Controller
 
     public function apiPedidosDetalles($array_pedidos){
         $cast_array = explode(",",($array_pedidos));
-        /*$array_pedidos_agrupados = [];
-        $detalles = PedidoVentaDet::whereIn('pedido_cab_id',$cast_array)->get();
-        $group_by = $detalles->groupBy('articulo_id');
-        dd(array($group_by));
-        foreach ($group_by as $registro) {
-            $pedido_agrupado = new PedidoVentaDet;
-            $pedido_agrupado->setArticuloId($registro[0]);
-            array_push($array_pedidos_agrupados, $pedido_agrupado);
-        }
-        return $array_pedidos_agrupados;*/
 
         /*PROBANDO CON DB*/
         $pedidos = DB::table('pedidos_ventas_det')
-            ->select('articulo_id', 'precio_unitario', 'porcentaje_descuento', 'porcentaje_iva', 
-            DB::raw('SUM(cantidad) as cantidad'), 
-            DB::raw('SUM(monto_descuento) as monto_descuento'),
-            DB::raw('AVG(monto_exenta) as monto_exenta'),
-            DB::raw('AVG(monto_gravada) as monto_gravada'),
-            DB::raw('AVG(monto_iva) as monto_iva'),
-            DB::raw('AVG(monto_total) as monto_total'))
-            ->whereIn('pedido_cab_id', $cast_array)
-            ->groupBy('articulo_id', 'precio_unitario', 'porcentaje_descuento', 'porcentaje_iva')
+            ->join('pedidos_ventas_cab', 'pedidos_ventas_det.pedido_cab_id', '=', 'pedidos_ventas_cab.id')
+            ->join('articulos', 'pedidos_ventas_det.articulo_id', '=', 'articulos.id')
+            ->leftJoin('existencia_articulos', 'pedidos_ventas_det.articulo_id', '=', 'existencia_articulos.articulo_id')
+            ->select('pedidos_ventas_det.articulo_id', 'articulos.codigo', 'articulos.descripcion', 'pedidos_ventas_det.porcentaje_iva', 
+            DB::raw('ROUND(AVG(existencia_articulos.cantidad), 2) as cantidad_existencia'),
+            DB::raw('ROUND(MIN(pedidos_ventas_det.precio_unitario), 2) as precio_unitario'),
+            DB::raw('ROUND(MAX(pedidos_ventas_det.porcentaje_descuento), 2) as porcentaje_descuento'),
+            DB::raw('ROUND(SUM(pedidos_ventas_det.cantidad), 2) as cantidad'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_descuento), 2) as monto_descuento'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_exenta), 2) as monto_exenta'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_gravada), 2) as monto_gravada'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_iva), 2) as monto_iva'), 
+            DB::raw('ROUND(SUM(pedidos_ventas_det.monto_total), 2) as monto_total'))
+            ->whereIn('pedidos_ventas_det.pedido_cab_id', $cast_array)
+            ->where('pedidos_ventas_cab.estado', 'P')
+            ->where('existencia_articulos.sucursal_id', Auth::user()->empleado->sucursalDefault->getId())
+            ->groupBy('pedidos_ventas_det.articulo_id', 'articulos.codigo', 'articulos.descripcion', 'pedidos_ventas_det.porcentaje_iva', 'existencia_articulos.cantidad')
             ->get();
         return $pedidos;
     }

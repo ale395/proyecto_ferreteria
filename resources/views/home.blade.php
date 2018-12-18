@@ -65,7 +65,11 @@
                                       </li>
                                 @endcan
                                 @can('compra.index')
-                                    <li class="sub_menu"><a href="{{route('compra.index')}}">Compra</a>
+                                    <li class="sub_menu"><a href="{{route('compra.index')}}">Facturas de Proveedores</a>
+                                    </li>
+                                @endcan
+                                @can('notacreditocompras.index')
+                                    <li class="sub_menu"><a href="{{route('notacreditocompra.index')}}">Devolución de Compra</a>
                                     </li>
                                 @endcan
                                 <!-- Pablo - comento para usar en otras cosas, y porque esto ya está en Parámetros generales
@@ -98,12 +102,20 @@
                                   <li class="sub_menu"><a href="{{route('clasificacionclientes.index')}}">Tipos de Clientes</a>
                                   </li>
                                 @endcan
+                                @if(Auth::user()->empleado->esCajero())
+                                  @can('gestionCajas.habilitarCaja')
+                                    <li class="sub_menu"><a href="{{route('gestionCajas.habilitarCaja')}}">Habilitación de Caja</a></li>
+                                  @endcan
+                                  @can('gestionCajas.cerrarCaja')
+                                    <li class="sub_menu"><a href="{{route('gestionCajas.cerrarCaja')}}">Cierre de Caja</a></li>
+                                  @endcan
+                                @endif
                             </ul>
                           </li>
                           <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
                             <ul class="nav child_menu">
-                              <li class="sub_menu"><a href="#">Reporte 1</a>
-                              </li>
+                              <li class="sub_menu"><a href="{{route('cuentasporcobrar.extractocliente')}}">Extracto de Cliente</a>
+                                  </li>
                             </ul>
                           </li>
                     </ul>
@@ -179,6 +191,9 @@
                             @can('conceptocaja.index')
                               <li class="sub_menu"><a href="{{route('conceptocaja.index')}}">Conceptos de Caja</a>
                               </li>
+                            @endcan
+                            @can('motivoanulacion.index')
+                              <li class="sub_menu"><a href="{{route('motivoAnulacion.index')}}">Motivos de Anulaciones</a></li>
                             @endcan
                           </ul>
                         </li>
@@ -259,15 +274,15 @@
                                       <li class="sub_menu"><a href="{{route('conceptos.index')}}">Conceptos de Ajustes</a>
                                       </li>
                                     @endcan
-                                    @can('ajustesInventarios.create')
-                                        <li class="sub_menu"><a href="{{route('ajustesInventarios.create')}}">Ajustes de Inventario</a>
+                                    @can('ajustesInventarios.index')
+                                        <li class="sub_menu"><a href="{{route('ajustesInventarios.index')}}">Ajustes de Inventario</a>
                                         </li>
                                     @endcan
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+                                  <li class="sub_menu"><a href="{{route('stock.articuloexistencia')}}">Existencia de articulos</a>
                                   </li>
                                 </ul>
                               </li>
@@ -293,12 +308,19 @@
                                         <li class="sub_menu"><a href="{{route('facturacionVentas.index')}}">Facturación</a>
                                         </li>
                                       @endcan
+                                      @can('notaCreditoVentas.index')
+                                        <li class="sub_menu"><a href="{{route('notaCreditoVentas.index')}}">Nota de Crédito</a>
+                                        </li>
+                                      @endcan
                                     @endif
+                                    @can('anulacioncomprobantes.index')
+                                        <li class="sub_menu"><a href="{{route('anulacionComprobantes.index')}}">Anulación de Comprobantes</a></li>
+                                    @endcan
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                  <li class="sub_menu"><a href="#">Reporte 1</a>
+                                  <li class="sub_menu"><a href="{{route('reporte.ver.ventas')}}">Reporte de Ventas</a>
                                   </li>
                                 </ul>
                               </li>

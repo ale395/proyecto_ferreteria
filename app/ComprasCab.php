@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class ComprasCab extends Model
 {
-    CONST MAX_LINEAS_DETALLE = 3;
+    CONST MAX_LINEAS_DETALLE = 25;
 
     protected $table = 'compras_cab';
 
     protected $fillable = [
         'tipo_factura', 'nro_factura', 'proveedor_id' ,'sucursal_id', 'moneda_id', 
         'valor_cambio', 'fecha_emision', 'monto_total', 'total_exenta', 'total_gravada',
-        'total_iva', 'total_descuento','estado','comentario', 'timbrado', 'usuario_id'
+        'total_iva', 'total_descuento','estado','comentario', 
+        'timbrado', 'usuario_id', 'fecha_vigencia_timbrado'
     ];
 
     public function getId(){
@@ -32,6 +33,10 @@ class ComprasCab extends Model
         }
     }
 
+    public function setUsuarioId($usuario_id){
+        $this->usuario_id = $usuario_id;
+    }
+
     public function setTipoFactura($tipo_factura){
     	$this->tipo_factura = $tipo_factura;
     }
@@ -40,10 +45,10 @@ class ComprasCab extends Model
     	return $this->nro_factura;
     }
 
-    public function getNroFacturaIndex(){
-        $serie = "";
-        return $serie.' '.str_pad($this->nro_factura, 7, "0", STR_PAD_LEFT);
+    public function setNroFactura($nro_factura){
+    	$this->nro_factura = $nro_factura;
     }
+
     public function setProveedorId($proveedor_id){
         $this->proveedor_id = $proveedor_id;
     }
@@ -70,6 +75,15 @@ class ComprasCab extends Model
 
     public function getFechaEmision(){
         return date("d-m-Y", strtotime($this->fecha_emision));
+    }
+
+    //fecha_vigencia_timbrado
+    public function setFechaVigenciaTimbrado($fecha_vigencia_timbrado){
+        $this->fecha_vigencia_timbrado = $fecha_vigencia_timbrado;
+    }
+
+    public function getFechaVigenciaTimbrado(){
+        return date("d-m-Y", strtotime($this->fecha_vigencia_timbrado));
     }
 
     public function setMontoTotal($monto_total){
@@ -125,6 +139,36 @@ class ComprasCab extends Model
         $this->usuario_id = $usuario_id;
     }
 
+    public function getEstado(){
+        return $this->estado;
+    }
+
+    public function setEstado($estado){
+        $this->estado = $esatdo;
+    }
+
+    public function getEstadoNombre(){
+        if ($this->estado == 'P') {
+            return 'Pendiente';
+        } elseif ($this->estado == 'C') {
+            return 'Cobrada';
+        } elseif ($this->estado == 'A') {
+            return 'Anulada';
+        }
+    }
+
+    public function getMontoSaldo(){
+        $cuenta_proveedor = CuentaProveedor::where('tipo_comprobante', 'F')
+            ->where('comprobante_id', $this->id)->first();
+        return $cuenta_proveedor->getMontoSaldo();
+    }
+
+    public function getMontoSaldoFormat(){
+        $cuenta_proveedor = CuentaProveedor::where('tipo_comprobante', 'F')
+            ->where('comprobante_id', $this->id)->first();
+        return number_format($cuenta_proveedor->getMontoSaldo(), 0, ',', '.');
+    }
+
     public function proveedor()
     {
         return $this->belongsTo('App\Proveedor');
@@ -147,5 +191,9 @@ class ComprasCab extends Model
 
     public function comprasdetalle(){
         return $this->hasMany('App\ComprasDet', 'compra_cab_id');
+    }
+
+    public function ordencompra(){
+        return $this->hasOne('App\OrdenCompraCab', 'orden_compra_id');
     }
 }

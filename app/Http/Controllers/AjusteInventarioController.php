@@ -5,8 +5,8 @@ use Validator;
 use App\DatosDefault;
 use App\AjusteInventarioCab;
 use App\AjusteInventarioDet;
-use Illuminate\Http\Request;
-use Yajra\DataTables\Datatables;
+use App\ExistenciaArticulo;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
@@ -17,6 +17,8 @@ use App\ConceptoAjuste;
 use App\Sucursal;
 use DB;
 use Response;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Datatables;
 use Illuminate\Support\Collections;
 
 class AjusteInventarioController extends Controller
@@ -40,13 +42,12 @@ class AjusteInventarioController extends Controller
     {
         $fecha_actual = date("d/m/Y");
         $datos_default = DatosDefault::get()->first();
-        $conceptos_ajustes =   ConceptoAjuste::all();
-        
-
-        $sucursales = Sucursal::where('activo',true)->get();
-          
+        $concepto_ajuste =   ConceptoAjuste::all();
+        $sucursal = Auth::user()->empleado->sucursales->first();
+       // $sucursales = Sucursal::where('activo',true)->get();  
         $nro_ajuste_inventario = AjusteInventarioCab::max('nro_ajuste');
 
+        $nro_ajsute_inventario = AjusteInventarioCab::max('nro_ajuste');
 
 
         if($nro_ajuste_inventario) {
@@ -56,7 +57,7 @@ class AjusteInventarioController extends Controller
         }
         
 
-        return view('ajusteInventario.create', compact('fecha_actual', 'nro_ajuste','conceptos_ajustes','sucursales'));
+        return view('ajusteInventario.create', compact('fecha_actual', 'nro_ajuste','concepto_ajuste','sucursal'));
     }
 
     /**
@@ -72,69 +73,71 @@ class AjusteInventarioController extends Controller
 
             //instanciamos la clase
             $ajuste_inventario_cab = new AjusteInventarioCab();
-            $cantidad_total = 0;
-            $sucursal = Auth::user()->empleado->sucursales->first();
-            
-            $nro_ajuste_inventario_cab = AjusteInventarioCab::max('nro_ajuste');
-            if (!empty('sucursal')) {
-                $request['sucursal_id'] = $sucursal->getId();
-            }
+            $monto_total = 0;
+           // $sucursal = Auth::user()->empleado->sucursales->first();
+            $usuario = Auth::user();
+          //  if (!empty('sucursal')) {
+            //    $request['sucursal_id'] = $sucursal->getId();
+           // }
 
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+                $monto_total = $monto_total + str_replace('.', '', $request['tab_subtotal'][$i]);
 
-                $subtotal =  $request['tab_subtotal'][$i];
-                $subtotal = str_replace('.', '', $subtotal);
-                $subtotal = str_replace(',', '.', $subtotal);
-                
-                $cantidad_total = $cantidad_total + $subtotal;
             }
 
             //pasamos los parámetros del request
-            $ajuste_inventario_cab->nro_ajuste = $request['nro_ajuste'];
-            $ajuste_inventario_cab->empleado_id = $request['empleado_id'];
-            $ajuste_inventario_cab->fecha_emision = $request['fecha_emision'];   
-            $ajuste_inventario_cab->concepto_ajuste_id = $request['concepto_ajuste_id'];   
-            $ajuste_inventario_cab->sucursal_id = $request['sucursal_id'];    
-            $ajuste_inventario_cab->motivo=$request['motivo']; 
-            $ajuste_inventario_cab->cantidad_total = $cantidad_total;
-
+            $ajuste_inventario_cab->setNroAjuste( $request['nro_ajuste']);
+            $ajuste_inventario_cab->setFechaEmision($request['fecha_emision']);   
+            $ajuste_inventario_cab->setConceptoAjusteId($request['concepto_ajuste_id']);   
+            $ajuste_inventario_cab->setSucursalId($request['sucursal_id']);    
+            $ajuste_inventario_cab->setMotivo($request['motivo']); 
+            $ajuste_inventario_cab->setMontototal($monto_total); 
+            $ajuste_inventario_cab->setUsuarioId($usuario->id);
             //guardamos
             $ajuste_inventario_cab->save();
 
-            //desde aca va el detalle-----------------------------------         
-            //lo que trae directamente del request
-            $tab_articulo_id = $request['tab_articulo_id'];
-            $tab_cantidad = $request['tab_cantidad'];      
-            $tab_subtotal = $request['tab_subtotal'];
-           
+            //desde aca va el detalle-----------------------------------                    
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
-
-                $cantidad = $tab_cantidad[$i];
-                $cantidad = str_replace('.', '', $cantidad);
-                //$cantidad = str_replace(',', '.', $cantidad);
-
-
-                $subtotal = $tab_subtotal[$i];
-                $subtotal = str_replace('.', '', $subtotal);
-                //$subtotal = str_replace(',', '.', $subtotal);
-
-                //datos del articulo.
-                $articulo_aux = Articulo::where('id', $tab_articulo_id[$i])->first();//para traer algunas cosas del maestro    
-                
-
                 $ajuste_inventario_det = new AjusteInventarioDet();
-
-                $ajuste_inventario_det->ajuste_inventario_cab_id = $ajuste_inventario_cab->id; 
-                $ajuste_inventario_det->articulo_id = $tab_articulo_id[$i];
-                $ajuste_inventario_det->cantidad = $cantidad;
-                $ajuste_inventario_det->sub_total = $subtotal;
-
+                //datos del articulo.
+              //  $articulo_aux = Articulo::where('id', $tab_articulo_id[$i])->first();//para traer algunas cosas del maestro
+           
+                $ajuste_inventario_det->setAjusteInventarioCabId( $ajuste_inventario_cab->getId()); 
+                $ajuste_inventario_det->setArticuloId($request['tab_articulo_id'][$i]);            
+                $ajuste_inventario_det->setExistencia(str_replace(',', '.', str_replace('.', '', $request['tab_existencia'][$i])));
+                $ajuste_inventario_det->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                $ajuste_inventario_det->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i])); 
+                $ajuste_inventario_det->setSubTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
 
                 $ajuste_inventario_det->save();
 
             }
              //-----------------------------------------------------------
+             //controlamos existencia
+ if ($ajuste_inventario_det->articulo->getControlExistencia() == true) {
+    //Actualizacion de existencia
+    $existencia = ExistenciaArticulo::where('articulo_id', $ajuste_inventario_det->articulo->getId())
+        ->where('sucursal_id', $request['sucursal_id'])->first();
 
+    //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
+    if (!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='+'){
+        $existencia->actualizaStock('+', $ajuste_inventario_det->getCantidad());
+        $existencia->update();   
+    }elseif(!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='-') {
+        $existencia->actualizaStock('-', $ajuste_inventario_det->getCantidad());
+        $existencia->update();                     
+    } else {
+        $existencia_nuevo = new ExistenciaArticulo();
+
+        $existencia_nuevo->setArticuloId($ajuste_inventario_det->articulo->getId());
+        $existencia_nuevo->setSucursalId($request['sucursal_id']);
+        $existencia_nuevo->setCantidad($ajuste_inventario_det->getCantidad());
+        $existencia_nuevo->setFechaUltimoInventario($request['fecha_emision']);
+
+        $existencia_nuevo->save();  
+    }   
+
+}
             DB::commit();
         } catch (\Exception $e) {
 
@@ -146,7 +149,7 @@ class AjusteInventarioController extends Controller
             //return back()->withErrors( $e->getTraceAsString() )->withInput();
         }
 
-        return redirect(route('ajusteInventario.create'))->with('status', 'Datos guardados correctamente!');
+        return redirect(route('ajustesInventarios.create'))->with('status', 'Datos guardados correctamente!');
 
 
     }
@@ -161,7 +164,7 @@ class AjusteInventarioController extends Controller
     {
    
         $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
-        return view('ajusteInventario.show',compact('ajuste_inventario', 'ajuste_inventario_cab'));
+        return view('ajusteInventario.show',compact('ajuste_inventario_cab'));
     }
 
     /**
@@ -195,12 +198,7 @@ class AjusteInventarioController extends Controller
 
             //instanciamos la clase
             $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
-            $Cantidad_total = 0;
-            $sucursal = Auth::user()->empleado->sucursales->first();
 
-            if (!empty('sucursal')) {
-                $request['sucursal_id'] = $sucursal->getId();
-            }
          
             for ($i=0; $i < collect($request['tab_subtotal'])->count(); $i++){
 
@@ -208,39 +206,45 @@ class AjusteInventarioController extends Controller
                 $subtotal = str_replace('.', '', $subtotal);
                 //$subtotal = str_replace(',', '.', $subtotal);
                 
-                $cantidad_total = $cantidad_total + $subtotal;
+                $monto_total = $monto_total + $subtotal;
             }
 
             //pasamos los parámetros del request
-            $ajuste_inventario_cab->empleado_id = $request['empleado_id'];
-            $ajuste_inventario_cab->fecha_emision = $request['fecha_emision']; 
-            $ajuste_inventario_cab->concepto_ajuste_id = $request['concepto_ajuste_id'];       
-            $ajuste_inventario_cab->sucursal_id = $request['sucursal_id'];     
-            $ajuste_inventario_cab->cantidad_total = $cantidad_total;
-            $ajuste_inventario_cab->motivo = $request['motivo'];
+          //  $ajuste_inventario_cab->empleado_id = $request['empleado_id'];
+              //pasamos los parámetros del request
+             // $ajuste_inventario_cab->setNroAjuste( $request['nro_ajuste']);
+              $ajuste_inventario_cab->setFechaEmision($request['fecha_emision']);   
+              $ajuste_inventario_cab->setConceptoAjusteId($request['concepto_ajuste_id']);   
+              $ajuste_inventario_cab->setSucursalId($request['sucursal_id']);    
+              $ajuste_inventario_cab->setMotivo($request['motivo']); 
+              $ajuste_inventario_cab->setMontototal($monto_total); 
+              $ajuste_inventario_cab->setUsuarioId($usuario->id);
 
             //guardamos los cambios
-            $ajuste_inventario->update();
+            $ajuste_inventario_cab->update();
 
             //borramos el detalle anterior
-            $ajuste_inventario->AjusteInventarioDetalle()->delete();
+            $ajuste_inventario_det->AjusteInventarioDetalle()->delete();
 
             //desde aca va el nuevo detalle-----------------------------------         
             //lo que trae directamente del request
             $tab_articulo_id = $request['tab_articulo_id'];
+            $tab_existencia = $request['tab_existencia'];
             $tab_cantidad = $request['tab_cantidad'];
             $tab_costounitario = $request['tab_costounitario'];        
             $tab_subtotal = $request['tab_subtotal'];
            
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
 
+                $existencia = $tab_existencia[$i];
+                $existencia = str_replace('.', '', $existencia);
+
                 $cantidad = $tab_cantidad[$i];
                 $cantidad = str_replace('.', '', $cantidad);
-                //$cantidad = str_replace(',', '.', $cantidad);
 
                 $subtotal = $tab_subtotal[$i];
                 $subtotal = str_replace('.', '', $subtotal);
-                //$subtotal = str_replace(',', '.', $subtotal);
+      
 
                 //datos del articulo.
                 $articulo_aux = Articulo::where('id', $tab_articulo_id[$i])->first();//para traer algunas cosas del maestro    
@@ -248,11 +252,12 @@ class AjusteInventarioController extends Controller
 
               
                 $ajuste_inventario_det = new AjusteInventarioDet();
-
-                $ajuste_inventario_det->ajuste_inventario_cab_id = $ajuste_inventario->id; 
-                $ajuste_inventario_det->articulo_id = $tab_articulo_id[$i];
-                $ajuste_inventario_det->cantidad = $cantidad;
-                $ajuste_inventario_det->sub_total = $subtotal;
+                $ajuste_inventario_det->setAjusteInventarioCabId( $ajuste_inventario_cab->getId()); 
+                $ajuste_inventario_det->setArticuloId($request['tab_articulo_id'][$i]);            
+                $ajuste_inventario_det->setExistencia(str_replace(',', '.', str_replace('.', '', $request['tab_existencia'][$i])));
+                $ajuste_inventario_det->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                $ajuste_inventario_det->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i])); 
+                $ajuste_inventario_det->setSubTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
 
                 $ajuste_inventario_det->save();
 
@@ -283,152 +288,108 @@ class AjusteInventarioController extends Controller
      */
     public function destroy($id)
     {
-        $ajuste_inventario = AjusteInventarioCab::findOrFail($id);
-        $ajuste_inventario->ajustesDetalle()->delete();
+        $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
+        $ajuste_inventario_cab->AjusteInventarioDetalle()->delete();
         return AjusteInventarioCab::destroy($id);
     }
 
-    public function apiAjusteInventario()
-    {
-        $permiso_editar = Auth::user()->can('ajusteInventario.edit');
+    public function impresionAjuste($id){
+        $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
+        $pdf = \PDF::loadView('reportesAjustes.impresionAjuste', compact('ajuste_inventario_cab'));
+        return $pdf->stream('AjusteInventario.pdf', array('Attachment'=>0));
+    }
+    
+    public function apiAjustesInventarios() {
+        $permiso_editar = Auth::user()->can('ajustesInventarios.edit');
         $permiso_eliminar = Auth::user()->can('ajusteInventario.destroy');
-        $permiso_ver = Auth::user()->can('ajusteInventario.show');
-        $ajuste_inventario = AjusteInventarioCab::all();
-
-        if ($permiso_editar) {
-            if ($permiso_eliminar) {
+        $permiso_ver = Auth::user()->can('ajustesInventarios.show');
+       $ajuste_inventario = AjusteInventarioCab::all();
+       //dd($permiso_ver);
+       if ($permiso_editar) {
                 if ($permiso_ver) {
-                    return Datatables::of($ajustes_inventarios)
+                    return Datatables::of($ajuste_inventario)
                     ->addColumn('fecha', function($ajuste_inventario){
                         return $ajuste_inventario->getFechaEmision();
                     })
-                    ->addColumn('empleado', function($ajuste_inventario){
-                        return $ajuste_inventario->cliente->getNombreIndex();
+                    ->addColumn('sucursal', function($ajuste_inventario){
+                        return $ajuste_inventario->sucursal->getNombre();
                     })
                     ->addColumn('concepto_ajuste', function($ajuste_inventario){
-                        return $ajuste_inventario->concepto_ajuste->getConceptoAjuste();
+                        return $ajuste_inventario->conceptoAjuste->getDescripcion();
                     })
-                    ->addColumn('cantidad_total', function($ajuste_inventario){
-                        return $ajuste_inventario->getCantidadTotal();
+                    ->addColumn('monto_total', function($ajuste_inventario){
+                        return $ajuste_inventario->getMontoTotal();
                     })
+                    ->addColumn('action', function($ajuste_inventario){
+                        $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $ajuste_inventario->id .')" class="btn btn-primary btn-sm" title="Ver Factura"><i class="fa fa-eye"></i></a> ';
+                        $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        $puede_borrar = '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $ajuste_inventario->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
 
-                    ->addColumn('action', function($ajustes_inventarios){
-                        return '<a onclick="showForm('. $ajustes_inventarios->id .')" class="btn btn-primary btn-sm" title="Ver Ajuste de inventario"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Ajuste de inventario"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a onclick="deleteData('. $ajustes_inventarios->id .')" class="btn btn-danger btn-sm" title="Eliminar Ajuste de inventario"><i class="fa fa-trash-o"></i></a>';
-                    })->make(true);
-                } else{
-                    return Datatables::of($ajustes_inventarios)
+                        return $puede_ver.$puede_editar.$puede_borrar;
+
+                                        })->make(true);              
+
+
+                                    } else {
+                    return Datatables::of($ajuste_inventario)
                     ->addColumn('fecha', function($ajuste_inventario){
                         return $ajuste_inventario->getFechaEmision();
                     })
-                    ->addColumn('empleado', function($ajuste_inventario){
-                        return $ajuste_inventario->cliente->getNombreIndex();
+                    ->addColumn('sucursal', function($ajuste_inventario){
+                        return $ajuste_inventario->sucursal->getNombre();
                     })
                     ->addColumn('concepto_ajuste', function($ajuste_inventario){
-                        return $ajuste_inventario->concepto_ajuste->getConceptoAjuste();
+                        return $ajuste_inventario->conceptoAjuste->getDescripcion();
                     })
-                    ->addColumn('cantidad_total', function($ajuste_inventario){
-                        return $ajuste_inventario->getCantidadTotal();
+                    ->addColumn('monto_total', function($ajuste_inventario){
+                        return $ajuste_inventario->getMontoTotal();
                     })
-                    ->addColumn('action', function($ajustes_inventarios){
-                        return '<a class="btn btn-primary btn-sm" title="Ver Ajuste de inventario"  disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Ajuste de inventario"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a onclick="deleteData('. $ajustes_inventarios->id .')" class="btn btn-danger btn-sm" title="Eliminar Ajuste de inventario"><i class="fa fa-trash-o"></i></a>';
+                    ->addColumn('action', function($ajuste_inventario){
+                        $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Factura" disabled><i class="fa fa-eye"></i></a> ';
+                        $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Factura"><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        return $puede_ver.$puede_editar;
                     })->make(true);
                 }
-            } else {
-                if ($permiso_ver) {
-                    return Datatables::of($ajustes_inventarios)
-                    ->addColumn('fecha', function($ajuste_inventario){
-                        return $ajuste_inventario->getFechaEmision();
-                    })
-                    ->addColumn('empleado', function($ajuste_inventario){
-                        return $ajuste_inventario->cliente->getNombreIndex();
-                    })
-                    ->addColumn('concepto_ajuste', function($ajuste_inventario){
-                        return $ajuste_inventario->concepto_ajuste->getConceptoAjuste();
-                    })
-                    ->addColumn('cantidad_total', function($ajuste_inventario){
-                        return $ajuste_inventario->getCantidadTotal();
-                    })
-                    ->addColumn('action', function($ajustes_inventarios){
-                        return '<a onclick="showForm('. $ajustes_inventarios->id .')" class="btn btn-primary btn-sm" title="Ver Ajuste de inventario"><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm"><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                               '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-                    })->make(true);
-                } else{
-                    return Datatables::of($ajustes_inventarios)
-                    ->addColumn('action', function($ajustes_inventarios){
-                        return '<a class="btn btn-primary btn-sm" title="Ver Ajuste de inventario" disabled><i class="fa fa-eye"></i></a> ' .'<a onclick="editForm('. $ajuste_inventario->id .')" class="btn btn-warning btn-sm" title="Editar Ajuste de inventario"><i class="fa fa-pencil-square-o"></i></a> ' .
-                               '<a class="btn btn-danger btn-sm" title="Eliminar Ajuste de inventario" disabled><i class="fa fa-trash-o"></i></a>';
-                    })->make(true);
-                }
-            }
-        } elseif ($permiso_eliminar) {
-            if ($permiso_ver) {
-                return Datatables::of($ajustes_inventarios)
-
-                ->addColumn('fecha', function($ajuste_inventario){
-                    return $ajuste_inventario->getFechaEmision();
-                })
-                ->addColumn('empleado', function($ajuste_inventario){
-                    return $ajuste_inventario->cliente->getNombreIndex();
-                })
-                ->addColumn('concepto_ajuste', function($ajuste_inventario){
-                    return $ajuste_inventario->concepto_ajuste->getConceptoAjuste();
-                })
-                ->addColumn('cantidad_total', function($ajuste_inventario){
-                    return $ajuste_inventario->getCantidadTotal();
-                })
-
-                ->addColumn('action', function($ajustes_inventarios){
-                    return '<a onclick="showForm('. $ajustes_inventarios->id .')" class="btn btn-primary btn-sm" title="Ver Ajuste de inventario"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $ajustes_inventarios->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
-                })->make(true);
-            } else{
-                return Datatables::of($ajustes_inventarios)
-                ->addColumn('action', function($ajustes_inventarios){
-                    return '<a class="btn btn-primary btn-sm" title="Ver Ajuste de inventario" disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a onclick="deleteData('. $ajustes_inventarios->id .')" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> Eliminar</a>';
-                })->make(true);
-            }
         } else {
             if ($permiso_ver) {
-                return Datatables::of($ajustes_inventarios)
+                return Datatables::of($ajuste_inventario)
                 ->addColumn('fecha', function($ajuste_inventario){
                     return $ajuste_inventario->getFechaEmision();
                 })
-                ->addColumn('empleado', function($ajuste_inventario){
-                    return $ajuste_inventario->cliente->getNombreIndex();
+                ->addColumn('sucursal', function($ajuste_inventario){
+                    return $ajuste_inventario->sucursal->getNombre();
                 })
                 ->addColumn('concepto_ajuste', function($ajuste_inventario){
-                    return $ajuste_inventario->concepto_ajuste->getConceptoAjuste();
+                    return $ajuste_inventario->conceptoAjuste->getDescripcion();
                 })
-                ->addColumn('cantidad_total', function($ajuste_inventario){
-                    return $ajuste_inventario->getCantidadTotal();
+                ->addColumn('monto_total', function($ajuste_inventario){
+                    return $ajuste_inventario->getMontoTotal();
                 })
-
-                ->addColumn('action', function($ajustes_inventarios){
-                    return '<a onclick="showForm('. $ajustes_inventarios->id .')" class="btn btn-primary btn-sm" title="Ver Ajuste de inventario"><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-                })->make(true);
+                ->addColumn('action', function($ajuste_inventario){
+                    $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $ajuste_inventario->id .')" class="btn btn-primary btn-sm" title="Ver Factura"><i class="fa fa-eye"></i></a> ';
+                    $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                    return $puede_ver.$puede_editar;                                })->make(true);
             } else{
-                return Datatables::of($ajustes_inventarios)
+                return Datatables::of($ajuste_inventario)
                 ->addColumn('fecha', function($ajuste_inventario){
                     return $ajuste_inventario->getFechaEmision();
                 })
-                ->addColumn('empleado', function($ajuste_inventario){
-                    return $ajuste_inventario->cliente->getNombreIndex();
+                ->addColumn('sucursal', function($ajuste_inventario){
+                    return $ajuste_inventario->sucursal->getNombre();
                 })
-                ->addColumn('concepto_ajuste', function($ajuste_inventario){
-                    return $ajuste_inventario->concepto_ajuste->getConceptoAjuste();
+                ->addColumn('concepto_ajuste', function($ajustes_inventario){
+                    return $ajustes_inventario->conceptoAjuste->getDescripcion();
                 })
-                ->addColumn('cantidad_total', function($ajuste_inventario){
-                    return $ajuste_inventario->getCantidadTotal();
+                ->addColumn('monto_total', function($ajuste_inventario){
+                    return $ajuste_inventario->getMontoTotal();
                 })
-
-                ->addColumn('action', function($ajustes_inventarios){
-                    return '<a class="btn btn-primary btn-sm" title="Ver Ajuste de inventario"  disabled><i class="fa fa-eye"></i></a> ' .'<a class="btn btn-warning btn-sm" disabled><i class="fa fa-pencil-square-o"></i> Editar</a> ' .
-                           '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-                })->make(true);
+                ->addColumn('action', function($ajuste_inventario){
+                    $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Factura" disabled><i class="fa fa-eye"></i></a> ';
+                    $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                    return $no_puede_ver.$puede_editar;
+                                })->make(true);
             }
         }
     }

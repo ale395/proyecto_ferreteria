@@ -46,7 +46,14 @@ class RoleTableSeeder extends Seeder
         $permiso_eliminar_factura_venta = Permission::where('slug', 'facturacionVentas.destroy')->first();
         $permiso_ver_factura_venta = Permission::where('slug', 'facturacionVentas.show')->first();
 
-                //permisos para Ajuste
+        //permisos para Notas de Crédito de Venta
+        $permiso_listar_ncre_venta = Permission::where('slug', 'notaCreditoVentas.index')->first();
+        $permiso_crear_ncre_venta = Permission::where('slug', 'notaCreditoVentas.create')->first();
+        $permiso_editar_ncre_venta = Permission::where('slug', 'notaCreditoVentas.edit')->first();
+        $permiso_eliminar_ncre_venta = Permission::where('slug', 'notaCreditoVentas.destroy')->first();
+        $permiso_ver_ncre_venta = Permission::where('slug', 'notaCreditoVentas.show')->first();
+
+        //permisos para Ajuste
         $permiso_listar_ajuste_inventario = Permission::where('slug', 'ajustesInventarios.index')->first();
         $permiso_crear_ajuste_inventario = Permission::where('slug', 'ajustesInventarios.create')->first();
         $permiso_editar_ajuste_inventario = Permission::where('slug', 'ajustesInventarios.edit')->first();
@@ -208,12 +215,33 @@ class RoleTableSeeder extends Seeder
         $permiso_eliminar_ordencompra = Permission::where('slug', 'ordencompra.destroy')->first();
         $permiso_ver_ordencompra = Permission::where('slug', 'ordencompra.show')->first();
 
-        //permisos de Orden de Compra
+        //permisos de Compra
         $permiso_listar_compra = Permission::where('slug', 'compra.index')->first();
         $permiso_crear_compra = Permission::where('slug', 'compra.create')->first();
         $permiso_editar_compra = Permission::where('slug', 'compra.edit')->first();
         $permiso_eliminar_compra = Permission::where('slug', 'compra.destroy')->first();
         $permiso_ver_compra = Permission::where('slug', 'compra.show')->first();
+
+        //permisos de Nota de Credito - Compra
+        $permiso_listar_nccompra = Permission::where('slug', 'notacreditocompras.index')->first();
+        $permiso_crear_nccompra = Permission::where('slug', 'notacreditocompras.create')->first();
+        $permiso_editar_nccompra = Permission::where('slug', 'notacreditocompras.edit')->first();
+        $permiso_eliminar_nccompra = Permission::where('slug', 'notacreditocompras.destroy')->first();
+        $permiso_ver_nccompra = Permission::where('slug', 'notacreditocompras.show')->first();
+
+        //GESTION DE CAJAS - CUENTAS POR COBRAR
+        $permiso_habilitar_caja = Permission::where('slug', 'gestionCajas.habilitarCaja')->first();
+        $permiso_cerrar_caja = Permission::where('slug', 'gestionCajas.cerrarCaja')->first();
+
+        //ANULACION DE COMPROBANTES
+        $permiso_anular_index = Permission::where('slug', 'anulacioncomprobantes.index')->first();
+        $permiso_anular_comprobante = Permission::where('slug', 'anulacioncomprobantes.anular')->first();
+
+        //MOTIVOS DE ANULACION
+        $permiso_listar_motivos = Permission::where('slug', 'motivoanulacion.index')->first();
+        $permiso_crear_motivos = Permission::where('slug', 'motivoanulacion.create')->first();
+        $permiso_editar_motivos = Permission::where('slug', 'motivoanulacion.edit')->first();
+        $permiso_eliminar_motivos = Permission::where('slug', 'motivoanulacion.destroy')->first();
 
         $role = new Role();
         $role->name = 'Administrador';
@@ -340,6 +368,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_eliminar_factura_venta->id);
         $role->assignPermission($permiso_ver_factura_venta->id);
 
+        $role->assignPermission($permiso_listar_ncre_venta->id);
+        $role->assignPermission($permiso_crear_ncre_venta->id);
+        $role->assignPermission($permiso_editar_ncre_venta->id);
+        $role->assignPermission($permiso_eliminar_ncre_venta->id);
+        $role->assignPermission($permiso_ver_ncre_venta->id);
+
         $role->assignPermission($permiso_listar_ajuste_inventario->id);
         $role->assignPermission($permiso_crear_ajuste_inventario->id);
         $role->assignPermission($permiso_editar_ajuste_inventario->id);
@@ -398,6 +432,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_eliminar_compra->id);
         $role->assignPermission($permiso_ver_compra->id);
 
+        $role->assignPermission($permiso_listar_nccompra->id);
+        $role->assignPermission($permiso_crear_nccompra->id);
+        $role->assignPermission($permiso_editar_nccompra->id);
+        $role->assignPermission($permiso_eliminar_nccompra->id);
+        $role->assignPermission($permiso_ver_nccompra->id);
+
         $role->assignPermission($permiso_listar_cliente->id);
         $role->assignPermission($permiso_crear_cliente->id);
         $role->assignPermission($permiso_editar_cliente->id);
@@ -406,6 +446,17 @@ class RoleTableSeeder extends Seeder
 
         $role->assignPermission($permiso_listar_empresa->id);
         $role->assignPermission($permiso_editar_empresa->id);
+
+        $role->assignPermission($permiso_habilitar_caja->id);
+        $role->assignPermission($permiso_cerrar_caja->id);
+
+        $role->assignPermission($permiso_anular_index->id);
+        $role->assignPermission($permiso_anular_comprobante->id);
+
+        $role->assignPermission($permiso_listar_motivos->id);
+        $role->assignPermission($permiso_editar_motivos->id);
+        $role->assignPermission($permiso_crear_motivos->id);
+        $role->assignPermission($permiso_eliminar_motivos->id);
 
         $role->save();
 

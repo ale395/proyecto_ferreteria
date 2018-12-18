@@ -78,6 +78,31 @@ class SerieController extends Controller
             return response()->json(['errors' => $errors], 422); // Status code here
         }
 
+        $otras_series = Serie::where('timbrado_id', $request['timbrado_id'])
+            ->where('sucursal_id', '!=', $request['sucursal_id'])
+            ->where('activo', true)->get();
+
+        if ($otras_series->count() > 0) {
+            $errors = array('El timbrado seleccionado ya fue relacionado a un talonario de otra sucursal!');
+            return response()->json(['errors' => $errors], 422);
+        }
+
+        $otras_series = Serie::where('timbrado_id', $request['timbrado_id'])
+            ->where('tipo_comprobante', $request['tipo_comprobante'])
+            ->where('sucursal_id', $request['sucursal_id'])
+            ->where('activo', true)->get();
+
+        if ($otras_series->count() > 0) {
+            $nro_inicial = $request['nro_inicial'];
+            $nro_final = $request['nro_final'];
+            $min_nro_inicial = $otras_series->min('nro_inicial');
+            $max_nro_final = $otras_series->max('nro_final');
+            if (($nro_inicial >= $min_nro_inicial and $nro_inicial <= $max_nro_final) or ($nro_final <= $max_nro_final and $nro_final >= $min_nro_inicial)) {
+                $errors = array('El número inicial y final del talonario se superponen o otro rango ya existente!');
+                return response()->json(['errors' => $errors], 422);
+            }
+        }
+
         $data = [
             'tipo_comprobante' => $request['tipo_comprobante'],
             'timbrado_id' => $request['timbrado_id'],

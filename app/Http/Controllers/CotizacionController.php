@@ -140,12 +140,23 @@ class CotizacionController extends Controller
     }
 
     public function apiCotizacionValorVenta($moneda_id){
-        if (!empty($articulo_id) && !empty($articulo_id)) {
-            $cotizacion = Cotizacion::where('moneda_id','=', $moneda->id)
+        if (!empty($moneda_id) && !empty($moneda_id)) {
+            
+            $cotizacion = Cotizacion::where('moneda_id', $moneda_id)
             ->orderBy('fecha_cotizacion', 'desc')
             ->first();
 
-            return $cotizacion->valor_venta;
+            /*
+            if (!empty($cotizacion)){
+                $valor_venta = $cotizacion->getValorVenta();
+            } else {
+                $valor_venta = 0;
+            }
+            */
+            $valor_venta = $cotizacion->getValorVenta();
+
+            return $valor_venta;
+   
         };
     }
 

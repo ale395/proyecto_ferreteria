@@ -16,7 +16,7 @@ class ConceptoCajaController extends Controller
      */
     public function index()
     {
-        return view('conceptoscaja.index');
+        return view('conceptocaja.index');
     }
 
     /**
@@ -40,7 +40,9 @@ class ConceptoCajaController extends Controller
     {
         $data = [
             'num_concepto' => $request['num_concepto'],
-            'descripcion' => $request['descripcion']
+            'descripcion' => $request['descripcion'],
+            'ingresos' => $request['ingresos'],
+            'ingresos' => $request['egresos']
         ];
 
         return ConceptoCaja::create($data);
@@ -79,7 +81,9 @@ class ConceptoCajaController extends Controller
     {
         $concepto->num_concepto = $request['num_concepto'];
         $concepto->descripcion = $request['descripcion'];
-        
+        $concepto->descripcion = $request['ingresos'];
+        $concepto->descripcion = $request['egresos'];
+                
         $concepto->update();
 
         return $concepto;

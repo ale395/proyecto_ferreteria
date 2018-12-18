@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Compras
+                    <h4>Lista de Facturas de Proveedores
                         @can('compra.create')
                           <a onclick="window.location='{{route('compra.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
@@ -18,13 +18,12 @@
                     <table id="pedidos-table" class="table-striped table-responsive row-border" style="width:100%">
                         <thead>
                             <tr>
-                                <th width="65">Tipo Fact.</th>
+                                <th width="20">Tipo</th>
                                 <th width="100">Nro Factura</th>
                                 <th>Fecha</th>
-                                <th>Cliente</th>
+                                <th>Proveedor</th>
                                 <th>Moneda</th>
                                 <th>Total</th>
-                                <th>Estado</th>
                                 <th width="70">Acciones</th>
                             </tr>
                         </thead>

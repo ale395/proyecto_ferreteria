@@ -15,6 +15,9 @@ use App\DatosDefault;
 use App\Impuesto;
 use App\FormaPago;
 use App\Cotizacion;
+use App\Banco;
+use App\MotivoAnulacion;
+use App\Empresa;
 
 class DefaultSeeder extends Seeder
 {
@@ -26,7 +29,19 @@ class DefaultSeeder extends Seeder
      */
     public function run()
     {
-    	//Familia de producto por default - Generico
+    	$motivo_anulacion = new MotivoAnulacion;
+        $motivo_anulacion->setNombre('Error de impresión');
+        $motivo_anulacion->save();
+
+        $motivo_anulacion = new MotivoAnulacion;
+        $motivo_anulacion->setNombre('Datos incorrectos');
+        $motivo_anulacion->save();
+
+        $motivo_anulacion = new MotivoAnulacion;
+        $motivo_anulacion->setNombre('Cliente no acepta el comprobante');
+        $motivo_anulacion->save();
+
+        //Familia de producto por default - Generico
         $familia = new Familia();
         $familia->num_familia = '001';
         $familia->descripcion = 'GENERICO';
@@ -88,10 +103,41 @@ class DefaultSeeder extends Seeder
        	//Concepto ajuste por default - ajuste de existencia
         $conceptoajuste = new ConceptoAjuste();
         $conceptoajuste->num_concepto = '001';
-        $conceptoajuste->descripcion = 'DEVOLUCION';
+        $conceptoajuste->descripcion = 'Consignacion';
+        $conceptoajuste->signo = '+';
+        $conceptoajuste->save();
+
+
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '002';
+        $conceptoajuste->descripcion = 'Faltante Inventario';
         $conceptoajuste->signo = '-';
         $conceptoajuste->save();
 
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '003';
+        $conceptoajuste->descripcion = 'Sobrante Inventario';
+        $conceptoajuste->signo = '+';
+        $conceptoajuste->save();
+
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '004';
+        $conceptoajuste->descripcion = 'Traslado-Salida';
+        $conceptoajuste->signo = '-';
+        $conceptoajuste->save();
+
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '005';
+        $conceptoajuste->descripcion = 'Traslado-Entrada';
+        $conceptoajuste->signo = '+';
+        $conceptoajuste->save();
+
+
+        $conceptoajuste = new ConceptoAjuste();
+        $conceptoajuste->num_concepto = '006';
+        $conceptoajuste->descripcion = 'Averia o Rotura';
+        $conceptoajuste->signo = '-';
+        $conceptoajuste->save();
         //tipo proveedor 
         $tipoproveedor = new TipoProveedor();
         $tipoproveedor->codigo = '001';
@@ -159,6 +205,50 @@ class DefaultSeeder extends Seeder
         $forma_pago->descripcion = 'Retencion';
         $forma_pago->control_valor = 1;
         $forma_pago->save();
+
+        //Formas de Pago (y de cobro creo yo)
+        $banco = new Banco();
+        $banco->codigo = 'ITA';
+        $banco->nombre = 'Itau';
+        $banco->activo = true;
+        $banco->save();
+
+        $banco = new Banco();
+        $banco->codigo = 'VIS';
+        $banco->nombre = 'Vision Banco';
+        $banco->activo = true;
+        $banco->save();
+
+        $banco = new Banco();
+        $banco->codigo = 'SUD';
+        $banco->nombre = 'Sudameris';
+        $banco->activo = true;
+        $banco->save();
+
+        $banco = new Banco();
+        $banco->codigo = 'GNB';
+        $banco->nombre = 'Banco GNB';
+        $banco->activo = true;
+        $banco->save();
+
+        $banco = new Banco();
+        $banco->codigo = 'BAS';
+        $banco->nombre = 'Banco BASA';
+        $banco->activo = true;
+        $banco->save();
+
+        //EMPRESA
+        $empresa = new Empresa;
+        $empresa->setRazonSocial('Ferreteria XYZ');
+        $empresa->setRuc('8000112200-2');
+        $empresa->setDireccion('Mcal Lopez 1024 - Asunción');
+        $empresa->setTelefono('0972800900');
+        $empresa->setSitioWeb('www.ferreteriaxyz.com.py');
+        $empresa->setCorreoElectronico('ferreteriaxyz@gmail.com');
+        $empresa->setRubro('Ferreteria');
+        $empresa->setCodigoEstablecimiento('001');
+        $empresa->setMonedaNacionalId(1);
+        $empresa->save();
 
         //seeder de la forma de pago
 

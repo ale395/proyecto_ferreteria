@@ -16,13 +16,21 @@ class Proveedor extends Model
         return $this->activo;
     }
 
+    public function getId(){
+        return $this->id;
+    }
+
     public function setActivo($activo){
         $this->activo = $activo;
     }
     
     public function getNombreIndex(){
-            return $this->apellido. ', '.$this->nombre;
+            return $this->razon_social. ', '.$this->nombre;
     }
+
+    public function getNombreSelect(){
+        return $this->codigo. ', '.$this->razon_social;
+}
 
     public function tipoProveedor()
     {

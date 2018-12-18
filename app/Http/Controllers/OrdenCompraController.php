@@ -15,6 +15,8 @@ use App\Moneda;
 use App\Articulo;
 use App\DatosDefault;
 use App\Impuesto;
+use App\Cotizacion;
+use Barryvdh\DomPDF\Facade as PDF;
 use DB;
 use Response;
 use Illuminate\Support\Collections;
@@ -39,15 +41,23 @@ class OrdenCompraController extends Controller
      */
     public function create()
     {
- 
+
         $fecha_actual = date("d/m/Y");
         $datos_default = DatosDefault::get()->first();
-        $nro_orden_compra = OrdenCompraCab::max('nro_orden');
         $moneda = $datos_default->moneda;
-        $cambio = 1;
-        //$nro_orden = DB::table('orden_compras_cab')->select(DB::raw('coalesce(max(nro_orden),0) + 1 as nro_orden'))->get();
+        $cotizacion = Cotizacion::where('moneda_id','=', $moneda->id)
+        ->orderBy('fecha_cotizacion', 'desc')
+        ->first();
+        // $cotizacion;
+        $proveedores = Proveedor::where('activo', true)->get();
+        $monedas = Moneda::all();
+        $cambio = $cotizacion->getValorVenta();
+        
+        //$nro_orden = DB::table('orden_compras_cab')->select(DB::raw('coalesce(nro_orden),0) + 1 as nro_orden'))->get();
         //$nro_orden = DB::table('orden_compras_cab')->orderBy('nro_orden', 'desc')->first();    
-                    
+
+        $nro_orden_compra = OrdenCompraCab::max('nro_orden');
+
         if($nro_orden_compra) {
             $nro_orden = $nro_orden_compra + 1; 
         } else {
@@ -55,7 +65,7 @@ class OrdenCompraController extends Controller
         }
         
 
-        return view('ordencompra.create',compact('fecha_actual', 'nro_orden', 'moneda', 'cambio'));
+        return view('ordencompra.create',compact('fecha_actual', 'nro_orden', 'moneda', 'cambio', 'monedas'));
     }
 
     /**
@@ -180,23 +190,31 @@ class OrdenCompraController extends Controller
      */
     public function show($id)
     {
+        //en el show directo tiramos el reporte para la impresión.
         $orden_compra = DB::table('orden_compras_cab as o')
         ->join('proveedores as p', 'p.id','=', 'o.proveedor_id')
         ->join('monedas as m', 'm.id','=', 'o.moneda_id')
-        ->select('o.id', 'o.nro_orden', DB::raw("to_char(DATE o.fecha_emision, 'DD/MM/YYYY') as fecha_emision"), 'o.proveedor_id',
-        DB::raw("CONCAT(p.codigo, ' ', p.nombre) as proveedor"),
-        'o.moneda_id','m.codigo', 'm.descripcion', 'o.valor_cambio', 'o.monto_total')
+        ->select('o.id', 'o.nro_orden', DB::raw("to_char(o.fecha_emision, 'DD/MM/YYYY') as fecha_emision"), 'o.proveedor_id',
+        DB::raw("CONCAT(p.codigo, ' ', p.razon_social) as proveedor"),
+        DB::raw("case when estado = 'A' THEN 'ACEPTADO' when estado = 'P' THEN 'COMPRADO' ELSE 'CANCELADO' END AS estado"),
+        'o.moneda_id','m.codigo', 'm.descripcion as moneda', 'o.valor_cambio', 'o.monto_total')
         ->where('o.id','=',$id)->first();
 
         $orden_compra_detalle = DB::table('orden_compras_det as od')
         ->join('articulos as a', 'a.id','=', 'od.articulo_id')
-        ->select('od.orden_compra_cab_id', 'a.codigo', 'a.descripcion', 'od.cantidad',
+        ->select('od.orden_compra_cab_id', 'a.codigo as codigo_articulo', 'a.descripcion as articulo', 'od.cantidad',
         'od.costo_unitario', 'od.sub_total','od.porcentaje','od.total_exenta', 
         'od.total_gravada', 'od.total_iva')
         ->where('od.orden_compra_cab_id','=',$id)
         ->get();
 
-        return view('ordencompra.show',compact('orden_compra', 'orden_compra_detalle'));
+        $pdf = PDF::loadView('ordencompra.show',compact('orden_compra', 'orden_compra_detalle'));
+
+        $nombre_archivo = "orden_compra_".$orden_compra->nro_orden."_".str_replace('/', '', $orden_compra->fecha_emision).".pdf";
+
+        return $pdf->stream($nombre_archivo, array('Attachment'=>0));
+
+        // return view('ordencompra.show',compact('orden_compra', 'orden_compra_detalle'));
     }
 
 
@@ -213,8 +231,11 @@ class OrdenCompraController extends Controller
         return view('ordencompra.edit',compact('orden_compra'));
         */
         try {
+            $proveedores = Proveedor::where('activo', true)->get();
+            $monedas = Moneda::all();
+
             $orden_compra = OrdenCompraCab::findOrFail($id);
-            return view('ordencompra.edit',compact('orden_compra'));
+            return view('ordencompra.edit',compact('orden_compra', 'proveedores', 'monedas'));
     
         } catch (\Exception $e) {
             return redirect()->back()->with('warning', 'Ocurrió un error!');
@@ -352,6 +373,67 @@ class OrdenCompraController extends Controller
         $orden_compra->pedidosDetalle()->delete();
         return OrdenCompraCab::destroy($id);
     }
+
+    //--------------------------------------------------------------------
+    public function apiOrdenCompraProveedores($cliente_id){
+        if (empty($cliente_id)) {
+            return [];
+        } else {
+            $pedidos = OrdenCompraCab::where('proveedor_id', $cliente_id)->
+                where('estado', 'A')->get();
+
+            //dd($pedidos);
+            //var_dump($pedidos);
+            
+            return Datatables::of($pedidos)
+                    ->addColumn('nro_pedido', function($pedidos){
+                        return $pedidos->getNroPedido();
+                    })
+                    ->addColumn('fecha', function($pedidos){
+                        return $pedidos->getFechaEmision();
+                    })
+                    ->addColumn('moneda', function($pedidos){
+                        return $pedidos->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($pedidos){
+                        return $pedidos->getMontoTotal();
+                    })
+                    ->addColumn('comentario', function($pedidos){
+                        return $pedidos->getComentario();
+                    })->make(true);
+        }
+        
+    }
+
+    public function apiOrdenCompraDetalles($array_pedidos){
+        $cast_array = explode(",",($array_pedidos));
+
+        /*PROBANDO CON DB*/
+        $pedidos = DB::table('orden_compras_cab as o')
+            ->join('orden_compras_det as od', 'od.orden_compra_cab_id', '=', 'o.id')
+            ->join('articulos as a', 'a.id', '=', 'od.articulo_id')
+            ->join('impuestos as i', 'i.id', '=', 'a.impuesto_id')
+            ->select('od.articulo_id', 'a.codigo', 'a.descripcion', 'i.porcentaje as porcentaje_iva', 
+            DB::raw('ROUND(od.costo_unitario, 2) as costo_unitario'),
+            DB::raw('0 as porcentaje_descuento'),
+            DB::raw('ROUND(od.cantidad, 2) as cantidad'), 
+            DB::raw('0 as monto_descuento'), 
+            DB::raw('ROUND(od.total_exenta, 2) as monto_exenta'), 
+            DB::raw('ROUND(od.total_gravada, 2) as monto_gravada'), 
+            DB::raw('ROUND(od.total_iva, 2) as monto_iva'), 
+            DB::raw('ROUND(od.sub_total, 2) as sub_total'))
+            ->whereIn('od.orden_compra_cab_id', $cast_array)
+            ->where('o.estado', "A")
+            ->get();
+        
+            //var_dump( $pedidos);
+            dd( $pedidos);
+
+        return $pedidos;
+    }
+
+
+    //--------------------------------------------------------------------
 
     public function apiOrdenCompra()
     {

@@ -35,37 +35,44 @@ class CompraRequest extends FormRequest
             case 'POST':
             {
                 return [
-                    'nro_factura'=>'required', 
+                    'nro_factura'=>'required|unique_with:compras_cab,proveedor_id,timbrado', 
+                    'timbrado'=>'required', 
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
+                    'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
-                    'tab_costounitario'=>'required'
+                    'tab_costo_unitario'=>'required'
+
                 ];
             }
             case 'PUT':
             {
                 return [
-                    'nro_factura'=>'required|unique:compras_cab,nro_factura,'.$this->id, 
+                    'nro_factura'=>'required|unique_with:compras_cab,proveedor_id,timbrado,'.$this->id, 
+                    'timbrado'=>'required',
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
+                    'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
-                    'tab_costounitario'=>'required'
+                    'tab_costo_unitario'=>'required'
                 ];
             }
             case 'PATCH':
             {
                 return [
-                    'nro_orden'=>'required|unique:compras_cab,nro_factura,'.$this->id, 
+                    'nro_factura'=>'required|unique_with:compras_cab,proveedor_id,timbrado,'.$this->id, 
+                    'timbrado'=>'required',
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
+                    'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
-                    'tab_costounitario'=>'required'
+                    'tab_costo_unitario'=>'required'
                 ];
             }
             default:break;
@@ -76,12 +83,14 @@ class CompraRequest extends FormRequest
     public function messages()
     {
         return [
-            'nro_orden.required' => 'El :attribute es obligatorio.',
-            'nro_orden.unique' => 'el número de Orden ya existe.',
+            'nro_factura.required' => 'Ingrese el número del comprobante.',
+            'nro_factura.unique' => 'Comprobante ya existe.',
+            'timbrado.required' => 'Ingrese el timbrado',
             'proveedor_id.required' => 'Ingrese el proveedor.',
-            'costo_unitario.required' => 'El artículo no tiene costo',
+            'tab_costo_unitario.required' => 'El artículo no tiene costo',
             'moneda.required' => 'Debe seleccionar una moneda.',
-            'articulo_id.required' => 'Ingrese al menos un artículo.',
+            'tab_articulo_id.required' => 'Ingrese al menos un artículo.',
+            'tab_cantidad.required' => 'Ingrese la cantidad.',
             'fecha_emision.required' => 'Ingrese la fecha.'
         ];
 

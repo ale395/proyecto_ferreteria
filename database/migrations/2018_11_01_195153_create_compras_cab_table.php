@@ -33,7 +33,7 @@ class CreateComprasCabTable extends Migration
             $table->integer('usuario_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('proveedor_id')->references('id')->on('clientes');
+            $table->foreign('proveedor_id')->references('id')->on('proveedores');
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
             $table->foreign('moneda_id')->references('id')->on('monedas');
             $table->foreign('usuario_id')->references('id')->on('users');

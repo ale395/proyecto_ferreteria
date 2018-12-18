@@ -12,6 +12,10 @@ class ExistenciaArticulo extends Model
     	return number_format($this->cantidad, 0, ',', '.');
     }
 
+    public function getCantidadNumber(){
+        return $this->cantidad;
+    }
+
     public function setCantidad($cantidad){
     	$this->cantidad = $cantidad;
     }
@@ -30,6 +34,14 @@ class ExistenciaArticulo extends Model
         } elseif ($operacion = '-') {
             $this->cantidad = $this->cantidad - $cantidad;
         }
+    }
+
+    public function setFechaUltimoInventario($fecha_ultimo_inventario){
+        $this->fecha_ultimo_inventario = $fecha_ultimo_inventario;
+    }
+
+    public function getFechaUltimoInventario(){
+        return date("d-m-Y", strtotime($this->fecha_ultimo_inventario));
     }
 
     public function articulo()

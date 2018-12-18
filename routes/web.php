@@ -29,12 +29,13 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('cotizaciones', 'CotizacionController', ['parameters'=>['cotizaciones'=>'cotizacion']]);
 	Route::get('api/cotizaciones', 'CotizacionController@apiCotizaciones')->name('api.cotizaciones');
 	Route::get('api/cotizaciones/venta/{moneda}', 'CotizacionController@apiCotizacionValorVenta')->name('api.cotizaciones.valorventa');
-
+	
 	//RUTAS PARA IMPUESTOS
 	Route::resource('articulos', 'ArticuloController');
 	Route::get('api/articulos', 'ArticuloController@apiArticulos')->name('api.articulos');
 	Route::get('api/articulos/cotizacion/{articulo}/{lista_precio}', 'ArticuloController@apiArticulosCotizacion')->name('api.articulos.cotizacion');
 	Route::get('api/articulos/costo/{articulo}', 'ArticuloController@apiArticulosCosto')->name('api.articulos.costo');
+	Route::get('api/articulos/existencia/{articulo}/{sucursal}', 'ArticuloController@apiArticulosExistencia')->name('api.articulos.existencia');
 
 	//RUTAS PARA Monedas
 	Route::resource('monedas', 'MonedaController');
@@ -44,6 +45,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA BANCOS
 	Route::resource('bancos', 'BancoController');
 	Route::get('api/bancos', 'BancoController@apiBancos')->name('api.bancos');
+	Route::get('api/bancos/compraspagos', 'BancoController@apiBancosComprasPagos')->name('api.bancos.compraspagos');
 
 	//RUTAS PARA DEPOSITO
 	Route::resource('depositos', 'DepositoController');
@@ -69,6 +71,7 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA VENDEDORES
 	Route::resource('vendedores', 'VendedorController');
 	Route::get('api/Vendedores', 'VendedorController@apiVendedores')->name('api.vendedores');
+	Route::get('api/vendedores/select', 'EmpleadoController@apiVendedoresSelect')->name('api.vendedores.select');
 
 	//RUTAS PARA CLIENTES
 	Route::resource('clientes', 'ClienteController');
@@ -85,7 +88,8 @@ Route::middleware(['auth'])->group(function() {
 	//RUTAS PARA FORMAS DE PAGO
 	Route::resource('formasPagos', 'FormaPagoController', ['parameters'=>['formasPagos'=>'formaPago']]);
 	Route::get('api/formasPagos', 'FormaPagoController@apiFormasPagos')->name('api.formasPagos');
-	
+	Route::get('api/formasPagos/compras', 'FormaPagoController@apiFormasPagosCompras')->name('api.formasPagos.compras');
+
 	//RUTAS PARA NUMERACION DE SERIES
 	Route::resource('seriesVendedores', 'SerieVendedorController');
 	Route::get('api/seriesVendedores', 'SerieVendedorController@apiSeriesVendedores')->name('api.seriesVendedores');
@@ -118,14 +122,32 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/pedidosVentas', 'PedidoVentaController@apiPedidosVentas')->name('api.pedidos.ventas');
 	Route::get('api/pedidos/cliente/{cliente_id}', 'PedidoVentaController@apiPedidosCliente')->name('api.pedidos.cliente');
 	Route::get('api/pedidos/detalles/{array_pedidos}', 'PedidoVentaController@apiPedidosDetalles')->name('api.pedidos.detalles');
+	Route::get('pedidosVentas/impresion/{pedido}', 'PedidoVentaController@impresionPedido')->name('pedidos.ventas.impresion');
 
 	//RUTA PARA EL CONTROLADOR DE FACTURACION - VENTAS
 	Route::resource('facturacionVentas', 'FacturaVentaController');
 	Route::get('api/facturacionVentas', 'FacturaVentaController@apiFacturacionVentas')->name('api.facturacion.ventas');
+	Route::get('api/facturas/cliente/{cliente_id}', 'FacturaVentaController@apiFacturasCliente')->name('api.facturas.cliente');
+	Route::get('api/facturas/detalles/{factura_cab_id}', 'FacturaVentaController@apiFacturaDetalle')->name('api.factura.detalle');
+	Route::get('facturacionVentas/impresion/{factura}', 'FacturaVentaController@impresionFactura')->name('facturas.ventas.impresion');
+
+	//RUTA PARA EL CONTROLADOR DE NOTA DE CREDITO - VENTAS
+	Route::resource('notaCreditoVentas', 'NotaCreditoVentaController');
+	Route::get('api/notaCreditoVentas', 'NotaCreditoVentaController@apiNotaCreditoVentas')->name('api.nota.credito.ventas');
+	Route::get('notaCreditoVentas/impresion/{nota_credito}', 'NotaCreditoVentaController@impresionNotaCredito')->name('notas.credito.ventas.impresion');
+
+	//RUTA PARA EL CONTROLADOR DE ANULACION DE COMPROBANTES - VENTAS
+	Route::resource('anulacionComprobantes', 'AnulacionComprobanteController');
+	Route::get('api/comprobantesVentas', 'AnulacionComprobanteController@apiComprobantesVentas')->name('api.comprobantes.ventas');
+
+	Route::resource('motivoAnulacion', 'MotivoAnulacionController');
+	Route::get('api/motivos/anulaciones', 'MotivoAnulacionController@apiMotivosAnulaciones')->name('api.motivos.anulacion');
+	Route::get('api/motivos/anulaciones/index', 'MotivoAnulacionController@apiMotivosAnulacionesIndex')->name('api.motivos.anulacion.index');
 
 	//RUTA PARA EL CONTROLADOR DE AJUSTEE DE INVENTARIO
-	Route::resource('ajustesInventarios', 'AjusteInventarioController');
+	Route::resource('ajustesInventarios', 'AjusteInventarioController', ['parameters'=>['ajustesInventarios'=>'ajusteInventario']]);
 	Route::get('api/ajustesInventarios', 'AjusteInventarioController@apiAjustesInventarios')->name('api.ajustes.inventarios');
+	Route::get('ajustesInventarios/impresion/{ajuste_inventario}', 'AjusteInventarioController@impresionAjuste')->name('ajustes.inventarios.impresion');
 
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');
@@ -151,7 +173,7 @@ Route::middleware(['auth'])->group(function() {
 	//rutas para modelo 'conceptoajuste'
 	Route::resource('conceptos', 'ConceptoAjusteController');
 	Route::get('api/conceptosajuste', 'ConceptoAjusteController@apiConceptosAjuste')->name('api.conceptos');
-	Route::get('api/conceptosAjustes/buscador', 'ConceptoAjusteController@apiConceptoAjusteBuscador')->name('api.conceptosAjustes.buscador');
+	Route::get('api/conceptosAjustes/buscador', 'ConceptoAjusteController@apiConceptosAjustesBuscador')->name('api.conceptosAjustes.buscador');
 
 	//rutas para modelo 'conceptos_caja'
 	Route::resource('conceptocaja', 'ConceptoCajaController');
@@ -178,12 +200,36 @@ Route::middleware(['auth'])->group(function() {
 	//Rutas para orden de compra
 	Route::resource('ordencompra', 'OrdenCompraController');
 	Route::get('api/ordencompra', 'OrdenCompraController@apiOrdenCompra')->name('api.ordencompra');
+	///api/ordencompra/proveedor/
+	Route::get('api/ordencompra/proveedor/{cliente_id}', 'OrdenCompraController@apiOrdenCompraProveedores')->name('api.ordencompra.proveedor');
+	Route::get('api/ordencompra/proveedor/detalles/{array_pedidos}', 'OrdenCompraController@apiOrdenCompraDetalles')->name('api.ordencompra.detalles');
 
-	//Rutas para orden de compra
+	//Rutas para compra
 	Route::resource('compra', 'CompraController');
 	Route::get('api/compra', 'CompraController@apiCompras')->name('api.compra');
 
+	//Rutas para Nota de Crédito de Compras
+	Route::resource('notacreditocompra', 'NotaCreditoComprasController');
+	Route::get('api/notacreditocompra', 'NotaCreditoComprasController@apiNotaCreditoCompras')->name('api.nota.credito.compras');
+
 	//Para ver los errores de PHP
 	Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+	/*REPORTES*/
+	Route::get ('reporte/extractocliente', 'ReportesCuentasPorCobrarController@viewExtractoCliente')->name('cuentasporcobrar.extractocliente');
+	Route::post('reporte/extractocliente', 'ReportesCuentasPorCobrarController@verExtractoCliente')->name('cuentasporcobrar.verextractocliente');
+
+
+	Route::get ('reporte/articuloexistencia', 'ReportesStockController@viewArticuloExistencia')->name('stock.articuloexistencia');
+	Route::post('reporte/articuloexistencia', 'ReportesStockController@verArticuloExistencia')->name('stock.verarticuloexistencia');
+
+	//VENTAS
+	Route::get ('reporte/ventas', 'ReportesVentasController@viewReporteVentas')->name('reporte.ventas');
+	Route::post('reporte/ventas', 'ReportesVentasController@verReporteVentas')->name('reporte.ver.ventas');
+
+	Route::get('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCajaView')->name('gestionCajas.habilitarCaja');
+	Route::post('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCaja')->name('gestionCajas.habilitarCaja.metodo');
+	Route::get('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCajaView')->name('gestionCajas.cerrarCaja');
+	Route::post('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCaja')->name('gestionCajas.cerrarCaja.metodo');
 
 });

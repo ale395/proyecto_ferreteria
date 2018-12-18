@@ -9,11 +9,11 @@ class AjusteInventarioDet extends Model
     protected $table = 'ajustes_inventarios_det';
 
     protected $fillable = [
-        'ajuste_inventario_cab_id', 'articulo_id', 'cantidad', 
+        'ajuste_inventario_cab_id', 'articulo_id', 'cantidad', 'monto_total','existencia'
     ];
 
-    public function setPedidoCabeceraId($ajuste_inventario_cab_id){
-        $this->pedido_cab_id = $ajuste_inventario_cab_id;
+    public function setAjusteInventarioCabId($ajuste_inventario_cab_id){
+        $this->ajuste_inventario_cab_id = $ajuste_inventario_cab_id;
     }
 
     public function setArticuloId($articulo_id){
@@ -27,24 +27,37 @@ class AjusteInventarioDet extends Model
     public function getCantidad(){
         return $this->cantidad;
     }
-
-    
-    public function setCantidadTotal($cantidad_total){
-        $this->cantidad_total = $cantidad_total;
+    public function setExistencia($existencia){
+        $this->existencia = $existencia;
     }
 
-    public function getCantidadTotal(){
-        return number_format($this->cantidad_total, 0, ',', '.');
+    public function getExistencia(){
+        return $this->existencia;
+    }
+    public function setCostoUnitario($costo_unitario){
+        $this->costo_unitario = $costo_unitario;
     }
 
-    public function articulo()
-    {
-        return $this->belongsTo('App\Articulo');
+    public function getCostoUnitario(){
+        return number_format($this->costo_unitario, 0, ',', '.');
     }
+
+    public function setSubtotal($sub_total){
+        $this->sub_total = $sub_total;
+    }
+
+    public function getSubTotal(){
+        return number_format($this->sub_total, 0, ',', '.');
+    }
+
 
     public function ajusteInventarioCabecera()
     {
         return $this->belongsTo('App\AjusteInventarioCab');
+    }
+    public function articulo()
+    {
+        return $this->belongsTo('App\Articulo');
     }
 
 }

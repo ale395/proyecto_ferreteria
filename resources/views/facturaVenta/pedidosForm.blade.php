@@ -14,10 +14,10 @@
                     <table id="tabla-pedidos" class="table table-striped" width="100%">
                         <thead>
                             <tr>
-                                <th>Nro Pedido</th>
-                                <th>Fecha</th>
-                                <th>Moneda</th>
-                                <th>Total</th>
+                                <th width="13%">Nro Pedido</th>
+                                <th width="13%">Fecha</th>
+                                <th width="13%">Moneda</th>
+                                <th width="13%">Total</th>
                                 <th>Comentario</th>
                             </tr>
                         </thead>

@@ -9,7 +9,8 @@
                 <div class="panel-heading">
                     <h4>Ver Factura
                     <div class="pull-right btn-group">
-                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Factura" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Factura" href="{{route('facturas.ventas.impresion', $factura_cab->getId())}}" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Nueva Factura" href="{{route('facturacionVentas.create')}}" type="button" class="btn btn-info"><i class="fa fa-plus" aria-hidden="true"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('facturacionVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
@@ -33,15 +34,24 @@
                             <input type="text" id="tipo_factura" name="tipo_factura" class="form-control" readonly="readonly" value="{{$factura_cab->getTipoFacturaIndex()}}">
                         </div>
                         <label for="nro_factura" class="col-md-1 control-label">Número</label>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <input type="text" id="nro_factura" name="nro_factura" class="form-control" readonly="readonly" value="{{$factura_cab->getNroFacturaIndex()}}">
                         </div>
-                        <label for="fecha_emision" class="col-md-2 control-label">Fecha</label>
+                        <label for="nro_timbrado" class="col-md-2 control-label">N° Timbrado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="nro_timbrado" name="nro_timbrado" class="form-control" readonly="readonly" value="{{$factura_cab->serie->timbrado->getNroTimbrado()}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha_emision" class="col-md-1 control-label">Fecha</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$factura_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
+                        <label for="fecha_vigencia" class="col-md-5 control-label">Vigencia</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_vigencia" name="fecha_vigencia" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$factura_cab->serie->timbrado->getFechaFinVigencia()}}" data-inputmask="'mask': '99/99/9999'" readonly>
+                        </div>
                     </div>
-                    <br>
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente</label>
                         <div class="col-md-6">
@@ -74,7 +84,6 @@
                             <input type="text" id="estado" name="estado" class="form-control" value="{{old('valor_cambio', $factura_cab->getEstadoNombre())}}" readonly>
                         </div>
                     </div>
-                    <br>
                     <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
                         <thead>
                             <tr>

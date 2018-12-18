@@ -3,11 +3,12 @@
 namespace App;
 
 use App\Empresa;
+use App\CuentaCliente;
 use Illuminate\Database\Eloquent\Model;
 
 class FacturaVentaCab extends Model
 {
-    CONST MAX_LINEAS_DETALLE = 3;
+    CONST MAX_LINEAS_DETALLE = 10;
 
     protected $table = 'facturas_ventas_cab';
 
@@ -25,6 +26,14 @@ class FacturaVentaCab extends Model
         } elseif ($this->tipo_factura == 'CR') {
             return 'Crédito';
         }
+    }
+
+    public function getSerie(){
+        return $this->nume_serie;
+    }
+
+    public function setSerie($serie){
+        $this->nume_serie = $serie;
     }
 
     public function setTipoFactura($tipo_factura){
@@ -89,6 +98,10 @@ class FacturaVentaCab extends Model
         return number_format($this->monto_total, 0, ',', '.');
     }
 
+    public function getMontoTotalNumber(){
+        return $this->monto_total;
+    }
+
     public function setMontoTotal($monto_total){
         $this->monto_total = $monto_total;
     }
@@ -113,6 +126,18 @@ class FacturaVentaCab extends Model
         } elseif ($this->estado == 'A') {
             return 'Anulada';
         }
+    }
+
+    public function getMontoSaldo(){
+        $cuenta_cliente = CuentaCliente::where('tipo_comprobante', 'F')
+            ->where('comprobante_id', $this->id)->first();
+        return $cuenta_cliente->getMontoSaldo();
+    }
+
+    public function getMontoSaldoFormat(){
+        $cuenta_cliente = CuentaCliente::where('tipo_comprobante', 'F')
+            ->where('comprobante_id', $this->id)->first();
+        return number_format($cuenta_cliente->getMontoSaldo(), 0, ',', '.');
     }
 
     public function setEstado($estado){
@@ -151,5 +176,13 @@ class FacturaVentaCab extends Model
 
     public function facturaDetalle(){
         return $this->hasMany('App\FacturaVentaDet', 'factura_cab_id');
+    }
+
+    public function facturaPedidos(){
+        return $this->hasMany('App\PedidoFactura', 'factura_cabecera_id', 'id');
+    }
+
+    public function pedidos(){
+        return $this->belongsToMany('App\PedidoVentaCab', 'pedidos_facturas', 'factura_cabecera_id', 'pedido_cabecera_id');
     }
 }

@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     <h4>Lista de Articulos
                         @can('articulos.create')
-                          <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                        <a onclick="addForm()" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
@@ -61,101 +61,32 @@
                     });
 
       function addForm() {
-        save_method = "add";
+
+
+window.location='{{route('articulos.create')}}'
+save_method = "add";
         $('#error-block').hide();
         $('#activo').attr('checked', true);
-        
-        $('#select2-impuestos').val("").change();
-        $('#select2-familias').val("").change();
-        $('#select2-rubros').val("").change();
-        $('#select2-lineas').val("").change();
-        $('#select2-unidades').val("").change();
         $('input[name=_method]').val('POST');
         $('#modal-form').modal('show');
-        $('#modal-form form')[0].reset();
-        $('.modal-title').text('Nuevo Articulo');
-
-        $('#codigo').prop('readonly', false);
-        $('#descripcion').prop('readonly', false);
-        $('#costo').prop('readonly', false);
-        $('#codigo_barra').prop('readonly', false);
-        $('#porcentaje_ganancia').prop('readonly', false);
-        $('#comentario').prop('readonly', false);
- 
-        $('#select2-grupos').prop('readonly', false);
-        $('#select2-impuestos').prop('disabled', false);
-        $('#select2-familias').prop('disabled', false);
-        $('#select2-lineas').prop('disabled', false);
-        $('#select2-unidades').prop('disabled', false);
-        $('#activo').prop('disabled', false);
-        $('#form-btn-guardar').prop('disabled', false);
       }
 
-      function showForm(id) {
-        save_method = "add";
-        $('#error-block').hide();
-        $('input[name=_method]').val('GET');
-        $('#modal-form').modal('show');
-        $('#modal-form form')[0].reset();
-        $('.modal-title').text('Ver Articulos');
 
-        $.ajax({
-          url: "{{ url('articulos') }}" + '/' + id,
-          type: "GET",
-          dataType: "JSON",
-          success: function(data) {
-            $('#modal-form').modal('show');
 
-            $('#id').val(data.id);
-            $('#codigo').val(data.codigo);
-            $('#codigo_barra').val(data.codigo_barra);
-            $('#descripcion').val(data.descripcion);
-            $('#ultimo_costo').val(data.ultimo_costo);
-            $('#costo_promedio').val(data.costo_promedio);
-            $('#porcentaje_ganancia').val(data.porcentaje_ganancia);
-            $('#comentario').val(data.comentario);
 
-            $("#select2-impuestos").select2("val", "");
-            $('#select2-impuestos').val(data.impuesto_id).change();
-            $("#select2-familias").select2("val", "");
-            $('#select2-familias').val(data.familia_id).change();
-            $("#select2-rubros").select2("val", "");
-            $('#select2-rubros').val(data.rubro_id).change();
-            $("#select2-lineas").select2("val", "");
-            $('#select2-lineas').val(data.linea_id).change();
-            $("#select2-unidades").select2("val", "");
-            $('#select2-unidades').val(data.linea_id).change();
-            if (data.activo) {
-              $('#activo').attr('checked', true);
-            }else{
-              $('#activo').attr('checked', false);
-            }
 
-            $('#codigo').prop('readonly', true);
-            $('#nombre').prop('readonly', true);
-            $('#apellido').prop('readonly', true);
-            $('#direccion').prop('readonly', true);
-            $('#telefono').prop('readonly', true);
-            $('#nro_documento').prop('readonly', true);
-            $('#ruc').prop('readonly', true);
-            $('#correo_electronico').prop('readonly', true);
-            $('#select2-zonas').prop('disabled', true);
-            $('#select2-tipos').prop('disabled', true);
-            $('#select2-listas').prop('disabled', true);
-            $('#select2-vendedores').prop('disabled', true);
-            $('#activo').prop('disabled', true);
-            $('#form-btn-guardar').prop('disabled', true);
-          },
-          error : function() {
-              $.alert({
-                title: 'Atención!',
-                content: 'No se encontraron datos!',
-                icon: 'fa fa-exclamation-circle',
-                type: 'orange',
-              });
-          }
-        });
-      }
+
+
+
+
+
+
+
+
+    //  function showForm(id) {
+      //  var show_page = '/articulos/' + id;
+       // window.location.href = show_page;
+         //    }
 
       $(function(){
             $('#modal-form form').validator().on('submit', function (e) {
@@ -167,8 +98,8 @@
                     $.ajax({
                         url : url,
                         type : "POST",
-                        //data : $('#modal-form form').serialize(),
-                        data : new FormData(this),
+                        data : $('#modal-form form').serialize(),
+                        ///data : new FormData(this),
                         success : function($data) {
                             $('#modal-form').modal('hide');
                             table.ajax.reload();
@@ -198,85 +129,9 @@
             });
         });
 
-      function editForm(id) {
-        save_method = 'edit';
-        $('input[name=_method]').val('PATCH');
-        $('#modal-form form')[0].reset();
-        $('#error-block').hide();
-        $.ajax({
-          url: "{{ url('articulos') }}" + '/' + id + "/edit",
-          type: "GET",
-          dataType: "JSON",
-          success: function(data) {
-            $('#modal-form').modal('show');
-            $('.modal-title').text('Editar Articulo');
-            $('#codigo').prop('readonly', false);
-
-        $('#descripcion').prop('readonly', false);
-        $('#ultimo_costo').prop('readonly', true);
-        $('#costo_promedio').prop('readonly', true);
-        $('#codigo_barra').prop('readonly', false);
-        $('#porcentaje_ganancia').prop('readonly', false);
-        $('#comentario').prop('readonly', false);
- 
-        $('#select2-grupos').prop('readonly', false);
-        $('#select2-impuestos').prop('disabled', false);
-        $('#select2-familias').prop('disabled', false);
-        $('#select2-lineas').prop('disabled', false);
-        $('#select2-unidades').prop('disabled', false);
-        $('#activo').prop('disabled', false);
-        $('#vendible').prop('disabled', false);
-        $('#control_existencia').prop('disabled',false);
-        $('#form-btn-guardar').prop('disabled', false);
-
-        
-
-
-            $('#id').val(data.id);
-            $('#codigo').val(data.codigo);
-            $('#codigo_barra').val(data.codigo_barra);
-            $('#descripcion').val(data.descripcion);
-            $('#ultimo_costo').val(data.ultimo_costo);
-            $('#costo_promedio').val(data.costo_promedio);
-            $('#porcentaje_ganancia').val(data.porcentaje_ganancia);
-            $('#comentario').val(data.comentario);
-            //$('#img_producto').val(data.img_producto);
-            $('#img_producto_image').attr('src','{{ URL::to('/') }}/images/productos/'+data.img_producto);
-            $("#select2-impuestos").select2("val", "");
-            $('#select2-impuestos').val(data.impuesto_id).change();
-            $("#select2-familias").select2("val", "");
-            $('#select2-familias').val(data.familia_id).change();
-            $("#select2-rubros").select2("val", "");
-            $('#select2-rubros').val(data.rubro_id).change();
-            $("#select2-lineas").select2("val", "");
-            $('#select2-lineas').val(data.linea_id).change();
-            $("#select2-unidades").select2("val", "");
-            $('#select2-unidades').val(data.linea_id).change();
-            if (data.activo) {
-              $('#activo').attr('checked', true);
-            }else{
-              $('#activo').attr('checked', false);
-            }
-            if (data.vendible) {
-              $('#vendible').attr('checked', true);
-            }else{
-              $('#vendible').attr('checked', false);
-            }
-            if (data.control_existencia) {
-              $('#control_existencia').attr('checked', true);
-            }else{
-              $('#control_existencia').attr('checked', false);
-            }
-          },
-          error : function() {
-              $.alert({
-                title: 'Atención!',
-                content: 'No se encontraron datos!',
-                icon: 'fa fa-exclamation-circle',
-                type: 'orange',
-              });
-          }
-        });
+      function editForm(id) {       
+     
+        window.location="{{ url('articulos') }}" + '/' + id +'/edit';
       }
 
       function deleteData(id){
@@ -336,6 +191,8 @@
           }
           
         });
+    </script>
+    <script type="text/javascript">
     </script>
   <script type="text/javascript">
     $('#articulo-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
@@ -397,5 +254,8 @@
                 language: "es"
             });
         });
+  </script>
+   <script type="text/javascript">
+    $('#articulo-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
   </script>
 @endsection

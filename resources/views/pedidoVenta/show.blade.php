@@ -9,7 +9,8 @@
                 <div class="panel-heading">
                     <h4>Ver Pedido
                     <div class="pull-right btn-group">
-                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Pedido" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Pedido" href="{{route('pedidos.ventas.impresion', $pedido_cab->getId())}}" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Nuevo Pedido" href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-info"><i class="fa fa-plus" aria-hidden="true"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
@@ -37,6 +38,7 @@
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$pedido_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
                     </div>
+                    
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente</label>
                         <div class="col-md-6">
@@ -68,6 +70,12 @@
                         <div class="col-md-2">
                             <input type="text" id="estado" name="estado" class="form-control" value="{{old('valor_cambio', $pedido_cab->getEstadoNombre())}}" readonly>
                         </div>
+                        @if(!is_null($pedido_cab->pedidoFactura))
+                            <label for="factura_nro" class="col-md-2 control-label">Factura Número</label>
+                            <div class="col-md-2">
+                                <input type="text" id="factura_nro" name="factura_nro" class="form-control" value="{{$pedido_cab->pedidoFactura->factura->getNroFacturaIndex()}}" readonly>
+                            </div>
+                        @endif
                     </div>
                     <br>
                     <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">

@@ -15,6 +15,18 @@
                     </h4>
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        @if ($errors->any())
+                            <div class="alert alert-danger alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
                     <table id="pedidos-table" class="table-striped table-responsive row-border" style="width:100%">
                         <thead>
                             <tr>
@@ -25,7 +37,7 @@
                                 <th>Moneda</th>
                                 <th>Total</th>
                                 <th>Estado</th>
-                                <th width="70">Acciones</th>
+                                <th width="50">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -66,6 +78,10 @@
                        },
                        {
                             "targets": 6,
+                            "className": "text-center",
+                       },
+                       {
+                            "targets": 7,
                             "className": "text-center",
                        }],
                       columns: [

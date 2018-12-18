@@ -20,6 +20,7 @@
                             <tr>
                                 <th>Codigo</th>
                                 <th>Descripcion</th>
+                                <th>Singo Operacion</th>
                                 <th width="150">Acciones</th>
                             </tr>
                         </thead>
@@ -41,6 +42,8 @@
                       columns: [
                         {data: 'num_concepto', name: 'num_concepto'},
                         {data: 'descripcion', name: 'descripcion'},
+                        {data: 'signo', name: 'signo'},
+
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ]
                     });
@@ -110,6 +113,8 @@
             $('#id').val(data.id);
             $('#num_concepto').val(data.num_concepto);
             $('#descripcion').val(data.descripcion);
+            $('#signo').val(data.signo);
+
           },
           error : function() {
               alert("Nothing Data");

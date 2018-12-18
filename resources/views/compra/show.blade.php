@@ -7,10 +7,12 @@
         <form method="post" action="#" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Ver Pedido
+                    <h4>Ver Compra
                     <div class="pull-right btn-group">
-                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Pedido" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <!--
+                        <a data-toggle="tooltip" data-placement="top" title="Imprimir Factura" href="#" type="button" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                        -->
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('compra.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
@@ -26,47 +28,52 @@
                     </div>
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
-                    <input type="hidden" id="id" name="id" value="{{$pedido_cab->getId()}}">
+                    <input type="hidden" id="id" name="id" value="{{$factura_cab->getId()}}">
                     <div class="form-group">
-                        <label for="nro_pedido" class="col-md-1 control-label">Número</label>
+                        <label for="tipo_factura" class="col-md-1 control-label">Tipo Fac.</label>
                         <div class="col-md-2">
-                            <input type="number" id="nro_pedido" name="nro_pedido" class="form-control" readonly="readonly" value="{{$pedido_cab->getNroPedido()}}">
+                            <input type="text" id="tipo_factura" name="tipo_factura" class="form-control" readonly="readonly" value="{{$factura_cab->getTipoFacturaIndex()}}">
                         </div>
-                        <label for="fecha_emision" class="col-md-5 control-label">Fecha</label>
+                        <label for="fecha_emision" class="col-md-2 control-label">Fecha</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$pedido_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$factura_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="nro_factura" class="col-md-1 control-label">Número</label>
+                        <div class="col-md-3">
+                            <input type="text" id="nro_factura" name="nro_factura" class="form-control" readonly="readonly" value="{{$factura_cab->getNroFactura()}}">
+                        </div>
+                        <label for="timbrado" class="col-md-1 control-label">Timbrado</label>
+                        <div class="col-md-2">
+                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" readonly="readonly" value="{{$factura_cab->getTimbrado()}}" >  
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="cliente_id" class="col-md-1 control-label">Cliente</label>
+                        <label for="proveedor_id" class="col-md-1 control-label">Proveedor</label>
                         <div class="col-md-6">
-                            <input id="select2-clientes" name="cliente_id" class="form-control" value="{{$pedido_cab->cliente->getNombreSelect()}}" readonly>
-                        </div>
-                        <label for="lista_precio_id" class="col-md-1 control-label">Lista Prec.</label>
-                        <div class="col-md-3">
-                            <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
-                                <input id="select2-lista-precios" name="lista_precio_id" class="form-control" value="{{$pedido_cab->listaPrecio->getNombre()}}" readonly>
-                            </a>
+                            <input id="select2-proveedores" name="proveedor_id" class="form-control" value="{{$factura_cab->proveedor->getNombreSelect()}}" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="moneda_id" class="col-md-1 control-label">Moneda</label>
                         <div class="col-md-3">
-                            <input id="select2-monedas" name="moneda_id" class="form-control" value="{{$pedido_cab->moneda->getDescripcion()}}" readonly>
+                            <input id="select2-monedas" name="moneda_id" class="form-control" value="{{$factura_cab->moneda->getDescripcion()}}" readonly>
                         </div>
                         <label for="valor_cambio" class="col-md-1 control-label">Cambio</label>
                         <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{$pedido_cab->getValorCambio()}}" readonly>
+                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{$factura_cab->getValorCambio()}}" readonly>
                         </div>
                          <label for="comentario" class="col-md-1 control-label">Comentario</label>
                         <div class="col-md-4">
-                            <textarea class="form-control" rows="2" id="comentario" name="comentario" readonly>{{$pedido_cab->getComentario()}}</textarea>
+                            <textarea class="form-control" rows="2" id="comentario" name="comentario" readonly>{{$factura_cab->getComentario()}}</textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="estado" class="col-md-1 control-label">Estado</label>
                         <div class="col-md-2">
-                            <input type="text" id="estado" name="estado" class="form-control" value="{{old('valor_cambio', $pedido_cab->getEstadoNombre())}}" readonly>
+                            <input type="text" id="estado" name="estado" class="form-control" value="{{old('valor_cambio', $factura_cab->getEstadoNombre())}}" readonly>
                         </div>
                     </div>
                     <br>
@@ -84,16 +91,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
+                            @foreach ($factura_cab->comprasdetalle as $factura_det)
                                 <tr>
-                                    <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
-                                    <td>{{$pedido_det->getCantidadNumber()}}</td>
-                                    <td>{{$pedido_det->getPrecioUnitario()}}</td>
-                                    <td>{{$pedido_det->getMontoDescuento()}}</td>
-                                    <td>{{$pedido_det->getMontoExenta()}}</td>
-                                    <td>{{$pedido_det->getMontoGravada()}}</td>
-                                    <td>{{$pedido_det->getMontoIva()}}</td>
-                                    <td>{{$pedido_det->getMontoTotal()}}</td>
+                                    <td>{{$factura_det->articulo->getNombreSelect()}}</td>
+                                    <td>{{$factura_det->getCantidadNumber()}}</td>
+                                    <td>{{$factura_det->getCostoUnitario()}}</td>
+                                    <td>{{$factura_det->getMontoDescuento()}}</td>
+                                    <td>{{$factura_det->getMontoExenta()}}</td>
+                                    <td>{{$factura_det->getMontoGravada()}}</td>
+                                    <td>{{$factura_det->getMontoIva()}}</td>
+                                    <td>{{$factura_det->getMontoTotal()}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -106,7 +113,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>Total</th>
-                                <th>{{$pedido_cab->getMontoTotal()}}</th>
+                                <th>{{$factura_cab->getMontoTotal()}}</th>
                             </tr>
                         </tfoot>
                     </table>

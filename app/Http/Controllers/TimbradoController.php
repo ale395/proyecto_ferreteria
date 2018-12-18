@@ -38,6 +38,7 @@ class TimbradoController extends Controller
      */
     public function store(Request $request)
     {
+        //$otros_timbrados = Timbrado::all();
 
         $rules = [
             'nro_timbrado' => 'required|unique:timbrados,nro_timbrado',
@@ -49,10 +50,21 @@ class TimbradoController extends Controller
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            $errors =  json_decode($errors);
-
+            $errors = json_decode($errors);
             return response()->json(['errors' => $errors], 422); // Status code here
         }
+
+        /*if (!empty($otros_timbrados)) {
+            $fecha_inicio = date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_inicio_vigencia'])));
+            $fecha_fin = date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_fin_vigencia'])));
+            $min_fecha_inicio = $otros_timbrados->min('fecha_inicio_vigencia');
+            $max_fecha_fin = $otros_timbrados->max('fecha_fin_vigencia');
+
+            if (($fecha_inicio >= $min_fecha_inicio and $fecha_inicio <= $max_fecha_fin) or ($fecha_fin <= $max_fecha_fin and $fecha_fin >= $min_fecha_inicio)) {
+                $errors = array('Las fechas establecidas se superponen a otro timbrado ya existente!');
+                return response()->json(['errors' => $errors], 422); // Status code here
+            }
+        }*/
 
         $data = [
             'nro_timbrado' => $request['nro_timbrado'],
@@ -98,6 +110,7 @@ class TimbradoController extends Controller
     public function update(Request $request, $id)
     {
         $timbrado = Timbrado::findOrFail($id);
+        //$otros_timbrados = Timbrado::where('id', '!=', $id)->get();
 
         $rules = [
             'nro_timbrado' => 'required|unique:timbrados,nro_timbrado,'.$timbrado->id,
@@ -113,6 +126,18 @@ class TimbradoController extends Controller
 
             return response()->json(['errors' => $errors], 422); // Status code here
         }
+
+        /*if (!empty($otros_timbrados)) {
+            $fecha_inicio = date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_inicio_vigencia'])));
+            $fecha_fin = date("Y-m-d",strtotime(str_replace('/', '-', $request['fecha_fin_vigencia'])));
+            $min_fecha_inicio = $otros_timbrados->min('fecha_inicio_vigencia');
+            $max_fecha_fin = $otros_timbrados->max('fecha_fin_vigencia');
+
+            if (($fecha_inicio >= $min_fecha_inicio and $fecha_inicio <= $max_fecha_fin) or ($fecha_fin <= $max_fecha_fin and $fecha_fin >= $min_fecha_inicio)) {
+                $errors = array('Las fechas establecidas se superponen a otro timbrado ya existente!');
+                return response()->json(['errors' => $errors], 422); // Status code here
+            }
+        }*/
 
         $timbrado->nro_timbrado = $request['nro_timbrado'];
 

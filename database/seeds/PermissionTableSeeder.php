@@ -792,6 +792,37 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver una Factura de Venta del sistema';
         $permission->save();
 
+        //Notas Credito - Ventas
+        $permission = new Permission();
+        $permission->name = 'Cargar Nota de Crédito Venta';
+        $permission->slug = 'notaCreditoVentas.create';
+        $permission->description = 'Permite la carga de una Nota de Crédito de venta en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Nota de Crédito Venta';
+        $permission->slug = 'notaCreditoVentas.destroy';
+        $permission->description = 'Permite la eliminación de una Nota de Crédito de venta del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Nota de Crédito Venta';
+        $permission->slug = 'notaCreditoVentas.edit';
+        $permission->description = 'Permite modificar los valores de una Nota de Crédito del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Notas de Crédito Ventas';
+        $permission->slug = 'notaCreditoVentas.index';
+        $permission->description = 'Permite ver el listado de Notas de Crédito Ventas del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Nota de Crédito Venta';
+        $permission->slug = 'notaCreditoVentas.show';
+        $permission->description = 'Permite ver una Nota de Crédito Venta del sistema';
+        $permission->save();
+
         //Ajustes - Inventarios
         $permission = new Permission();
         $permission->name = 'Cargar Ajuste de inventario';
@@ -941,6 +972,88 @@ class PermissionTableSeeder extends Seeder
         $permission->name = 'Ver Compra';
         $permission->slug = 'compra.show';
         $permission->description = 'Permite ver la Orden de Compra Cargada';
+        $permission->save();
+
+        //Notas Credito - Compra
+        $permission = new Permission();
+        $permission->name = 'Cargar Nota de Crédito Compra';
+        $permission->slug = 'notacreditocompras.create';
+        $permission->description = 'Permite la carga de una Nota de Crédito de Compra en el sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Nota de Crédito Compra';
+        $permission->slug = 'notacreditocompras.destroy';
+        $permission->description = 'Permite la eliminación de una Nota de Crédito de Compra del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Nota de Crédito Compra';
+        $permission->slug = 'notacreditocompras.edit';
+        $permission->description = 'Permite modificar los valores de una Nota de Compra del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Notas de Crédito Compra';
+        $permission->slug = 'notacreditocompras.index';
+        $permission->description = 'Permite ver el listado de Notas de Crédito de Compra del sistema';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Nota de Crédito Compra';
+        $permission->slug = 'notacreditocompras.show';
+        $permission->description = 'Permite ver una Nota de Crédito Compra del sistema';
+        $permission->save();
+
+        //GESTION DE CAJAS
+        $permission = new Permission();
+        $permission->name = 'Habilitar Caja';
+        $permission->slug = 'gestionCajas.habilitarCaja';
+        $permission->description = 'Permite habilitar caja para el inicio de las gestiones de cobranzas';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Cerrar Caja';
+        $permission->slug = 'gestionCajas.cerrarCaja';
+        $permission->description = 'Permite cerrar caja cuando finaliza el turno del cajero';
+        $permission->save();
+
+        //ANULACION DE COMPROBANTES
+        $permission = new Permission();
+        $permission->name = 'Ver listado de comprobantes para anular';
+        $permission->slug = 'anulacioncomprobantes.index';
+        $permission->description = 'Permite ver el listado de comprobantes pendientes que pueden ser anulados';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Anular Comprobante';
+        $permission->slug = 'anulacioncomprobantes.anular';
+        $permission->description = 'Permite anular el comprobante';
+        $permission->save();
+
+        //MOTIVOS DE ANULACION
+        $permission = new Permission();
+        $permission->name = 'Crear Motivo de Anulacion';
+        $permission->slug = 'motivoanulacion.create';
+        $permission->description = 'Permite crear un motivo de anulación';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Motivo de Anulacion';
+        $permission->slug = 'motivoanulacion.destroy';
+        $permission->description = 'Permite borrar un motivo de anulación';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Motivo de Anulacion';
+        $permission->slug = 'motivoanulacion.edit';
+        $permission->description = 'Permite editar un motivo de anulación';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Motivos de Anulaciones';
+        $permission->slug = 'motivoanulacion.index';
+        $permission->description = 'Permite listar los motivos de anulaciones';
         $permission->save();
     }
 }
