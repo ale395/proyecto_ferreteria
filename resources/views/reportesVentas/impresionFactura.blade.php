@@ -82,19 +82,21 @@
                         	<td class="text-right">{{$detalle->getMontoTotal()}}</td>
                         @endif
                     </tr>
-                    <tr>
-                    	<td colspan="4">Sub-Totales:</td>
-                    	<td></td>
-                    	<td></td>
-                    </tr>
-                    <tr>
-                    	<td colspan="5">Total a pagar: </td>
-                    	<td></td>
-                    </tr>
-                    <tr>
-                    	<td colspan="6">Liquidacion del IVA: </td>
-                    </tr>
                 @endforeach
+                <tr>
+                    	<td colspan="4">Sub-Totales:</td>
+                    	<td class="text-right">{{$total_grav_5}}</td>
+                    	<td class="text-right">{{$total_grav_10}}</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="5">Total a pagar: {{$total_en_letras}}</td>
+                    	<td class="text-right">{{$factura_cab->getMontoTotal()}}</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="2">Liquidacion del IVA: (5%) {{$total_iva_5}}</td>
+                    	<td colspan="2">(10%) {{$total_iva_10}}</td>
+                    	<td colspan="2">Total IVA: {{$total_iva}}</td>
+                    </tr>
     		</tbody>
     	</table>
     </div>
