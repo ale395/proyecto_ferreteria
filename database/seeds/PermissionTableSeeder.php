@@ -855,6 +855,37 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver un ajuste de inventrio del sistema';
         $permission->save();
   
+          //Inventarios
+          $permission = new Permission();
+          $permission->name = 'Cargar  inventario';
+          $permission->slug = 'inventarios.create';
+          $permission->description = 'Permite la carga de un ajuste de inventario en el sistema';
+          $permission->save();
+  
+          /*$permission = new Permission();
+          $permission->name = 'Borrar  inventario';
+          $permission->slug = 'inventarios.destroy';
+          $permission->description = 'Permite la eliminación de un ajuste de inventario del sistema';
+          $permission->save();*/
+  
+          $permission = new Permission();
+          $permission->name = 'Editar  inventario';
+          $permission->slug = 'inventarios.edit';
+          $permission->description = 'Permite modificar los valores de un pedido del sistema';
+          $permission->save();
+  
+          $permission = new Permission();
+          $permission->name = 'Listar  inventario';
+          $permission->slug = 'inventarios.index';
+          $permission->description = 'Permite ver el listado de ajuste de inventario del sistema';
+          $permission->save();
+  
+          $permission = new Permission();
+          $permission->name = 'Ver inventario';
+          $permission->slug = 'inventarios.show';
+          $permission->description = 'Permite ver un ajuste de inventrio del sistema';
+          $permission->save();
+    
 
         //PERMISOS PARA EL FORMULARIO DE Tipo de Proveedor
         $permission = new Permission();

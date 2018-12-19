@@ -149,6 +149,11 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/ajustesInventarios', 'AjusteInventarioController@apiAjustesInventarios')->name('api.ajustes.inventarios');
 	Route::get('ajustesInventarios/impresion/{ajuste_inventario}', 'AjusteInventarioController@impresionAjuste')->name('ajustes.inventarios.impresion');
 
+	//RUTA PARA EL CONTROLADOR  DE INVENTARIO
+	Route::resource('inventarios', 'InventarioController', ['parameters'=>['inventarios'=>'inventario']]);
+	Route::get('api/inventarios', 'InventarioController@apiInventarios')->name('api.inventarios');
+	
+
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');
 	Route::get('api/sucursales', 'SucursalController@apiSucursales')->name('api.sucursales');
