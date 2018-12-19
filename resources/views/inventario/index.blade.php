@@ -57,10 +57,6 @@
                        {
                             "targets": 3,
                             "className": "text-center",
-                       },
-                       {
-                            "targets": 4,
-                            "className": "text-center",
                        }],
                       columns: [
                         {data: 'nro_inventario', name: 'nro_inventario'},
