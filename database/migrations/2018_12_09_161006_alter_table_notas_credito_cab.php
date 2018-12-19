@@ -25,8 +25,12 @@ class AlterTableNotasCreditoCab extends Migration
      */
     public function down()
     {
-        Schema::table('nota_credito_ventas_cab', function (Blueprint $table) {
-            $table->dropColumn('nume_serie');
-        });
+        //Pablo - 14/10/2018 - controlamos si existen las columnas primero antes del drop        
+        if(Schema::hasColumn('nota_credito_ventas_cab','nume_serie') ) {
+            Schema::table('nota_credito_ventas_cab', function (Blueprint $table) {
+                $table->dropColumn('nume_serie');
+            });
+        }
+
     }
 }

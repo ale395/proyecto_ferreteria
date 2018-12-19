@@ -16,7 +16,7 @@ class AlterComprasCabTable extends Migration
         Schema::table('compras_cab', function (Blueprint $table) {
             //$table->integer('porcentaje_iva');
             $table->string('nro_factura', 14)->change();
-            $table->integer('orden_compra_id')->unsigned();
+            $table->integer('orden_compra_id')->nullable();
             $table->date('fecha_vigencia_timbrado');
 
             $table->foreign('orden_compra_id')->references('id')->on('orden_compras_cab');
