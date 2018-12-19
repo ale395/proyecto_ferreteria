@@ -47,7 +47,7 @@ class AjusteInventarioController extends Controller
        // $sucursales = Sucursal::where('activo',true)->get();  
         $nro_ajuste_inventario = AjusteInventarioCab::max('nro_ajuste');
 
-        $nro_ajsute_inventario = AjusteInventarioCab::max('nro_ajuste');
+        $nro_ajuste_inventario = AjusteInventarioCab::max('nro_ajuste');
 
 
         if($nro_ajuste_inventario) {

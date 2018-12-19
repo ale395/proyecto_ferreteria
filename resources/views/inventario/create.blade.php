@@ -4,14 +4,14 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('AjusteInventarioController@store')}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('InventarioController@store')}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Ajustes traslados/sobrantes/faltantes
+                    <h4>Inventario
                     <div class="pull-right btn-group">
                         <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('ajustesInventarios.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ajustesInventarios.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('inventarios.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('inventarios.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
@@ -39,9 +39,9 @@
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id">
                     <div class="form-group">
-                        <label for="nro_ajuste" class="col-md-1 control-label">Número Ajuste</label>
+                        <label for="nro_inventario" class="col-md-1 control-label">Número Inventario</label>
                         <div class="col-md-2">
-                            <input type="text" id="nro_ajuste" name="nro_ajuste" class="form-control" value="{{old('nro_ajuste', $nro_ajuste)}}"  readonly="readonly">
+                            <input type="text" id="nro_inventario" name="nro_inventario" class="form-control" value="{{old('nro_inventario', $nro_inventario)}}"  readonly="readonly">
                         </div>
 
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
@@ -55,15 +55,6 @@
                             </select>
                         </div>                
                     </div>
-                    <label for="concepto_ajuste_id" class="col-md-1 control-label">Concepto de Ajuste *</label>
-                          <div class="col-md-5">
-                            <select id="select2-conceptosAjustes" name="concepto_ajuste_id" class="form-control" style="width: 100%">
-                            <option></option>
-                                @foreach($concepto_ajuste as $id => $concepto_ajuste)
-                                  <option value="{{ $concepto_ajuste->id }}"> {{ $concepto_ajuste->descripcion }}</option>
-                                @endforeach
-                            </select>    
-                        </div>
                     <div class="form-group">
                        
                        <label for="motivo" class="col-md-1 control-label">Observacion</label>
@@ -149,7 +140,7 @@
                                 <th width="5%">Acción</th>
                                 <th>Artículo ID</th>
                                 <th>Nombre Artículo</th>
-                                <th width="6%">Exist.</th>
+                                <th width="6%">Exist. Anerior</th>
                                 <th width="6%">Cant.</th>
                                 <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
@@ -380,29 +371,6 @@
 </script>
 <script type="text/javascript">
    $(document).ready(function(){
-    $('#select2-conceptosAjustes').select2({
-            placeholder: 'Seleccione una opción',
-            language: "es",
-            ajax: {
-                url: "{{ route('api.conceptosAjustes.buscador') }}",
-                delay: 250,
-                data: function (params) {
-                    var queryParameters = {
-                      q: params.term
-                    }
-
-                    return queryParameters;
-                  },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            }
-        });
-
     $('#select2-articulos').select2({
             placeholder: 'Seleccione una opción',
             language: "es",

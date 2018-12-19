@@ -31,8 +31,8 @@
                     <thead>
                         <tr class="active">
                             <th class="text-center">Artículo</th>
-                            <th class="text-center" width="10%">Cant.</th>
-                            <th class="text-center" width="10%">Existencia.</th>
+                            <th class="text-center" width="10%">Existencia Actual</th>
+                            <th class="text-center" width="10%">Cant. Ajustada</th>
                             <th class="text-center" width="10%">Precio Unitario</th>
                             <th class="text-center" width="10%">Total</th>
                         </tr>

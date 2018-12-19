@@ -278,6 +278,10 @@
                                         <li class="sub_menu"><a href="{{route('ajustesInventarios.index')}}">Ajustes de Inventario</a>
                                         </li>
                                     @endcan
+                                    @can('inventarios.index')
+                                        <li class="sub_menu"><a href="{{route('inventarios.index')}}">Inventario</a>
+                                        </li>
+                                    @endcan
                                 </ul>
                               </li>
                               <li><a>Reportes<span class="fa fa-chevron-down"></span></a>
@@ -340,7 +344,7 @@
               <a data-toggle="tooltip" data-placement="top" title="Cambiar Sucursal" onclick="elegirSucursal()">
                 <span class="fa fa-home" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Consulta de artículo">
+              <a data-toggle="tooltip" data-placement="top" title="Consulta de artículo" onclick="elegirArticulo()">
                 <span class="fa fa-search" aria-hidden="true"></span>
               </a>
               <a href="{{route('facturacionVentas.create')}}" data-toggle="tooltip" data-placement="top" title="Facturación">
@@ -454,6 +458,13 @@
         $('input[name=_method]').val('POST');
         $('#modal-sucursal').modal('show');
       }
+
+      function elegirArtiiculo() {
+        save_method = "add";
+        $('input[name=_method]').val('POST');
+        $('#modal-articulo').modal('show');
+      }
+
 
       function actualizaSucursal(empleado_id, sucursal_id){
           $.ajax({
