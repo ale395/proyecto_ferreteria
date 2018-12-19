@@ -139,6 +139,10 @@ class ComprasCab extends Model
         $this->usuario_id = $usuario_id;
     }
 
+    public function setOrdenCompraId($orden_compra_id){
+        $this->orden_compra_id = $orden_compra_id;
+    }
+
     public function getEstado(){
         return $this->estado;
     }

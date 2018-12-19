@@ -85,6 +85,11 @@ class CompraController extends Controller
             $valor_cambio = $request['valor_cambio'];
             var_dump($valor_cambio);
             $valor_cambio = number_format($valor_cambio, 2, '.', '');
+
+            $array_pedidos = [];
+            if ($request['pedidos_id'] != null) {
+                $array_pedidos = explode(",",($request['pedidos_id']));
+            }
             
             if (!empty('sucursal')) {
                 $request['sucursal_id'] = $sucursal->getId();
@@ -200,6 +205,26 @@ class CompraController extends Controller
                 $articulo_costo->update();
                 //----------------para el costo promedio-----------------------------------
 
+            }
+
+            if (count($array_pedidos) > 0) {
+                foreach ($array_pedidos as $nro_pedido) {
+                    $pedido_cab = OrdenCompraCab::findOrFail($nro_pedido);
+                    $pedido_cab->setEstado('F');
+                    $pedido_cab->update();
+    
+                    $cabecera_orden_compra = OrdenCompraCab::findOrFail($nro_pedido);
+                    $cabecera_orden_compra->setOrdenCompraId($pedido_cab->getId());
+                    $cabecera_orden_compra->update();
+
+                    $cabecera->setOrdenCompraId($pedido_cab->getId());
+                    $cabecera->update();
+
+                    //$pedido_factura = new PedidoFactura;
+                    //$pedido_factura->setPedidoId($pedido_cab->getId());
+                    //$pedido_factura->setFacturaId($cabecera->getId());
+                    //$pedido_factura->save();
+                }
             }
   
             if ($modalidad_pago != 'CON'){

@@ -95,6 +95,9 @@
                         <div class="col-md-1">
                             <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
+                        <div class="col-md-1">
+                            <label for="nro_orden_compra" class="col-md-1 control-label"> </label>
+                        </div>
                         <input type="text" id="pedidos_id" class="hidden" name="pedidos_id" value="{{old('pedidos_id')}}">
                     </div>
                     <div class="form-group">
@@ -631,11 +634,13 @@
 
     function cargarPedidos(){
         var datos = tablePedidos.rows( { selected: true } ).data();
-        //console.log(datos);
+        console.log(datos);
         //var i;
         var array_pedidos = [];
         for (i = 0; i < datos.length; i++) {
             array_pedidos.push(datos[i].id);
+
+            $('#nro_orden').val("Orden de Compra nro: " + datos[i].nro_orden);
         }
 
         url_tabla = "{{ route('api.ordencompra')}}" + "/proveedor/detalles/" + array_pedidos;
