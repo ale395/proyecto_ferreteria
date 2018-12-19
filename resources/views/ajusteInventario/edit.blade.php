@@ -4,15 +4,15 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('PedidoVentaController@update', $pedido_cab->getId())}}" class="form-horizontal" data-toggle="validator">
+    <form method="post" action="{{action('AjusteInventarioController@update', $ajuste_inventario_cab->getId())}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Editar Pedido
+                <h4>Editar Ajuste
                     <div class="pull-right btn-group">
                         <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                        <a data-toggle="tooltip" data-placement="top" title="Cancelar edición" href="{{route('pedidosVentas.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('pedidosVentas.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-                    </div>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar edicion"  href="{{route('ajustesInventarios.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ajustesInventarios.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                     </div>
                     
                     </h4>
                 </div>
@@ -37,111 +37,76 @@
                     </div>
                     <input name="_method" type="hidden" value="PATCH">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
-                    <input type="hidden" id="id" name="id" value="{{$pedido_cab->getId()}}">
+                    <input type="hidden" id="id" name="id"  value="{{$ajuste_inventario_cab->getId()}}">
                     <div class="form-group">
-                        <label for="nro_pedido" class="col-md-1 control-label">Número</label>
+                        <label for="nro_ajuste" class="col-md-1 control-label">Número Ajuste</label>
                         <div class="col-md-2">
-                            <input type="number" id="nro_pedido" name="nro_pedido" class="form-control" readonly="readonly" value="{{$pedido_cab->getNroPedido()}}">
+                            <input type="text" id="nro_ajuste" name="nro_ajuste" class="form-control" value="{{$ajuste_inventario_cab->getId()}}">
                         </div>
-                        <label for="fecha_emision" class="col-md-5 control-label">Fecha *</label>
+                        <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $pedido_cab->getFechaEmision())}}" data-inputmask="'mask': '99/99/9999'">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$ajuste_inventario_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'">
+                        </div>   
+                        <label for="sucursal_id" class="col-md-1 control-label">Sucursal *</label>
+                        <div class="col-md-3">
+                            <select id="select2-sucursales" name="sucursal_id" class="form-control" style="width: 100%">
+                                <option value="{{$ajuste_inventario_cab->sucursal->getId()}}" selected>{{$ajuste_inventario_cab->sucursal->getNombre()}}</option>
+                            </select>
+                        </div> 
+                     </div> 
+                        <label for="concepto_ajuste_id" class="col-md-1 control-label">Concepto de Ajuste *</label>
                         <div class="col-md-5">
-                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%">
-                                <option value="{{$pedido_cab->cliente->getId()}}">{{$pedido_cab->cliente->getNombreIndex()}}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-1">
-                            <a onclick="addForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Crear Cliente"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
-                        </div>
-                        <label for="lista_precio_id" class="col-md-1 control-label">Lista Pre.*</label>
-                        <div class="col-md-3">
-                            <a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
-                                <select id="select2-lista-precios" name="lista_precio_id" class="form-control" style="width: 100%" disabled>
-                                    <option value="{{$pedido_cab->listaPrecio->getId()}}" selected>{{$pedido_cab->listaPrecio->getNombre()}}</option>
-                                </select>
-                            </a>
-                        </div>
+                            <select id="select2-conceptosAjustes" name="concepto_ajuste_id" class="form-control" style="width: 100%">
+                            <option></option>
+                                  <option value="{{$ajuste_inventario_cab->conceptoAjuste->getDescripcion()}}"  selected>{{$ajuste_inventario_cab->conceptoAjuste->getDescripcion()}}</option>
+                            </select>    
+                        </div>  
+                    <div class="form-group">
+                    <label for="motivo" class="col-md-1 control-label">Observacion</label>
+                       <div class="col-md-4">
+                           <textarea class="form-control" rows="2" id="motivo" name="motivo"></textarea>
+                       </div>
+                   </div>
+                    <div class="form-group">
+                         <label class="col-md-1 control-label">Registrado por: </label>
+                         <div class="col-md-5">
+                            <h4>{{ Auth::user()->name }}</h4>
+                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="moneda_id" class="col-md-1 control-label">Moneda *</label>
-                        <div class="col-md-3">
-                            <select id="select2-monedas" name="moneda_id" class="form-control" style="width: 100%" disabled>
-                                <option value="{{$pedido_cab->moneda->getId()}}" selected>{{$pedido_cab->moneda->getDescripcion()}}</option>
-                            </select>
-                        </div>
-                        <label for="valor_cambio" class="col-md-1 control-label">Cambio*</label>
-                        <div class="col-md-2">
-                            <input type="text" id="valor_cambio" name="valor_cambio" class="form-control" value="{{old('valor_cambio', $pedido_cab->getValorCambio())}}" readonly>
-                        </div>
-                        <label for="comentario" class="col-md-1 control-label">Comentario</label>
-                        <div class="col-md-4">
-                            <textarea class="form-control" rows="2" id="comentario" name="comentario">{{old('comentario', $pedido_cab->getComentario())}}</textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="estado" class="col-md-1 control-label">Estado*</label>
-                        <div class="col-md-3">
-                            <select id="select2-estados" name="estado" class="form-control" style="width: 100%">
-                                @if ($pedido_cab->getEstado() == 'P')
-                                    <option value="P" selected>Pendiente</option>
-                                    <option value="C">Cancelado</option>
-                                    <option value="V">Vencido</option>
-                                @elseif ($pedido_cab->getEstado() == 'C')
-                                    <option value="P">Pendiente</option>
-                                    <option value="C" selected>Cancelado</option>
-                                    <option value="V">Vencido</option>
-                                @elseif ($pedido_cab->getEstado() == 'V')
-                                    <option value="P">Pendiente</option>
-                                    <option value="C">Cancelado</option>
-                                    <option value="V" selected>Vencido</option>
-                                @endif
-                                <option value="F" disabled>Facturado</option>
-                            </select>
-                        </div>
                     </div>
                     <br>
                     <div class="form-group">
-                        <label for="lista_precio_id" class="col-md-1 control-label">Artículo</label>
+                        <label for="articulo_id" class="col-md-1 control-label">Artículo</label>
                         <div class="col-md-4">
                             <select id="select2-articulos" name="articulo_id" class="form-control" style="width: 100%">
-
                             </select>
                         </div>
                         <div class="col-md-1">
-                            <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
-                        </div>
+                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia">
+                         </div>   
+                         <div class="col-md-1">
+                             <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
+                        </div>   
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()" readonly></a>
+                            <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
+                        </div>                         
+                        <div class="col-md-2">
+                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
                         </div>
                         <div class="col-md-1">
-                            <a data-toggle="tooltip" data-placement="top" title="% Descuento">
-                            <input type="number" id="porcentaje_descuento" name="porcentaje_descuento" class="form-control" placeholder="% Desc." min="0" max="100" onchange="calcularSubtotal()"></a>
-                        </div>
-                        <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Subtotal">
-                            <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly></a>
-                        </div>
-                        <input type="hidden" id="porcentaje_iva" name="porcentaje_iva" class="form-control">
-                        <div class="col-md-1">
-                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
+                    <span class="help-block with-errors"></span>
                     <table id="pedido-detalle" class="table table-striped table-responsive display" style="width:100%">
                         <thead>
                             <tr>
                                 <th width="5%">Acción</th>
                                 <th>Artículo</th>
+                                <th width="6%">Existencia</th>
                                 <th width="6%">Cant.</th>
-                                <th width="9%">Precio U.</th>
-                                <th width="9%">Descuento</th>
-                                <th width="9%">Exenta</th>
-                                <th width="9%">Gravada</th>
-                                <th width="6%">IVA</th>
+                                <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
                             </tr>
                         </thead>
@@ -151,36 +116,27 @@
                                     <tr>
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
+                                        <td>{{old('tab_existencia.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
-                                        <td>{{old('tab_precio_unitario.'.$i)}}</td>
-                                        <td>{{old('tab_monto_descuento.'.$i)}}</td>
-                                        <td>{{old('tab_exenta.'.$i)}}</td>
-                                        <td>{{old('tab_gravada.'.$i)}}</td>
-                                        <td>{{old('tab_iva.'.$i)}}</td>
+                                        <td>{{old('tab_costo_unitario.'.$i)}}</td>
                                         <td>{{old('tab_subtotal.'.$i)}}</td>
                                     </tr>
                                 @endfor
                             @else
-                                @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
+                            @foreach ($ajuste_inventario_cab->ajusteInventarioDetalle as $ajuste_inventario_det)
                                     <tr>
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
-                                        <td>{{$pedido_det->articulo->getNombreSelect()}}</td>
-                                        <td>{{$pedido_det->getCantidadNumber()}}</td>
-                                        <td>{{$pedido_det->getPrecioUnitario()}}</td>
-                                        <td>{{$pedido_det->getMontoDescuento()}}</td>
-                                        <td>{{$pedido_det->getMontoExenta()}}</td>
-                                        <td>{{$pedido_det->getMontoGravada()}}</td>
-                                        <td>{{$pedido_det->getMontoIva()}}</td>
-                                        <td>{{$pedido_det->getMontoTotal()}}</td>
+                                        <td>{{$ajuste_inventario_det->articulo->getNombreSelect()}}</td>
+                                        <td>{{$ajuste_inventario_det->getExistencia()}}</td>
+                                        <td>{{$ajuste_inventario_det->getCantidad()}}</td>
+                                        <td>{{$ajuste_inventario_det->getCostoUnitario()}}</td>
+                                        <td>{{$ajuste_inventario_det->getSubTotal()}}</td>
                                     </tr>
                                 @endforeach
                             @endif
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -197,14 +153,9 @@
                                 <th width="5%">Acción</th>
                                 <th>Artículo ID</th>
                                 <th>Nombre Artículo</th>
+                                <th width="6%">Exist.</th>
                                 <th width="6%">Cant.</th>
-                                <th width="9%">Precio U.</th>
-                                <th width="9%">% Descuento</th>
-                                <th width="9%">Monto Descuento</th>
-                                <th width="9%">% IVA</th>
-                                <th width="9%">Exenta</th>
-                                <th width="9%">Gravada</th>
-                                <th width="6%">IVA</th>
+                                <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
                             </tr>
                         </thead>
@@ -212,35 +163,24 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                    <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                         <th><input type="text" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_existencia[]" value="{{old('tab_existencia.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_precio_unitario[]" value="{{old('tab_precio_unitario.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
                                         <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
                                     </tr>
                                 @endfor
-                            @else
-                                @foreach ($pedido_cab->pedidosDetalle as $pedido_det)
-                                    <tr>
-                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
-                                        <th><input type="text" name="tab_articulo_id[]" value="{{$pedido_det->articulo->getId()}}"></th>
-                                        <th><input type="text" name="tab_articulo_nombre[]" value="{{$pedido_det->articulo->getDescripcion()}}"></th>
-                                        <th><input type="text" name="tab_cantidad[]" value="{{$pedido_det->getCantidad()}}"></th>
-                                        <th><input type="text" name="tab_precio_unitario[]" value="{{$pedido_det->getPrecioUnitario()}}"></th>
-                                        <th><input type="text" name="tab_porcentaje_descuento[]" value="{{$pedido_det->getPorcentajeDescuento()}}"></th>
-                                        <th><input type="text" name="tab_monto_descuento[]" value="{{$pedido_det->getMontoDescuento()}}"></th>
-                                        <th><input type="text" name="tab_porcentaje_iva[]" value="{{$pedido_det->getPorcentajeIva()}}"></th>
-                                        <th><input type="text" name="tab_exenta[]" value="{{$pedido_det->getMontoExenta()}}"></th>
-                                        <th><input type="text" name="tab_gravada[]" value="{{$pedido_det->getMontoGravada()}}"></th>
-                                        <th><input type="text" name="tab_iva[]" value="{{$pedido_det->getMontoIva()}}"></th>
-                                        <th><input type="text" name="tab_subtotal[]" value="{{$pedido_det->getMontoTotal()}}"></th>
+                                @else
+                                @foreach ($ajuste_inventario_cab->ajusteInventarioDetalle as $ajuste_inventario_det)
+                                    <tr> 
+                                    <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><input type="text" name="tab_articulo_id[]" value="{{$ajuste_inventario_det->articulo->getId()}}"></th>
+                                        <th><input type="text" name="tab_articulo_nombre[]" value="{{$ajuste_inventario_det->articulo->getDescripcion()}}"></th>
+                                        <th><input type="text" name="tab_cantidad[]" value="{{$ajuste_inventario_det->getCantidad()}}"></th>
+                                        <th><input type="text" name="tab_costo_unitario[]" value="{{$ajuste_inventario_det->getCostoUnitario()}}"></th>
+                                        <th><input type="text" name="tab_subtotal[]" value="{{$ajuste_inventario_det->getSubTotal()}}"></th>
                                     </tr>
                                 @endforeach
                             @endif
@@ -251,173 +191,138 @@
         </form>
     </div>
 </div>
-@include('cliente.create-persona-fisica')
-@include('cliente.create-persona-juridica')
 
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
-
-    $('[data-toggle="tooltip"]').tooltip({
-        trigger : 'hover'
-    });
-
-    function addForm() {
-        $.confirm({
-            title: 'Tipo de Persona',
-            content: 'Por favor seleccione el tipo de persona a registrar',
-            type: 'blue',
-            backgroundDismiss: true,
-            theme: 'modern',
-            buttons: {
-                confirm: {
-                    text: "Física",
-                    btnClass: 'btn-blue',
-                    action: function(){
-                        save_method = "add";
-                        $('#error-block').hide();
-                        $('input[name=_method]').val('POST');
-                        $('#tipo_persona_fisica').val('F');
-                        $('#modal-form-fisica').modal('show');
-                        $('#modal-form-fisica form')[0].reset();
-                        $('.modal-title').text('Nuevo Cliente - Persona Física');
-                    }
-                },
-                cancel: {
-                    text: "Jurídica",
-                    btnClass: 'btn-default',
-                    action: function(){
-                        save_method = "add";
-                        $('#error-block-juridica').hide();
-                        $('input[name=_method]').val('POST');
-                        $('#tipo_persona_juridica').val('J');
-                        $('#modal-form-juridica').modal('show');
-                        $('#modal-form-juridica form')[0].reset();
-                        $('.modal-title').text('Nuevo Cliente - Persona Jurídica');
-                    }
+       /*Evento onchange del select de artículos, para que recupere el costo si es seleccionado algún artículo distinto a nulo*/
+       $("#select2-articulos").change(function (e) {
+        var valor = $(this).val();
+        
+        if (valor != null) {
+            var articulo_id = $("#select2-articulos" ).val();
+            $.ajax({
+                type: "GET",
+                url: "{{ url('api/articulos') }}" + '/costo/' + articulo_id,
+                datatype: "json",
+                //async: false,
+                success: function(data){
+                    $("#costo_unitario" ).val(data.ultimo_costo).change();                    
+                    $("#btn-add-articulo").attr("disabled", false);
                 }
+            });
+
+            if($("#cantidad" ).val().length === 0){
+                $("#cantidad" ).val(1).change();
             }
-        });
-    }
+            $("#cantidad").focus();
 
-    $(function(){
-            $('#modal-form-fisica form').validator().on('submit', function (e) {
-                if (!e.isDefaultPrevented()){
-                    var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('clientes') }}";
-                    else url = "{{ url('clientes') . '/' }}" + id;
-
-                    $.ajax({
-                        url : url,
-                        type : "POST",
-                        data : $('#modal-form-fisica form').serialize(),
-                        success : function($data) {
-                            $('#modal-form-fisica').modal('hide');
-                            var data = {
-                                id: $data.id,
-                                text: $data.nro_cedula + ' - ' + $data.nombre + ', ' + $data.apellido
-                            };
-                            $('#select2-clientes').val(null).trigger('change');
-                            var newOption = new Option(data.text, data.id, false, false);
-                            $('#select2-clientes').append(newOption).trigger('change');
-                            var obj = $.alert({
-                                title: 'Información',
-                                content: 'Cliente guardado correctamente!',
-                                icon: 'fa fa-check',
-                                type: 'green',
-                                backgroundDismiss: true,
-                                theme: 'modern',
-                            });
-                            setTimeout(function(){
-                                obj.close();
-                            },4000); 
-                        },
-                        error : function(data){
-                            var errors = '';
-                            var errores = '';
-                            if(data.status === 422) {
-                                var errors = data.responseJSON;
-                                $.each(data.responseJSON.errors, function (key, value) {
-                                    errores += '<li>' + value + '</li>';
-                                });
-                                $('#error-block').show().html(errores);
-                            }else{
-                              $.alert({
-                              title: 'Atención!',
-                              content: 'Ocurrió un error durante el proceso!',
-                              icon: 'fa fa-times-circle-o',
-                              type: 'red',
-                              theme: 'modern',
-                            });
-                          }
-                            
-                        }
-                    });
-                    return false;
-                }
+        } else {
+            $("#btn-add-articulo").attr("disabled", true);
+        }
+    });
+ 
+ 
+    /*Evento onchange del select de artículos, para que recupere el precio si es seleccionado algún artículo distinto a nulo*/
+    $("#select2-articulos").change(function (e) {
+        var valor = $(this).val();
+        
+        if (valor != null) {
+            var articulo_id = $("#select2-articulos" ).val();
+            var sucursal_id= $("#select2-sucursales" ).val();
+            $.ajax({
+              type: "GET",
+              url: "{{ url('api/articulos') }}" + '/existencia/' + articulo_id + '/' + sucursal_id,
+              datatype: "json",
+              success: function(data){
+                $("#existencia" ).val(data.cantidad).change();
+                $("#btn-add-articulo").attr("disabled", false);
+              }
             });
-        });
 
-    $(function(){
-            $('#modal-form-juridica form').validator().on('submit', function (e) {
-                if (!e.isDefaultPrevented()){
-                    var id = $('#id').val();
-                    if (save_method == 'add') url = "{{ url('clientes') }}";
-                    else url = "{{ url('clientes') . '/' }}" + id;
+        } else {
+            $("#btn-add-articulo").attr("disabled", true);
+        }
+    });
+    function calcularSubtotal() {
+        var cantidad = $("#cantidad" ).val();
+        var costo_unitario = $("#costo_unitario" ).val();
+        cantidad = cantidad.replace(".", "");
+        costo_unitario = costo_unitario.replace(".", "");
+        var calculo = cantidad * $("#costo_unitario" ).val();
+        if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
+            $("#subtotal" ).val(calculo).change();
+        }
+    };
 
-                    $.ajax({
-                        url : url,
-                        type : "POST",
-                        data : $('#modal-form-juridica form').serialize(),
-                        success : function($data) {
-                            $('#modal-form-juridica').modal('hide');
-                            var data = {
-                                id: $data.id,
-                                text: $data.ruc + ' - ' + $data.razon_social
-                            };
-                            $('#select2-clientes').val(null).trigger('change');
-                            var newOption = new Option(data.text, data.id, false, false);
-                            $('#select2-clientes').append(newOption).trigger('change');
+    function addArticulo() {
+        var indexColumn = 0;
+        var articulos_detalle = $('input[name="tab_articulo_id[]"]').map(function () {
+            return this.value;
+        }).get();
 
-                            var obj = $.alert({
-                                title: 'Información',
-                                content: 'Cliente guardado correctamente!',
-                                icon: 'fa fa-check',
-                                type: 'green',
-                                backgroundDismiss: true,
-                                theme: 'modern',
-                            });
-                            setTimeout(function(){
-                                obj.close();
-                            },4000);
-                        },
-                        error : function(data){
-                            var errors = '';
-                            var errores = '';
-                            if(data.status === 422) {
-                                var errors = data.responseJSON;
-                                $.each(data.responseJSON.errors, function (key, value) {
-                                    errores += '<li>' + value + '</li>';
-                                });
-                                $('#error-block-juridica').show().html(errores);
-                            }else{
-                                $.alert({
-                                  title: 'Atención!',
-                                  content: 'Ocurrió un error durante el proceso!',
-                                  icon: 'fa fa-times-circle-o',
-                                  type: 'red',
-                                  theme: 'modern',
-                                });
-                          }
-                            
-                        }
-                    });
-                    return false;
-                }
-            });
-        });
+        /*Se obtienen los valores de los campos correspondientes*/
+        var cantidad = $("#cantidad").val();
+        var existencia = $("#existencia").val();
+        console.log('Antes de add: '+articulos_detalle);
 
-    $("#btn-add-articulo").attr("disabled", true);
+            var decimales = 0;
+            var articulo = $('#select2-articulos').select2('data')[0].text;
+            var articulo_id = $('#select2-articulos').select2('data')[0].id;
+            if (articulos_detalle.includes(articulo_id)) {
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'El artículo que intenta agregar ya está incluido en el detalle de la factura!',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000); 
+            } else {
+                articulos_detalle.push(articulo_id);
+                console.log('Despues de add: '+articulos_detalle);
+            var costo_unitario = $("#costo_unitario").val();
+            var subtotal = $("#subtotal").val();
+            /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+            existencia = $.number(existencia,decimales, ',', '.');
+            costo_unitario = $.number(costo_unitario,decimales, ',', '.');
+            cantidad = $.number(cantidad,decimales, ',', '.');
+            subtotal = $.number(subtotal,decimales, ',', '.');  
+            
+            /*Se agrega una fila a la tabla*/
+            var tabla = $("#pedido-detalle").DataTable();
+            tabla.row.add( [
+                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+                articulo,
+                existencia,
+                cantidad,
+                costo_unitario,
+                subtotal
+            ] ).draw( false );
+
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th><th><input type='text' name='tab_existencia[]' value='" + existencia + "'></th><th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+            $("#tab-hidden").append(markup);
+
+            /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+            $('#cantidad').number(false);
+            $('#costo_unitario').number(false);
+            $('#subtotal').number(false);
+            $('#existencia').val("");
+            $('#cantidad').val("");
+            $('#costo_unitario').val("");
+            $('#porcentaje_descuento').val("");
+            $('#porcentaje_iva').val("");
+            $('#subtotal').val("");
+            $('#select2-articulos').val(null).trigger('change');
+            $("#select2-articulos").focus();
+           }
+
+        };
+
+        $("#btn-add-articulo").attr("disabled", true);
     var table = $('#pedido-detalle').DataTable({
         "paging":   false,
         "ordering": false,
@@ -425,8 +330,7 @@
         "searching": false,
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
-          { className: "dt-center", "targets": [0,2,3,4,5,6,7,8] },
-          { className: "dt-left", "targets": [1] }
+        {"className": "dt-center", "targets": "_all"}
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -442,7 +346,7 @@
  
             // Total over all pages
             total = api
-                .column(8)
+                .column(4)//se refiere a la columna del datatable donde está el sub-total
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -450,182 +354,52 @@
  
             // Total over this page
             pageTotal = api
-                .column( 8, { page: 'current'} )
+                .column( 4, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 8 ).footer() ).html(
+            $( api.column( 4 ).footer() ).html(
                 $.number(total,decimales, ',', '.')
             );
         }
     });
-
-    /*Evento onchange del select de artículos, para que recupere el precio si es seleccionado algún artículo distinto a nulo*/
-    $("#select2-articulos").change(function (e) {
-        var valor = $(this).val();
-        
-        if (valor != null) {
-            var articulo_id = $("#select2-articulos" ).val();
-            var lista_precio_id = $("#select2-lista-precios" ).val();
-            $.ajax({
-              type: "GET",
-              url: "{{ url('api/articulos') }}" + '/cotizacion/' + articulo_id + '/' + lista_precio_id,
-              datatype: "json",
-              success: function(data){
-                $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
-                $("#precio_unitario" ).val(data.precio).change();
-                $("#porcentaje_descuento" ).val(0).change();
-                $("#btn-add-articulo").attr("disabled", false);
-              }
-            });
-
-            $("#cantidad" ).val(1).change();
-            $("#cantidad").focus();
-        } else {
-            $("#btn-add-articulo").attr("disabled", true);
-        }
-    });
-
-    function calcularSubtotal() {
-        var cantidad = $("#cantidad" ).val();
-        var precio_unitario = $("#precio_unitario" ).val();
-        var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-        cantidad = cantidad.replace(".", "");
-        precio_unitario = precio_unitario.replace(".", "");
-        var calculo = cantidad * (precio_unitario - (precio_unitario * (porcentaje_descuento/100)));
-        if($("#cantidad" ).val().length != 0 && $("#precio_unitario" ).val().length != 0){
-            $("#subtotal" ).val(calculo).change();
-        }
-    };
-
-    function addArticulo() {
-        /*Se obtienen los valores de los campos correspondientes*/
-        var decimales = 0;
-        var articulo = $('#select2-articulos').select2('data')[0].text;
-        var articulo_id = $('#select2-articulos').select2('data')[0].id;
-        var cantidad = $("#cantidad").val();
-        var precio_unitario = $("#precio_unitario").val();
-        var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-        var monto_descuento = cantidad * precio_unitario.replace(".", "") * (porcentaje_descuento/100);
-        var subtotal = $("#subtotal").val();
-        var porcentaje_iva = $("#porcentaje_iva" ).val();
-        var exenta = 0;
-        var gravada = 0;
-        var iva = 0;
-        if (porcentaje_iva == 0) {
-            exenta = subtotal;
-        } else {
-            gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
-            iva = Math.round(gravada*(porcentaje_iva/100));
-        }
-        /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
-        precio_unitario = $.number(precio_unitario,decimales, ',', '.');
-        cantidad = $.number(cantidad,decimales, ',', '.');
-        monto_descuento = $.number(monto_descuento,decimales, ',', '.');
-        exenta = $.number(exenta,decimales, ',', '.');
-        gravada = $.number(gravada,decimales, ',', '.');
-        iva = $.number(iva,decimales, ',', '.');
-        subtotal = $.number(subtotal,decimales, ',', '.');  
-        
-        /*Se agrega una fila a la tabla*/
-        var tabla = $("#pedido-detalle").DataTable();
-        tabla.row.add( [
-            "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
-            articulo,
-            cantidad,
-            precio_unitario,
-            monto_descuento,
-            exenta,
-            gravada,
-            iva,
-            subtotal
-        ] ).draw( false );
-
-        var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
-        $("#tab-hidden").append(markup);
-
-        /*Se restauran a nulos los valores del bloque para la selección del articulo*/
-        $('#cantidad').number(false);
-        $('#precio_unitario').number(false);
-        $('#subtotal').number(false);
-        
-        $('#cantidad').val("");
-        $('#precio_unitario').val("");
-        $('#porcentaje_descuento').val("");
-        $('#porcentaje_iva').val("");
-        $('#subtotal').val("");
-        $('#select2-articulos').val(null).trigger('change');
-        $("#select2-articulos").focus();
-    };
+    
 
     /*Elimina el articulo del pedido*/
     var tabla = $("#pedido-detalle").DataTable();
     $('#pedido-detalle tbody').on( 'click', 'a.btn-delete-row', function () {
-        var row = $(this).closest('tr').index();
-        row = row + 1;
+        var row = $(this).parent().index('#pedido-detalle tbody tr');
         tabla
             .row( $(this).parents('tr') )
             .remove()
             .draw();
         $("#tab-hidden tr:eq("+row+")").remove();
     } );
-
 </script>
 <script type="text/javascript">
-    //JS para que al abrir el modal de persona fisica se quede en foco en el campo nro_cedula
-    $('#modal-form-fisica').on('shown.bs.modal', function() {
-      $("#nro_cedula").focus();
-    });
-    //JS para que al abrir el modal de persona jurídica se quede en foco en el campo ruc
-    $('#modal-form-juridica').on('shown.bs.modal', function() {
-      $("#ruc_juridica").focus();
-    });
-    $('#cliente-form').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
-    $('#cliente-form-juridica').validator().off('input.bs.validator change.bs.validator focusout.bs.validator');
-    //JS para el formato con separador de miles al ingresar el nro de cedula
-    $('#nro_cedula').number(true, 0, ',', '.');
-    /*JS para la inclusión del guión en el campo RUC del modal para persona física*/
-    $("#ruc").on({
+       $("#cantidad").on({
         "focus": function (event) {
             $(event.target).select();
         },
         "keyup": function (event) {
             $(event.target).val(function (index, value ) {
                 return value.replace(/\D/g, "")
-                            .replace(/([0-9])([0-9]{1})$/, '$1-$2');
+                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
             });
         }
     });
-    /*JS para la inclusión del guión en el campo RUC del modal para persona jurídica*/
-    $("#ruc_juridica").on({
-        "focus": function (event) {
-            $(event.target).select();
-        },
-        "keyup": function (event) {
-            $(event.target).val(function (index, value ) {
-                return value.replace(/\D/g, "")
-                            .replace(/([0-9])([0-9]{1})$/, '$1-$2');
-            });
-        }
-    });
-    $('#valor_cambio').number(true, 0, ',', '.');
-    $('#cantidad').number(true, 2, ',', '.');
-    $('#precio_unitario').number(true, 0, ',', '.');
-    $('#subtotal').number(true, 0, ',', '.');
-</script>
 
+</script>
 <script type="text/javascript">
-    /*JS del componente Select2*/
-    $(document).ready(function(){
-        $('#select2-clientes').select2({
+   $(document).ready(function(){
+    $('#select2-conceptosAjustes').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
-            minimumInputLength: 4,
             ajax: {
-                url: "{{ route('api.clientes.ventas') }}",
+                url: "{{ route('api.conceptosAjustes.buscador') }}",
                 delay: 250,
                 data: function (params) {
                     var queryParameters = {
@@ -643,7 +417,8 @@
                 cache: true
             }
         });
-        $('#select2-articulos').select2({
+
+    $('#select2-articulos').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
             minimumInputLength: 4,
@@ -666,11 +441,11 @@
                 cache: true
             }
         });
-        $('#select2-monedas').select2({
+        $('#select2-sucursales').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
             ajax: {
-                url: "{{ route('api.monedas.select') }}",
+                url: "{{ route('api.sucursales.buscador') }}",
                 delay: 250,
                 data: function (params) {
                     var queryParameters = {
@@ -688,36 +463,11 @@
                 cache: true
             }
         });
+ 
 
-        $('#select2-lista-precios').select2({
-            placeholder: 'Seleccione una opción',
-            language: "es",
-            ajax: {
-                url: "{{ route('api.listaPrecios.select') }}",
-                delay: 250,
-                data: function (params) {
-                    var queryParameters = {
-                      q: params.term
-                    }
 
-                    return queryParameters;
-                  },
-                dataType: 'json',
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            }
-        });
-        $('#select2-estados').select2({
-            placeholder: 'Seleccione una opción',
-            language: "es"
-        });
     });
 
-    /*JS para el DatePicker de fecha_emision*/
     $(function() {
       $('.dpfecha').datepicker({
         format: 'dd/mm/yyyy',

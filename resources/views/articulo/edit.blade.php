@@ -127,17 +127,17 @@
                         <label class="control-label col-md-2">Vendible *</label>
                         <div class="col-md-1 custom-control custom-checkbox">
                             <input type="hidden" name="vendible" value="false">
-                            <input id="vendible" type="checkbox" class="custom-control-input" name="vendible" value="true">
+                            <input id="vendible" type="checkbox" @if($articulo->vendible)checked @endif  class="custom-control-input" name="vendible" value="true">
                         </div>
                         <label class="control-label col-md-2">Existencias *</label>
                         <div class="col-md-1 custom-control custom-checkbox">
                             <input type="hidden" name="control_existencia" value="false">
-                            <input id="control_existencia" type="checkbox" class="custom-control-input" name="control_existencia" value="true">
+                            <input id="control_existencia" type="checkbox"  @if($articulo->control_existencia)checked @endif   class="custom-control-input" name="control_existencia" value="true">
                         </div>
                         <label class="control-label col-md-2">Activo *</label>
                         <div class="col-md-1 custom-control custom-checkbox">
                             <input type="hidden" name="activo" value="false">
-                            <input id="activo" type="checkbox" class="custom-control-input" name="activo" value="true">
+                            <input id="activo" type="checkbox"  @if($articulo->activo)checked @endif   class="custom-control-input" name="activo" value="true">
                         </div>
                     </div>
                     <div class="form-group">
