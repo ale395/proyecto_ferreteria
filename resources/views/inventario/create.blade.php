@@ -80,12 +80,15 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia actual">
+                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia actual"  readonly="readonly">
                         </div>
                         <div class="col-md-1">
                              <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
+                             <input type="text" id="diferencia" name="diferencia" class="form-control" placeholder="Diferencia"  onkeyup="calcularSubtotal()">
+                        </div>
+                        <div class="col-md-1">
                             <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
                         </div>
                         <div class="col-md-1">
@@ -116,6 +119,7 @@
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
                                         <td>{{old('tab_existencia.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
+                                        <td>{{old('tab_diferencia.'.$i)}}</td>
                                         <td>{{old('tab_costo_unitario.'.$i)}}</td>
                                         <td>{{old('tab_subtotal.'.$i)}}</td>
                                     </tr>
@@ -155,6 +159,7 @@
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_existencia[]" value="{{old('tab_existencia.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_diferencia[]" value="{{old('tab_diferencia.'.$i)}}"></th>
                                         <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
                                         <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
                                     </tr>
@@ -222,12 +227,16 @@
     });
     function calcularSubtotal() {
         var cantidad = $("#cantidad" ).val();
+        var existencia = $("#existencia" ).val();
         var costo_unitario = $("#costo_unitario" ).val();
+        var diferencia = candidad-existencia;
         cantidad = cantidad.replace(".", "");
         costo_unitario = costo_unitario.replace(".", "");
+        diferencia = diferencia.replace(".", "");
         var calculo = cantidad * $("#costo_unitario" ).val();
         if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
             $("#subtotal" ).val(calculo).change();
+            $("#diferencia" ).val(diferencia).change();
         }
     };
 

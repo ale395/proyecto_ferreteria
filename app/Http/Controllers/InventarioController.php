@@ -103,6 +103,7 @@ class InventarioController extends Controller
                 $inventario_det->setArticuloId($request['tab_articulo_id'][$i]);            
                 $inventario_det->setExistencia(str_replace(',', '.', str_replace('.', '', $request['tab_existencia'][$i])));
                 $inventario_det->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                $inventario_det->setDiferencia(str_replace(',', '.', str_replace('.', '', $request['tab_diferencia'][$i])));
                 $inventario_det->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i])); 
                 $inventario_det->setSubTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
 
@@ -116,12 +117,12 @@ class InventarioController extends Controller
     $existencia = ExistenciaArticulo::where('articulo_id', $inventario_det->articulo->getId())
         ->where('sucursal_id', $request['sucursal_id'])->first();
 
-    //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
-    if (!empty($existencia)){
-        $existencia->actualizaStock('+', $inventario_det->getCantidad());
+        //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
+    if (!empty($existencia) && getDiferencia()>0){
+        $existencia->actualizaStock('+', $inventario_det->getDiferencia());
         $existencia->update();   
-    }elseif(!empty($existencia)) {
-        $existencia->actualizaStock('-', $inventario_det->getCantidad());
+    }elseif(!empty($existencia) && getDiferencia()>=0) {
+        $existencia->actualizaStock('-', $inventario_det->getDiferencia());
         $existencia->update();                     
     } else {
         $existencia_nuevo = new ExistenciaArticulo();

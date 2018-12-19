@@ -27,6 +27,14 @@ class InventarioDet extends Model
     public function getCantidad(){
         return $this->cantidad;
     }
+
+    public function setDiferencia($diferencia_inventario){
+        $this->diferencia_inventario = $diferencia_inventario;
+    }
+
+    public function getDiferencia(){
+        return $this->diferencia_inventario;
+    }
     public function setExistencia($existencia){
         $this->existencia = $existencia;
     }

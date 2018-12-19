@@ -89,13 +89,13 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia actual">
+                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia actual" readonly>
                         </div>
                         <div class="col-md-1">
                              <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
+                            <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()" readonly>
                         </div>
                         <div class="col-md-1">
                             <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>

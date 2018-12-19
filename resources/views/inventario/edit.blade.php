@@ -76,7 +76,7 @@
                             </select>
                         </div>
                         <div class="col-md-1">
-                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia">
+                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia"  readonly="readonly">
                          </div>   
                          <div class="col-md-1">
                              <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
