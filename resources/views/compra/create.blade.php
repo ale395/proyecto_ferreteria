@@ -647,7 +647,7 @@
                 url: url_tabla,
                 datatype: "json",
                 success: function(data){
-                    //console.log(data);
+                    console.log(data.length);
                     if(data.length > 10){
                         var obj = $.alert({
                             title: 'Atención',
