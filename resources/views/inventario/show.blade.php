@@ -57,6 +57,7 @@
                                 <th>Artículo</th>
                                 <th>Existencia</th>
                                 <th>Cant.</th>
+                                <th>Diferencia.</th>
                                 <th>Precio U.</th>
                                 <th>Total</th>
                             </tr>
@@ -67,6 +68,7 @@
                                     <td>{{$inventario_det->articulo->getNombreSelect()}}</td>
                                     <td>{{$inventario_det->getExistencia()}}</td>
                                     <td>{{$inventario_det->getCantidad()}}</td>
+                                    <td>{{$inventario_det->getDiferencia()}}</td>
                                     <td>{{$inventario_det->getCostoUnitario()}}</td>
                                     <td>{{$inventario_det->getSubTotal()}}</td>
                                 </tr>
@@ -74,6 +76,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>

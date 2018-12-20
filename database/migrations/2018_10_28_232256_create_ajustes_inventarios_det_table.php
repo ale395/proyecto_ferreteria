@@ -20,7 +20,7 @@ class CreateAjustesInventariosDetTable extends Migration
             $table->decimal('existencia', 14, 2)->nullable();
             $table->integer('existencia_id')->nullable();
             $table->decimal('cantidad', 14, 2);
-            $table->integer('diferencia_inventario')->nullable();
+            $table->integer('diferencia')->nullable();
             $table->decimal('costo_unitario', 14, 2);
             $table->decimal('sub_total', 14, 2);
             $table->timestamps();

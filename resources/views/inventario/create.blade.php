@@ -83,10 +83,10 @@
                              <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia actual"  readonly="readonly">
                         </div>
                         <div class="col-md-1">
-                             <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
+                             <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad"  onkeyup="calcularSubtotal()" >
                         </div>
                         <div class="col-md-1">
-                             <input type="text" id="diferencia" name="diferencia" class="form-control" placeholder="Diferencia"  onkeyup="calcularSubtotal()">
+                             <input type="text" id="diferencia" name="diferencia" class="form-control" placeholder="Diferencia" readonly="readonly">
                         </div>
                         <div class="col-md-1">
                             <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
@@ -106,7 +106,8 @@
                                 <th width="5%">Acción</th>
                                 <th>Artículo</th>
                                 <th width="6%">Existencia</th>
-                                <th width="6%">Cant.</th>
+                                <th width="3%">Cant.</th>
+                                <th width="3%">Diferencia</th>
                                 <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
                             </tr>
@@ -131,7 +132,6 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th></th>
                                 <th>Total</th>
                                 <th class="total">0</th>
                             </tr>
@@ -145,7 +145,8 @@
                                 <th>Artículo ID</th>
                                 <th>Nombre Artículo</th>
                                 <th width="6%">Exist. Anerior</th>
-                                <th width="6%">Cant.</th>
+                                <th width="3%">Cant.</th>
+                                <th width="3%">Diferencia</th>
                                 <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
                             </tr>
@@ -194,7 +195,7 @@
             });
 
             if($("#cantidad" ).val().length === 0){
-                $("#cantidad" ).val(1).change();
+                $("#cantidad" ).val(0).change();
             }
             $("#cantidad").focus();
 
@@ -229,14 +230,15 @@
         var cantidad = $("#cantidad" ).val();
         var existencia = $("#existencia" ).val();
         var costo_unitario = $("#costo_unitario" ).val();
-        var diferencia = candidad-existencia;
+        var diferencia = cantidad-existencia;
         cantidad = cantidad.replace(".", "");
         costo_unitario = costo_unitario.replace(".", "");
-        diferencia = diferencia.replace(".", "");
+        diferencia = diferencia.toString().replace(".", "");
         var calculo = cantidad * $("#costo_unitario" ).val();
         if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
             $("#subtotal" ).val(calculo).change();
-            $("#diferencia" ).val(diferencia).change();
+            $("#diferencia" ).val(diferencia);
+            
         }
     };
 
@@ -284,11 +286,14 @@
                 articulo,
                 existencia,
                 cantidad,
+                diferencia.value,
                 costo_unitario,
                 subtotal
             ] ).draw( false );
+            
+            
 
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th><th><input type='text' name='tab_existencia[]' value='" + existencia + "'></th><th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th><th><input type='text' name='tab_existencia[]' value='" + existencia + "'></th><th><input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th><th><input type='text' name='tab_diferencia[]' value='" + diferencia.value + "'></th><th><input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
             $("#tab-hidden").append(markup);
 
             /*Se restauran a nulos los valores del bloque para la selección del articulo*/

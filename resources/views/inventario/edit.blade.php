@@ -12,8 +12,7 @@
                         <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
                         <a data-toggle="tooltip" data-placement="top" title="Cancelar edicion"  href="{{route('inventarios.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('inventarios.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-                     </div>
-                    
+                     </div>               
                     </h4>
                 </div>
                 <div class="panel-body">
@@ -81,10 +80,13 @@
                          <div class="col-md-1">
                              <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
                         </div>   
+                        <div class="col-md-1">
+                             <input type="text" id="diferencia" name="diferencia" class="form-control" placeholder="Diferencia" >
+                        </div>
                         <div class="col-md-2">
                             <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
                         </div>                         
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
                         </div>
                         <div class="col-md-1">
@@ -99,6 +101,7 @@
                                 <th>Artículo</th>
                                 <th width="6%">Existencia</th>
                                 <th width="6%">Cant.</th>
+                                <th width="3%">Diferencia</th>
                                 <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
                             </tr>
@@ -111,6 +114,7 @@
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
                                         <td>{{old('tab_existencia.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
+                                        <td>{{old('tab_diferencia.'.$i)}}</td>
                                         <td>{{old('tab_costo_unitario.'.$i)}}</td>
                                         <td>{{old('tab_subtotal.'.$i)}}</td>
                                     </tr>
@@ -122,7 +126,8 @@
                                         <td>{{$inventario_det->articulo->getNombreSelect()}}</td>
                                         <td>{{$inventario_det->getExistencia()}}</td>
                                         <td>{{$inventario_det->getCantidad()}}</td>
-                                        <td>{{$inventario_det->getCostoUnitario()}}</td>
+                                        <td>{{$inventario_det->getDiferencia()}}</td>
+                                         <td>{{$inventario_det->getCostoUnitario()}}</td>
                                         <td>{{$inventario_det->getSubTotal()}}</td>
                                     </tr>
                                 @endforeach
@@ -130,6 +135,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -148,6 +154,7 @@
                                 <th>Nombre Artículo</th>
                                 <th width="6%">Exist.</th>
                                 <th width="6%">Cant.</th>
+                                <th width="6%">Diferencia.</th>
                                 <th width="9%">Costo U.</th>
                                 <th width="9%">Total</th>
                             </tr>
@@ -161,6 +168,7 @@
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_existencia[]" value="{{old('tab_existencia.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_diferencia[]" value="{{old('tab_diferencia.'.$i)}}"></th>
                                         <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
                                         <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
                                     </tr>
@@ -172,6 +180,7 @@
                                         <th><input type="text" name="tab_articulo_id[]" value="{{$inventario_det->articulo->getId()}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{$inventario_det->articulo->getDescripcion()}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{$inventario_det->getCantidad()}}"></th>
+                                        <th><input type="text" name="tab_diferencia[]" value="{{$inventario_det->getDiferencia()}}"></th>
                                         <th><input type="text" name="tab_costo_unitario[]" value="{{$inventario_det->getCostoUnitario()}}"></th>
                                         <th><input type="text" name="tab_subtotal[]" value="{{$inventario_det->getSubTotal()}}"></th>
                                     </tr>
@@ -188,6 +197,8 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
+    $("#btn-add-articulo").attr("disabled", true);
+
        /*Evento onchange del select de artículos, para que recupere el costo si es seleccionado algún artículo distinto a nulo*/
        $("#select2-articulos").change(function (e) {
         var valor = $(this).val();
@@ -239,11 +250,15 @@
     });
     function calcularSubtotal() {
         var cantidad = $("#cantidad" ).val();
+        var existencia = $("#existencia" ).val();
         var costo_unitario = $("#costo_unitario" ).val();
+        var diferencia = cantidad-existencia;
         cantidad = cantidad.replace(".", "");
         costo_unitario = costo_unitario.replace(".", "");
+        diferencia = diferencia.toString().replace(".", "");
         var calculo = cantidad * $("#costo_unitario" ).val();
         if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
+            $("#diferencia" ).val(diferencia);
             $("#subtotal" ).val(calculo).change();
         }
     };
@@ -292,11 +307,12 @@
                 articulo,
                 existencia,
                 cantidad,
+                diferencia.value,
                 costo_unitario,
                 subtotal
             ] ).draw( false );
 
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th><th><input type='text' name='tab_existencia[]' value='" + existencia + "'></th><th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th><th><input type='text' name='tab_existencia[]' value='" + existencia + "'></th><th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th><th><input type='text' name='tab_diferencia[]' value='" + diferencia.value + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
             $("#tab-hidden").append(markup);
 
             /*Se restauran a nulos los valores del bloque para la selección del articulo*/
@@ -312,7 +328,6 @@
             $('#select2-articulos').val(null).trigger('change');
             $("#select2-articulos").focus();
            }
-
         };
 
         $("#btn-add-articulo").attr("disabled", true);

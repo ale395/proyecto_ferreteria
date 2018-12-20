@@ -12,7 +12,7 @@ class InventarioDet extends Model
         'inventario_cab_id', 'articulo_id', 'cantidad', 'monto_total','existencia'
     ];
 
-    public function seteInventarioCabId($inventario_cab_id){
+    public function setInventarioCabId($inventario_cab_id){
         $this->inventario_cab_id = $inventario_cab_id;
     }
 
@@ -28,12 +28,12 @@ class InventarioDet extends Model
         return $this->cantidad;
     }
 
-    public function setDiferencia($diferencia_inventario){
-        $this->diferencia_inventario = $diferencia_inventario;
+    public function setDiferencia($diferencia){
+        $this->diferencia = $diferencia;
     }
 
     public function getDiferencia(){
-        return $this->diferencia_inventario;
+        return $this->diferencia;
     }
     public function setExistencia($existencia){
         $this->existencia = $existencia;

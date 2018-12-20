@@ -99,7 +99,8 @@ class InventarioController extends Controller
                 //datos del articulo.
               //  $articulo_aux = Articulo::where('id', $tab_articulo_id[$i])->first();//para traer algunas cosas del maestro
            
-                $inventario_det->setInventarioCabId( $inventario_cab->getId()); 
+               // $inventario_det->inventario_cab_id =  $inventario_cab->getId(); 
+               $inventario_det->setInventarioCabId( $inventario_cab->getId()); 
                 $inventario_det->setArticuloId($request['tab_articulo_id'][$i]);            
                 $inventario_det->setExistencia(str_replace(',', '.', str_replace('.', '', $request['tab_existencia'][$i])));
                 $inventario_det->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
@@ -118,11 +119,8 @@ class InventarioController extends Controller
         ->where('sucursal_id', $request['sucursal_id'])->first();
 
         //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
-    if (!empty($existencia) && getDiferencia()>0){
+    if (!empty($existencia) && $inventario_det->getDiferencia()>0){
         $existencia->actualizaStock('+', $inventario_det->getDiferencia());
-        $existencia->update();   
-    }elseif(!empty($existencia) && getDiferencia()>=0) {
-        $existencia->actualizaStock('-', $inventario_det->getDiferencia());
         $existencia->update();                     
     } else {
         $existencia_nuevo = new ExistenciaArticulo();
@@ -247,7 +245,7 @@ class InventarioController extends Controller
 
               
                 $inventario_det = new InventarioDet();
-                $inventario_det->seteInventarioCabId( $inventario_cab->getId()); 
+                $inventario_det->setInventarioCabId( $inventario_cab->getId()); 
                 $inventario_det->setArticuloId($request['tab_articulo_id'][$i]);            
                 $inventario_det->setExistencia(str_replace(',', '.', str_replace('.', '', $request['tab_existencia'][$i])));
                 $inventario_det->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));

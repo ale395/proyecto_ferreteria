@@ -152,6 +152,8 @@ Route::middleware(['auth'])->group(function() {
 	//RUTA PARA EL CONTROLADOR  DE INVENTARIO
 	Route::resource('inventarios', 'InventarioController', ['parameters'=>['inventarios'=>'inventario']]);
 	Route::get('api/inventarios', 'InventarioController@apiInventarios')->name('api.inventarios');
+	Route::get('Inventarios/impresion/{inventario}', 'InventarioController@impresionInventario')->name('inventarios.impresion');
+
 	
 
 	//RUTAS PARA MODELO SUCURSALES
