@@ -118,7 +118,7 @@ class NotaCreditoVentaCab extends Model
 
     public function getEstadoNombre(){
         if ($this->estado == 'P') {
-            return 'Cancelada';
+            return 'Emitida';
         } elseif ($this->estado == 'A') {
             return 'Anulada';
         }
