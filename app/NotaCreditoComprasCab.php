@@ -160,8 +160,8 @@ class NotaCreditoComprasCab extends Model
         $this->estado = $estado;
     }
 
-    public function setCompraId($factura_cab_id){
-        $this->factura_cab_id = $factura_cab_id;
+    public function setCompraId($compras_cab_id){
+        $this->compras_cab_id = $compras_cab_id;
     }
 
     public function proveedor()

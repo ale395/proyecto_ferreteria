@@ -265,12 +265,16 @@
                 $('#tabla-facturas').DataTable().destroy();    
             }
 
+            id_proveedor = $('#select2-proveedores').val();
+
+            url_tabla = "{{ route('api.compra')}}" + "/proveedor/" + id_proveedor;
+
             tablePedidos = $('#tabla-facturas').DataTable({
                 
                 language: { url: '/datatables/translation/spanish' },
                 processing: true,
                 serverSide: true,
-                ajax: {"url": "/api/facturas/cliente/"+$('#select2-proveedores').val()},
+                ajax: {"url": url_tabla },
                 select: {
                     style: 'single'
                 },
@@ -532,11 +536,14 @@
             array_pedidos.push(datos[i].id);
             document.getElementById("compra_nro").value = datos[i].nro_factura;
         }
+
+        url_tabla = "{{ route('api.compra')}}" + "/proveedor/detalles/" + array_pedidos;
+
         if (array_pedidos.length > 0) {
             if (tipo_ncre == 'DV') {
                 $.ajax({
                     type: "GET",
-                    url: "/api/facturas/detalles/"+array_pedidos,
+                    url: url_tabla,
                     datatype: "json",
                     success: function(data){
                         console.log(data);
