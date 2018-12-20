@@ -74,6 +74,15 @@ class NotaCreditoComprasCab extends Model
         $this->fecha_emision = $fecha_emision;
     }
 
+    //fecha_vigencia_timbrado
+    public function setFechaVigenciaTimbrado($fecha_vigencia_timbrado){
+        $this->fecha_vigencia_timbrado = $fecha_vigencia_timbrado;
+    }
+
+    public function getFechaVigenciaTimbrado(){
+        return date("d-m-Y", strtotime($this->fecha_vigencia_timbrado));
+    }
+
     //monto total
     public function getMontoTotal(){
         return number_format($this->monto_total, 0, ',', '.');

@@ -340,6 +340,7 @@ class CompraController extends Controller
             //$cabecera->setMonedaId($request['moneda_id']);
             //$cabecera->setValorCambio($request['valor_cambio']);
             $cabecera->setFechaEmision($request['fecha_emision']);
+            $cabecera->setFechaVigenciaTimbrado($request['fecha_vigencia_timbrado']);
             $cabecera->setComentario($request['comentario']);
             //$cabecera->setMontoTotal($total);
             //$cabecera->setTotalExenta($total_exenta);
@@ -535,6 +536,60 @@ class CompraController extends Controller
 
         }
 
+    }
+
+    public function apiComprasProveedor($cliente_id){
+        if (empty($cliente_id)) {
+            return [];
+        } else {
+            $facturas = ComprasCab::where('cliente_id', $cliente_id)->
+                where('estado', 'P')->get();
+            /*Filtra por las facturas que tienen saldo.*/
+            $facturas = $facturas->filter(function ($factura) {
+                return ($factura->getMontoSaldo() > 0);
+            });
+            return Datatables::of($facturas)
+                    ->addColumn('nro_factura', function($facturas){
+                        return $facturas->getNroFacturaIndex();
+                    })
+                    ->addColumn('fecha', function($facturas){
+                        return $facturas->getFechaEmision();
+                    })
+                    ->addColumn('moneda', function($facturas){
+                        return $facturas->moneda->getDescripcion();
+                    })
+                    ->addColumn('monto_total', function($facturas){
+                        return $facturas->getMontoSaldoFormat();
+                    })
+                    ->addColumn('comentario', function($facturas){
+                        return $facturas->getComentario();
+                    })->make(true);
+        }
+        
+    }
+
+    public function apiCompraDetalle($array_pedidos){
+        $cast_array = explode(",",($array_pedidos));
+
+        /*PROBANDO CON DB*/
+        $factura_detalle = DB::table('compras_det as cd')
+            ->join('compras_cab as c', 'cd.factura_cab_id', '=', 'facturas_ventas_cab.id')
+            ->join('articulos a ', 'cd.articulo_id', '=', 'a.id')
+            ->select('cd.articulo_id', 'a.codigo', 'a.descripcion', 'cd.porcentaje_iva', 
+            DB::raw('ROUND(AVG(existencia_a.cantidad), 2) as cantidad_existencia'),
+            DB::raw('ROUND(MIN(cd.costo_unitario), 2) as costo_unitario'),
+            DB::raw('ROUND(MAX(cd.porcentaje_descuento), 2) as porcentaje_descuento'),
+            DB::raw('ROUND(SUM(cd.cantidad), 2) as cantidad'), 
+            DB::raw('ROUND(SUM(cd.monto_descuento), 2) as monto_descuento'), 
+            DB::raw('ROUND(SUM(cd.monto_exenta), 2) as monto_exenta'), 
+            DB::raw('ROUND(SUM(cd.monto_gravada), 2) as monto_gravada'), 
+            DB::raw('ROUND(SUM(cd.monto_iva), 2) as monto_iva'), 
+            DB::raw('ROUND(SUM(cd.monto_total), 2) as monto_total'))
+            ->whereIn('cd.factura_cab_id', $cast_array)
+            ->where('c.estado', 'P')
+            ->groupBy('cd.articulo_id', 'a.codigo', 'a.descripcion', 'cd.porcentaje_iva')
+            ->get();
+        return $factura_detalle;
     }
 
     public function apiCompras(){

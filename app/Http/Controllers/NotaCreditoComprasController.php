@@ -92,6 +92,10 @@ class NotaCreditoComprasController extends Controller
                 $total_gravada = $total_gravada + str_replace('.', '', $request['tab_gravada'][$i]);
                 $total_iva = $total_iva + str_replace('.', '', $request['tab_iva'][$i]);
             }
+
+            if (count($array_pedidos) == 0) {
+                return redirect()->back()->withErrors('No puede guardar una nota de crédito sin relacionar a una factura!')->withInput();
+            }
     
             foreach ($array_pedidos as $nro_factura) {
                 $factura_cab = ComprasCab::findOrFail($nro_factura);
@@ -109,6 +113,7 @@ class NotaCreditoComprasController extends Controller
             $cabecera->setMonedaId($request['moneda_id']);
             $cabecera->setValorCambio($request['valor_cambio']);
             $cabecera->setFechaEmision($request['fecha_emision']);
+            $cabecera->setFechaVigenciaTimbrado($request['fecha_vigencia_timbrado']);
             $cabecera->setComentario($request['comentario']);
             $cabecera->setMontoTotal($total);
             $cabecera->setMontoTotalExenta($total_exenta);

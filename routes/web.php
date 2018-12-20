@@ -214,6 +214,9 @@ Route::middleware(['auth'])->group(function() {
 	//Rutas para compra
 	Route::resource('compra', 'CompraController');
 	Route::get('api/compra', 'CompraController@apiCompras')->name('api.compra');
+	Route::get('api/compra/proveedor/{cliente_id}', 'CompraController@apiComprasProveedor')->name('api.compra.proveedor');
+	Route::get('api/compra/proveedor/detalles/{array_pedidos}', 'CompraController@apiCompraDetalle')->name('api.compra.detalles');
+
 
 	//Rutas para Nota de Crédito de Compras
 	Route::resource('notacreditocompra', 'NotaCreditoComprasController');
