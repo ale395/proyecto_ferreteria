@@ -54,30 +54,30 @@
                                 @endif
                             </div>
                         </div>
-                        <label for="nro_nota_credito" class="col-md-2 control-label">Número</label>
+                        <label for="nro_nota_credito" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
                             <input type="text" id="nro_nota_credito" name="nro_nota_credito" class="form-control text-right" value="{{old('nro_nota_credito')}}" >  
                         </div>
                        
                     </div>
                     <div class="form-group">
-                        <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
+                        <label for="fecha_emision" class="col-md-1 control-label">Fecha*</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
-                        <label for="compra_nro" class="col-md-3 control-label">Factura*</label>
-                        <div class="col-md-3">
-                            <input type="text" id="compra_nro" class="form-control text-right" name="compra_nro" value="{{old('compra_nro')}}" readonly>
+                        <label for="timbrado" class="col-md-2 control-label">Timbrado*</label>
+                        <div class="col-md-2">
+                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('timbrado')}}" >  
                         </div>
-                        <div class="col-md-1">
-                            <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Factura"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        <label for="fecha_vigencia_timbrado" class="col-md-2 control-label">Validez Timbrado*</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_vigencia_timbrado" name="fecha_vigencia_timbrado" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_vigencia_timbrado')}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
-                        <input type="text" id="compras_id" class="hidden" name="compras_id" value="{{old('compras_id')}}">
                     </div>
 
                     <div class="form-group">
                         <label for="proveedor_id" class="col-md-1 control-label">Proveedor *</label>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
                                 @if ($errors->any())
                                     @foreach($proveedores as $proveedor)
@@ -86,8 +86,12 @@
                                         @endif
                                     @endforeach
                                 @endif
-                            </select>
+                            </select>                           
                         </div>
+                        <div class="col-md-1">
+                            <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Factura"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        </div>
+                        <input type="text" id="compras_id" class="hidden" name="compras_id" value="{{old('compras_id')}}">
                     </div>
 
                     <div class="form-group">
