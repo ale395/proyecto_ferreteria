@@ -95,7 +95,7 @@
                             <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
                         </div>
                         <div class="col-md-1">
-                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <span class="help-block with-errors"></span>
