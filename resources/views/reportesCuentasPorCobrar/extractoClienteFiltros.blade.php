@@ -24,7 +24,11 @@
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <div class="form-group">
-                        <label for="fecha_emision" class="col-md-2 control-label">Fecha Final*</label>
+                        <label for="fecha_inicial" class="col-md-2 control-label">Fecha Inicial*</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_inicial" name="fecha_inicial" class="form-control dpfechaIni" placeholder="dd/mm/aaaa" value="{{old('fecha_inicial', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                        </div>
+                        <label for="fecha_final" class="col-md-2 control-label">Fecha Final*</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_final" name="fecha_final" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_final', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
@@ -79,9 +83,23 @@
         todayHighlight: true,
         autoclose: true
       });
-        $('#fecha_corte').click(function(e){
+        $('#fecha_final').click(function(e){
             e.stopPropagation();
             $('.dpfecha').datepicker('update');
+        });  
+    });
+
+    $(function() {
+      $('.dpfechaIni').datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'es',
+        todayBtn: true,
+        todayHighlight: true,
+        autoclose: true
+      });
+        $('#fecha_inicial').click(function(e){
+            e.stopPropagation();
+            $('.dpfechaIni').datepicker('update');
         });  
     });
 </script>
