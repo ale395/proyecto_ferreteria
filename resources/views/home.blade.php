@@ -344,7 +344,7 @@
               <a data-toggle="tooltip" data-placement="top" title="Cambiar Sucursal" onclick="elegirSucursal()">
                 <span class="fa fa-home" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Consulta de artículo" onclick="elegirArticulo()">
+              <a  href="{{route('articulos.index')}}" data-toggle="tooltip" data-placement="top" title="Consulta de artículo" onclick="elegirArticulo()">
                 <span class="fa fa-search" aria-hidden="true"></span>
               </a>
               <a href="{{route('facturacionVentas.create')}}" data-toggle="tooltip" data-placement="top" title="Facturación">
