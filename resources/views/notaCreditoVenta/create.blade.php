@@ -80,6 +80,9 @@
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
+                        <div class="col-md-2">
+                            <label for="nro_compra" class="col-md-1 control-label"></label>
+                        </div>
                         <label for="factura_nro" class="col-md-2 control-label">Factura*</label>
                         <div class="col-md-3">
                             <!--<a data-toggle="tooltip" data-placement="top" title="Lista de Precios">

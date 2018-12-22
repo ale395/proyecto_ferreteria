@@ -69,7 +69,7 @@
                         <div class="col-md-2">
                             <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('timbrado')}}" >  
                         </div>
-                        <label for="fecha_vigencia_timbrado" class="col-md-2 control-label">Validez Timbrado*</label>
+                        <label for="fecha_vigencia_timbrado" class="col-md-1 control-label">Validez*</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_vigencia_timbrado" name="fecha_vigencia_timbrado" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_vigencia_timbrado')}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
@@ -91,7 +91,11 @@
                         <div class="col-md-1">
                             <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Factura"><i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
-                        <input type="text" id="compras_id" class="hidden" name="compras_id" value="{{old('compras_id')}}">
+                        <input type="text" id="pedidos_id" class="hidden" name="pedidos_id" value="{{old('pedidos_id')}}">
+                        <label for="factura_nro" class="col-md-1 control-label">Compra*</label>
+                        <div class="col-md-2">
+                            <input type="text" id="factura_nro" class="form-control text-right" name="factura_nro" value="{{old('factura_nro')}}" readonly>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -538,7 +542,7 @@
         //console.log(datos);
         for (i = 0; i < datos.length; i++) {
             array_pedidos.push(datos[i].id);
-            //document.getElementById("compra_nro").value = datos[i].nro_factura;
+            document.getElementById("factura_nro").value = datos[i].nro_factura;
         }
 
         url_tabla = "{{ route('api.compra')}}" + "/proveedor/detalles/" + array_pedidos;
