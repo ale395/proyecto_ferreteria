@@ -538,7 +538,7 @@
         //console.log(datos);
         for (i = 0; i < datos.length; i++) {
             array_pedidos.push(datos[i].id);
-            document.getElementById("compra_nro").value = datos[i].nro_factura;
+            //document.getElementById("compra_nro").value = datos[i].nro_factura;
         }
 
         url_tabla = "{{ route('api.compra')}}" + "/proveedor/detalles/" + array_pedidos;

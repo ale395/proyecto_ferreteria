@@ -542,7 +542,7 @@ class CompraController extends Controller
         if (empty($cliente_id)) {
             return [];
         } else {
-            $facturas = ComprasCab::where('cliente_id', $cliente_id)->
+            $facturas = ComprasCab::where('proveedor_id', $cliente_id)->
                 where('estado', 'P')->get();
             /*Filtra por las facturas que tienen saldo.*/
             $facturas = $facturas->filter(function ($factura) {
@@ -550,7 +550,7 @@ class CompraController extends Controller
             });
             return Datatables::of($facturas)
                     ->addColumn('nro_factura', function($facturas){
-                        return $facturas->getNroFacturaIndex();
+                        return $facturas->getNroFactura();
                     })
                     ->addColumn('fecha', function($facturas){
                         return $facturas->getFechaEmision();
@@ -573,10 +573,9 @@ class CompraController extends Controller
 
         /*PROBANDO CON DB*/
         $factura_detalle = DB::table('compras_det as cd')
-            ->join('compras_cab as c', 'cd.factura_cab_id', '=', 'facturas_ventas_cab.id')
-            ->join('articulos a ', 'cd.articulo_id', '=', 'a.id')
+            ->join('compras_cab as c', 'cd.compra_cab_id', '=', 'c.id')
+            ->join('articulos as a', 'cd.articulo_id', '=', 'a.id')
             ->select('cd.articulo_id', 'a.codigo', 'a.descripcion', 'cd.porcentaje_iva', 
-            DB::raw('ROUND(AVG(existencia_a.cantidad), 2) as cantidad_existencia'),
             DB::raw('ROUND(MIN(cd.costo_unitario), 2) as costo_unitario'),
             DB::raw('ROUND(MAX(cd.porcentaje_descuento), 2) as porcentaje_descuento'),
             DB::raw('ROUND(SUM(cd.cantidad), 2) as cantidad'), 
@@ -584,8 +583,8 @@ class CompraController extends Controller
             DB::raw('ROUND(SUM(cd.monto_exenta), 2) as monto_exenta'), 
             DB::raw('ROUND(SUM(cd.monto_gravada), 2) as monto_gravada'), 
             DB::raw('ROUND(SUM(cd.monto_iva), 2) as monto_iva'), 
-            DB::raw('ROUND(SUM(cd.monto_total), 2) as monto_total'))
-            ->whereIn('cd.factura_cab_id', $cast_array)
+            DB::raw('ROUND(SUM(cd.sub_total), 2) as monto_total'))
+            ->whereIn('cd.compra_cab_id', $cast_array)
             ->where('c.estado', 'P')
             ->groupBy('cd.articulo_id', 'a.codigo', 'a.descripcion', 'cd.porcentaje_iva')
             ->get();
