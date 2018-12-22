@@ -129,11 +129,13 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th>Total</th>
-                                <th class="total">0</th>
+                            <th></th>
+                                <th>Faltante</th>
+                                <th class="faltante">0</th>
+                                <th>Sobrante</th>
+                                <th class="sobrante">0</th>
+                                <th>Total Faltante</th>
+                                <th class="Total Sobrante">0</th>
                             </tr>
                         </tfoot>
                     </table>
