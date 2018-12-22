@@ -13,6 +13,9 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+
+        DB::statement('ALTER DATABASE '.\DB::getDatabaseName().' SET datestyle TO "ISO, DMY";');
+
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');

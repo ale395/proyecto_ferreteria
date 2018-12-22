@@ -335,29 +335,37 @@
                     typeof i === 'number' ?
                         i : 0;
             };
- 
-            // Total over all pages
-            total = api
-                .column(4)//se refiere a la columna del datatable donde está el sub-total
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Total over this page
-            pageTotal = api
-                .column( 4, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
- 
-            // Update footer
-            $( api.column( 4 ).footer() ).html(
-                $.number(total,decimales, ',', '.')
-            );
+
+            var sumFields = [2,3,4,5,6];
+            for(var sf = 0;sf<sumFields.length;sf++)
+            {
+                // Total over all pages
+                total = api
+                    .column(sumFields[sf])//se refiere a la columna del datatable donde está el sub-total
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+
+                // Total over this page
+                pageTotal = api
+                    .column( sumFields[sf], { page: 'current'} )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+
+                // Update footer
+                $( api.column( sumFields[sf] ).footer() ).html(
+                    $.number(total,decimales, ',', '.')
+                );
+            }
+
+
         }
     });
+
+
     
 
     /*Elimina el articulo del pedido*/
