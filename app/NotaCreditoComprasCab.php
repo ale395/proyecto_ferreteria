@@ -8,7 +8,7 @@ class NotaCreditoComprasCab extends Model
 {
     CONST MAX_LINEAS_DETALLE = 10;
 
-    protected $table = 'nota_credito_ventas_cab';
+    protected $table = 'nota_credito_compras_cab';
 
     public function getId(){
         return $this->id;
@@ -24,6 +24,10 @@ class NotaCreditoComprasCab extends Model
         } elseif ($this->tipo_nota_credito == 'DC') {
             return 'Descuento';
         }
+    }
+
+    public function setFacturaId($compra_cab_id){
+        $this->compra_cab_id = $compra_cab_id;
     }
 
     public function setTipoNotaCredito($tipo_nota_credito){
@@ -42,8 +46,8 @@ class NotaCreditoComprasCab extends Model
         $this->nro_nota_credito = $nro_nota_credito;
     }
 
-    public function setClienteId($cliente_id){
-        $this->cliente_id = $cliente_id;
+    public function setProveedorId($proveedor_id){
+        $this->proveedor_id = $proveedor_id;
     }
 
     public function setSucursalId($sucursal_id){

@@ -576,7 +576,7 @@ class CompraController extends Controller
             ->join('compras_cab as c', 'cd.compra_cab_id', '=', 'c.id')
             ->join('articulos as a', 'cd.articulo_id', '=', 'a.id')
             ->select('cd.articulo_id', 'a.codigo', 'a.descripcion', 'cd.porcentaje_iva', 
-            DB::raw('ROUND(MIN(cd.costo_unitario), 2) as costo_unitario'),
+            DB::raw('ROUND(MIN(cd.costo_unitario), 2) as precio_unitario'),
             DB::raw('ROUND(MAX(cd.porcentaje_descuento), 2) as porcentaje_descuento'),
             DB::raw('ROUND(SUM(cd.cantidad), 2) as cantidad'), 
             DB::raw('ROUND(SUM(cd.monto_descuento), 2) as monto_descuento'), 

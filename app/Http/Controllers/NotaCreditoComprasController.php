@@ -70,6 +70,10 @@ class NotaCreditoComprasController extends Controller
             $usuario = Auth::user();
             $cabecera = new NotaCreditoComprasCab();
             $total = 0;
+            $total_exenta = 0;
+            $total_gravada = 0;
+            $total_iva = 0;
+            
             $array_pedidos = [];
             if ($request['pedidos_id'] != null) {
                 $array_pedidos = explode(",",($request['pedidos_id']));
@@ -129,7 +133,7 @@ class NotaCreditoComprasController extends Controller
                 $detalle->setArticuloId($request['tab_articulo_id'][$i]);
                 
                 $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
-                $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_precio_unitario'][$i]));
+                $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
                 $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
                 $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
                 $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);

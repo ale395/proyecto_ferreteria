@@ -16,6 +16,7 @@ class AlterNotasCreditoComprasCabTable extends Migration
         Schema::table('nota_credito_compras_cab', function (Blueprint $table) {
             $table->integer('compra_cab_id')->unsigned();
             $table->date('fecha_vigencia_timbrado');
+            $table->string('nro_nota_credito', 14)->change();
 
             $table->foreign('compra_cab_id')->references('id')->on('compras_cab');
         });
@@ -39,6 +40,13 @@ class AlterNotasCreditoComprasCabTable extends Migration
         if(Schema::hasColumn('nota_credito_compras_cab','fecha_vigencia_timbrado') ) {
             Schema::table('nota_credito_compras_cab', function (Blueprint $table) {
                 $table->dropColumn('fecha_vigencia_timbrado');
+            });
+        }
+
+        //Pablo - 14/10/2018 - controlamos si existen las columnas primero antes del drop        
+        if(Schema::hasColumn('nota_credito_compras_cab','nro_nota_credito') ) {
+            Schema::table('nro_nota_credito', function (Blueprint $table) {
+                $table->dropColumn('nro_nota_credito');
             });
         }
     }
