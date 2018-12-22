@@ -16,9 +16,8 @@ class CreateMovimientosArticulosTable extends Migration
     {
         Schema::create('movimientos_articulos', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('movimiento_id')->unsigned();
             $table->integer('tipo_movimiento')->unsigned();
-            $table->date('fecha_movimiento')->nullable();
+            $table->date('fecha_ultimo_movimiento')->nullable();
             $table->integer('articulo_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
             $table->decimal('cantidad', 14, 2)->unsigned();
@@ -39,11 +38,6 @@ class CreateMovimientosArticulosTable extends Migration
      */
     public function down()
     {
-        //Pablo - 14/10/2018 - controlamos si existen las columnas primero antes del drop        
-        if(Schema::hasColumn('movimientos_articulos','fecha_movimiento') ) {
-            Schema::table('movimientos_articulos', function (Blueprint $table) {
-                $table->dropColumn('fecha_movimiento');
-            });
-        }
+        Schema::dropIfExists('movimientos_articulos');
     }
 }
