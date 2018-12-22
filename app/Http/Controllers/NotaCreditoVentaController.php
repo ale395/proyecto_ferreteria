@@ -155,12 +155,14 @@ class NotaCreditoVentaController extends Controller
             $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
             $detalle->save();
 
-            if ($detalle->articulo->getControlExistencia() == true) {
-                //Actualizacion de existencia
-                $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
-                    ->where('sucursal_id', $sucursal->getId())->first();
-                $existencia->actualizaStock('+', $detalle->getCantidad());
-                $existencia->update();
+            if ($request['tipo_nota_credito'] == 'DV') {
+                if ($detalle->articulo->getControlExistencia() == true) {
+                    //Actualizacion de existencia
+                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
+                        ->where('sucursal_id', $sucursal->getId())->first();
+                    $existencia->actualizaStock('+', $detalle->getCantidad());
+                    $existencia->update();
+                }
             }
         }
 

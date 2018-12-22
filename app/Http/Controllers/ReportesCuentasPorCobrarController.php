@@ -53,7 +53,7 @@ class ReportesCuentasPorCobrarController extends Controller
             ->join('facturas_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'facturas_ventas_cab.id')
             ->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
                 DB::raw("'Factura' as descripcion"), 
-                DB::raw("facturas_ventas_cab.serie||' '||lpad(CAST(facturas_ventas_cab.nro_factura AS CHAR), 7, '0') as nro_comp"), 
+                DB::raw("facturas_ventas_cab.nume_serie||' '||lpad(CAST(facturas_ventas_cab.nro_factura AS CHAR), 7, '0') as nro_comp"), 
                 DB::raw("'0' as credito"), 
                 DB::raw("TO_CHAR(ROUND(facturas_ventas_cab.monto_total), '999G999G999') as debito"), 'cuenta_clientes.created_at')
             ->where('cuenta_clientes.tipo_comprobante', 'F')
@@ -77,7 +77,7 @@ class ReportesCuentasPorCobrarController extends Controller
             ->join('nota_credito_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'nota_credito_ventas_cab.id')
             ->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
                 DB::raw("'Nota de Crédito' as descripcion"), 
-                DB::raw("nota_credito_ventas_cab.serie||' '||lpad(CAST(nota_credito_ventas_cab.nro_nota_credito AS CHAR), 7, '0') as nro_comp"), 
+                DB::raw("nota_credito_ventas_cab.nume_serie||' '||lpad(CAST(nota_credito_ventas_cab.nro_nota_credito AS CHAR), 7, '0') as nro_comp"), 
                 DB::raw("TO_CHAR(ROUND(nota_credito_ventas_cab.monto_total), '999G999G999') as credito"), 
                 DB::raw("'0' as debito"), 'cuenta_clientes.created_at')
             ->where('cuenta_clientes.tipo_comprobante', 'N')
