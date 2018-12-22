@@ -117,8 +117,8 @@ class NotaCreditoComprasController extends Controller
             $cabecera->setComentario($request['comentario']);
             $cabecera->setMontoTotal($total);
             $cabecera->setMontoTotalExenta($total_exenta);
-            $cabecera->setMTotalGravada($total_gravada);
-            $cabecera->setMTotalIva($total_iva);
+            $cabecera->setMontoTotalGravada($total_gravada);
+            $cabecera->setMontoTotalIva($total_iva);
             $cabecera->setUsuarioId($usuario->id);
     
             $cabecera->save();
@@ -169,9 +169,6 @@ class NotaCreditoComprasController extends Controller
                 $cuenta_factura->update();
             }
     
-            /*Actualiza el numero de comprobante utilizado para la serie*/
-            $serie->setNroActual($serie->getNroActual()+1);
-            $serie->update();
     
             //Actualizacion de saldo proveedor
             $cuenta = new CuentaProveedor;
