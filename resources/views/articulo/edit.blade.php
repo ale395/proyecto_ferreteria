@@ -127,7 +127,7 @@
                         <label class="control-label col-md-2">Vendible *</label>
                         <div class="col-md-1 custom-control custom-checkbox">
                             <input type="hidden" name="vendible" value="false">
-                            <input id="vendible" type="checkbox" class="custom-control-input" name="vendible" value="true">
+                            <input id="vendible" type="checkbox" @if($articulo->vendible)checked @endif class="custom-control-input" name="vendible" value="true">
                         </div>
                         <label class="control-label col-md-2">Existencias *</label>
                         <div class="col-md-1 custom-control custom-checkbox">
