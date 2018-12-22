@@ -54,48 +54,50 @@
     	<table class="table table-bordered">
     		<thead>
     			<tr class="active">
-    				<th class="text-center" width="7%">Cant</th>
+    				<th class="text-center" width="6%"><font size="2">Cant</font></th>
     				<th>Descripcion</th>
-    				<th class="text-center" width="11%">Prec. Unit.</th>
-    				<th class="text-center" width="11%">Exentas</th>
-    				<th class="text-center" width="11%">IVA 5%</th>
-    				<th class="text-center" width="11%">IVA 10%</th>
+    				<th class="text-center" width="10%">Prec. Unit.</th>
+                    <th class="text-center" width="10%">Descuento</th>
+    				<th class="text-center" width="10%">Exentas</th>
+    				<th class="text-center" width="10%">IVA 5%</th>
+    				<th class="text-center" width="10%">IVA 10%</th>
     			</tr>
     		</thead>
     		<tbody>
     			@foreach($factura_cab->facturaDetalle as $detalle)
                     <tr>
-                        <td class="text-center">{{$detalle->getCantidadNumber()}}</td>
-                        <td>{{$detalle->articulo->getDescripcion()}}</td>
-                        <td class="text-right">{{$detalle->getPrecioUnitario()}}</td> 
+                        <td class="text-center"><font size="1">{{$detalle->getCantidadNumber()}}</font></td>
+                        <td><font size="1">{{$detalle->articulo->getDescripcion()}}</font></td>
+                        <td class="text-right"><font size="1">{{$detalle->getPrecioUnitario()}}</font></td> 
+                        <td class="text-right"><font size="1">{{$detalle->getMontoDescuento()}}</font></td>
                         @if($detalle->getPorcentajeIva() == 0)
-                        	<td class="text-right">{{$detalle->getMontoTotal()}}</td>
-                        	<td class="text-right">0</td>
-                        	<td class="text-right">0</td>
+                        	<td class="text-right"><font size="1">{{$detalle->getMontoTotal()}}</font></td>
+                        	<td class="text-right"><font size="1">0</font></td>
+                        	<td class="text-right"><font size="1">0</font></td>
                         @elseif($detalle->getPorcentajeIva() == 5)
-                        	<td class="text-right">0</td>
-                        	<td class="text-right">{{$detalle->getMontoTotal()}}</td>
-                        	<td class="text-right">0</td>
+                        	<td class="text-right"><font size="1">0</font></td>
+                        	<td class="text-right"><font size="1">{{$detalle->getMontoTotal()}}</font></td>
+                        	<td class="text-right"><font size="1">0</font></td>
                         @else
-                        	<td class="text-right">0</td>
-                        	<td class="text-right">0</td>
-                        	<td class="text-right">{{$detalle->getMontoTotal()}}</td>
+                        	<td class="text-right"><font size="1">0</font></td>
+                        	<td class="text-right"><font size="1">0</font></td>
+                        	<td class="text-right"><font size="1">{{$detalle->getMontoTotal()}}</font></td>
                         @endif
                     </tr>
                 @endforeach
                 <tr>
-                    	<td colspan="4"><strong>Sub-Totales:</strong></td>
-                    	<td class="text-right">{{$total_grav_5}}</td>
-                    	<td class="text-right">{{$total_grav_10}}</td>
+                    	<td colspan="5"><strong>Sub-Totales:</strong></td>
+                    	<td class="text-right"><font size="1">{{$total_grav_5}}</font></td>
+                    	<td class="text-right"><font size="1">{{$total_grav_10}}</font></td>
                     </tr>
                     <tr>
-                    	<td colspan="5"><strong>Total a pagar:</strong> {{$total_en_letras}}</td>
+                    	<td colspan="6"><strong>Total a pagar:</strong> {{$total_en_letras}}</td>
                     	<td class="text-right">{{$factura_cab->getMontoTotal()}}</td>
                     </tr>
                     <tr>
-                    	<td colspan="2"><strong>Liquidacion del IVA: (5%)</strong> {{$total_iva_5}}</td>
-                    	<td colspan="2"><strong>(10%)</strong> {{$total_iva_10}}</td>
-                    	<td colspan="2"><strong>Total IVA:</strong> {{$total_iva}}</td>
+                    	<td colspan="2"><strong>Liquidacion del IVA: (5%)</strong><font size="1"> {{$total_iva_5}}</font></td>
+                    	<td colspan="3"><strong>(10%)</strong><font size="1"> {{$total_iva_10}}</font></td>
+                    	<td colspan="2"><strong>Total IVA:</strong><font size="1"> {{$total_iva}}</font></td>
                     </tr>
     		</tbody>
     	</table>

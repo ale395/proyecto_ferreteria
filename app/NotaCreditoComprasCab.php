@@ -8,7 +8,7 @@ class NotaCreditoComprasCab extends Model
 {
     CONST MAX_LINEAS_DETALLE = 10;
 
-    protected $table = 'nota_credito_ventas_cab';
+    protected $table = 'nota_credito_compras_cab';
 
     public function getId(){
         return $this->id;
@@ -24,6 +24,10 @@ class NotaCreditoComprasCab extends Model
         } elseif ($this->tipo_nota_credito == 'DC') {
             return 'Descuento';
         }
+    }
+
+    public function setFacturaId($compra_cab_id){
+        $this->compra_cab_id = $compra_cab_id;
     }
 
     public function setTipoNotaCredito($tipo_nota_credito){
@@ -42,8 +46,8 @@ class NotaCreditoComprasCab extends Model
         $this->nro_nota_credito = $nro_nota_credito;
     }
 
-    public function setClienteId($cliente_id){
-        $this->cliente_id = $cliente_id;
+    public function setProveedorId($proveedor_id){
+        $this->proveedor_id = $proveedor_id;
     }
 
     public function setSucursalId($sucursal_id){
@@ -72,6 +76,15 @@ class NotaCreditoComprasCab extends Model
 
     public function setFechaEmision($fecha_emision){
         $this->fecha_emision = $fecha_emision;
+    }
+
+    //fecha_vigencia_timbrado
+    public function setFechaVigenciaTimbrado($fecha_vigencia_timbrado){
+        $this->fecha_vigencia_timbrado = $fecha_vigencia_timbrado;
+    }
+
+    public function getFechaVigenciaTimbrado(){
+        return date("d-m-Y", strtotime($this->fecha_vigencia_timbrado));
     }
 
     //monto total
@@ -151,8 +164,8 @@ class NotaCreditoComprasCab extends Model
         $this->estado = $estado;
     }
 
-    public function setCompraId($factura_cab_id){
-        $this->factura_cab_id = $factura_cab_id;
+    public function setCompraId($compras_cab_id){
+        $this->compras_cab_id = $compras_cab_id;
     }
 
     public function proveedor()

@@ -78,6 +78,7 @@ class FacturaVentaController extends Controller
         $usuario = Auth::user();
         $cabecera = new FacturaVentaCab();
         $total = 0;
+        
         $array_pedidos = [];
         if ($request['pedidos_id'] != null) {
             $array_pedidos = explode(",",($request['pedidos_id']));

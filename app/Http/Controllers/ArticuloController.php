@@ -179,7 +179,7 @@ class ArticuloController extends Controller
             $articulo->img_producto = $filename;
             
         }
-
+    
         $articulo->setCodigo ($request['codigo']);
         $articulo->setDescripcion($request['descripcion']);
         $articulo->setCodigoBarra($request['codigo_barra']);

@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form method="post" action="{{action('NotaCreditoVentaController@store')}}" class="form-horizontal" data-toggle="validator">
+        <form method="post" action="{{action('NotaCreditoComprasController@store')}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Nota de Crédito - Compras
@@ -54,30 +54,30 @@
                                 @endif
                             </div>
                         </div>
-                        <label for="nro_nota_credito" class="col-md-2 control-label">Número</label>
+                        <label for="nro_nota_credito" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
                             <input type="text" id="nro_nota_credito" name="nro_nota_credito" class="form-control text-right" value="{{old('nro_nota_credito')}}" >  
                         </div>
                        
                     </div>
                     <div class="form-group">
-                        <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
+                        <label for="fecha_emision" class="col-md-1 control-label">Fecha*</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
-                        <label for="compra_nro" class="col-md-3 control-label">Factura*</label>
-                        <div class="col-md-3">
-                            <input type="text" id="compra_nro" class="form-control text-right" name="compra_nro" value="{{old('compra_nro')}}" readonly>
+                        <label for="timbrado" class="col-md-2 control-label">Timbrado*</label>
+                        <div class="col-md-2">
+                            <input type="text" id="timbrado" name="timbrado" class="form-control text-right" value="{{old('timbrado')}}" >  
                         </div>
-                        <div class="col-md-1">
-                            <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Factura"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        <label for="fecha_vigencia_timbrado" class="col-md-1 control-label">Validez*</label>
+                        <div class="col-md-2">
+                            <input type="text" id="fecha_vigencia_timbrado" name="fecha_vigencia_timbrado" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_vigencia_timbrado')}}" data-inputmask="'mask': '99/99/9999'">
                         </div>
-                        <input type="text" id="compras_id" class="hidden" name="compras_id" value="{{old('compras_id')}}">
                     </div>
 
                     <div class="form-group">
                         <label for="proveedor_id" class="col-md-1 control-label">Proveedor *</label>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
                                 @if ($errors->any())
                                     @foreach($proveedores as $proveedor)
@@ -86,7 +86,15 @@
                                         @endif
                                     @endforeach
                                 @endif
-                            </select>
+                            </select>                           
+                        </div>
+                        <div class="col-md-1">
+                            <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Factura"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        </div>
+                        <input type="text" id="pedidos_id" class="hidden" name="pedidos_id" value="{{old('pedidos_id')}}">
+                        <label for="factura_nro" class="col-md-1 control-label">Compra*</label>
+                        <div class="col-md-2">
+                            <input type="text" id="factura_nro" class="form-control text-right" name="factura_nro" value="{{old('factura_nro')}}" readonly>
                         </div>
                     </div>
 
@@ -122,7 +130,7 @@
                         </div>
                         <input type="hidden" id="existencia" name="existencia">
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Precio Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Precio Unitario" onchange="calcularSubtotal()"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()"></a>
                         </div>
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="% Descuento">
@@ -146,7 +154,7 @@
                                 <th width="5%">Acción</th>
                                 <th>Artículo</th>
                                 <th width="6%">Cant.</th>
-                                <th width="9%">Precio U.</th>
+                                <th width="9%">Costo U.</th>
                                 <th width="9%">Descuento</th>
                                 <th width="9%">Exenta</th>
                                 <th width="9%">Gravada</th>
@@ -161,7 +169,7 @@
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{old('tab_articulo_nombre.'.$i)}}</td>
                                         <td>{{old('tab_cantidad.'.$i)}}</td>
-                                        <td>{{old('tab_precio_unitario.'.$i)}}</td>
+                                        <td>{{old('tab_costo_unitario.'.$i)}}</td>
                                         <td>{{old('tab_monto_descuento.'.$i)}}</td>
                                         <td>{{old('tab_exenta.'.$i)}}</td>
                                         <td>{{old('tab_gravada.'.$i)}}</td>
@@ -193,7 +201,7 @@
                                 <th>Artículo ID</th>
                                 <th>Nombre Artículo</th>
                                 <th width="6%">Cant.</th>
-                                <th width="9%">Precio U.</th>
+                                <th width="9%">Costo U.</th>
                                 <th width="9%">% Descuento</th>
                                 <th width="9%">Monto Descuento</th>
                                 <th width="9%">% IVA</th>
@@ -211,7 +219,7 @@
                                         <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_precio_unitario[]" value="{{old('tab_precio_unitario.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_costo_unitario[]" value="{{old('tab_costo_unitario.'.$i)}}"></th>
                                         <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
                                         <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
                                         <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
@@ -265,12 +273,16 @@
                 $('#tabla-facturas').DataTable().destroy();    
             }
 
+            id_proveedor = $('#select2-proveedores').val();
+
+            url_tabla = "{{ route('api.compra')}}" + "/proveedor/" + id_proveedor;
+
             tablePedidos = $('#tabla-facturas').DataTable({
                 
                 language: { url: '/datatables/translation/spanish' },
                 processing: true,
                 serverSide: true,
-                ajax: {"url": "/api/facturas/cliente/"+$('#select2-proveedores').val()},
+                ajax: {"url": url_tabla },
                 select: {
                     style: 'single'
                 },
@@ -492,7 +504,7 @@
                 subtotal
             ] ).draw( false );
 
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
             $("#tab-hidden").append(markup);
 
             /*Se restauran a nulos los valores del bloque para la selección del articulo*/
@@ -530,13 +542,16 @@
         //console.log(datos);
         for (i = 0; i < datos.length; i++) {
             array_pedidos.push(datos[i].id);
-            document.getElementById("compra_nro").value = datos[i].nro_factura;
+            document.getElementById("factura_nro").value = datos[i].nro_factura;
         }
+
+        url_tabla = "{{ route('api.compra')}}" + "/proveedor/detalles/" + array_pedidos;
+
         if (array_pedidos.length > 0) {
             if (tipo_ncre == 'DV') {
                 $.ajax({
                     type: "GET",
-                    url: "/api/facturas/detalles/"+array_pedidos,
+                    url: url_tabla,
                     datatype: "json",
                     success: function(data){
                         console.log(data);
@@ -589,7 +604,7 @@
                                     $.number(subtotal, 0, ',', '.')
                                 ]).draw( false );
 
-                                var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + data[i].articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+                                var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + data[i].articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
                                 $("#tab-hidden").append(markup);
 
                                 $('#modal-factura-venta').modal('hide');

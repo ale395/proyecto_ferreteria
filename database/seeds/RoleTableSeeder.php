@@ -60,6 +60,13 @@ class RoleTableSeeder extends Seeder
         //$permiso_eliminar_ajuste_inventario = Permission::where('slug', 'ajustesInventarios.destroy')->first();
         $permiso_ver_ajuste_inventario = Permission::where('slug', 'ajustesInventarios.show')->first();
 
+                //permisos para Inventario
+        $permiso_listar_inventario = Permission::where('slug','inventarios.index')->first();
+        $permiso_crear_inventario = Permission::where('slug', 'inventarios.create')->first();
+        $permiso_editar_inventario = Permission::where('slug', 'inventarios.edit')->first();
+        //$permiso_eliminar_inventario = Permission::where('slug', 'inventarios.destroy')->first();
+        $permiso_ver_inventario = Permission::where('slug', 'inventarios.show')->first();
+
         $permiso_listar_timb = Permission::where('slug', 'timbrados.index')->first();
         $permiso_crear_timb = Permission::where('slug', 'timbrados.create')->first();
         $permiso_editar_timb = Permission::where('slug', 'timbrados.edit')->first();
@@ -380,6 +387,11 @@ class RoleTableSeeder extends Seeder
         //$role->assignPermission($permiso_eliminar_ajuste_inventario->id);
         $role->assignPermission($permiso_ver_ajuste_inventario->id);
 
+        $role->assignPermission($permiso_listar_inventario->id);
+        $role->assignPermission($permiso_crear_inventario->id);
+        $role->assignPermission($permiso_editar_inventario->id);
+        //$role->assignPermission($permiso_eliminar_ajuste_inventario->id);
+        $role->assignPermission($permiso_ver_inventario->id);
 
         $role->assignPermission($permiso_listar_timb->id);
         $role->assignPermission($permiso_crear_timb->id);

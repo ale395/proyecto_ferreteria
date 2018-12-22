@@ -19,15 +19,19 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr class="active">
-                            <th class="text-center">Articulo nombre</th>
-                            <th>Cantidad Logica</th>
-                            <th>Cantidad Fisica</th>
+                            <th>Codigo</th>
+                            <th class="text-center">Nombre de Articulo</th>
+                            <th>Costo</th>
+                            <th>Cantidad en sistema</th>
+                            <th>Conteo físico</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($registros as $registro)
                             <tr>
+                            <td>{{$registro->codigo}}</td>
                                 <td>{{$registro->descripcion}}</td>
+                                <td>{{$registro->ultimo_costo}}</td>
                                  <td>{{$registro->cantidad}}</td>
                                  <td></td>
                             </tr>
@@ -35,6 +39,9 @@
                     </tbody>
                     <tfoot>
                         <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                         </tr>

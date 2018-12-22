@@ -7,7 +7,7 @@
         <form method="post" action="{{action('AjusteInventarioController@store')}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Ajuste de inventario
+                    <h4>Ajustes traslados/sobrantes/faltantes
                     <div class="pull-right btn-group">
                         <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
                         <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('ajustesInventarios.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
@@ -46,7 +46,7 @@
 
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
-                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>   
                         <label for="sucursal_id" class="col-md-1 control-label">Sucursal *</label>
                         <div class="col-md-3">
@@ -88,20 +88,20 @@
 
                             </select>
                         </div>
-                        <div class="col-md-1">
-                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia">
+                        <div class="col-md-2">
+                             <input type="text" id="existencia" name="existencia" class="form-control" placeholder="existencia actual" readonly>
                         </div>
                         <div class="col-md-1">
                              <input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cantidad" onchange="calcularSubtotal()" onkeyup="calcularSubtotal()">
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
+                            <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()" readonly>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
                         </div>
                         <div class="col-md-1">
-                            <a class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir al pedido" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <span class="help-block with-errors"></span>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAjustesInventariosDetTable extends Migration
+class CreateInventariosDetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,19 @@ class CreateAjustesInventariosDetTable extends Migration
      */
     public function up()
     {
-        Schema::create('ajustes_inventarios_det', function (Blueprint $table) {
+        Schema::create('inventarios_det', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('ajuste_inventario_cab_id')->unsigned();
+            $table->integer('inventario_cab_id')->unsigned();
             $table->integer('articulo_id')->unsigned();
             $table->decimal('existencia', 14, 2)->nullable();
             $table->integer('existencia_id')->nullable();
             $table->decimal('cantidad', 14, 2);
-            $table->integer('diferencia')->nullable();
+            $table->decimal('diferencia',14,2)->nullable();
             $table->decimal('costo_unitario', 14, 2);
             $table->decimal('sub_total', 14, 2);
             $table->timestamps();
 
-            $table->foreign('ajuste_inventario_cab_id')->references('id')->on('ajustes_inventarios_cab');
+            $table->foreign('inventario_cab_id')->references('id')->on('inventarios_cab');
             $table->foreign('articulo_id')->references('id')->on('articulos');
             $table->foreign('existencia_id')->references('id')->on('existencia_articulos');
 
@@ -39,6 +39,6 @@ class CreateAjustesInventariosDetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ajustes_inventarios_det');
+        Schema::dropIfExists('inventarios_det');
     }
 }

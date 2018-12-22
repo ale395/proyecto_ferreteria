@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="fecha_emision" class="col-md-1 control-label">Fecha Cte.*</label>
+                        <label for="fecha_emision" class="col-md-1 control-label">Fecha*</label>
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'">
                         </div>                        
@@ -94,6 +94,9 @@
                         </div>
                         <div class="col-md-1">
                             <a onclick="showPedidosForm()" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Buscar Pedido"><i class="fa fa-search" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="col-md-1">
+                            <label for="nro_orden_compra" class="col-md-1 control-label"> </label>
                         </div>
                         <input type="text" id="pedidos_id" class="hidden" name="pedidos_id" value="{{old('pedidos_id')}}">
                     </div>
@@ -631,11 +634,13 @@
 
     function cargarPedidos(){
         var datos = tablePedidos.rows( { selected: true } ).data();
-        //console.log(datos);
+        console.log(datos);
         //var i;
         var array_pedidos = [];
         for (i = 0; i < datos.length; i++) {
             array_pedidos.push(datos[i].id);
+
+            $('#nro_orden').val("Orden de Compra nro: " + datos[i].nro_orden);
         }
 
         url_tabla = "{{ route('api.ordencompra')}}" + "/proveedor/detalles/" + array_pedidos;
@@ -647,7 +652,7 @@
                 url: url_tabla,
                 datatype: "json",
                 success: function(data){
-                    //console.log(data);
+                    console.log(data.length);
                     if(data.length > 10){
                         var obj = $.alert({
                             title: 'Atención',

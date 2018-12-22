@@ -427,7 +427,7 @@ class OrdenCompraController extends Controller
             ->get();
         
             //var_dump( $pedidos);
-            dd( $pedidos);
+            //dd( $pedidos);
 
         return $pedidos;
     }

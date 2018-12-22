@@ -149,6 +149,13 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/ajustesInventarios', 'AjusteInventarioController@apiAjustesInventarios')->name('api.ajustes.inventarios');
 	Route::get('ajustesInventarios/impresion/{ajuste_inventario}', 'AjusteInventarioController@impresionAjuste')->name('ajustes.inventarios.impresion');
 
+	//RUTA PARA EL CONTROLADOR  DE INVENTARIO
+	Route::resource('inventarios', 'InventarioController', ['parameters'=>['inventarios'=>'inventario']]);
+	Route::get('api/inventarios', 'InventarioController@apiInventarios')->name('api.inventarios');
+	Route::get('Inventarios/impresion/{inventario}', 'InventarioController@impresionInventario')->name('inventarios.impresion');
+
+	
+
 	//RUTAS PARA MODELO SUCURSALES
 	Route::resource('sucursales', 'SucursalController');
 	Route::get('api/sucursales', 'SucursalController@apiSucursales')->name('api.sucursales');
@@ -207,6 +214,9 @@ Route::middleware(['auth'])->group(function() {
 	//Rutas para compra
 	Route::resource('compra', 'CompraController');
 	Route::get('api/compra', 'CompraController@apiCompras')->name('api.compra');
+	Route::get('api/compra/proveedor/{cliente_id}', 'CompraController@apiComprasProveedor')->name('api.compra.proveedor');
+	Route::get('api/compra/proveedor/detalles/{array_pedidos}', 'CompraController@apiCompraDetalle')->name('api.compra.detalles');
+
 
 	//Rutas para Nota de Crédito de Compras
 	Route::resource('notacreditocompra', 'NotaCreditoComprasController');

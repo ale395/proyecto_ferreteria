@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use App\ComprasCab;
 class CompraRequest extends FormRequest
 {
     /**
@@ -40,6 +40,7 @@ class CompraRequest extends FormRequest
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
+                    'fecha_vigencia_timbrado'=>'required',
                     'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
@@ -55,6 +56,7 @@ class CompraRequest extends FormRequest
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
+                    'fecha_vigencia_timbrado'=>'required',
                     'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
@@ -69,6 +71,7 @@ class CompraRequest extends FormRequest
                     'proveedor_id'=>'required', 
                     'moneda_id'=>'required',
                     'fecha_emision'=>'required',
+                    'fecha_vigencia_timbrado'=>'required',
                     'valor_cambio'=>'required',
                     'tab_articulo_id'=>'required',
                     'tab_cantidad'=>'required', 
@@ -91,7 +94,8 @@ class CompraRequest extends FormRequest
             'moneda.required' => 'Debe seleccionar una moneda.',
             'tab_articulo_id.required' => 'Ingrese al menos un artículo.',
             'tab_cantidad.required' => 'Ingrese la cantidad.',
-            'fecha_emision.required' => 'Ingrese la fecha.'
+            'fecha_emision.required' => 'Ingrese la fecha del comprobante.',
+            'fecha_vigencia_timbrado.required' => 'Ingrese la vigencia del timbrado.'
         ];
 
     }   

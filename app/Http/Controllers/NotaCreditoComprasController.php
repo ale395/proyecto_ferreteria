@@ -70,6 +70,10 @@ class NotaCreditoComprasController extends Controller
             $usuario = Auth::user();
             $cabecera = new NotaCreditoComprasCab();
             $total = 0;
+            $total_exenta = 0;
+            $total_gravada = 0;
+            $total_iva = 0;
+            
             $array_pedidos = [];
             if ($request['pedidos_id'] != null) {
                 $array_pedidos = explode(",",($request['pedidos_id']));
@@ -92,6 +96,10 @@ class NotaCreditoComprasController extends Controller
                 $total_gravada = $total_gravada + str_replace('.', '', $request['tab_gravada'][$i]);
                 $total_iva = $total_iva + str_replace('.', '', $request['tab_iva'][$i]);
             }
+
+            if (count($array_pedidos) == 0) {
+                return redirect()->back()->withErrors('No puede guardar una nota de crédito sin relacionar a una factura!')->withInput();
+            }
     
             foreach ($array_pedidos as $nro_factura) {
                 $factura_cab = ComprasCab::findOrFail($nro_factura);
@@ -109,11 +117,12 @@ class NotaCreditoComprasController extends Controller
             $cabecera->setMonedaId($request['moneda_id']);
             $cabecera->setValorCambio($request['valor_cambio']);
             $cabecera->setFechaEmision($request['fecha_emision']);
+            $cabecera->setFechaVigenciaTimbrado($request['fecha_vigencia_timbrado']);
             $cabecera->setComentario($request['comentario']);
             $cabecera->setMontoTotal($total);
             $cabecera->setMontoTotalExenta($total_exenta);
-            $cabecera->setMTotalGravada($total_gravada);
-            $cabecera->setMTotalIva($total_iva);
+            $cabecera->setMontoTotalGravada($total_gravada);
+            $cabecera->setMontoTotalIva($total_iva);
             $cabecera->setUsuarioId($usuario->id);
     
             $cabecera->save();
@@ -124,7 +133,7 @@ class NotaCreditoComprasController extends Controller
                 $detalle->setArticuloId($request['tab_articulo_id'][$i]);
                 
                 $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
-                $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_precio_unitario'][$i]));
+                $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
                 $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
                 $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
                 $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
@@ -164,9 +173,6 @@ class NotaCreditoComprasController extends Controller
                 $cuenta_factura->update();
             }
     
-            /*Actualiza el numero de comprobante utilizado para la serie*/
-            $serie->setNroActual($serie->getNroActual()+1);
-            $serie->update();
     
             //Actualizacion de saldo proveedor
             $cuenta = new CuentaProveedor;

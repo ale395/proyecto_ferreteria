@@ -13,9 +13,9 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label>Cliente: {{$cliente->getNombreIndex()}}</label>
+                    <label>Cliente:</label> {{$cliente->getNombreIndex()}}
                 </div>
-                <div class="form-group"><label>Fecha: {{$fecha_final}}</label></div>
+                <div class="form-group"><label>Rango de Fechas:</label> {{$fecha_inicial}} A {{$fecha_final}}</div>
                 <table class="table table-bordered">
                     <thead>
                         <tr class="active">
