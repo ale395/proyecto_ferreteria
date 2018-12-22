@@ -336,7 +336,7 @@
                         i : 0;
             };
 
-            var sumFields = [2,3,4,5,6];
+            var sumFields = [2,3,4,5,6]; //Columnas de la tabla que hay que sumar
             for(var sf = 0;sf<sumFields.length;sf++)
             {
                 // Total over all pages
