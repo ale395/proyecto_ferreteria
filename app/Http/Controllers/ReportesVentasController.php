@@ -36,24 +36,34 @@ class ReportesVentasController extends Controller
         $cliente = null;
         $sucursal = null;
         $vendedor = null;
+        $incluye_anulados = $request['anulados'];
 
         $facturas = DB::table('facturas_ventas_cab')
             ->join('facturas_ventas_det', 'facturas_ventas_cab.id', '=', 'facturas_ventas_det.factura_cab_id')
             ->join('clientes', 'clientes.id', '=', 'facturas_ventas_cab.cliente_id')
             ->join('sucursales', 'sucursales.id', '=', 'facturas_ventas_cab.sucursal_id')
             ->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
+                DB::raw("CASE WHEN facturas_ventas_cab.estado = 'A' THEN 'Anulado' WHEN facturas_ventas_cab.estado = 'P' THEN 'Pendiente' END as estado"),
                 DB::raw("facturas_ventas_cab.nume_serie||' '||lpad(CAST(facturas_ventas_cab.nro_factura AS CHAR), 7, '0') as nro_comp"),
                 DB::raw("CASE WHEN clientes.tipo_persona = 'F' THEN clientes.nombre||', '||clientes.apellido ELSE clientes.razon_social END AS cliente"),
                 DB::raw('sucursales.nombre AS sucursal'),
-                DB::raw("SUM(facturas_ventas_det.monto_descuento) as total_descuento"),
-                DB::raw("SUM(facturas_ventas_det.monto_exenta) as total_exenta"),
-                DB::raw("SUM(facturas_ventas_det.monto_gravada) as total_gravada"), 
-                DB::raw("SUM(facturas_ventas_det.monto_iva) as total_iva"),
-                DB::raw("SUM(facturas_ventas_det.monto_total) as total_comprobante"))
-            ->where('facturas_ventas_cab.estado', '!=', 'A')
+                DB::raw("SUM(CASE WHEN facturas_ventas_cab.estado = 'A' THEN 0 ELSE facturas_ventas_det.monto_descuento END) as total_descuento"),
+                DB::raw("SUM(CASE WHEN facturas_ventas_cab.estado = 'A' THEN 0 ELSE facturas_ventas_det.monto_exenta END) as total_exenta"),
+                DB::raw("SUM(CASE WHEN facturas_ventas_cab.estado = 'A' THEN 0 ELSE facturas_ventas_det.monto_gravada END) as total_gravada"), 
+                DB::raw("SUM(CASE WHEN facturas_ventas_cab.estado = 'A' THEN 0 ELSE facturas_ventas_det.monto_iva END) as total_iva"),
+                DB::raw("SUM(CASE WHEN facturas_ventas_cab.estado = 'A' THEN 0 ELSE facturas_ventas_det.monto_total END) as total_comprobante"))
+            //->where('facturas_ventas_cab.estado', '!=', 'A')
             ->where('facturas_ventas_cab.fecha_emision', '>=', $fecha_inicial)
             ->where('facturas_ventas_cab.fecha_emision', '<=', $fecha_final);
             /*->groupBy('facturas_ventas_cab.fecha_emision', 'facturas_ventas_cab.serie', 'facturas_ventas_cab.nro_factura', 'sucursales.nombre', 'clientes.tipo_persona', 'clientes.nombre', 'clientes.apellido', 'clientes.razon_social');*/
+        if ($incluye_anulados == 1) {
+            $facturas = $facturas->where('facturas_ventas_cab.estado', '!=', 'A');
+            $incluye_anulados = 'No';
+        } else {
+            $incluye_anulados = 'Si';
+        }
+
+
         if ($request->has('cliente_id')) {
             $facturas = $facturas->whereIn('facturas_ventas_cab.cliente_id', $request['cliente_id']);
             if (count($request['cliente_id']) > 1) {
@@ -87,10 +97,10 @@ class ReportesVentasController extends Controller
             $vendedor = 'Todos';
         }
 
-        $facturas = $facturas->groupBy('facturas_ventas_cab.fecha_emision', 'facturas_ventas_cab.nume_serie', 'facturas_ventas_cab.nro_factura', 'sucursales.nombre', 'clientes.tipo_persona', 'clientes.nombre', 'clientes.apellido', 'clientes.razon_social');
+        $facturas = $facturas->groupBy('facturas_ventas_cab.fecha_emision', 'facturas_ventas_cab.nume_serie', 'facturas_ventas_cab.nro_factura', 'facturas_ventas_cab.estado', 'sucursales.nombre', 'clientes.tipo_persona', 'clientes.nombre', 'clientes.apellido', 'clientes.razon_social');
     	$facturas = $facturas->get();
 
-    	$pdf = PDF::loadView('reportesVentas.ventasReporte', compact('facturas', 'fecha_inicial', 'fecha_final', 'sucursal', 'cliente', 'vendedor'))->setPaper('a4', 'landscape');
+    	$pdf = PDF::loadView('reportesVentas.ventasReporte', compact('facturas', 'fecha_inicial', 'fecha_final', 'sucursal', 'cliente', 'vendedor', 'incluye_anulados'))->setPaper('a4', 'landscape');
 
         return $pdf->stream('ReporteDeVentas.pdf',array('Attachment'=>0));
     }

@@ -13,10 +13,11 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label>Periodo: {{$fecha_inicial}} - {{$fecha_final}}</label><br>
-                    <label>Cliente: {{$cliente}}</label><br>
-                    <label>Sucursal: {{$sucursal}}</label><br>
-                    <label>Vendedor: {{$vendedor}}</label><br>
+                    <strong>Periodo:</strong> {{$fecha_inicial}} - {{$fecha_final}}<br>
+                    <strong>Cliente:</strong> {{$cliente}}<br>
+                    <strong>Sucursal:</strong> {{$sucursal}}<br>
+                    <strong>Vendedor:</strong> {{$vendedor}}<br>
+                    <strong>Incluir anulados:</strong> {{$incluye_anulados}}<br>
                 </div>
                 @foreach($facturas->groupBy('sucursal') as $nomb_sucursal => $sucursal)
                 <strong>Sucursal:</strong> {{$nomb_sucursal}}
@@ -25,6 +26,7 @@
                         <tr class="active">
                             <th class="text-center" width="8%">Fecha</th>
                             <th width="14%">Nro Factura</th>
+                            <th width="10%">Estado</th>
                             <th>Cliente</th>
                             <th class="text-center" width="10%">Descuento</th>
                             <th class="text-center" width="10%">Exenta</th>
@@ -38,6 +40,7 @@
                         <tr>
                             <td class="text-center">{{$factura_cab->fecha_emision}}</td>
                             <td>{{$factura_cab->nro_comp}}</td>
+                            <td>{{$factura_cab->estado}}</td>
                             <td>{{$factura_cab->cliente}}</td>
                             <td class="text-right">{{number_format($factura_cab->total_descuento, 0, ',', '.')}}</td>
                             <td class="text-right">{{number_format($factura_cab->total_exenta, 0, ',', '.')}}</td>
@@ -49,7 +52,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" class="text-center"><strong>TOTALES</strong></td>
+                            <td colspan="4" class="text-center"><strong>TOTALES</strong></td>
                             <td class="text-right"><strong>{{number_format($sucursal->sum('total_descuento'), 0, ',', '.')}} Gs.</strong></td>
                             <td class="text-right"><strong>{{number_format($sucursal->sum('total_exenta'), 0, ',', '.')}} Gs.</strong></td>
                             <td class="text-right"><strong>{{number_format($sucursal->sum('total_gravada'), 0, ',', '.')}} Gs.</strong></td>

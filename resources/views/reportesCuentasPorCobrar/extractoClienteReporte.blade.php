@@ -13,9 +13,12 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label>Cliente:</label> {{$cliente->getNombreIndex()}}
+                    <strong>Cliente:</strong> {{$cliente->getNombreIndex()}}
                 </div>
-                <div class="form-group"><label>Rango de Fechas:</label> {{$fecha_inicial}} A {{$fecha_final}}</div>
+                <div class="form-group"><strong>Rango de Fechas:</strong> {{$fecha_inicial}} <strong>A</strong> {{$fecha_final}}</div>
+                <div class="form-group">
+                    <strong>Saldo Anterior:</strong> {{$saldo_anterior}} Gs.
+                </div>
                 <table class="table table-bordered">
                     <thead>
                         <tr class="active">
@@ -48,7 +51,7 @@
                     </tfoot>
                 </table>
                 <div class="form-group">
-                    <label>Saldo: {{$saldo}} Gs.</label>
+                    <strong>Saldo Final:</strong> {{$saldo}} Gs.
                 </div>
             </div>
         </div>
