@@ -54,13 +54,15 @@
                             </select>
                         </div>
                     </div>
-                    <!--<div class="form-group">
-                        <label for="articulo_id" class="col-md-2 control-label">Articulo</label>
+                    <div class="form-group">
+                        <label for="anulados" class="col-md-2 control-label">Incluir anulados?</label>
                         <div class="col-md-7">
-                            <select id="select2-articulos" name="articulo_id[]" class="form-control" style="width: 100%">
+                            <select id="select2-anulados" name="anulados" class="form-control" style="width: 100%">
+                                <option value="0">Si</option>
+                                <option value="1" selected>No</option>
                             </select>
                         </div>
-                    </div>-->
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" formtarget="_blank" class="btn btn-primary btn-save">Ver Reporte <i class="fa fa-file-text-o" aria-hidden="true"></i></button>
@@ -139,6 +141,11 @@
             },
             cache: true
         }
+    });
+
+    $('#select2-anulados').select2({
+        placeholder: 'Elija una opción',
+        language: "es"
     });
 
     $('#select2-articulos').select2({
