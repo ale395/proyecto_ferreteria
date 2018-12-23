@@ -17,6 +17,7 @@ use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\NotaCreditoComprasRequest;
 
 class NotaCreditoComprasController extends Controller
 {
@@ -167,8 +168,7 @@ class NotaCreditoComprasController extends Controller
             /*Actualiza el saldo de la factura relacionada a la nota de credito*/
             foreach ($array_pedidos as $nro_factura) {
                 $cuenta_factura = CuentaProveedor::where('tipo_comprobante', 'F')
-                    ->where('comprobante_id', $nro_factura)
-                    ->where('proveedor_id', $cabecera->proveedor->getId())->first();
+                    ->where('comprobante_id', $nro_factura)->first();
                 $cuenta_factura->setMontoSaldo($cuenta_factura->getMontoSaldo() - str_replace('.', '', $cabecera->getMontoTotal()));
                 $cuenta_factura->update();
             }
@@ -178,7 +178,6 @@ class NotaCreditoComprasController extends Controller
             $cuenta = new CuentaProveedor;
             $cuenta->setTipoComprobante('N');
             $cuenta->setComprobanteId($cabecera->getId());
-            $cuenta->setProveedorId($cabecera->proveedor->getId());
             $cuenta->setMontoComprobante(str_replace('.', '', str_replace('.', '', $cabecera->getMontoTotal())*-1));
             $cuenta->setMontoSaldo(0);
             $cuenta->save();
@@ -247,7 +246,7 @@ class NotaCreditoComprasController extends Controller
         //
     }
 
-    public function apiNotaCreditoVentas(){
+    public function apiNotaCreditoCompras(){
              //en vez de editar, eliminamos en seco si algo se cargó mal
              $permiso_editar = Auth::user()->can('compra.destroy');
              $permiso_eliminar = Auth::user()->can('compra.destroy');

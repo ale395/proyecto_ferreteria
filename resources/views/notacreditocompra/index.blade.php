@@ -55,7 +55,7 @@
                       language: { url: '/datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.nota.credito.ventas') }}",
+                      ajax: "{{ route('api.nota.credito.compras') }}",
                       'columnDefs': [
                         {
                             "targets": 0,
