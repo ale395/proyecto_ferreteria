@@ -80,9 +80,6 @@
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
-                        <div class="col-md-2">
-                            <label for="nro_compra" class="col-md-1 control-label"></label>
-                        </div>
                         <label for="factura_nro" class="col-md-2 control-label">Factura*</label>
                         <div class="col-md-3">
                             <!--<a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
@@ -261,6 +258,7 @@
 @include('cliente.create-persona-fisica')
 @include('cliente.create-persona-juridica')
 @include('notaCreditoVenta.facturasForm')
+@include('notaCreditoVenta.cantidadForm')
 
 @endsection
 @section('otros_scripts')
@@ -669,6 +667,38 @@
             .draw();
         $("#tab-hidden tr:eq("+row+")").remove();
     } );
+
+    $('#pedido-detalle tbody').on( 'click', 'td', function () {
+        //alert(tabla.cell( this ).data());
+        $('#modal-cantidad-devo').modal('show');
+        $('#modal-cantidad-devo form')[0].reset();
+        $('.modal-title').text('Cantidad - Devolución');
+        $('#cant_total').val(tabla.cell(this).data()).change();
+        $('#cant_devo').val(0).change();
+        $('#tab_index').val(tabla.row(this).index()).change();
+        $('#error-block-cant').hide();
+    } );
+
+    $('#modal-cantidad-devo').on('shown.bs.modal', function () {
+        $('#cant_devo').focus();
+    });
+    $('#cant_devo').number(true, 2, ',', '.');
+
+    function cargarCantidad(){
+        //alert('Se cargara: '+$('#cant_devo').val()+' a la fila '+$('#tab_index').val());
+        var cant_factu = $("#cant_total").val();
+        cant_factu = cant_factu.replace(",", ".");
+        var cant_devo = $("#cant_devo").val();
+        cant_devo = cant_devo.replace(",", ".");
+        var index_devo = $("#tab_index").val();
+        if (Number(cant_devo) > Number(cant_factu)) {
+            $('#error-block-cant').show().html('No se puede devolver una cantidad mayor a la facturada!');
+        } else {
+            //alert('Se cargara: '+$('#cant_devo').val()+' a la fila '+$('#tab_index').val());
+            tabla.cell(index_devo, 2).data($.number(cant_devo, 2, ',', '.')).draw();
+            $('#modal-cantidad-devo').modal('hide');
+        }
+    }
 
     function cargarPedidos(){
         var datos = tablePedidos.rows( { selected: true } ).data();
