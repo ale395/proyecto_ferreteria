@@ -15,8 +15,8 @@ class CreateCuentaProveedoresTable extends Migration
     {
         Schema::create('cuenta_proveedores', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('compra_id')->unsigned();
-            $table->integer('devolucion_compra_id')->unsigned();
+            $table->char('tipo_comprobante', 1);//F = Factura, N = Nota Credito
+            $table->integer('comprobante_id')->unsigned();
             $table->decimal('monto_comprobante', 14, 2);//Monto original del documento
             $table->decimal('monto_saldo', 14, 2);//Monto pendiente de pago
             $table->timestamps();

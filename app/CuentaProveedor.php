@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CuentaProveedor extends Model
 {
-    protected $table = 'cuenta_clientes';
+    protected $table = 'cuenta_proveedores';
     
     protected $fillable = ['tipo_comprobante','comprobante_id','monto_comprobante', 'monto_saldo'];
 
@@ -36,5 +36,9 @@ class CuentaProveedor extends Model
 
     public function compra(){
     	return $this->belongsTo('App\ComprasCab', 'comprobante_id');
+    }
+
+    public function notaCredito(){
+    	return $this->belongsTo('App\NotaCreditoComprasCab', 'comprobante_id');
     }
 }

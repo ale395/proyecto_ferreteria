@@ -128,12 +128,12 @@ class NotaCreditoComprasController extends Controller
             $cabecera->save();
     
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
-                $detalle = new NotaCreditoVentaDet;
+                $detalle = new NotaCreditoComprasDet;
                 $detalle->setNotaCreditoCabeceraId($cabecera->getId());
                 $detalle->setArticuloId($request['tab_articulo_id'][$i]);
                 
                 $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
-                $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
+                $detalle->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
                 $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
                 $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
                 $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
