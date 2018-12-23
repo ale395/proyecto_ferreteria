@@ -236,6 +236,13 @@ class RoleTableSeeder extends Seeder
         $permiso_eliminar_nccompra = Permission::where('slug', 'notacreditocompras.destroy')->first();
         $permiso_ver_nccompra = Permission::where('slug', 'notacreditocompras.show')->first();
 
+        //permisos de Orden de PAGO
+        $permiso_listar_ordenpago = Permission::where('slug', 'ordenpago.index')->first();
+        $permiso_crear_ordenpago = Permission::where('slug', 'ordenpago.create')->first();
+        $permiso_editar_ordenpago = Permission::where('slug', 'ordenpago.edit')->first();
+        $permiso_eliminar_ordenpago = Permission::where('slug', 'ordenpago.destroy')->first();
+        $permiso_ver_ordenpago = Permission::where('slug', 'ordenpago.show')->first();
+
         //GESTION DE CAJAS - CUENTAS POR COBRAR
         $permiso_habilitar_caja = Permission::where('slug', 'gestionCajas.habilitarCaja')->first();
         $permiso_cerrar_caja = Permission::where('slug', 'gestionCajas.cerrarCaja')->first();
@@ -449,6 +456,12 @@ class RoleTableSeeder extends Seeder
         $role->assignPermission($permiso_editar_nccompra->id);
         $role->assignPermission($permiso_eliminar_nccompra->id);
         $role->assignPermission($permiso_ver_nccompra->id);
+
+        $role->assignPermission($permiso_listar_ordenpago->id);
+        $role->assignPermission($permiso_crear_ordenpago->id);
+        $role->assignPermission($permiso_editar_ordenpago->id);
+        $role->assignPermission($permiso_eliminar_ordenpago->id);
+        $role->assignPermission($permiso_ver_ordenpago->id);
 
         $role->assignPermission($permiso_listar_cliente->id);
         $role->assignPermission($permiso_crear_cliente->id);
