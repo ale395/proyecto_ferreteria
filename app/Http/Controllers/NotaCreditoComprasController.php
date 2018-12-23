@@ -197,8 +197,8 @@ class NotaCreditoComprasController extends Controller
 
         }
         
- 
-        return redirect()->route('notaCreditoVentas.show', ['notaCreditoVenta' => $cabecera->getId()])->with('status', 'Nota de Crédito guardada correctamente!');
+        return redirect(route('notacreditocompra.create'))->with('status', 'Datos guardados correctamente!');
+        //return redirect()->route('notacreditocompra.create', ['notaCreditoVenta' => $cabecera->getId()])->with('status', 'Nota de Crédito guardada correctamente!');
     }
 
     /**
