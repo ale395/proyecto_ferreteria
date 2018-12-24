@@ -331,7 +331,7 @@
  
             // Total over all pages
             total = api
-                .column(4)//se refiere a la columna del datatable donde está el sub-total
+                .column(5)//se refiere a la columna del datatable donde está el sub-total
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -339,14 +339,14 @@
  
             // Total over this page
             pageTotal = api
-                .column( 4, { page: 'current'} )
+                .column( 5, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 4 ).footer() ).html(
+            $( api.column( 5 ).footer() ).html(
                 $.number(total,decimales, ',', '.')
             );
         }

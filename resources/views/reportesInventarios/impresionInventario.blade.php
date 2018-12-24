@@ -10,53 +10,53 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="text-center">Ajuste de inventario</h4>
+                <h4 class="text-center">Inventario</h4>
             </div>
             <div class="panel-body">
-                <div class="form-group"><label>Nro Pedido: {{$ajuste_inventario_cab->getId()}}</label></div>
+                <div class="form-group"><label>Nro Inventario: {{$inventario_cab->getId()}}</label></div>
                 <div class="form-group">
-                    <label>Sucursal: {{$ajuste_inventario_cab->sucursal->getNombre()}}</label>
+                    <label>Sucursal: {{$inventario_cab->sucursal->getNombre()}}</label>
                     
                 </div>
                 <div class="form-group">
-                    <label>Fecha: {{$ajuste_inventario_cab->getFechaEmision()}}</label>
+                    <label>Fecha: {{$inventario_cab->getFechaEmision()}}</label>
                 </div>
                 <div class="form-group">
-                    <label>Motivo: {{$ajuste_inventario_cab->getMotivo()}}</label>
-                </div>
-                <div class="form-group">
-                    <label>Concepto Ajuste: {{$ajuste_inventario_cab->conceptoAjuste->getDescripcion()}}</label>
+                    <label>Motivo: {{$inventario_cab->getMotivo()}}</label>
                 </div>
                 <table class="table table-bordered">
                     <thead>
                         <tr class="active">
                             <th class="text-center">Artículo</th>
                             <th class="text-center" width="10%">Existencia Actual</th>
-                            <th class="text-center" width="10%">Cant. Ajustada</th>
+                            <th class="text-center" width="10%">Cant. Inventariada</th>
+                            <th class="text-center" width="10%">Diferencia</th>
                             <th class="text-center" width="10%">Precio Unitario</th>
                             <th class="text-center" width="10%">Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($ajuste_inventario_cab->ajusteInventarioDetalle as $ajuste_inventario_det)
+                        @foreach($inventario_cab->inventarioDetalle as $inventario_det)
                             <tr>
-                                <td>{{$ajuste_inventario_det->articulo->getNombreSelect()}}</td>
-                                <td class="text-center">{{$ajuste_inventario_det->getExistencia()}}</td>
-                                <td class="text-center">{{$ajuste_inventario_det->getCantidad()}}</td>
-                                <td class="text-right">{{$ajuste_inventario_det->getCostoUnitario()}}</td>
-                                <td class="text-right">{{$ajuste_inventario_det->getSubTotal()}}</td>
+                                <td>{{$inventario_det->articulo->getNombreSelect()}}</td>
+                                <td class="text-center">{{$inventario_det->getExistencia()}}</td>
+                                <td class="text-center">{{$inventario_det->getCantidad()}}</td>
+                                <td class="text-center">{{$inventario_det->getDiferencia()}}</td>
+                                <td class="text-right">{{$inventario_det->getCostoUnitario()}}</td>
+                                <td class="text-right">{{$inventario_det->getSubTotal()}}</td>
                             </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4"><strong>TOTAL AJUSTE</strong></td>
-                            <td class="text-right"><strong>{{$ajuste_inventario_cab->getMontoTotal()}}</strong></td>
+                            <td colspan="5"><strong>TOTAL INVENTARIADO</strong></td>
+                            <td class="text-right"><strong>{{$inventario_cab->getMontoTotal()}}</strong></td>
                         </tr>
                     </tfoot>
                 </table>
-                <div class="form-group"><label>Registrado por: {{$ajuste_inventario_cab->usuario->getName()}}</label></div>
+                <div class="form-group"><label>Registrado por: {{$inventario_cab->usuario->getName()}}</label></div>
                 <div class="form-group"><label > Firmado y Autorizado por: ____________________________</label></div>
+
             </div>
         </div>
     </div>

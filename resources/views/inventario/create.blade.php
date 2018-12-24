@@ -130,7 +130,7 @@
                         <tfoot>
                             <tr>
                             <th></th>
-                                <th>Faltante</th>
+                                <th>Totales</th>
                                 <th class="faltante">0</th>
                                 <th>Sobrante</th>
                                 <th class="sobrante">0</th>

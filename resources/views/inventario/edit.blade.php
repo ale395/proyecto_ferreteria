@@ -140,7 +140,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th>Total</th>
+                                <th>Total Inventariado</th>
                                 <th class="total">0</th>
                             </tr>
                         </tfoot>
@@ -354,7 +354,7 @@
  
             // Total over all pages
             total = api
-                .column(4)//se refiere a la columna del datatable donde está el sub-total
+                .column(6)//se refiere a la columna del datatable donde está el sub-total
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -362,14 +362,14 @@
  
             // Total over this page
             pageTotal = api
-                .column( 4, { page: 'current'} )
+                .column( 6, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 4 ).footer() ).html(
+            $( api.column( 6 ).footer() ).html(
                 $.number(total,decimales, ',', '.')
             );
         }

@@ -37,6 +37,10 @@
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{$inventario_cab->getFechaEmision()}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
+                        <label for="usuario" class="col-md-2 control-label">Registrado por</label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" id="usuario" name="usuario" readonly value="{{$inventario_cab->usuario->getName()}}">
+                        </div>
                     </div>
                     <br>
 
@@ -80,7 +84,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th>Total</th>
+                                <th>Total Inventariado</th>
                                 <th>{{$inventario_cab->getMontoTotal()}}</th>
                             </tr>
                         </tfoot>
@@ -100,7 +104,7 @@
         "searching": false,
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
-          { className: "dt-center", "targets": [1,2,3,4,5,6,7] },
+          { className: "dt-center", "targets": [1,2,3,4,5] },
           { className: "dt-left", "targets": [0] }
         ],
         "footerCallback": function ( row, data, start, end, display ) {
