@@ -198,6 +198,8 @@ class AjusteInventarioController extends Controller
 
             //instanciamos la clase
             $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
+            $monto_total=0;
+            $usuario = Auth::user();
 
          
             for ($i=0; $i < collect($request['tab_subtotal'])->count(); $i++){
@@ -224,8 +226,7 @@ class AjusteInventarioController extends Controller
             $ajuste_inventario_cab->update();
 
             //borramos el detalle anterior
-            $ajuste_inventario_det->AjusteInventarioDetalle()->delete();
-
+            $ajuste_inventario_cab->AjusteInventarioDetalle()->delete();
             //desde aca va el nuevo detalle-----------------------------------         
             //lo que trae directamente del request
             $tab_articulo_id = $request['tab_articulo_id'];
@@ -249,9 +250,9 @@ class AjusteInventarioController extends Controller
                 //datos del articulo.
                 $articulo_aux = Articulo::where('id', $tab_articulo_id[$i])->first();//para traer algunas cosas del maestro    
 
+                $ajuste_inventario_det = new AjusteInventarioDet();
 
               
-                $ajuste_inventario_det = new AjusteInventarioDet();
                 $ajuste_inventario_det->setAjusteInventarioCabId( $ajuste_inventario_cab->getId()); 
                 $ajuste_inventario_det->setArticuloId($request['tab_articulo_id'][$i]);            
                 $ajuste_inventario_det->setExistencia(str_replace(',', '.', str_replace('.', '', $request['tab_existencia'][$i])));
@@ -277,7 +278,7 @@ class AjusteInventarioController extends Controller
 
         }
 
-        return redirect(route('ajusteInventario.index'))->with('status', 'Datos modificados correctamente!');
+        return redirect()->route('ajustesInventarios.show', ['ajustesInventarios' => $ajuste_inventario_cab->getId()])->with('status', 'Pedido guardado correctamente!');
     }
 
     /**
@@ -289,7 +290,7 @@ class AjusteInventarioController extends Controller
     public function destroy($id)
     {
         $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
-        $ajuste_inventario_cab->AjusteInventarioDetalle()->delete();
+        $ajuste_inventario_cab->ajusteInventarioDetalle()->delete();
         return AjusteInventarioCab::destroy($id);
     }
 

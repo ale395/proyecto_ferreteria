@@ -120,7 +120,7 @@
                                     </tr>
                                 @endfor
                             @else
-                            @foreach ($inventario_cab->InventarioDetalle as $inventario_det)
+                            @foreach ($inventario_cab->inventarioDetalle as $inventario_det)
                                     <tr>
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{$inventario_det->articulo->getNombreSelect()}}</td>
@@ -174,11 +174,12 @@
                                     </tr>
                                 @endfor
                                 @else
-                                @foreach ($inventario_cab->InventarioDetalle as $inventario_det)
+                                @foreach ($inventario_cab->inventarioDetalle as $inventario_det)
                                     <tr> 
                                     <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                         <th><input type="text" name="tab_articulo_id[]" value="{{$inventario_det->articulo->getId()}}"></th>
                                         <th><input type="text" name="tab_articulo_nombre[]" value="{{$inventario_det->articulo->getDescripcion()}}"></th>
+                                        <th><input type="text" name="tab_existencia[]" value="{{$inventario_det->getExistencia()}}"></th>
                                         <th><input type="text" name="tab_cantidad[]" value="{{$inventario_det->getCantidad()}}"></th>
                                         <th><input type="text" name="tab_diferencia[]" value="{{$inventario_det->getDiferencia()}}"></th>
                                         <th><input type="text" name="tab_costo_unitario[]" value="{{$inventario_det->getCostoUnitario()}}"></th>

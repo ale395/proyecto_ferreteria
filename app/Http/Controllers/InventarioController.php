@@ -119,7 +119,7 @@ class InventarioController extends Controller
         ->where('sucursal_id', $request['sucursal_id'])->first();
 
         //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
-    if (!empty($existencia) && $inventario_det->getDiferencia()>0){
+    if (!empty($existencia) && $inventario_det->getDiferencia()){
         $existencia->actualizaStock('+', $inventario_det->getDiferencia());
         $existencia->update();                     
     } else {
@@ -194,6 +194,8 @@ class InventarioController extends Controller
 
             //instanciamos la clase
             $inventario_cab = InventarioCab::findOrFail($id);
+            $monto_total=0;
+            $usuario = Auth::user();
 
          
             for ($i=0; $i < collect($request['tab_subtotal'])->count(); $i++){
@@ -217,7 +219,7 @@ class InventarioController extends Controller
             $inventario_cab->update();
 
             //borramos el detalle anterior
-            $inventario_det->InventarioDetalle()->delete();
+            $inventario_cab->inventarioDetalle()->delete();
 
             //desde aca va el nuevo detalle-----------------------------------         
             //lo que trae directamente del request
@@ -269,8 +271,7 @@ class InventarioController extends Controller
             //return back()->withErrors( $e->getTraceAsString() )->withInput();
 
         }
-
-        return redirect(route('inventario.index'))->with('status', 'Datos modificados correctamente!');
+        return redirect()->route('inventarios.show', ['inventarios' => $inventario_cab->getId()])->with('status', 'Pedido guardado correctamente!');
     }
 
     /**
@@ -282,7 +283,7 @@ class InventarioController extends Controller
     public function destroy($id)
     {
         $inventario_cab = InventarioCab::findOrFail($id);
-        $inventario_cab->InventarioDetalle()->delete();
+        $inventario_cab->inventarioDetalle()->delete();
         return InventarioCab::destroy($id);
     }
 
