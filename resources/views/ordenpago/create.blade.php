@@ -175,7 +175,7 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <a data-toggle="tooltip" data-placement="top" title="Librador"><input type="text" id="liibrador" name="librador" class="form-control" placeholder="Librador"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Librador"><input type="text" id="librador" name="librador" class="form-control" placeholder="Librador"></a>
                         </div>
                     </div>
                     <span class="help-block with-errors"></span>
