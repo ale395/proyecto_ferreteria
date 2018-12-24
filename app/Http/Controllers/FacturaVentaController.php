@@ -330,6 +330,34 @@ class FacturaVentaController extends Controller
         }
     }
 
+    public function apiFacturasCreditoCliente($cliente_id){
+        if (empty($cliente_id)) {
+            return [];
+        } else {
+            $facturas = FacturaVentaCab::where('tipo_factura', 'CR')
+                ->where('cliente_id', $cliente_id)
+                ->where('estado', 'P')->get();
+            
+            $facturas = $facturas->filter(function ($factura) {
+                return ($factura->getMontoSaldo() > 0);
+            });
+
+            return Datatables::of($facturas)
+                    ->addColumn('nro_factura', function($facturas){
+                        return $facturas->getNroFacturaIndex();
+                    })
+                    ->addColumn('fecha', function($facturas){
+                        return $facturas->getFechaEmision();
+                    })
+                    ->addColumn('monto_total', function($facturas){
+                        return $facturas->getMontoSaldoFormat();
+                    })
+                    ->addColumn('comentario', function($facturas){
+                        return $facturas->getComentario();
+                    })->make(true);
+        }
+    }
+
     public function apiFacturaDetalle($array_pedidos){
         $cast_array = explode(",",($array_pedidos));
 
