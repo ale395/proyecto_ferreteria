@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\HabilitacionCaja;
+use App\Moneda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,7 +33,7 @@ class CobranzaController extends Controller
         $moneda = Moneda::where('codigo', 'GS')->first();
         $valor_cabmio = 1;
 
-        if (!empty('habilitacion')) {
+        if (empty('habilitacion')) {
             return redirect()->back();
         }
 
