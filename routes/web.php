@@ -215,6 +215,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('compra', 'CompraController');
 	Route::get('api/compra', 'CompraController@apiCompras')->name('api.compra');
 	Route::get('api/compra/proveedor/{cliente_id}', 'CompraController@apiComprasProveedor')->name('api.compra.proveedor');
+	Route::get('api/compra/proveedorop//{cliente_id}', 'CompraController@apiComprasProveedorOP')->name('api.compra.proveedorop');
 	Route::get('api/compra/proveedor/detalles/{array_pedidos}', 'CompraController@apiCompraDetalle')->name('api.compra.detalles');
 
 
