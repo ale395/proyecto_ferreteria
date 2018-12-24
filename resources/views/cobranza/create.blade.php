@@ -115,6 +115,7 @@
         </form>
     </div>
 </div>
+@include('cobranza.formContado')
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
@@ -207,6 +208,50 @@
             );
         }
     });
+
+    function addFormContado(){
+        if ($('#select2-clientes').val() == null) {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'Debe seleccionar el cliente para buscar su cuenta!',
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000); 
+        } else {
+            if ($.fn.DataTable.isDataTable('#tabla-cuenta-contado')) {
+                $('#tabla-cuenta-contado').DataTable().clear();
+                $('#tabla-cuenta-contado').DataTable().destroy();    
+            }
+
+            tablePedidos = $('#tabla-cuenta-contado').DataTable({
+                
+                language: { url: '/datatables/translation/spanish' },
+                processing: true,
+                serverSide: true,
+                ajax: {"url": "/api/facturacionVentas/contado/cliente/"+$('#select2-clientes').val()},
+                select: {
+                    style: 'multi'
+                },
+                columns: [
+                    {data: 'nro_factura'},
+                    {data: 'fecha'},
+                    {data: 'monto_total'},
+                    {data: 'comentario'}
+                    ],
+                'columnDefs': [
+                { className: "dt-center", "targets": [1,2,3] }]
+            });
+            
+            $('#modal-cuenta-contado').modal('show');
+            $('#modal-cuenta-contado form')[0].reset();
+            $('.modal-title').text('Lista de Facturas Contado');
+        }
+    }
 
     $(document).ready(function(){
         $('#select2-clientes').select2({

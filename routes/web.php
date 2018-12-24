@@ -130,6 +130,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/facturas/cliente/{cliente_id}', 'FacturaVentaController@apiFacturasCliente')->name('api.facturas.cliente');
 	Route::get('api/facturas/detalles/{factura_cab_id}', 'FacturaVentaController@apiFacturaDetalle')->name('api.factura.detalle');
 	Route::get('facturacionVentas/impresion/{factura}', 'FacturaVentaController@impresionFactura')->name('facturas.ventas.impresion');
+	Route::get('api/facturacionVentas/contado/cliente/{cliente_id}', 'FacturaVentaController@apiFacturasContadoCliente');
 
 	//RUTA PARA EL CONTROLADOR DE NOTA DE CREDITO - VENTAS
 	Route::resource('notaCreditoVentas', 'NotaCreditoVentaController');
