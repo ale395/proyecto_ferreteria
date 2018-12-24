@@ -106,6 +106,7 @@
                                   @can('gestionCajas.habilitarCaja')
                                     <li class="sub_menu"><a href="{{route('gestionCajas.habilitarCaja')}}">Habilitación de Caja</a></li>
                                   @endcan
+                                  <li class="sub_menu"><a href="{{route('cobranza.create')}}">Cobranza</a></li>
                                   @can('gestionCajas.cerrarCaja')
                                     <li class="sub_menu"><a href="{{route('gestionCajas.cerrarCaja')}}">Cierre de Caja</a></li>
                                   @endcan
