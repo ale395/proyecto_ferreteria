@@ -76,7 +76,141 @@ class OrdenPagoController extends Controller
      */
     public function store(OrdenPagoRequest $request)
     {
-        //
+        try {
+
+            DB::beginTransaction();
+
+            $sucursal = Auth::user()->empleado->sucursalDefault;
+            $usuario = Auth::user();
+            $cabecera = new OrdenPago();
+            $total = 0;
+            $total_exenta = 0;
+            $total_gravada = 0;
+            $total_iva = 0;
+
+            $modalidad_pago = $request['tipo_factura'];
+
+            $valor_cambio = $request['valor_cambio'];
+            var_dump($valor_cambio);
+            $valor_cambio = number_format($valor_cambio, 2, '.', '');
+
+            $array_pedidos = [];
+            if ($request['pedidos_id'] != null) {
+                $array_pedidos = explode(",",($request['pedidos_id']));
+            }
+            
+            if (!empty('sucursal')) {
+                $request['sucursal_id'] = $sucursal->getId();
+            }
+            
+            $proveedor = Proveedor::findOrFail($request['proveedor_id']);
+            
+            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+                
+                //var_dump(str_replace('.', '', $request['tab_subtotal'][$i]));
+
+                $total = $total + str_replace('.', '', $request['tab_subtotal'][$i]);
+                $total_exenta = $total_exenta + str_replace('.', '', $request['tab_exenta'][$i]);
+                $total_gravada = $total_gravada + str_replace('.', '', $request['tab_gravada'][$i]);
+                $total_iva = $total_iva + str_replace('.', '', $request['tab_iva'][$i]);
+            }
+    
+            $cabecera->setTipoFactura($request['tipo_factura']);
+            $cabecera->setNroFactura($request['nro_factura']);
+            $cabecera->setProveedorId($request['proveedor_id']);
+            $cabecera->setTimbrado($request['timbrado']);
+            $cabecera->setSucursalId($request['sucursal_id']);
+            $cabecera->setMonedaId($request['moneda_id']);
+            $cabecera->setValorCambio($request['valor_cambio']);
+            $cabecera->setFechaEmision($request['fecha_emision']);
+            $cabecera->setFechaVigenciaTimbrado($request['fecha_vigencia_timbrado']);
+            $cabecera->setComentario($request['comentario']);
+            $cabecera->setMontoTotal($total);
+            $cabecera->setTotalExenta($total_exenta);
+            $cabecera->setTotalGravada($total_gravada);
+            $cabecera->setTotalIva($total_iva);
+            $cabecera->setUsuarioId($usuario->id);
+    
+            $cabecera->save();
+    
+            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+
+                //para traer despues el costo promedio
+                $articulo = Articulo::findOrFail($request['tab_articulo_id'][$i]);
+
+                $detalle = new OrdenPagoFacturas();
+
+                $detalle->setCompraCabeceraId($cabecera->getId());
+                $detalle->setArticuloId($request['tab_articulo_id'][$i]);
+                $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                $detalle->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
+                $detalle->setCostoPromedio(str_replace('.', '', $articulo->getCostoPromedio()));
+                $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
+                $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
+                $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
+                $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
+                $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
+                $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
+                $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
+
+                //var_dump($detalle);
+
+                $detalle->save();
+
+                if ($modalidad_pago != 'CON'){
+                    //Actualizacion de saldo proveedor
+                    $cuenta = new CuentaProveedor;
+                    $cuenta->setTipoComprobante('F');
+                    $cuenta->setComprobanteId($cabecera->getId());
+                    $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
+                    $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
+                    $cuenta->save();
+                
+                } 
+
+            }
+
+            for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
+
+                //para traer despues el costo promedio
+                $articulo = Articulo::findOrFail($request['tab_articulo_id'][$i]);
+
+                $detalle = new OrdenPagoCheques();
+
+                $detalle->setCompraCabeceraId($cabecera->getId());
+                $detalle->setArticuloId($request['tab_articulo_id'][$i]);
+                $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                $detalle->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
+                $detalle->setCostoPromedio(str_replace('.', '', $articulo->getCostoPromedio()));
+                $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
+                $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
+                $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
+                $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
+                $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
+                $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
+                $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
+
+                //var_dump($detalle);
+
+                $detalle->save();
+
+            }
+
+            DB::commit();
+            
+        }
+        catch (\Exception $e) {
+            //Deshacemos la transaccion
+            DB::rollback();
+
+            //volvemos para atras y retornamos un mensaje de error
+            //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
+            return back()->withErrors( $e->getMessage() .' - '.$e->getFile(). ' - '.$e->getLine() )->withInput();
+            //return back()->withErrors( $e->getTraceAsString() )->withInput();
+
+        }
+
+        return redirect(route('ordenpago.create'))->with('status', 'Datos guardados correctamente!');
     }
 
     /**

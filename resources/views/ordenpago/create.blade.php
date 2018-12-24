@@ -125,7 +125,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="3"><p class="text-right"> Total </p></td>
-                                <th class="total">0</th>
+                                <th class="total" id="total-facturas">0</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -236,7 +236,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>Total</th>
-                                <th class="total-fp">0</th>
+                                <th class="total-fp" id="total-cheques">0</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -513,23 +513,20 @@
         var modalidad_con = "";
         var modalidad_cre = "";
 
-        if (document.getElementById('radioContado').checked) {
-            modalidad_con = document.getElementById("radioContado").value;        
-        }
+        var total_facturas = document.getElementById("total-facturas").value; //$("#total-facturas").val();;
+        var total_cheques = document.getElementById("total-cheques").value; //$("#total-cheques").val();;
 
-        if (document.getElementById('radioContado').checked) {
-            modalidad_cre = document.getElementById("radioCredito").value;
-        }
-
+        total_facturas = $.number(total_facturas,0, ',', '.');
+        total_cheques = $.number(total_cheques,0, ',', '.');
 
         cheques_detalle = $('input[name="tab_banco_id[]"]').map(function () {
             return this.value;
         }).get();
 
-        if (modalidad_cre == "CRE" && cheques_detalle.length > 0 ) {
+        if (total_facturas == 0 ) {
                 var obj = $.alert({
                     title: 'Atención',
-                    content: 'La modalidad de pago es crédito, no se debe ingresar la forma de pago',
+                    content: 'Ingrese las facturas a pagar!',
                     icon: 'fa fa-exclamation-triangle',
                     type: 'orange',
                     backgroundDismiss: true,
@@ -541,11 +538,11 @@
 
                 return false; 
         }
-        else {
-            if (modalidad_con == "CO" && cheques_detalle.length == 0 ) {
+
+        if (total_cheques == 0 ) {
                 var obj = $.alert({
                     title: 'Atención',
-                    content: 'Debe ingresar la forma de pago.',
+                    content: 'Ingrese el/los cheque/s del pago!',
                     icon: 'fa fa-exclamation-triangle',
                     type: 'orange',
                     backgroundDismiss: true,
@@ -556,13 +553,24 @@
                 },3000);
 
                 return false; 
-            }
-            else {
-
-
-                return true
-            }
         }
+
+        if (total_facuras != total_cheques) {
+                var obj = $.alert({
+                    title: 'Atención',
+                    content: 'El importe total afectado debe ser igual al importe del cheque',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000);
+
+                return false; 
+        }
+        
     };
 
     function addArticulo() {
