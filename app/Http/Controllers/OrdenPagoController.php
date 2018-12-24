@@ -120,7 +120,7 @@ class OrdenPagoController extends Controller
             $cabecera->valor_cambio = $request['valor_cambio'];
             $cabecera->monto_total = $total;
             $cabecera->estado = 'A';
-            $cabecera->setUsuarioId($usuario->id);
+            $cabecera->usuario_id = $usuario->id;
 
             //guardamos
             $cabecera->save();
@@ -144,14 +144,11 @@ class OrdenPagoController extends Controller
 
                 $detalle->save();
 
-                /*Actualiza el saldo de la factura relacionada a la nota de credito*/
-                foreach ($array_pedidos as $nro_factura) {
-                    $cuenta_factura = CuentaProveedor::where('tipo_comprobante', 'F')
-                        ->where('comprobante_id', $compra->getId())->first();
-                    $cuenta_factura->setMontoSaldo($cuenta_factura->getMontoSaldo() - str_replace('.', '', $importe_afectado));
-                    $cuenta_factura->update();
-                }
-
+                //Actualiza el saldo de la factura relacionada a la nota de credito
+                $cuenta_factura = CuentaProveedor::where('tipo_comprobante', 'F')
+                ->where('comprobante_id', $compra->getId())->first();
+                $cuenta_factura->setMontoSaldo($cuenta_factura->getMontoSaldo() - str_replace('.', '', $importe_afectado));
+                $cuenta_factura->update();
 
                 //Actualizacion de saldo proveedor
                 $cuenta = new CuentaProveedor;

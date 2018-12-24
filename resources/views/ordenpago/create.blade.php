@@ -10,8 +10,8 @@
                     <h4>Orden de Pago
                     <div class="pull-right btn-group">
                         <button data-toggle="tooltip" data-placement="top" title="Guardar" type="submit" class="btn btn-primary btn-save"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
-                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('compra.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
-                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('compra.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Cancelar carga" href="{{route('ordenpago.create')}}" type="button" class="btn btn-warning"><i class="fa fa-ban" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Volver al Listado" href="{{route('ordenpago.index')}}" type="button" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     
                     </h4>
@@ -135,8 +135,8 @@
                             <tr>
                                 <th width="5%">Acción</th>
                                 <th>Compra ID</th>
-                                <th>COmpra</th>
-                                <th width="15%">importe</th>
+                                <th>Compra</th>
+                                <th width="15%">importe Compra</th>
                                 <th width="15%">importe afectado</th>
                             </tr>
                         </thead>
@@ -226,6 +226,7 @@
                                     </tr>
                                 @endfor
                             @endif
+                            
                         </tbody>
                         <tfoot>
                             <tr>
@@ -244,6 +245,7 @@
                     <table id="tab-hidden-che" class="hidden">
                         <thead>
                             <tr>
+                                <th>Acción</th>
                                 <th>Id Banco</th>
                                 <th>Banco</th>
                                 <th width="15%">Cuenta</th>
@@ -258,14 +260,15 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_banco_id'))->count(); $i++)
                                     <tr>
-                                        <td>{{old('tab_banco_id.'.$i)}}</td>
-                                        <td>{{old('tab_banco_nombre.'.$i)}}</td>
-                                        <td>{{old('tab_cuenta.'.$i)}}</td>
-                                        <td>{{old('tab_librador.'.$i)}}</td>
-                                        <td>{{old('tab_moneda_che.'.$i)}}</td>
-                                        <td>{{old('tab_fecha_emi.'.$i)}}</td>
-                                        <td>{{old('tab_fecha_venc.'.$i)}}</td>
-                                        <td>{{old('tab_importe_che.'.$i)}}</td>
+                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
+                                        <th><input type="text" id="tab_banco_id" name="tab_banco_id[]" value="{{old('tab_banco_id.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_banco_nombre[]" value="{{old('tab_banco_nombre.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_cuenta[]" value="{{old('tab_cuenta.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_librador[]" value="{{old('tab_librador.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_moneda_che[]" value="{{old('tab_moneda_che.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_fecha_emi[]" value="{{old('tab_fecha_emi.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_fecha_venc[]" value="{{old('tab_fecha_venc.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_importe_che[]" value="{{old('tab_importe_che.'.$i)}}"></th>
                                     </tr>
                                 @endfor
                             @endif
@@ -338,7 +341,7 @@
         }
     });
 
-    var table_che = $('#cheques-pago-detalle').DataTable({
+    var table = $('#cheques-pago-detalle').DataTable({
         "paging":   false,
         "ordering": false,
         "info":     false,

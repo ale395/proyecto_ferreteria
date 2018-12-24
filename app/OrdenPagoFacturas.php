@@ -13,7 +13,7 @@ class OrdenPagoFacturas extends Model
     protected $fillable = [
         'orden_pago_id', 
         'compras_id', 
-        'importe'
+        'importe_afectado'
     ];
 
     public function setOrdenPagoId($orden_pago_id){
@@ -24,12 +24,12 @@ class OrdenPagoFacturas extends Model
         $this->compras_id = $compras_id;
     }
 
-    public function setImporte($importe){
-        $this->importe = $importe;
+    public function setImporte($importe_afectado){
+        $this->importe_afectado = $importe_afectado;
     }
 
     public function getImporte(){
-        return number_format($this->importe, 0, ',', '.');
+        return number_format($this->importe_afectado, 0, ',', '.');
     }
 
     public function compra()
