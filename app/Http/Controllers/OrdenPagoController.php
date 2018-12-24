@@ -102,23 +102,28 @@ class OrdenPagoController extends Controller
                 $total = $total + str_replace('.', '', $request['tab_importe_afectado'][$i]);
             }
 
-            for ($i=0; $i < collect($request['tab_compra_id'])->count(); $i++){
+            for ($i=0; $i < collect($request['tab_banco_id'])->count(); $i++){
                 
                 $total_che = $total_che + str_replace('.', '', $request['tab_importe_che'][$i]);
             }
+            
+            if (!($total == $total_che)) {
+                return redirect()->back()->withErrors('Los importes afectados deben coincidir con el importe de los pagos!')->withInput();
+            }
     
             //pasamos los parámetros del request
-            $orden_compra->nro_orden = $request['nro_orden'];
-            $orden_compra->proveedor_id = $request['proveedor_id'];
-            $orden_compra->fecha_emision = $request['fecha_emision'];   
-            $orden_compra->sucursal_id = $request['sucursal_id'];     
-            $orden_compra->moneda_id = $request['moneda_id'];
-            $orden_compra->valor_cambio = $request['valor_cambio'];
-            $orden_compra->monto_total = $total;
-            $orden_compra->estado = 'A';
+            $cabecera->nro_orden = $request['nro_orden'];
+            $cabecera->proveedor_id = $request['proveedor_id'];
+            $cabecera->fecha_emision = $request['fecha_emision'];   
+            $cabecera->sucursal_id = $request['sucursal_id'];     
+            $cabecera->moneda_id = $request['moneda_id'];
+            $cabecera->valor_cambio = $request['valor_cambio'];
+            $cabecera->monto_total = $total;
+            $cabecera->estado = 'A';
+            $cabecera->setUsuarioId($usuario->id);
 
             //guardamos
-            $orden_compra->save();
+            $cabecera->save();
     
             $cabecera->save();
     

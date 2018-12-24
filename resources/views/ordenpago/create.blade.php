@@ -125,7 +125,7 @@
                         <tfoot>
                             <tr>
                                 <td colspan="3"><p class="text-right"> Total </p></td>
-                                <th class="total" id="total-facturas">0</th>
+                                <th class="total" id="total_facturas">0</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -236,7 +236,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>Total</th>
-                                <th class="total-fp" id="total-cheques">0</th>
+                                <th class="total-fp" id="total_cheques">0</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -513,47 +513,45 @@
         var modalidad_con = "";
         var modalidad_cre = "";
 
-        var total_facturas = document.getElementById("total-facturas").value; //$("#total-facturas").val();;
-        var total_cheques = document.getElementById("total-cheques").value; //$("#total-cheques").val();;
+        var total_facturas = $("#total_facturas").val(); //$("#total-facturas").val();;
+        var total_cheques = $("#total_cheques").val(); //$("#total-cheques").val();;
 
         total_facturas = $.number(total_facturas,0, ',', '.');
         total_cheques = $.number(total_cheques,0, ',', '.');
 
-        cheques_detalle = $('input[name="tab_banco_id[]"]').map(function () {
-            return this.value;
-        }).get();
+        /*  
+        if (cheques_detalle.length == 0 ) {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'Ingrese los cheques para el pago',
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000);
 
-        if (total_facturas == 0 ) {
-                var obj = $.alert({
-                    title: 'Atención',
-                    content: 'Ingrese las facturas a pagar!',
-                    icon: 'fa fa-exclamation-triangle',
-                    type: 'orange',
-                    backgroundDismiss: true,
-                    theme: 'modern',
-                });
-                setTimeout(function(){
-                    obj.close();
-                },3000);
-
-                return false; 
+            return false; 
         }
 
-        if (total_cheques == 0 ) {
-                var obj = $.alert({
-                    title: 'Atención',
-                    content: 'Ingrese el/los cheque/s del pago!',
-                    icon: 'fa fa-exclamation-triangle',
-                    type: 'orange',
-                    backgroundDismiss: true,
-                    theme: 'modern',
-                });
-                setTimeout(function(){
-                    obj.close();
-                },3000);
+        if (compras_detalle.length == 0 ) {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'Ingrese las facturas a pagar',
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000);
 
-                return false; 
+            return false; 
         }
+        */
 
         if (total_facuras != total_cheques) {
                 var obj = $.alert({
@@ -652,6 +650,7 @@
         var banco_id = $('#select2-banco-pago').select2('data')[0].id;
         var cuenta = $('#nro-cuenta').val();
         var moneda_id = $('#select2-monedas-che').select2('data')[0].id;
+        var moneda_op = $('#select2-monedas').select2('data')[0].id;
         var moneda = $('#select2-monedas-che').select2('data')[0].text;
         
         var fecha_emision = $('#fecha-emision-che').val();
@@ -670,7 +669,19 @@
         ms = Date.parse(fechavencimiento_texto);
         fechavencimiento = new Date(ms);
 
-        if ( (fechaemision > fechavencimiento) )  {
+        if ( (moneda_id != moneda_op) )  {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'La moneda del cheque debe ser igual a la moneda de la Orden de Pago',
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000); 
+        }else if ( (fechaemision > fechavencimiento) )  {
             var obj = $.alert({
                 title: 'Atención',
                 content: 'La fecha de emisión no puede ser mayor que la fecha de vencimiento',
@@ -724,6 +735,7 @@
             
             $('#nro-cuenta').val("");
             $('#librador').val("");
+            $('#importe-che').val("");
             $('#fecha-vencimiento').val("");
             $('#select2-banco-pago').val(null).trigger('change');
             $("#select2-banco-pago").focus();
