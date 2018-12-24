@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\HabilitacionCaja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CobranzaController extends Controller
 {
@@ -23,7 +25,18 @@ class CobranzaController extends Controller
      */
     public function create()
     {
-        //
+        $fecha_actual = date('d/m/Y');
+        $usuario = Auth::user();
+        $habilitacion = HabilitacionCaja::where('user_id', $usuario->getId())
+            ->whereNull('fecha_hora_cierre')->first();
+        $moneda = Moneda::where('codigo', 'GS')->first();
+        $valor_cabmio = 1;
+
+        if (!empty('habilitacion')) {
+            return redirect()->back();
+        }
+
+        return view('cobranza.create', compact('fecha_actual', 'habilitacion', 'moneda', 'valor_cabmio'));
     }
 
     /**
