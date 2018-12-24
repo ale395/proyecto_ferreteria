@@ -42,7 +42,7 @@ class OrdenPagoRequest extends FormRequest
                     'tab_banco_id'=>'required',
                     'tab_importe_che'=>'required', 
                     'tab_compra_id'=>'required',
-                    'tab_importe_compra'=>'required'
+                    'tab_importe_afectado'=>'required'
                 ];
             }
             case 'PUT':
@@ -55,7 +55,7 @@ class OrdenPagoRequest extends FormRequest
                     'tab_banco_id'=>'required',
                     'tab_importe_che'=>'required', 
                     'tab_compra_id'=>'required',
-                    'tab_importe_compra'=>'required'
+                    'tab_importe_afectado'=>'required'
                 ];
             }
             case 'PATCH':
@@ -68,7 +68,7 @@ class OrdenPagoRequest extends FormRequest
                     'tab_banco_id'=>'required',
                     'tab_importe_che'=>'required', 
                     'tab_compra_id'=>'required',
-                    'tab_importe_compra'=>'required'
+                    'tab_importe_afectado'=>'required'
                 ];
             }
             default:break;
@@ -87,7 +87,7 @@ class OrdenPagoRequest extends FormRequest
             'tab_importe_che.required' => 'Ingrese el importe del cheque',
             'tab_banco_id.required' => 'Ingrese al menos un cheque.',
             'tab_compra_id.required' => 'Ingrese la factura a pagar',
-            'tab_importe_compra.required' => 'Ingrese el importe a afectar.'
+            'tab_importe_afectado.required' => 'Ingrese el importe a afectar.'
         ];
 
     } 
