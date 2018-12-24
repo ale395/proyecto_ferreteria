@@ -205,7 +205,42 @@ class OrdenPagoController extends Controller
      */
     public function show($id)
     {
-        //
+        //en el show directo tiramos el reporte para la impresión.
+        $orden_pago = DB::table('orden_pago as o')
+        ->join('proveedores as p', 'p.id','=', 'o.proveedor_id')
+        ->join('monedas as m', 'm.id','=', 'o.moneda_id')
+        ->select('o.id', 'o.nro_orden', 
+        DB::raw("to_char(o.fecha_emision, 'DD/MM/YYYY') as fecha_emision"), 'o.proveedor_id',
+        DB::raw("CONCAT(p.codigo, ' ', p.razon_social) as proveedor"),
+        DB::raw("case when estado = 'A' THEN 'ACEPTADO' ELSE 'CANCELADO' END AS estado"),
+        'o.moneda_id','m.codigo', 'm.descripcion as moneda', 'o.valor_cambio', 'o.monto_total')
+        ->where('o.id','=',$id)->first();
+
+        $orden_pago_facturas = DB::table('orden_pago_facturas as od')
+        ->join('compras_cab as a', 'a.id','=', 'od.compras_id')
+        ->select('od.orden_pago_id',
+         DB::raw("CONCAT(a.nro_factura, ' ', to_char(a.fecha_emision, 'DD/MM/YYYY')) as compra"), 
+        'a.monto_total as importe_factura', 'od.importe_afectado')
+        ->where('od.orden_pago_id','=',$id)
+        ->get();
+
+        $orden_pago_cheques = DB::table('orden_pago_cheques as od')
+        ->join('bancos as a', 'a.id','=', 'od.banco_id')
+        ->join('monedas as m', 'm.id','=', 'od.moneda_id')
+        ->select('od.orden_pago_id', DB::raw("CONCAT(a.codigo, ' - ', a.nombre) as banco"), 
+        DB::raw("to_char(od.fecha_emision, 'DD/MM/YYYY') as fecha_emision"), 
+        DB::raw("to_char(od.fecha_vencimiento, 'DD/MM/YYYY') as fecha_vencimiento"),
+        'od.moneda_id','m.codigo', 'm.descripcion as moneda','od.librador', 'od.nro_cuenta','od.importe')
+        ->where('od.orden_pago_id','=',$id)
+        ->get();
+
+        $pdf = PDF::loadView('ordenpago.show', compact('orden_pago', 'orden_pago_facturas', 'orden_pago_cheques'));
+
+        $nombre_archivo = "orden_compra_".$orden_pago->nro_orden."_".str_replace('/', '', $orden_pago->fecha_emision).".pdf";
+
+        return $pdf->stream($nombre_archivo, array('Attachment'=>0));
+
+        // return view('ordenpago.show',compact('orden_pago', 'orden_pago_facturas'));
     }
 
     /**
