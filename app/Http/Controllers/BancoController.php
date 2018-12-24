@@ -132,7 +132,7 @@ class BancoController extends Controller
     }
 
     public function apiBancosComprasPagos(Request $request){
-        $articulos_array = [];
+        $bancos_array = [];
 
         if($request->has('q')){
             $search = strtolower($request->q);

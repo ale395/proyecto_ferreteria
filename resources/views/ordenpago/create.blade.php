@@ -192,7 +192,7 @@
                             <a data-toggle="tooltip" data-placement="top" title="Importe"><input type="text" id="importe-che" name="importe" class="form-control" placeholder="Importe"></a>
                         </div>
                         <div class="col-md-1">
-                            <a id="btn-add-forma-pago-che" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir forma de pago" onclick="addFormaPago()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a id="btn-add-forma-pago-che" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir forma de pago" onclick="addChequePago()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <span class="help-block with-errors"></span>
@@ -482,15 +482,15 @@
                 }
             });
             */    
-            $("#btn-add-articulo").attr("disabled", false);
+            $("#btn-add-forma-pago-che").attr("disabled", false);
             /*
             if($("#cantidad" ).val().length === 0){
                 $("#cantidad" ).val(1).change();
             }
             $("#cantidad").focus();CON
-            */CON
+            */
         } else {
-            $("#btn-add-articulo").attr("disabled", true);
+            $("#btn-add-forma-pago-che").attr("disabled", true);
         }
     });
 
@@ -585,52 +585,52 @@
         console.log('Antes de add: '+articulos_detalle);
         
         var decimales = 0;
-            var compra = $('#select2-compras').select2('data')[0].text;
-            var compra_id = $('#select2-compras').select2('data')[0].id;
-            if (articulos_detalle.includes(compra_id)) {
-                var obj = $.alert({
-                    title: 'Atención',
-                    content: 'El artículo que intenta agregar ya está incluido en el detalle de la factura!',
-                    icon: 'fa fa-exclamation-triangle',
-                    type: 'orange',
-                    backgroundDismiss: true,
-                    theme: 'modern',
-                });
-                setTimeout(function(){
-                    obj.close();
-                },3000); 
-            } else {
-                articulos_detalle.push(compra_id);
-                console.log('Despues de add: '+articulos_detalle);
-                //var cantidad = $("#cantidad").val();
-                var importe_afectado = $("#importe_afectado").val();
-                var importe_compra = $("#importe_compra").val();
+        var compra = $('#select2-compras').select2('data')[0].text;
+        var compra_id = $('#select2-compras').select2('data')[0].id;
+        if (articulos_detalle.includes(compra_id)) {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'El artículo que intenta agregar ya está incluido en el detalle de la factura!',
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000); 
+        } else {
+            articulos_detalle.push(compra_id);
+            console.log('Despues de add: '+articulos_detalle);
+            //var cantidad = $("#cantidad").val();
+            var importe_afectado = $("#importe_afectado").val();
+            var importe_compra = $("#importe_compra").val();
 
-                /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
-                importe_afectado = $.number(importe_afectado,decimales, ',', '.');
-                importe_compra = $.number(importe_compra,decimales, ',', '.');
+            /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
+            importe_afectado = $.number(importe_afectado,decimales, ',', '.');
+            importe_compra = $.number(importe_compra,decimales, ',', '.');
 
-                /*Se agrega una fila a la tabla*/
-                var tabla = $("#pedido-detalle").DataTable();
-                tabla.row.add( [
-                    "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
-                    compra,
-                    importe_compra,
-                    importe_afectado,
-                ] ).draw( false );
+            /*Se agrega una fila a la tabla*/
+            var tabla = $("#pedido-detalle").DataTable();
+            tabla.row.add( [
+                "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
+                compra,
+                importe_compra,
+                importe_afectado,
+            ] ).draw( false );
 
-                var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_compra_id' name='tab_compra_id[]' value='" + compra_id + "'></th> <th> <input type='text' name='tab_nro_compra[]' value='" + compra + "'></th> <th> <input type='text' name='tab_importe_compra[]' value='" + importe_compra + "'></th> <th> <input type='text' name='tab_importe_afectado[]' value='" + importe_afectado + "'> </th> </tr>";
-                $("#tab-hidden").append(markup);
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_compra_id' name='tab_compra_id[]' value='" + compra_id + "'></th> <th> <input type='text' name='tab_nro_compra[]' value='" + compra + "'></th> <th> <input type='text' name='tab_importe_compra[]' value='" + importe_compra + "'></th> <th> <input type='text' name='tab_importe_afectado[]' value='" + importe_afectado + "'> </th> </tr>";
+            $("#tab-hidden").append(markup);
 
-                /*Se restauran a nulos los valores del bloque para la selección del articulo*/
-                $('#importe_afectado').number(false);
-                $('#importe_compra').number(false);
-                
-                $('#importe_afectado').val("");
-                $('#importe_compra').val("");
-                $('#select2-compras').val(null).trigger('change');
-                $("#select2-compras").focus();
-            }
+            /*Se restauran a nulos los valores del bloque para la selección del articulo*/
+            $('#importe_afectado').number(false);
+            $('#importe_compra').number(false);
+            
+            $('#importe_afectado').val("");
+            $('#importe_compra').val("");
+            $('#select2-compras').val(null).trigger('change');
+            $("#select2-compras").focus();
+        }
     
     };
 
@@ -647,15 +647,42 @@
         }).get();
 
         //console.log('Antes de add: '+articulos_detalle);
-       
+        var decimales = 0;
         var banco = $('#select2-banco-pago').select2('data')[0].text;
         var banco_id = $('#select2-banco-pago').select2('data')[0].id;
         var cuenta = $('#nro-cuenta').val();
-        var moneda_id = $('#select2-moneda-che').select2('data')[0].id;
-        var moneda = $('#select2-moneda-che').select2('data')[0].text;
+        var moneda_id = $('#select2-monedas-che').select2('data')[0].id;
+        var moneda = $('#select2-monedas-che').select2('data')[0].text;
+        
         var fecha_emision = $('#fecha-emision-che').val();
+        dia = fecha_emision.substr( 0, 2);
+        mes = fecha_emision.substr( 3, 2);
+        annio = fecha_emision.substr( 6, 4);
+        fechaemision_texto = annio+"-"+mes+"-"+dia;
+        ms = Date.parse(fechaemision_texto);
+        fechaemision = new Date(ms);
+
         var fecha_vencimiento = $('#fecha-vencimiento').val();
-        if (banco_detalle.includes(banco_id) && cuenta_detalle.includes(cuenta) && fecha_detalle.includes(fehca_vencimiento))  {
+        dia = fecha_vencimiento.substr( 0, 2);
+        mes = fecha_vencimiento.substr( 3, 2);
+        annio = fecha_vencimiento.substr( 6, 4);
+        fechavencimiento_texto = annio+"-"+mes+"-"+dia;
+        ms = Date.parse(fechavencimiento_texto);
+        fechavencimiento = new Date(ms);
+
+        if ( (fechaemision > fechavencimiento) )  {
+            var obj = $.alert({
+                title: 'Atención',
+                content: 'La fecha de emisión no puede ser mayor que la fecha de vencimiento',
+                icon: 'fa fa-exclamation-triangle',
+                type: 'orange',
+                backgroundDismiss: true,
+                theme: 'modern',
+            });
+            setTimeout(function(){
+                obj.close();
+            },3000); 
+        }else if (banco_detalle.includes(banco_id) && cuenta_detalle.includes(cuenta) && fecha_detalle.includes(fehca_vencimiento))  {
             var obj = $.alert({
                 title: 'Atención',
                 content: 'Ya se ingresó este cheque',
@@ -670,7 +697,7 @@
         } else {
             banco_detalle.push(banco_id);
             //console.log('Despues de add: '+articulos_detalle);
-            //var cantidad = $("#cantidad").val();
+            var cantidad = $("#cantidad").val();
             var importe = $("#importe-che").val();
             var librador = $('#librador').val();
             /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
@@ -689,7 +716,7 @@
                 importe
             ] ).draw( false );
 
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_banco_id' name='tab_banco_id[]' value='" + banco_id + "'></th> <th> <input type='text' name='tab_banco_nombre[]' value='" + banco + "'></th> <th> <input type='text' name='tab_cuenta[]' value='" + cuenta + "'></th> <th> <input type='text' name='tab_librador[]' value='" + librador+ "'></th> <th> <input type='text' name='tab_fecha_venc[]' value='" + fecha_vencimiento + "'> </th> <th> <input type='text' name='tab_importe_che[]' value='" + importe + "'> </th> </tr>";
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_banco_id' name='tab_banco_id[]' value='" + banco_id + "'></th> <th> <input type='text' name='tab_banco_nombre[]' value='" + banco + "'></th> <th> <input type='text' name='tab_cuenta[]' value='" + cuenta + "'></th> <th> <input type='text' name='tab_librador[]' value='" + librador+ "'></th> <th> <input type='text' name='tab_moneda_che[]' value='" + moneda + "'> </th> <th> <input type='text' name='tab_fecha_venc[]' value='" + fecha_vencimiento + "'> </th> <th> <input type='text' name='tab_importe_che[]' value='" + importe + "'> </th> </tr>";
             $("#tab-hidden-che").append(markup);
 
             /*Se restauran a nulos los valores del bloque para la selección del articulo*/
