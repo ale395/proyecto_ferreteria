@@ -783,6 +783,7 @@
             }
         });
 
+        /*  
         $('#select2-compras').select2({
             placeholder: 'Seleccione una opción',
             language: "es",
@@ -797,6 +798,34 @@
 
                     return queryParameters;
                   },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+        */
+        
+        var moneda_id = $("#select2-proveedores" ).val();
+        var url_compras = "{{ route('api.compra.proveedorop', @1) }}";
+        
+        var res = url_compras.replace('@1', moneda_id)
+        
+        $('#select2-compras').select2({
+
+            placeholder: 'Seleccione una opción',
+            language: "es",
+            minimumInputLength: 4,
+            ajax: {
+                url: res,
+                type: "GET",
+                delay: 250,
+                data: {
+                    id_cliente: $('#select2-compras').val()
+                },
                 dataType: 'json',
                 processResults: function (data) {
                     return {
