@@ -278,7 +278,7 @@
                 language: { url: '/datatables/translation/spanish' },
                 processing: true,
                 serverSide: true,
-                ajax: {"url": "/api/facturacionVentas/contado/cliente/"+$('#select2-clientes').val()},
+                ajax: {"url": "/api/facturacionVentas/credito/cliente/"+$('#select2-clientes').val()},
                 columns: [
                     {data: 'nro_factura'},
                     {data: 'fecha'},
@@ -297,6 +297,21 @@
                 $("#monto_total").focus();
             });
         }
+    }
+
+    function cargarFacturas(){
+        var datos = tablePedidos.rows( { selected: true } ).data();
+        var array_pedidos = [];
+        for (i = 0; i < datos.length; i++) {
+            array_pedidos.push(datos[i].id);
+            table.row.add([
+                "Factura Contado",
+                datos[i].fecha,
+                datos[i].nro_factura,
+                datos[i].monto_total
+            ]).draw( false );
+        }
+        $('#modal-cuenta-contado').modal('hide');
     }
 
     $(document).ready(function(){
