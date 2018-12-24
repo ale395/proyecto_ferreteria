@@ -267,7 +267,7 @@ class OrdenPagoController extends Controller
                             return $compras->moneda->getDescripcion();
                         })
                         ->addColumn('importe', function($compras){
-                            return $compras->getImporte();
+                            return $compras->getMontoTotal();
                         })
                         ->addColumn('action', function($compras){
                             $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $compras->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
@@ -297,7 +297,7 @@ class OrdenPagoController extends Controller
                             return $compras->moneda->getDescripcion();
                         })
                         ->addColumn('importe', function($compras){
-                            return $compras->getImporte();
+                            return $compras->getMontoTotal();
                         })
                         ->addColumn('action', function($compras){
                             $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
@@ -332,7 +332,7 @@ class OrdenPagoController extends Controller
                             return $compras->moneda->getDescripcion();
                         })
                         ->addColumn('importe', function($compras){
-                            return $compras->getImporte();
+                            return $compras->getMontoTotal();
                         })
                         ->addColumn('action', function($compras){
                             $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $compras->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
@@ -361,7 +361,7 @@ class OrdenPagoController extends Controller
                             return $compras->moneda->getDescripcion();
                         })
                         ->addColumn('importe', function($compras){
-                            return $compras->getImporte();
+                            return $compras->getMontoTotal();
                         })
                         ->addColumn('action', function($compras){
                             $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
@@ -396,7 +396,7 @@ class OrdenPagoController extends Controller
                         return $compras->moneda->getDescripcion();
                     })
                     ->addColumn('importe', function($compras){
-                        return $compras->getImporte();
+                        return $compras->getMontoTotal();
                     })
                     ->addColumn('action', function($compras){
                         $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $compras->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
@@ -426,7 +426,7 @@ class OrdenPagoController extends Controller
                         return $compras->moneda->getDescripcion();
                     })
                     ->addColumn('importe', function($compras){
-                        return $compras->getImporte();
+                        return $compras->getMontoTotal();
                     })
                     ->addColumn('action', function($compras){
                         $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
@@ -458,7 +458,7 @@ class OrdenPagoController extends Controller
                         return $compras->moneda->getDescripcion();
                     })
                     ->addColumn('importe', function($compras){
-                        return $compras->getImporte();
+                        return $compras->getMontoTotal();
                     })
                     ->addColumn('action', function($compras){
                         $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $compras->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
@@ -482,7 +482,7 @@ class OrdenPagoController extends Controller
                         return $compras->moneda->getDescripcion();
                     })
                     ->addColumn('importe', function($compras){
-                        return $compras->getImporte();
+                        return $compras->getMontoTotal();
                     })
                     ->addColumn('action', function($compras){
                         $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
