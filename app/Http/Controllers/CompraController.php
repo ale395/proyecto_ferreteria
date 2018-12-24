@@ -592,6 +592,17 @@ class CompraController extends Controller
         
     }
 
+    public function apiComprasImportes($compra_id){
+
+        if (!empty($compra_id)) {
+            $articulo = collect(ComprasCab::findOrFail($compra_id));
+            //$articulo_obj = ComprasCab::findOrFail($compra_id);
+            //$articulo = Articulo::findOrFail($articulo_id)->first();
+            //$ultimo_costo = $articulo->ultimo_costo;    
+            
+            return $articulo;
+        };
+    }
 
     public function apiCompraDetalle($array_pedidos){
         $cast_array = explode(",",($array_pedidos));

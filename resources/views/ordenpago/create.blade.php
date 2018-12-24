@@ -41,7 +41,7 @@
                     <div class="form-group">
                         <label for="nro_orden" class="col-md-1 control-label">Número</label>
                         <div class="col-md-2">
-                            <input type="text" id="nro_orden" name="nro_orden" class="form-control text-right" value="{{old('nro_orden')}}" readonly="readonly">  
+                            <input type="text" id="nro_orden" name="nro_orden" class="form-control text-right" value="{{old('nro_orden', $nro_orden)}}" readonly="readonly">  
                         </div>
                         <label for="fecha_emision" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
@@ -90,9 +90,11 @@
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Importe"><input type="text" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Importe Afectado" onchange="calcularSubtotal()"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Importe"><input type="text" id="importe_compra" name="importe_compra" class="form-control" placeholder="Importe Factura" readonly="readonly"></a>
                         </div>
-
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="Importe"><input type="text" id="importe_afectado" name="importe_afectado" class="form-control" placeholder="Importe Afectado" ></a>
+                        </div>
                         <div class="col-md-1">
                             <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir a la factura" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
@@ -104,7 +106,8 @@
                             <tr>
                                 <th width="5%">Acción</th>
                                 <th>Compra</th>
-                                <th width="6%">Importe Afectado.</th>
+                                <th width="15%">Importe Compra</th>
+                                <th width="15%">Importe Afectado</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,6 +116,7 @@
                                     <tr>
                                         <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
                                         <td>{{old('tab_nro_compra.'.$i)}}</td>
+                                        <td>{{old('tab_importe_compra.'.$i)}}</td>
                                         <td>{{old('tab_importe_afectado.'.$i)}}</td>
                                     </tr>
                                 @endfor
@@ -120,7 +124,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="2"><p class="text-right"> Total </p></td>
+                                <td colspan="3"><p class="text-right"> Total </p></td>
                                 <th class="total">0</th>
                             </tr>
                         </tfoot>
@@ -132,7 +136,8 @@
                                 <th width="5%">Acción</th>
                                 <th>Compra ID</th>
                                 <th>COmpra</th>
-                                <th width="9%">importe</th>
+                                <th width="15%">importe</th>
+                                <th width="15%">importe afectado</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -142,6 +147,7 @@
                                         <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
                                         <th><input type="text" id="tab_compra_id" name="tab_compra_id[]" value="{{old('tab_compra_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_nro_compra[]" value="{{old('tab_nro_compra.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_importe_compra[]" value="{{old('tab_importe_compra.'.$i)}}"></th>
                                         <th><input type="text" name="tab_importe_afectado[]" value="{{old('tab_importe_afectado.'.$i)}}"></th>
                                     </tr>
                                 @endfor
@@ -294,7 +300,7 @@
         "searching": false,
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
-          { className: "dt-center", "targets": [0,2] },
+          { className: "dt-center", "targets": [0,2,3] },
           { className: "dt-left", "targets": [1] }
         ],
         "footerCallback": function ( row, data, start, end, display ) {
@@ -311,7 +317,7 @@
  
             // Total over all pages
             total = api
-                .column(2)
+                .column(3)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -319,14 +325,14 @@
  
             // Total over this page
             pageTotal = api
-                .column( 2, { page: 'current'} )
+                .column( 3, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 2 ).footer() ).html(
+            $( api.column( 3 ).footer() ).html(
                 $.number(total,decimales, ',', '.')
             );
         }
@@ -384,23 +390,20 @@
         
         if (valor != null) {
             var compra_id = $("#select2-compras" ).val();
+            var url_compras = "{{ route('api.compra.importes', @1) }}";
+            var res = url_compras.replace('@1', compra_id)
+        
             $.ajax({
                 type: "GET",
-                url: "{{ url('api/articulos') }}" + '/costo/' + compra_id,
+                url: res,
                 datatype: "json",
                 //async: false,
                 success: function(data){
-                    $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
-                    $("#costo_unitario" ).val(data.ultimo_costo).change();                    
-                    $("#porcentaje_descuento" ).val(0).change();
+                    $("#importe_compra" ).val(data.monto_total).change();
+                    $("#importe_afectado" ).val(data.monto_total).change();                    
                     $("#btn-add-articulo").attr("disabled", false);
                 }
             });
-
-            if($("#cantidad" ).val().length === 0){
-                $("#cantidad" ).val(1).change();
-            }
-            $("#cantidad").focus();
 
         } else {
             $("#btn-add-articulo").attr("disabled", true);
@@ -473,7 +476,7 @@
                 //async: false,
                 success: function(data){
                     $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
-                    $("#costo_unitario" ).val(data.ultimo_costo).change();                    
+                    $("#importe_afectado" ).val(data.ultimo_costo).change();                    
                     $("#porcentaje_descuento" ).val(0).change();
                     $("#btn-add-articulo").attr("disabled", false);
                 }
@@ -503,20 +506,6 @@
             $("#valor_cambio" ).val(data).change();
           }
         });
-    };
-
-    function calcularSubtotal() {
-        var cantidad = $("#cantidad" ).val();
-        var costo_unitario = $("#costo_unitario" ).val();
-        var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-        cantidad = cantidad.replace(".", "");
-        //cantidad = cantidad.replace(",", ".");
-        costo_unitario = costo_unitario.replace(".", "");
-        //costo_unitario = costo_unitario.replace(".", ",");
-        var calculo = cantidad * (costo_unitario - (costo_unitario * (porcentaje_descuento/100)));
-        if($("#cantidad" ).val().length != 0 && $("#costo_unitario" ).val().length != 0){
-            $("#subtotal" ).val(calculo).change();
-        }
     };
 
     function Validar(){
@@ -588,7 +577,7 @@
         console.log('Antes de add: '+articulos_detalle);
         
         var decimales = 0;
-            var articulo = $('#select2-compras').select2('data')[0].text;
+            var compra = $('#select2-compras').select2('data')[0].text;
             var compra_id = $('#select2-compras').select2('data')[0].id;
             if (articulos_detalle.includes(compra_id)) {
                 var obj = $.alert({
@@ -606,56 +595,31 @@
                 articulos_detalle.push(compra_id);
                 console.log('Despues de add: '+articulos_detalle);
                 //var cantidad = $("#cantidad").val();
-                var costo_unitario = $("#costo_unitario").val();
-                var porcentaje_descuento = $("#porcentaje_descuento" ).val();
-                var monto_descuento = cantidad * costo_unitario.replace(".", "") * (porcentaje_descuento/100);
-                var subtotal = $("#subtotal").val();
-                var porcentaje_iva = $("#porcentaje_iva" ).val();
-                var exenta = 0;
-                var gravada = 0;
-                var iva = 0;
-                if (porcentaje_iva == 0) {
-                    exenta = subtotal;
-                } else {
-                    gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
-                    iva = Math.round(gravada*(porcentaje_iva/100));
-                }
+                var importe_afectado = $("#importe_afectado").val();
+                var importe_compra = $("#importe_compra").val();
+
                 /*Se le da formato numérico a los valores. Separador de miles y la coma si corresponde*/
-                costo_unitario = $.number(costo_unitario,decimales, ',', '.');
-                cantidad = $.number(cantidad,decimales, ',', '.');
-                monto_descuento = $.number(monto_descuento,decimales, ',', '.');
-                exenta = $.number(exenta,decimales, ',', '.');
-                gravada = $.number(gravada,decimales, ',', '.');
-                iva = $.number(iva,decimales, ',', '.');
-                subtotal = $.number(subtotal,decimales, ',', '.');  
-                
+                importe_afectado = $.number(importe_afectado,decimales, ',', '.');
+                importe_compra = $.number(importe_compra,decimales, ',', '.');
+
                 /*Se agrega una fila a la tabla*/
                 var tabla = $("#pedido-detalle").DataTable();
                 tabla.row.add( [
                     "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>",
-                    articulo,
-                    cantidad,
-                    costo_unitario,
-                    monto_descuento,
-                    exenta,
-                    gravada,
-                    iva,
-                    subtotal
+                    compra,
+                    importe_compra,
+                    importe_afectado,
                 ] ).draw( false );
 
-                var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_compra_id' name='tab_compra_id[]' value='" + compra_id + "'></th> <th> <input type='text' name='tab_nro_compra[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_costo_unitario[]' value='" + costo_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_importe_afectado[]' value='" + subtotal + "'> </th> </tr>";
+                var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_compra_id' name='tab_compra_id[]' value='" + compra_id + "'></th> <th> <input type='text' name='tab_nro_compra[]' value='" + compra + "'></th> <th> <input type='text' name='tab_importe_compra[]' value='" + importe_compra + "'></th> <th> <input type='text' name='tab_importe_afectado[]' value='" + importe_afectado + "'> </th> </tr>";
                 $("#tab-hidden").append(markup);
 
                 /*Se restauran a nulos los valores del bloque para la selección del articulo*/
-                $('#cantidad').number(false);
-                $('#costo_unitario').number(false);
-                $('#subtotal').number(false);
+                $('#importe_afectado').number(false);
+                $('#importe_compra').number(false);
                 
-                $('#cantidad').val("");
-                $('#costo_unitario').val("");
-                $('#porcentaje_descuento').val("");
-                $('#porcentaje_iva').val("");
-                $('#subtotal').val("");
+                $('#importe_afectado').val("");
+                $('#importe_compra').val("");
                 $('#select2-compras').val(null).trigger('change');
                 $("#select2-compras").focus();
             }
@@ -811,7 +775,6 @@
         
         var moneda_id = $("#select2-proveedores" ).val();
         var url_compras = "{{ route('api.compra.proveedorop', @1) }}";
-        
         var res = url_compras.replace('@1', moneda_id)
         
         $('#select2-compras').select2({
