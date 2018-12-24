@@ -130,6 +130,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::get('api/facturas/cliente/{cliente_id}', 'FacturaVentaController@apiFacturasCliente')->name('api.facturas.cliente');
 	Route::get('api/facturas/detalles/{factura_cab_id}', 'FacturaVentaController@apiFacturaDetalle')->name('api.factura.detalle');
 	Route::get('facturacionVentas/impresion/{factura}', 'FacturaVentaController@impresionFactura')->name('facturas.ventas.impresion');
+	Route::get('api/facturacionVentas/contado/cliente/{cliente_id}', 'FacturaVentaController@apiFacturasContadoCliente');
 
 	//RUTA PARA EL CONTROLADOR DE NOTA DE CREDITO - VENTAS
 	Route::resource('notaCreditoVentas', 'NotaCreditoVentaController');
@@ -215,12 +216,18 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('compra', 'CompraController');
 	Route::get('api/compra', 'CompraController@apiCompras')->name('api.compra');
 	Route::get('api/compra/proveedor/{cliente_id}', 'CompraController@apiComprasProveedor')->name('api.compra.proveedor');
+	Route::get('api/compra/proveedorop/{cliente_id}', 'CompraController@apiComprasProveedorOP')->name('api.compra.proveedorop');
+	Route::get('api/compra/importes/{cliente_id}', 'CompraController@apiComprasImportes')->name('api.compra.importes');
 	Route::get('api/compra/proveedor/detalles/{array_pedidos}', 'CompraController@apiCompraDetalle')->name('api.compra.detalles');
 
 
 	//Rutas para Nota de Crédito de Compras
 	Route::resource('notacreditocompra', 'NotaCreditoComprasController');
 	Route::get('api/notacreditocompra', 'NotaCreditoComprasController@apiNotaCreditoCompras')->name('api.nota.credito.compras');
+
+	//Rutas para orden de pago
+	Route::resource('ordenpago', 'OrdenPagoController');
+	Route::get('api/ordenpago', 'OrdenPagoController@apiOrdenPago')->name('api.ordenpago');
 
 	//Para ver los errores de PHP
 	Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
@@ -241,5 +248,7 @@ Route::middleware(['auth'])->group(function() {
 	Route::post('gestionCajas/habilitarCaja', 'GestionCajasController@habilitarCaja')->name('gestionCajas.habilitarCaja.metodo');
 	Route::get('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCajaView')->name('gestionCajas.cerrarCaja');
 	Route::post('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCaja')->name('gestionCajas.cerrarCaja.metodo');
+
+	Route::resource('cobranza', 'CobranzaController');
 
 });

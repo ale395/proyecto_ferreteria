@@ -17,6 +17,7 @@ use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\NotaCreditoComprasRequest;
 
 class NotaCreditoComprasController extends Controller
 {
@@ -128,12 +129,12 @@ class NotaCreditoComprasController extends Controller
             $cabecera->save();
     
             for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
-                $detalle = new NotaCreditoVentaDet;
+                $detalle = new NotaCreditoComprasDet;
                 $detalle->setNotaCreditoCabeceraId($cabecera->getId());
                 $detalle->setArticuloId($request['tab_articulo_id'][$i]);
                 
                 $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
-                $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
+                $detalle->setCostoUnitario(str_replace('.', '', $request['tab_costo_unitario'][$i]));
                 $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
                 $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
                 $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
@@ -167,8 +168,7 @@ class NotaCreditoComprasController extends Controller
             /*Actualiza el saldo de la factura relacionada a la nota de credito*/
             foreach ($array_pedidos as $nro_factura) {
                 $cuenta_factura = CuentaProveedor::where('tipo_comprobante', 'F')
-                    ->where('comprobante_id', $nro_factura)
-                    ->where('proveedor_id', $cabecera->proveedor->getId())->first();
+                    ->where('comprobante_id', $nro_factura)->first();
                 $cuenta_factura->setMontoSaldo($cuenta_factura->getMontoSaldo() - str_replace('.', '', $cabecera->getMontoTotal()));
                 $cuenta_factura->update();
             }
@@ -178,7 +178,6 @@ class NotaCreditoComprasController extends Controller
             $cuenta = new CuentaProveedor;
             $cuenta->setTipoComprobante('N');
             $cuenta->setComprobanteId($cabecera->getId());
-            $cuenta->setProveedorId($cabecera->proveedor->getId());
             $cuenta->setMontoComprobante(str_replace('.', '', str_replace('.', '', $cabecera->getMontoTotal())*-1));
             $cuenta->setMontoSaldo(0);
             $cuenta->save();
@@ -197,8 +196,8 @@ class NotaCreditoComprasController extends Controller
 
         }
         
- 
-        return redirect()->route('notaCreditoVentas.show', ['notaCreditoVenta' => $cabecera->getId()])->with('status', 'Nota de Crédito guardada correctamente!');
+        return redirect(route('notacreditocompra.create'))->with('status', 'Datos guardados correctamente!');
+        //return redirect()->route('notacreditocompra.create', ['notaCreditoVenta' => $cabecera->getId()])->with('status', 'Nota de Crédito guardada correctamente!');
     }
 
     /**
@@ -247,7 +246,7 @@ class NotaCreditoComprasController extends Controller
         //
     }
 
-    public function apiNotaCreditoVentas(){
+    public function apiNotaCreditoCompras(){
              //en vez de editar, eliminamos en seco si algo se cargó mal
              $permiso_editar = Auth::user()->can('compra.destroy');
              $permiso_eliminar = Auth::user()->can('compra.destroy');

@@ -80,9 +80,6 @@
                         <div class="col-md-2">
                             <input type="text" id="fecha_emision" name="fecha_emision" class="form-control dpfecha" placeholder="dd/mm/aaaa" value="{{old('fecha_emision', $fecha_actual)}}" data-inputmask="'mask': '99/99/9999'" readonly>
                         </div>
-                        <div class="col-md-2">
-                            <label for="nro_compra" class="col-md-1 control-label"></label>
-                        </div>
                         <label for="factura_nro" class="col-md-2 control-label">Factura*</label>
                         <div class="col-md-3">
                             <!--<a data-toggle="tooltip" data-placement="top" title="Lista de Precios">
@@ -236,18 +233,18 @@
                             @if ($errors->any())
                                 @for ($i=0; $i < collect(old('tab_articulo_id'))->count(); $i++)
                                     <tr>
-                                        <th><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></th>
-                                        <th><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_precio_unitario[]" value="{{old('tab_precio_unitario.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></th>
-                                        <th><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></th>
+                                        <td><a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a></td>
+                                        <td><input type="text" id="tab_articulo_id" name="tab_articulo_id[]" value="{{old('tab_articulo_id.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_articulo_nombre[]" value="{{old('tab_articulo_nombre.'.$i)}}"></td>
+                                        <td><input type="text" id="tab_cantidad" name="tab_cantidad[]" value="{{old('tab_cantidad.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_precio_unitario[]" value="{{old('tab_precio_unitario.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_porcentaje_descuento[]" value="{{old('tab_porcentaje_descuento.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_monto_descuento[]" value="{{old('tab_monto_descuento.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_porcentaje_iva[]" value="{{old('tab_porcentaje_iva.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_exenta[]" value="{{old('tab_exenta.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_gravada[]" value="{{old('tab_gravada.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_iva[]" value="{{old('tab_iva.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_subtotal[]" value="{{old('tab_subtotal.'.$i)}}"></td>
                                     </tr>
                                 @endfor
                             @endif
@@ -261,6 +258,7 @@
 @include('cliente.create-persona-fisica')
 @include('cliente.create-persona-juridica')
 @include('notaCreditoVenta.facturasForm')
+@include('notaCreditoVenta.cantidadForm')
 
 @endsection
 @section('otros_scripts')
@@ -640,7 +638,7 @@
                 subtotal
             ] ).draw( false );
 
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+            var markup = "<tr> <td>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</td> <td> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + articulo_id + "'></td> <td> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></td> <td> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></td> <td> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></td> <td> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></td> <td> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></td> <td> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></td> <td> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </td> <td> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </td> <td> <input type='text' name='tab_iva[]' value='"+ iva +"'> </td> <td> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </td> </tr>";
             $("#tab-hidden").append(markup);
 
             /*Se restauran a nulos los valores del bloque para la selección del articulo*/
@@ -669,6 +667,73 @@
             .draw();
         $("#tab-hidden tr:eq("+row+")").remove();
     } );
+
+    $('#pedido-detalle tbody').on( 'click', 'td', function () {
+        //alert(tabla.cell( this ).data());
+        $('#modal-cantidad-devo').modal('show');
+        $('#modal-cantidad-devo form')[0].reset();
+        $('.modal-title').text('Cantidad - Devolución');
+        $('#cant_total').val(tabla.cell(this).data()).change();
+        $('#cant_devo').val(0).change();
+        $('#tab_index').val(tabla.row(this).index()).change();
+        $('#error-block-cant').hide();
+    } );
+
+    $('#modal-cantidad-devo').on('shown.bs.modal', function () {
+        $('#cant_devo').focus();
+    });
+    $('#cant_devo').number(true, 2, ',', '.');
+
+    function cargarCantidad(){
+        var cant_factu = $("#cant_total").val();
+        cant_factu = cant_factu.replace(",", ".");
+        var cant_devo = $("#cant_devo").val();
+        cant_devo = cant_devo.replace(",", ".");
+        var index_devo = $("#tab_index").val();
+        if (Number(cant_devo) > Number(cant_factu)) {
+            $('#error-block-cant').show().html('No se puede devolver una cantidad mayor a la facturada!');
+        } else {
+            var precio_unit = tabla.cell(index_devo, 3).data();
+            var grav = tabla.cell(index_devo, 6).data();
+            var iva = tabla.cell(index_devo, 7).data();
+            var porc_iva = 0;
+            var exenta = 0;
+            var gravada = 0;
+            var iva_total = 0;
+            var subtotal = 0;
+            precio_unit = precio_unit.replace(".","");
+            grav = grav.replace(".","");
+            iva = iva.replace(".","");
+            subtotal = cant_devo * precio_unit;
+            
+            if (tabla.cell(index_devo, 6).data() == 0) {
+                porc_iva = Math.round((iva*100)/grav);
+            }
+
+            if (porc_iva == 0) {
+                exenta = subtotal;
+            } else {
+                gravada = Math.round(subtotal/((porcentaje_iva/100)+1));
+                iva_total = subtotal - gravada;
+            }
+            
+            $('#modal-cantidad-devo').modal('hide');
+            tabla.cell(index_devo, 2).data($.number(cant_devo, 2, ',', '.')).draw();
+            tabla.cell(index_devo, 5).data($.number(exenta, 0, ',', '.')).draw();
+            tabla.cell(index_devo, 6).data($.number(gravada, 0, ',', '.')).draw();
+            tabla.cell(index_devo, 7).data($.number(iva_total, 0, ',', '.')).draw();
+            tabla.cell(index_devo, 8).data($.number(subtotal, 0, ',', '.')).draw();
+
+            var tabla_det = document.getElementById('tab-hidden');
+            var fila = Number(index_devo);
+            fila = fila + 1;
+            tabla_det.rows[fila].cells[3].innerHTML = "<td> <input type='text' name='tab_cantidad[]' value='" + $.number(cant_devo, 2, ',', '.') + "'></td>";
+            tabla_det.rows[fila].cells[8].innerHTML = "<td> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </td>";//exenta
+            tabla_det.rows[fila].cells[9].innerHTML = "<td> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </td>";//gravada
+            tabla_det.rows[fila].cells[10].innerHTML = "<td> <input type='text' name='tab_iva[]' value='"+ iva_total +"'> </td>";//iva
+            tabla_det.rows[fila].cells[11].innerHTML = "<td> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </td>";//total
+        }
+    }
 
     function cargarPedidos(){
         var datos = tablePedidos.rows( { selected: true } ).data();
@@ -737,7 +802,7 @@
                                     $.number(subtotal, 0, ',', '.')
                                 ]).draw( false );
 
-                                var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + data[i].articulo_id + "'></th> <th> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></th> <th> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></th> <th> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></th> <th> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></th> <th> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></th> <th> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></th> <th> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </th> <th> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </th> <th> <input type='text' name='tab_iva[]' value='"+ iva +"'> </th> <th> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </th> </tr>";
+                                var markup = "<tr> <td>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</td> <td> <input type='text' id='tab_articulo_id' name='tab_articulo_id[]' value='" + data[i].articulo_id + "'></td> <td> <input type='text' name='tab_articulo_nombre[]' value='" + articulo + "'></td> <td> <input type='text' name='tab_cantidad[]' value='" + cantidad + "'></td> <td> <input type='text' name='tab_precio_unitario[]' value='" + precio_unitario + "'></td> <td> <input type='text' name='tab_porcentaje_descuento[]' value='" + porcentaje_descuento + "'></td> <td> <input type='text' name='tab_monto_descuento[]' value='" + monto_descuento + "'></td> <td> <input type='text' name='tab_porcentaje_iva[]' value='" + porcentaje_iva + "'></td> <td> <input type='text' name='tab_exenta[]' value='"+ exenta +"'> </td> <td> <input type='text' name='tab_gravada[]' value='"+ gravada +"'> </td> <td> <input type='text' name='tab_iva[]' value='"+ iva +"'> </td> <td> <input type='text' name='tab_subtotal[]' value='" + subtotal + "'> </td> </tr>";
                                 $("#tab-hidden").append(markup);
 
                                 $('#modal-factura-venta').modal('hide');

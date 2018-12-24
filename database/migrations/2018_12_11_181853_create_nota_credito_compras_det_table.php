@@ -18,7 +18,7 @@ class CreateNotaCreditoComprasDetTable extends Migration
             $table->integer('nota_credito_cab_id')->unsigned();
             $table->integer('articulo_id')->unsigned();
             $table->decimal('cantidad', 14, 2);
-            $table->decimal('precio_unitario', 14, 2);
+            $table->decimal('costo_unitario', 14, 2);
             $table->integer('porcentaje_descuento')->unsigned();
             $table->decimal('monto_descuento', 14, 2);
             $table->integer('porcentaje_iva')->unsigned();

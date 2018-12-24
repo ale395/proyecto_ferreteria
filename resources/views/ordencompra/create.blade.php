@@ -27,7 +27,7 @@
                                 </ul>
                             </div>
                         @endif
-                                                @if (session('status'))
+                        @if (session('status'))
                             <div class="alert alert-success alert-dismissible">
                             <a href="#" class="close" data-dismiss="alert">&times;</a>
                                 {{ session('status') }}

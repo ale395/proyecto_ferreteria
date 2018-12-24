@@ -140,28 +140,30 @@ class NotaCreditoVentaController extends Controller
         $cabecera->save();
 
         for ($i=0; $i < collect($request['tab_articulo_id'])->count(); $i++){
-            $detalle = new NotaCreditoVentaDet;
-            $detalle->setNotaCreditoCabeceraId($cabecera->getId());
-            $detalle->setArticuloId($request['tab_articulo_id'][$i]);
-            
-            $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
-            $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_precio_unitario'][$i]));
-            $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
-            $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
-            $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
-            $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
-            $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
-            $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
-            $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
-            $detalle->save();
+            if ($request['tab_subtotal'][$i] != 0) {
+                $detalle = new NotaCreditoVentaDet;
+                $detalle->setNotaCreditoCabeceraId($cabecera->getId());
+                $detalle->setArticuloId($request['tab_articulo_id'][$i]);
+                
+                $detalle->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                $detalle->setPrecioUnitario(str_replace('.', '', $request['tab_precio_unitario'][$i]));
+                $detalle->setPorcentajeDescuento(str_replace('.', '', $request['tab_porcentaje_descuento'][$i]));
+                $detalle->setMontoDescuento(str_replace('.', '', $request['tab_monto_descuento'][$i]));
+                $detalle->setPorcentajeIva(round(str_replace('.', ',', $request['tab_porcentaje_iva'][$i])), 0);
+                $detalle->setMontoExenta(str_replace('.', '', $request['tab_exenta'][$i]));
+                $detalle->setMontoGravada(str_replace('.', '', $request['tab_gravada'][$i]));
+                $detalle->setMontoIva(str_replace('.', '', $request['tab_iva'][$i]));
+                $detalle->setMontoTotal(str_replace('.', '', $request['tab_subtotal'][$i]));
+                $detalle->save();
 
-            if ($request['tipo_nota_credito'] == 'DV') {
-                if ($detalle->articulo->getControlExistencia() == true) {
-                    //Actualizacion de existencia
-                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
-                        ->where('sucursal_id', $sucursal->getId())->first();
-                    $existencia->actualizaStock('+', $detalle->getCantidad());
-                    $existencia->update();
+                if ($request['tipo_nota_credito'] == 'DV') {
+                    if ($detalle->articulo->getControlExistencia() == true) {
+                        //Actualizacion de existencia
+                        $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
+                            ->where('sucursal_id', $sucursal->getId())->first();
+                        $existencia->actualizaStock('+', $detalle->getCantidad());
+                        $existencia->update();
+                    }
                 }
             }
         }

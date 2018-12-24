@@ -16,11 +16,9 @@ class CreateNotaCreditoComprasCabTable extends Migration
         Schema::create('nota_credito_compras_cab', function (Blueprint $table) {
             $table->increments('id');
             $table->char('tipo_nota_credito', 2)->default('DV');//DV = Devolucion, DC = Descuento
-            $table->integer('serie_id')->unsigned();
             $table->integer('nro_nota_credito')->unsigned();
             $table->integer('proveedor_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
-            //$table->integer('lista_precio_id')->unsigned();
             $table->integer('moneda_id')->unsigned();
             $table->decimal('valor_cambio', 14, 2)->default(1);
             $table->date('fecha_emision');
@@ -36,7 +34,6 @@ class CreateNotaCreditoComprasCabTable extends Migration
             $table->foreign('proveedor_id')->references('id')->on('proveedores');
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
             $table->foreign('moneda_id')->references('id')->on('monedas');
-            $table->foreign('serie_id')->references('id')->on('series');
             $table->foreign('usuario_id')->references('id')->on('users');
         });
     }

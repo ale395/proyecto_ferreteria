@@ -72,6 +72,10 @@
                                     <li class="sub_menu"><a href="{{route('notacreditocompra.index')}}">Devolución de Compra</a>
                                     </li>
                                 @endcan
+                                @can('ordenpago.index')
+                                    <li class="sub_menu"><a href="{{route('ordenpago.index')}}">Ordenes de Pago</a>
+                                    </li>
+                                @endcan
                                 <!-- Pablo - comento para usar en otras cosas, y porque esto ya está en Parámetros generales
                                 @can('sucursales.index')
                                     <li class="sub_menu"><a href="{{route('sucursales.index')}}">Sucursales</a>
@@ -106,6 +110,7 @@
                                   @can('gestionCajas.habilitarCaja')
                                     <li class="sub_menu"><a href="{{route('gestionCajas.habilitarCaja')}}">Habilitación de Caja</a></li>
                                   @endcan
+                                  <li class="sub_menu"><a href="{{route('cobranza.create')}}">Cobranza</a></li>
                                   @can('gestionCajas.cerrarCaja')
                                     <li class="sub_menu"><a href="{{route('gestionCajas.cerrarCaja')}}">Cierre de Caja</a></li>
                                   @endcan

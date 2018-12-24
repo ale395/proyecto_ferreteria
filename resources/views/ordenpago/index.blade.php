@@ -6,38 +6,24 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Lista de Notas de Crédito - Compras
-                        @can('notacreditocompras.create')
-                          <a onclick="window.location='{{route('notacreditocompra.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                    <h4>Lista de Ordenes de Pago
+                        @can('ordenpago.create')
+                          <a onclick="window.location='{{route('ordenpago.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
                     </h4>
                 </div>
                 <div class="panel-body">
-                    <div class="form-group">
-                        @if ($errors->any())
-                            <div class="alert alert-danger alert-dismissible">
-                                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                    </div>
                     <table id="pedidos-table" class="table-striped table-responsive row-border" style="width:100%">
                         <thead>
                             <tr>
-                                <th width="65">Tipo</th>
-                                <th width="100">Número</th>
+                                <th width="100">Nro Orden</th>
                                 <th>Fecha</th>
                                 <th>Proveedor</th>
                                 <th>Moneda</th>
                                 <th>Total</th>
-                                <th>Estado</th>
-                                <th width="50">Acciones</th>
+                                <th width="70">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -45,7 +31,6 @@
                 </div>
             </div>
         </div>
-  </div>
 
 @endsection
 
@@ -55,7 +40,7 @@
                       language: { url: '/datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.nota.credito.compras') }}",
+                      ajax: "{{ route('api.ordenpago') }}",
                       'columnDefs': [
                         {
                             "targets": 0,
@@ -71,24 +56,14 @@
                        },
                        {
                             "targets": 4,
-                            "className": "text-center",
-                       },
-                       {
-                            "targets": 5,
                             "className": "text-right",
-                       },
-                       {
-                            "targets": 6,
-                            "className": "text-center",
                        }],
                       columns: [
-                        {data: 'tipo_nota_cred', name: 'tipo_nota_cred'},
-                        {data: 'nro_nota_cred', name: 'nro_nota_cred'},
+                        {data: 'nro_orden', name: 'nro_factura'},
                         {data: 'fecha', name: 'fecha'},
                         {data: 'proveedor', name: 'proveedor'},
                         {data: 'moneda', name: 'moneda'},
-                        {data: 'monto_total', name: 'monto_total'},
-                        {data: 'estado', name: 'estado'},
+                        {data: 'importe', name: 'importe'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ],
                       "order": [[ 1, "desc" ]],
@@ -99,11 +74,11 @@
       })
 
       function showForm(id) {
-        window.location="{{ url('notacreditocompra') }}" + '/' + id;
+        window.location="{{ url('ordenpago') }}" + '/' + id;
       }
 
       function editForm(id) {
-        window.location="{{ url('notacreditocompra') }}" + '/' + id +'/edit';
+        window.location="{{ url('ordenpago') }}" + '/' + id +'/edit';
       }
 
       function deleteData(id){
@@ -121,7 +96,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('notacreditocompra') }}" + '/' + id,
+                                  url : "{{ url('ordenpago') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {

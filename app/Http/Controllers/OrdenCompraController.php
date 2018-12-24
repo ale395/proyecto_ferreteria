@@ -65,7 +65,7 @@ class OrdenCompraController extends Controller
         }
         
 
-        return view('ordencompra.create',compact('fecha_actual', 'nro_orden', 'moneda', 'cambio', 'monedas'));
+        return view('ordencompra.create',compact('fecha_actual', 'nro_orden', 'moneda', 'cambio', 'monedas', 'proveedores'));
     }
 
     /**

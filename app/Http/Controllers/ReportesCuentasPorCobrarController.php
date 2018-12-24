@@ -20,17 +20,21 @@ class ReportesCuentasPorCobrarController extends Controller
     	
     	$rules = [
             'cliente_id' => 'required',
+            'fecha_inicial' => 'required|before_or_equal:fecha_final',
             'fecha_final' => 'required',
         ];
 
         $mensajes = [
             'cliente_id.required' => 'Debe seleccionar un cliente para ejecutar el reporte!',
+            'fecha_inicial.required' => 'Debe especificar la fecha inicial para ejecutar el reporte!',
             'fecha_final.required' => 'Debe especificar la fecha final para ejecutar el reporte!',
+            'fecha_inicial.before_or_equal' => 'La fecha inicial no puede ser mayor a la fecha final!',
         ];
 
         $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
 
         $cliente_id = $request['cliente_id'];
+        $fecha_inicial = $request['fecha_inicial'];
         $fecha_final = $request['fecha_final'];
 
         $cliente = Cliente::findOrFail($cliente_id);
@@ -58,7 +62,8 @@ class ReportesCuentasPorCobrarController extends Controller
                 DB::raw("TO_CHAR(ROUND(facturas_ventas_cab.monto_total), '999G999G999') as debito"), 'cuenta_clientes.created_at')
             ->where('cuenta_clientes.tipo_comprobante', 'F')
             ->where('cuenta_clientes.cliente_id', $cliente_id)
-            ->where('facturas_ventas_cab.fecha_emision', '<=', $fecha_final);
+            ->where('facturas_ventas_cab.fecha_emision', '<=', $fecha_final)
+            ->where('facturas_ventas_cab.fecha_emision', '>=', $fecha_inicial);
 
         /*$registros = DB::table('cuenta_clientes')
         	->join('nota_credito_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'nota_credito_ventas_cab.id')
@@ -83,6 +88,7 @@ class ReportesCuentasPorCobrarController extends Controller
             ->where('cuenta_clientes.tipo_comprobante', 'N')
             ->where('cuenta_clientes.cliente_id', $cliente_id)
             ->where('nota_credito_ventas_cab.fecha_emision', '<=', $fecha_final)
+            ->where('nota_credito_ventas_cab.fecha_emision', '>=', $fecha_inicial)
             ->union($facturas);
         $registros->orderBy('created_at');
 
@@ -90,6 +96,7 @@ class ReportesCuentasPorCobrarController extends Controller
         	->join('facturas_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'facturas_ventas_cab.id')
         	->where('cuenta_clientes.tipo_comprobante', 'F')
         	->where('facturas_ventas_cab.cliente_id', $cliente_id)
+            ->where('facturas_ventas_cab.fecha_emision', '>=', $fecha_inicial)
         	->where('facturas_ventas_cab.fecha_emision', '<=', $fecha_final)
         	->where('facturas_ventas_cab.estado', '<>', 'A')
         	->sum('facturas_ventas_cab.monto_total');
@@ -98,16 +105,36 @@ class ReportesCuentasPorCobrarController extends Controller
         	->join('nota_credito_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'nota_credito_ventas_cab.id')
         	->where('cuenta_clientes.tipo_comprobante', 'N')
         	->where('nota_credito_ventas_cab.cliente_id', $cliente_id)
+            ->where('nota_credito_ventas_cab.fecha_emision', '>=', $fecha_inicial)
         	->where('nota_credito_ventas_cab.fecha_emision', '<=', $fecha_final)
         	->where('nota_credito_ventas_cab.estado', '<>', 'A')
         	->sum('nota_credito_ventas_cab.monto_total');
+
+        $facturas_saldo_ante = DB::table('cuenta_clientes')
+            ->join('facturas_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'facturas_ventas_cab.id')
+            ->where('cuenta_clientes.tipo_comprobante', 'F')
+            ->where('cuenta_clientes.cliente_id', $cliente_id)
+            ->where('facturas_ventas_cab.fecha_emision', '<', $fecha_inicial)
+            ->where('facturas_ventas_cab.estado', '<>', 'A')
+            ->sum('facturas_ventas_cab.monto_total');
+
+        $notas_credito_saldo_ante = DB::table('cuenta_clientes')
+            ->join('nota_credito_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'nota_credito_ventas_cab.id')
+            ->where('cuenta_clientes.tipo_comprobante', 'N')
+            ->where('cuenta_clientes.cliente_id', $cliente_id)
+            ->where('nota_credito_ventas_cab.fecha_emision', '<', $fecha_inicial)
+            ->where('nota_credito_ventas_cab.estado', '<>', 'A')
+            ->sum('nota_credito_ventas_cab.monto_total');
+
+        $saldo_anterior = $facturas_saldo_ante - $notas_credito_saldo_ante;
         $registros = $registros->get();
-        $saldo = $total_debito - $total_credito;
+        $saldo = $saldo_anterior + $total_debito - $total_credito;
         $total_credito = number_format($total_credito, 0, ',', '.');
         $total_debito = number_format($total_debito, 0, ',', '.');
         $saldo = number_format($saldo, 0, ',', '.');
+        $saldo_anterior = number_format($saldo_anterior, 0, ',', '.');
 
-        $pdf = PDF::loadView('reportesCuentasPorCobrar.extractoClienteReporte', compact('registros', 'total_credito', 'total_debito', 'cliente', 'fecha_final', 'saldo'));
+        $pdf = PDF::loadView('reportesCuentasPorCobrar.extractoClienteReporte', compact('registros', 'total_credito', 'total_debito', 'cliente', 'fecha_final', 'fecha_inicial', 'saldo', 'saldo_anterior'));
 
         return $pdf->stream('ExtractoDeCliente.pdf',array('Attachment'=>0));
     }

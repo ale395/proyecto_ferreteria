@@ -303,7 +303,7 @@ class ProveedorController extends Controller
                 //->orWhere('nro_cedula', 'LIKE', "%$search%")
                 ->get();
         } else {
-            $proveedores = Cliente::all();
+            $proveedores = Proveedor::all();
         }
 
         foreach ($proveedores as $proveedor) {

@@ -1036,6 +1036,37 @@ class PermissionTableSeeder extends Seeder
         $permission->description = 'Permite ver una Nota de Crédito Compra del sistema';
         $permission->save();
 
+        //PERMISOS PARA EL FORMULARIO DE ORDEN DE PAGO
+        $permission = new Permission();
+        $permission->name = 'Crear Orden de Compra';
+        $permission->slug = 'ordenpago.create';
+        $permission->description = 'Permite registrar una orden de pago';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Borrar Orden de Compra';
+        $permission->slug = 'ordenpago.destroy';
+        $permission->description = 'Permite la eliminación de una orden de pago';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Editar Orden de Compra';
+        $permission->slug = 'ordenpago.edit';
+        $permission->description = 'Permite modificar una orden de pago';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Listar Ordenes de Compra';
+        $permission->slug = 'ordenpago.index';
+        $permission->description = 'Permite ver el listado de ordenes de pago';
+        $permission->save();
+
+        $permission = new Permission();
+        $permission->name = 'Ver Orden de Compra';
+        $permission->slug = 'ordenpago.show';
+        $permission->description = 'Permite ver la Orden de pago cargada';
+        $permission->save();
+
         //GESTION DE CAJAS
         $permission = new Permission();
         $permission->name = 'Habilitar Caja';
