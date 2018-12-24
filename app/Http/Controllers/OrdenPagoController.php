@@ -31,7 +31,7 @@ class OrdenPagoController extends Controller
      */
     public function index()
     {
-        //
+        return view('ordenpago.index');
     }
 
     /**
@@ -41,7 +41,31 @@ class OrdenPagoController extends Controller
      */
     public function create()
     {
-        //
+        $fecha_actual = date("d/m/Y");
+        $datos_default = DatosDefault::get()->first();
+        $moneda = $datos_default->moneda;
+        $cotizacion = Cotizacion::where('moneda_id','=', $moneda->id)
+        ->orderBy('fecha_cotizacion', 'desc')
+        ->first();
+        // $cotizacion;
+        $proveedores = Proveedor::where('activo', true)->get();
+        $monedas = Moneda::all();
+        $valor_cambio = $cotizacion->getValorVenta();
+        
+        //$nro_orden = DB::table('orden_compras_cab')->select(DB::raw('coalesce(nro_orden),0) + 1 as nro_orden'))->get();
+        //$nro_orden = DB::table('orden_compras_cab')->orderBy('nro_orden', 'desc')->first();    
+
+        $nro_orden_compra = OrdenPago::max('nro_orden');
+
+        if($nro_orden_compra) {
+            $nro_orden = $nro_orden_compra + 1; 
+        } else {
+            $nro_orden = 1;       
+        }
+        
+
+        return view('ordenpago.create',compact('fecha_actual', 'nro_orden', 'moneda', 'valor_cambio', 'monedas', 'proveedores'));
+
     }
 
     /**
@@ -98,5 +122,258 @@ class OrdenPagoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function apiOrdenPago(){
+        //en vez de editar, eliminamos en seco si algo se cargó mal
+        $permiso_editar = Auth::user()->can('ordenpago.destroy');
+        $permiso_eliminar = Auth::user()->can('ordenpago.destroy');
+        $permiso_ver = Auth::user()->can('ordenpago.show');
+        $sucursal_actual = Auth::user()->empleado->sucursales->first();
+        $compras = OrdenPago::where('sucursal_id',$sucursal_actual->getId())->get();
+
+        if ($permiso_editar) {
+            if($permiso_eliminar){
+                if ($permiso_ver) {
+                    return Datatables::of($compras)
+                        ->addColumn('nro_oroden', function($compras){
+                            return $compras->getNroOrden();
+                        })
+                        ->addColumn('fecha', function($compras){
+                            return $compras->getFechaEmision();
+                        })
+                        ->addColumn('proveedor', function($compras){
+                            return $compras->proveedor->getNombreIndex();
+                        })
+                        ->addColumn('moneda', function($compras){
+                            return $compras->moneda->getDescripcion();
+                        })
+                        ->addColumn('importe', function($compras){
+                            return $compras->getImporte();
+                        })
+                        ->addColumn('action', function($compras){
+                            $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $compras->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
+                            $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $compras->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                            $puede_eliminar = '<a onclick="deleteData('. $compras->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
+                            $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                                
+                            if ($compras->estado == 'P') {
+                                return $puede_ver.$puede_editar.$puede_eliminar;
+                            } else {
+                                return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            }
+                        })->make(true);
+                } else {
+                    return Datatables::of($compras)
+                        ->addColumn('tipo_factura', function($compras){
+                            return $compras->getTipoFacturaIndex();
+                        })
+                        ->addColumn('fecha', function($compras){
+                            return $compras->getFechaEmision();
+                        })
+                        ->addColumn('proveedor', function($compras){
+                            return $compras->proveedor->getNombreIndex();
+                        })
+                        ->addColumn('moneda', function($compras){
+                            return $compras->moneda->getDescripcion();
+                        })
+                        ->addColumn('importe', function($compras){
+                            return $compras->getImporte();
+                        })
+                        ->addColumn('action', function($compras){
+                            $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
+                            $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $compras->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                            $puede_eliminar = '<a onclick="deleteData('. $compras->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
+                            $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+ 
+                            if ($compras->estado == 'P') {
+                                return $no_puede_ver.$puede_editar.$puede_eliminar;
+                            } else {
+                                return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            }
+                        })->make(true);
+                }
+            } else {
+                if ($permiso_ver) {
+                    return Datatables::of($compras)
+                        ->addColumn('tipo_factura', function($compras){
+                            return $compras->getTipoFacturaIndex();
+                        })
+                        ->addColumn('nro_factura', function($compras){
+                            return $compras->getNroFactura();
+                        })
+                        ->addColumn('fecha', function($compras){
+                            return $compras->getFechaEmision();
+                        })
+                        ->addColumn('proveedor', function($compras){
+                            return $compras->proveedor->getNombreIndex();
+                        })
+                        ->addColumn('moneda', function($compras){
+                            return $compras->moneda->getDescripcion();
+                        })
+                        ->addColumn('importe', function($compras){
+                            return $compras->getImporte();
+                        })
+                        ->addColumn('action', function($compras){
+                            $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $compras->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
+                            $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $compras->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+
+                            if ($compras->estado == 'P') {
+                                return $puede_ver.$puede_editar.$no_puede_eliminar;
+                            } else {
+                                return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            }
+                        })->make(true);
+                } else {
+                    return Datatables::of($compras)
+                        ->addColumn('tipo_factura', function($compras){
+                            return $compras->getTipoFacturaIndex();
+                        })
+                        ->addColumn('fecha', function($compras){
+                            return $compras->getFechaEmision();
+                        })
+                        ->addColumn('proveedor', function($compras){
+                            return $compras->proveedor->getNombreIndex();
+                        })
+                        ->addColumn('moneda', function($compras){
+                            return $compras->moneda->getDescripcion();
+                        })
+                        ->addColumn('importe', function($compras){
+                            return $compras->getImporte();
+                        })
+                        ->addColumn('action', function($compras){
+                            $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
+                            $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $compras->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+
+                            if ($compras->estado == 'P') {
+                                return $no_puede_ver.$puede_editar.$no_puede_eliminar;
+                            } else {
+                                return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            }
+                        })->make(true);
+                }
+            }
+        } elseif ($permiso_eliminar){
+            if ($permiso_ver) {
+                return Datatables::of($compras)
+                    ->addColumn('tipo_factura', function($compras){
+                        return $compras->getTipoFacturaIndex();
+                    })
+                    ->addColumn('nro_factura', function($compras){
+                        return $compras->getNroFactura();
+                    })
+                    ->addColumn('fecha', function($compras){
+                        return $compras->getFechaEmision();
+                    })
+                    ->addColumn('proveedor', function($compras){
+                        return $compras->proveedor->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($compras){
+                        return $compras->moneda->getDescripcion();
+                    })
+                    ->addColumn('importe', function($compras){
+                        return $compras->getImporte();
+                    })
+                    ->addColumn('action', function($compras){
+                        $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $compras->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
+                        $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $compras->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        $puede_eliminar = '<a onclick="deleteData('. $compras->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
+                        $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+
+                        if ($compras->estado == 'P') {
+                            return $puede_ver.$puede_editar.$puede_eliminar;
+                        } else {
+                            return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                        }
+                    })->make(true);
+            } else {
+                return Datatables::of($compras)
+                    ->addColumn('tipo_factura', function($compras){
+                        return $compras->getTipoFacturaIndex();
+                    })
+                    ->addColumn('fecha', function($compras){
+                        return $compras->getFechaEmision();
+                    })
+                    ->addColumn('proveedor', function($compras){
+                        return $compras->proveedor->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($compras){
+                        return $compras->moneda->getDescripcion();
+                    })
+                    ->addColumn('importe', function($compras){
+                        return $compras->getImporte();
+                    })
+                    ->addColumn('action', function($compras){
+                        $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
+                        $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $compras->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        $puede_eliminar = '<a onclick="deleteData('. $compras->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
+                        $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+
+                        if ($compras->estado == 'P') {
+                            return $no_puede_ver.$puede_editar.$puede_eliminar;
+                        } else {
+                            return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                        }
+                    })->make(true);
+            }
+        } else {
+            if ($permiso_ver) {
+                return Datatables::of($compras)
+                    ->addColumn('tipo_factura', function($compras){
+                        return $compras->getTipoFacturaIndex();
+                    })
+                    ->addColumn('fecha', function($compras){
+                        return $compras->getFechaEmision();
+                    })
+                    ->addColumn('proveedor', function($compras){
+                        return $compras->proveedor->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($compras){
+                        return $compras->moneda->getDescripcion();
+                    })
+                    ->addColumn('importe', function($compras){
+                        return $compras->getImporte();
+                    })
+                    ->addColumn('action', function($compras){
+                        $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $compras->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                        
+                        return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                    })->make(true);
+            } else {
+                return Datatables::of($compras)
+                    ->addColumn('tipo_factura', function($compras){
+                        return $compras->getTipoFacturaIndex();
+                    })
+                    ->addColumn('fecha', function($compras){
+                        return $compras->getFechaEmision();
+                    })
+                    ->addColumn('proveedor', function($compras){
+                        return $compras->proveedor->getNombreIndex();
+                    })
+                    ->addColumn('moneda', function($compras){
+                        return $compras->moneda->getDescripcion();
+                    })
+                    ->addColumn('importe', function($compras){
+                        return $compras->getImporte();
+                    })
+                    ->addColumn('action', function($compras){
+                        $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
+                        $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                        $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+
+                        return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                    })->make(true);
+            }
+        }
     }
 }

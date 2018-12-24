@@ -25,11 +25,11 @@ class OrdenPago extends Model
         return $this->id;
     }
 
-    public function setNroPedido($nro_orden){
+    public function setNroOrden($nro_orden){
         $this->nro_orden = $nro_orden;
     }
 
-    public function getNroPedido(){
+    public function getNroOrden(){
         return $this->nro_orden;
     }
 

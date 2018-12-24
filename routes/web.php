@@ -222,6 +222,10 @@ Route::middleware(['auth'])->group(function() {
 	Route::resource('notacreditocompra', 'NotaCreditoComprasController');
 	Route::get('api/notacreditocompra', 'NotaCreditoComprasController@apiNotaCreditoCompras')->name('api.nota.credito.compras');
 
+	//Rutas para orden de pago
+	Route::resource('ordenpago', 'OrdenPagoController');
+	Route::get('api/ordenpago', 'OrdenPagoController@apiOrdenPago')->name('api.ordenpago');
+
 	//Para ver los errores de PHP
 	Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 

@@ -568,6 +568,22 @@ class CompraController extends Controller
         
     }
 
+    public function apiComprasProveedorOP($cliente_id){
+        if (empty($cliente_id)) {
+            return [];
+        } else {
+            $facturas = ComprasCab::where('proveedor_id', $cliente_id)->
+                where('estado', 'P')->get();
+            /*Filtra por las facturas que tienen saldo.*/
+            $facturas = $facturas->filter(function ($factura) {
+                return ($factura->getMontoSaldo() > 0);
+            });
+            return $facturas;
+        }
+        
+    }
+
+
     public function apiCompraDetalle($array_pedidos){
         $cast_array = explode(",",($array_pedidos));
 

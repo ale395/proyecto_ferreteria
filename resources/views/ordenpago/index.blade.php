@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     <h4>Lista de Ordenes de Pago
                         @can('ordenpago.create')
-                          <a onclick="window.location='{{route('compra.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
+                          <a onclick="window.location='{{route('ordenpago.create')}}'" class="btn btn-primary pull-right" style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @else
                           <a class="btn btn-primary pull-right" disabled style="margin-top: -8px;"><i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar</a>
                         @endcan
@@ -18,8 +18,7 @@
                     <table id="pedidos-table" class="table-striped table-responsive row-border" style="width:100%">
                         <thead>
                             <tr>
-                                <th width="20">Tipo</th>
-                                <th width="100">Nro Factura</th>
+                                <th width="100">Nro Orden</th>
                                 <th>Fecha</th>
                                 <th>Proveedor</th>
                                 <th>Moneda</th>
@@ -41,7 +40,7 @@
                       language: { url: '/datatables/translation/spanish' },
                       processing: true,
                       serverSide: true,
-                      ajax: "{{ route('api.compra') }}",
+                      ajax: "{{ route('api.ordenpago') }}",
                       'columnDefs': [
                         {
                             "targets": 0,
@@ -57,19 +56,14 @@
                        },
                        {
                             "targets": 4,
-                            "className": "text-center",
-                       },
-                       {
-                            "targets": 5,
                             "className": "text-right",
                        }],
                       columns: [
-                        {data: 'tipo_factura', name: 'tipo_factura'},
-                        {data: 'nro_factura', name: 'nro_factura'},
+                        {data: 'nro_orden', name: 'nro_factura'},
                         {data: 'fecha', name: 'fecha'},
                         {data: 'proveedor', name: 'proveedor'},
                         {data: 'moneda', name: 'moneda'},
-                        {data: 'monto_total', name: 'monto_total'},
+                        {data: 'importe', name: 'importe'},
                         {data: 'action', name: 'action', orderable: false, searchable: false}
                       ],
                       "order": [[ 1, "desc" ]],
@@ -80,11 +74,11 @@
       })
 
       function showForm(id) {
-        window.location="{{ url('compra') }}" + '/' + id;
+        window.location="{{ url('ordenpago') }}" + '/' + id;
       }
 
       function editForm(id) {
-        window.location="{{ url('compra') }}" + '/' + id +'/edit';
+        window.location="{{ url('ordenpago') }}" + '/' + id +'/edit';
       }
 
       function deleteData(id){
@@ -102,7 +96,7 @@
                           var csrf_token = $('meta[name="csrf-token"]').attr('content');
                           
                               $.ajax({
-                                  url : "{{ url('compra') }}" + '/' + id,
+                                  url : "{{ url('ordenpago') }}" + '/' + id,
                                   type : "POST",
                                   data : {'_method' : 'DELETE', '_token' : csrf_token},
                                   success : function(data) {
