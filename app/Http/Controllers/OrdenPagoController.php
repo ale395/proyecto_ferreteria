@@ -150,15 +150,15 @@ class OrdenPagoController extends Controller
                 $cuenta_factura->setMontoSaldo($cuenta_factura->getMontoSaldo() - str_replace('.', '', $importe_afectado));
                 $cuenta_factura->update();
 
-                //Actualizacion de saldo proveedor
-                $cuenta = new CuentaProveedor;
-                $cuenta->setTipoComprobante('P');
-                $cuenta->setComprobanteId($cabecera->getId());
-                $cuenta->setMontoComprobante(str_replace('.', '', str_replace('.', '', $importe_afectado)*-1));
-                $cuenta->setMontoSaldo(0);
-                $cuenta->save();
-
             }
+
+            //Actualizacion de saldo proveedor
+            $cuenta = new CuentaProveedor;
+            $cuenta->setTipoComprobante('P');
+            $cuenta->setComprobanteId($cabecera->getId());
+            $cuenta->setMontoComprobante($total*-1);
+            $cuenta->setMontoSaldo(0);
+            $cuenta->save();
 
             for ($i=0; $i < collect($request['tab_banco_id'])->count(); $i++){
 
@@ -274,7 +274,56 @@ class OrdenPagoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+
+            DB::beginTransaction();
+
+            $cabecera = OrdenPago::findOrFail($id);
+
+            
+            $modalidad_pago = $cabecera->getTipoFactura();
+
+            if (!empty($cuenta ) && $modalidad_pago != 'CO') {                
+                $cuenta->delete();
+            }
+            
+            foreach ($cabecera->ordenpagofacturas() as $detalle) {
+
+                $id_comprobante = $detalle->compra()->getId();
+                $importe_afectado = str_replace('.', '', $detalle->getImporte());
+
+                $cuenta = CuentaProveedor::where('comprobante_id', $id_comprobante)
+                            ->where('tipo_comprobante', 'F')->firstOrFail();
+                $cuenta->setMontoSaldo($cuenta_factura->getMontoSaldo() + str_replace('.', '', $importe_afectado));
+                $cuenta->update();
+
+            }
+
+            //Buscamos el registro en el saldo de proveedores
+            $cuenta_op = CuentaProveedor::where('comprobante_id', $id_comprobante)
+            ->where('tipo_comprobante', 'P')->firstOrFail();
+
+            $cuenta_op->delete();
+            //borramos facturas afectadas
+            $cabecera->ordenpagofacturas()->delete();
+            //borramos los cheques
+            $cabecera->ordenpagocheques()->delete();
+            //borramos la cabecera
+            $cabecera->delete();
+
+            DB::commit();
+            
+        }
+        catch (\Exception $e) {
+            //Deshacemos la transaccion
+            DB::rollback();
+
+            //volvemos para atras y retornamos un mensaje de error
+            //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
+            return back()->withErrors( $e->getMessage() .' - '.$e->getFile(). ' - '.$e->getLine() )->withInput();
+            //return back()->withErrors( $e->getTraceAsString() )->withInput();
+
+        }
     }
 
     public function apiOrdenPago(){

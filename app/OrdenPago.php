@@ -112,11 +112,11 @@ class OrdenPago extends Model
         return $this->belongsTo('App\Moneda');
     }
 
-    public function ordenPagoCheques(){
+    public function ordenpagocheques(){
         return $this->hasMany('App\OrdenPagoCheques', 'orden_pago_id');
     }
 
-    public function ordenPagoFacturas(){
+    public function ordenpagofacturas(){
         return $this->hasMany('App\ordenPagoFacturas', 'orden_pago_id');
     }
 }

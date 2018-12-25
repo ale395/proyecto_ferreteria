@@ -18,6 +18,8 @@ use App\Impuesto;
 use App\Cotizacion;
 use App\ExistenciaArticulo;
 use App\CuentaProveedor;
+use App\NotaCreditoComprasCab;
+use App\OrdenPagoFacturas;
 use DB;
 use Response;
 use Illuminate\Support\Collections;
@@ -482,13 +484,24 @@ class CompraController extends Controller
             DB::beginTransaction();
 
             $cabecera = ComprasCab::findOrFail($id);
+            $cuenta = where('comprobante_id', $id)->where('tipo_comprobante', 'F')->firstOrFail();
+            $nota_credito = NotaCreditoComprasCab::where('compra_cab_id', $id)->firstOrFail();
+            $orden_pago = OrdenPagoFacturas::findOrFail($cabecera->getId());
 
-            if (!empty($cuenta ) && $modalidad_pago == 'CO') {
-                $cuenta = CuentaProveedor::findOrFail($cabecera->getId());
-                
-                $cuenta->delete();
+            if (!empty($orden_pago ))  {                
+                return back()->withErrors('Compra no se puede eliminar porque tiene una nota de crédito afectada');
             }
 
+            if (!empty($nota_credito ))  {                
+                return back()->withErrors('Compra no se puede eliminar porque tiene un pago aplicado');
+            }
+            
+            $modalidad_pago = $cabecera->getTipoFactura();
+
+            if (!empty($cuenta ) && $modalidad_pago != 'CO') {                
+                $cuenta->delete();
+            }
+            
             foreach ($cabecera->pedidosDetalle() as $detalle) {
 
                 //controlamos existencia
@@ -507,18 +520,7 @@ class CompraController extends Controller
 
             }
 
-            if ($modalidad_pago != 'CON'){
-                //Actualizacion de saldo proveedor
-                $cuenta = new CuentaProveedor;
-                $cuenta->setTipoComprobante('F');
-                $cuenta->setComprobanteId($cabecera->getId());
-                $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
-                $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
-                $cuenta->save();
-            
-            }   
-
-            $cabecera->pedidosDetalle()->delete();
+            $cabecera->comprasdetalle()->delete();
 
             $cabecera->delete();
 
