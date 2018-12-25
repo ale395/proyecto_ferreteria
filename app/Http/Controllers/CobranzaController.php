@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\HabilitacionCaja;
 use App\Moneda;
+use App\FormaPago;
+use App\Banco;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,12 +34,14 @@ class CobranzaController extends Controller
             ->whereNull('fecha_hora_cierre')->first();
         $moneda = Moneda::where('codigo', 'GS')->first();
         $valor_cabmio = 1;
+        $pagos = FormaPago::all();
+        $bancos = Banco::all();
 
         if (empty('habilitacion')) {
             return redirect()->back();
         }
 
-        return view('cobranza.create', compact('fecha_actual', 'habilitacion', 'moneda', 'valor_cabmio'));
+        return view('cobranza.create', compact('fecha_actual', 'habilitacion', 'moneda', 'valor_cabmio', 'pagos', 'bancos'));
     }
 
     /**

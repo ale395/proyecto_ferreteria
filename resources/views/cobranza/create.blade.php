@@ -86,13 +86,46 @@
                         </tfoot>
                     </table>
                     <br>
+                    <div class="form-group">
+                        <label for="forma_pago" class="col-md-1 control-label">Pago</label>
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="Forma de pago"><select id="select2-pagos" name="forma_pago" class="form-control" style="width: 100%">
+                                <option></option>
+                                @foreach($pagos as $id => $pago)
+                                    <option value="{{ $pago->id }}">{{ $pago->descripcion }}</option>
+                                @endforeach
+                            </select></a>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="Banco">
+                            <select id="select2-bancos" name="forma_pago" class="form-control" style="width: 100%">
+                                <option></option>
+                                @foreach($bancos as $id => $banco)
+                                    <option value="{{ $banco->id }}">{{ $banco->nombre }}</option>
+                                @endforeach
+                            </select></a>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="Fecha de Emisión">
+                            <input type="text" id="fecha_emision" name="fecha_emision" class="form-control" placeholder="dd/mm/aaaa" data-inputmask="'mask': '99/99/9999'"></a>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="N° Cheque o tarjeta"><input type="text" class="form-control" id="nume_valo" name="nume_valo"></a>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="tooltip" data-placement="top" title="Monto pagado"><input type="text" class="form-control" id="importe" name="importe"></a>
+                        </div>
+                        <div class="col-md-1">
+                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir pago" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <br>
                     <table id="cobranza-deta" class="table table-striped table-responsive display" style="width:100%">
                         <thead>
                             <tr>
                                 <th class="text-center" width="10%">Forma Pago</th>
                                 <th class="text-center" width="10%">Banco</th>
                                 <th class="text-center" width="15%">Fecha Emisión</th>
-                                <th class="text-center" width="15%">Fecha Venc.</th>
                                 <th class="text-center" width="15%">Nro. Valor</th>
                                 <th class="text-center" width="10%">Monto</th>
                             </tr>
@@ -101,7 +134,6 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -189,7 +221,7 @@
  
             // Total over all pages
             total = api
-                .column(5)
+                .column(4)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -197,14 +229,14 @@
  
             // Total over this page
             pageTotal = api
-                .column( 5, { page: 'current'} )
+                .column( 4, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column( 5 ).footer() ).html(
+            $( api.column( 4 ).footer() ).html(
                 $.number(total,decimales, ',', '.')
             );
         }
@@ -245,7 +277,8 @@
                     {data: 'comentario'}
                     ],
                 'columnDefs': [
-                { className: "dt-center", "targets": [1,2,3] }]
+                { className: "dt-center", "targets": [1,2,3]}],
+                "order": [[ 1, 'asc' ], [ 0, 'asc' ]]
             });
             
             $('#modal-cuenta-contado').modal('show');
@@ -286,7 +319,8 @@
                     {data: 'comentario'}
                     ],
                 'columnDefs': [
-                { className: "dt-center", "targets": [1,2,3] }]
+                { className: "dt-center", "targets": [1,2,3] }],
+                "order": [[ 1, 'asc' ], [ 0, 'asc' ]]
             });
             
             $('#modal-cuenta-credito').modal('show');
@@ -361,6 +395,20 @@
                 },
                 cache: true
             }
+        });
+
+        $('#select2-bancos').select2({
+            placeholder : 'Seleccione una opción',
+            tags: false,
+            width: 'resolve',
+            language: "es"
+        });
+
+        $('#select2-pagos').select2({
+            placeholder : 'Seleccione una opción',
+            tags: false,
+            width: 'resolve',
+            language: "es"
         });
     });
 </script>
