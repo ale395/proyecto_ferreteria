@@ -16,15 +16,14 @@ class CreateMovimientosArticulosTable extends Migration
     {
         Schema::create('movimientos_articulos', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tipo_movimiento')->unsigned();
-            $table->date('fecha_ultimo_movimiento')->nullable();
+            $table->char('tipo_movimiento', 1); ///F FACTURA Z CREDITO  C COMPRA D DEBITO A AJUSTE I INVENTARIO 
+            $table->integer('movimiento_id')->unsigned();
+            $table->date('fecha_movimiento')->nullable();
             $table->integer('articulo_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
             $table->decimal('cantidad', 14, 2)->unsigned();
 
             $table->timestamps();
-            //$table->date('fecha_ultimo_inventario')->nullable();
-            //$table->decimal('costo_ultimo_inventario', 14, 2)->nullable();
 
             $table->foreign('articulo_id')->references('id')->on('articulos');
             $table->foreign('sucursal_id')->references('id')->on('sucursales');                       

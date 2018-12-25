@@ -6,6 +6,7 @@ use App\DatosDefault;
 use App\InventarioCab;
 use App\InventarioDet;
 use App\ExistenciaArticulo;
+use App\MovimientoArticulo;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -110,7 +111,7 @@ class InventarioController extends Controller
 
                 $inventario_det->save();
 
-            }
+            
              //-----------------------------------------------------------
              //controlamos existencia
  if ($inventario_det->articulo->getControlExistencia() == true) {
@@ -134,7 +135,20 @@ class InventarioController extends Controller
     }   
 
 }
-            DB::commit();
+
+        //Actualizacion de saldo cliente
+        $movimiento = new MovimientoArticulo;
+        $movimiento->setFecha($inventario_cab->getFechaEmision());   
+        $movimiento->setTipoMovimiento('I');
+        $movimiento->setMovimientoId($inventario_cab->getId());
+        $movimiento->setSucursalId($inventario_cab->sucursal->getId());
+        $movimiento->setArticuloId($inventario_det->articulo->getId());      
+        $movimiento->setCantidad($inventario_det->getCantidad());             
+
+        $movimiento->save();
+
+     }
+          DB::commit();
         } catch (\Exception $e) {
 
             //$error = $e->getMessage();
@@ -282,7 +296,22 @@ class InventarioController extends Controller
      */
     public function destroy($id)
     {
+
+        $movimiento_articulo = MovimientoArticulo::where('tipo_movimiento', 'I')
+        ->where('movimiento_id', $id);
+        $movimiento_articulo->delete();
+    
         $inventario_cab = InventarioCab::findOrFail($id);
+        $detalles_fact = $inventario_cab->inventarioDetalle;
+        foreach ($detalles_fact as $detalle) {
+            if ($detalle->articulo->getControlExistencia()) {
+                $existencia = ExistenciaArticulo::where('articulo_id',  $detalle->articulo->getId())
+                ->where('sucursal_id', $inventario_cab->sucursal->getId())->first();
+                $existencia->setCantidad($existencia->getCantidadNumber() - $detalle->getDiferencia());
+                $existencia->update();
+            }
+        }
+
         $inventario_cab->inventarioDetalle()->delete();
         return InventarioCab::destroy($id);
     }
