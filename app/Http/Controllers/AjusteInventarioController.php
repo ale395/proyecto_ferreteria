@@ -6,6 +6,7 @@ use App\DatosDefault;
 use App\AjusteInventarioCab;
 use App\AjusteInventarioDet;
 use App\ExistenciaArticulo;
+use App\MovimientoArticulo;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -111,7 +112,6 @@ class AjusteInventarioController extends Controller
 
                 $ajuste_inventario_det->save();
 
-            }
              //-----------------------------------------------------------
              //controlamos existencia
  if ($ajuste_inventario_det->articulo->getControlExistencia() == true) {
@@ -138,6 +138,17 @@ class AjusteInventarioController extends Controller
     }   
 
 }
+    //Actualizacion de la captura de movimiento de articulos
+    $movimiento = new MovimientoArticulo;
+    $movimiento->setFecha($request['fecha_emision']);   
+    $movimiento->setTipoMovimiento('A');
+    $movimiento->setMovimientoId($ajuste_inventario_cab->getId());
+    $movimiento->setSucursalId($ajuste_inventario_cab->sucursal->getId());
+    $movimiento->setArticuloId($ajuste_inventario_det->articulo->getId());      
+    $movimiento->setCantidad($ajuste_inventario_det->getCantidad());             
+
+    $movimiento->save();
+            }
             DB::commit();
         } catch (\Exception $e) {
 
@@ -289,7 +300,29 @@ class AjusteInventarioController extends Controller
      */
     public function destroy($id)
     {
+        $movimiento_articulo = MovimientoArticulo::where('tipo_movimiento', 'A')
+        ->where('movimiento_id', $id);
+        $movimiento_articulo->delete();
+
         $ajuste_inventario_cab = AjusteInventarioCab::findOrFail($id);
+
+        $detalles_fact = $ajuste_inventario_cab->ajusteInventarioDetalle;
+        foreach ($detalles_fact as $detalle) {
+            if ($detalle->articulo->getControlExistencia()) {
+                $existencia = ExistenciaArticulo::where('articulo_id',  $detalle->articulo->getId())
+                ->where('sucursal_id', $ajuste_inventario_cab->sucursal->getId())->first();
+                if (!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='+'){
+                    $existencia->actualizaStock('-', $detalle->getCantidad());
+                    $existencia->update();   
+                }elseif(!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='-') {
+                    $existencia->actualizaStock('+', $detalle->getCantidad());
+                    $existencia->update(); 
+                }
+            }
+
+
+
+        }
         $ajuste_inventario_cab->ajusteInventarioDetalle()->delete();
         return AjusteInventarioCab::destroy($id);
     }

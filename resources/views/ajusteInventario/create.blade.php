@@ -453,7 +453,7 @@
 
     });
 
-    $(function() {
+  /*  $(function() {
       $('.dpfecha').datepicker({
         format: 'dd/mm/yyyy',
         language: 'es',
@@ -465,6 +465,6 @@
                 e.stopPropagation();
                 $('.dpfecha').datepicker('update');
             });  
-    });
+    });*/
 </script>
 @endsection

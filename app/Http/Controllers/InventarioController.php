@@ -136,9 +136,10 @@ class InventarioController extends Controller
 
 }
 
-        //Actualizacion de saldo cliente
+        //Actualizacion de la captura de movimiento de articulos
         $movimiento = new MovimientoArticulo;
-        $movimiento->setFecha($inventario_cab->getFechaEmision());   
+        //$movimiento->setFecha($inventario_cab->getFechaEmision());   
+        $movimiento->setFecha($request['fecha_emision']);
         $movimiento->setTipoMovimiento('I');
         $movimiento->setMovimientoId($inventario_cab->getId());
         $movimiento->setSucursalId($inventario_cab->sucursal->getId());

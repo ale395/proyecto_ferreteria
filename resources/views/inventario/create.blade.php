@@ -89,7 +89,7 @@
                              <input type="text" id="diferencia" name="diferencia" class="form-control" placeholder="Diferencia" readonly="readonly">
                         </div>
                         <div class="col-md-1">
-                            <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()">
+                            <input type="number" id="costo_unitario" name="costo_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()" readonly="readonly">
                         </div>
                         <div class="col-md-1">
                             <input type="text" id="subtotal" name="subtotal" class="form-control" placeholder="Subtotal" readonly>
@@ -445,7 +445,7 @@
 
     });
 
-    $(function() {
+   /* $(function() {
       $('.dpfecha').datepicker({
         format: 'dd/mm/yyyy',
         language: 'es',
@@ -457,6 +457,6 @@
                 e.stopPropagation();
                 $('.dpfecha').datepicker('update');
             });  
-    });
+    });*/
 </script>
 @endsection

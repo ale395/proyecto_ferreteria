@@ -18,7 +18,7 @@ class CreateMovimientosArticulosTable extends Migration
             $table->increments('id');
             $table->char('tipo_movimiento', 1); ///F FACTURA Z CREDITO  C COMPRA D DEBITO A AJUSTE I INVENTARIO 
             $table->integer('movimiento_id')->unsigned();
-            $table->date('fecha_movimiento')->nullable();
+            $table->date('fecha_movimiento');
             $table->integer('articulo_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
             $table->decimal('cantidad', 14, 2)->unsigned();
