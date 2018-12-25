@@ -78,7 +78,7 @@
       }
 
       function editForm(id) {
-        window.location="{{ url('ordenpago') }}" + '/' + id +'/edit';
+        //window.location="{{ url('ordenpago') }}" + '/' + id +'/edit';
       }
 
       function deleteData(id){
