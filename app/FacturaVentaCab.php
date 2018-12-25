@@ -186,17 +186,17 @@ class FacturaVentaCab extends Model
         return $this->belongsToMany('App\PedidoVentaCab', 'pedidos_facturas', 'factura_cabecera_id', 'pedido_cabecera_id');
     }
 
-
+    
     public function scopeAnuladas($query){
         return $query->where('estado','A');
     }
-
-    public function scopePendientes($query){
+   
+    public function scopeEmitidas($query){
         return $query->where('estado','P');
     }
-
-    public function scopeFinalizadas($query){
-        return $query->where('estado','F');
+    
+    public function scopeCobradas($query){
+        return $query->where('estado','C');
     }
 
 

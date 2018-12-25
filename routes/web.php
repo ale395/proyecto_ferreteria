@@ -237,9 +237,14 @@ Route::middleware(['auth'])->group(function() {
 	Route::get ('reporte/extractocliente', 'ReportesCuentasPorCobrarController@viewExtractoCliente')->name('cuentasporcobrar.extractocliente');
 	Route::post('reporte/extractocliente', 'ReportesCuentasPorCobrarController@verExtractoCliente')->name('cuentasporcobrar.verextractocliente');
 
-
+	//Existencia Articulos
 	Route::get ('reporte/articuloexistencia', 'ReportesStockController@viewArticuloExistencia')->name('stock.articuloexistencia');
 	Route::post('reporte/articuloexistencia', 'ReportesStockController@verArticuloExistencia')->name('stock.verarticuloexistencia');
+
+	//Movimiento Articulos
+	Route::get ('reporte/movimientos', 'ReportesMovimientosController@viewReporteMovimientos')->name('stock.movimientos');
+	Route::post('reporte/movimientos', 'ReportesMovimientosController@verReporteMovimientos')->name('stock.vermovimientos');
+
 
 	//VENTAS
 	Route::get ('reporte/ventas', 'ReportesVentasController@viewReporteVentas')->name('reporte.ventas');

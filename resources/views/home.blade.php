@@ -293,6 +293,8 @@
                                 <ul class="nav child_menu">
                                   <li class="sub_menu"><a href="{{route('stock.articuloexistencia')}}">Existencia de articulos</a>
                                   </li>
+                                  <li class="sub_menu"><a href="{{route('stock.movimientos')}}">Reporte de Movimientos</a>
+                                  </li>
                                 </ul>
                               </li>
                     </ul>
