@@ -92,7 +92,7 @@
                             <a data-toggle="tooltip" data-placement="top" title="Forma de pago"><select id="select2-pagos" name="forma_pago" class="form-control" style="width: 100%">
                                 <option></option>
                                 @foreach($pagos as $id => $pago)
-                                    <option value="{{ $pago->id }}">{{ $pago->descripcion }}</option>
+                                    <option value="{{ $pago->codigo }}">{{ $pago->descripcion }}</option>
                                 @endforeach
                             </select></a>
                         </div>
@@ -116,7 +116,7 @@
                             <a data-toggle="tooltip" data-placement="top" title="Monto pagado"><input type="text" class="form-control" id="importe" name="importe"></a>
                         </div>
                         <div class="col-md-1">
-                            <a id="btn-add-pago" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir pago" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a id="btn-add-pago" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir pago" onclick="agregarPago()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <br>
@@ -152,6 +152,8 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
+    var total_comprobantes = 0;
+    var saldo_pago = 0;
     $("#btn-contado").attr("disabled", false);
     $("#btn-credito").attr("disabled", false);
     $("#btn-add-pago").attr("disabled", true);
@@ -348,7 +350,9 @@
                 datos[i].nro_factura,
                 datos[i].monto_total
             ]).draw( false );
+            total_comprobantes = Number(total_comprobantes) + Number(datos[i].monto_total.replace(".",""));
         }
+        saldo_pago = total_comprobantes;
         $('#modal-cuenta-contado').modal('hide');
         $("#btn-contado").attr("disabled", true);
         $("#btn-credito").attr("disabled", true);
@@ -387,6 +391,7 @@
             alret('Alerta else');
         }
     }
+
 
     $(document).ready(function(){
         $('#select2-clientes').select2({
@@ -451,5 +456,91 @@
             language: "es"
         });
     });
+
+    $('#importe').number(true, 0, ',', '.');
+
+    $("#select2-pagos").change(function (e) {
+        var valor = $(this).val();
+        if (valor != null) {
+            if (valor == 'EFE') {
+                $("#select2-bancos").prop('disabled', true);
+                $("#fecha_emision").prop('disabled', true);
+                $("#nume_valo").prop('disabled', true);
+                $("#importe").focus();
+                $("#importe").val(saldo_pago).change();
+                $("#btn-add-pago").attr("disabled", false);
+            } else {
+                $("#select2-bancos").prop('disabled', false);
+                $("#fecha_emision").prop('disabled', false);
+                $("#nume_valo").prop('disabled', false);
+                $("#select2-bancos").focus();
+                $("#btn-add-pago").attr("disabled", false);
+            }
+        } else {
+            alert('else');
+        }
+    });
+
+    function agregarPago(){
+        var formaPago = $('#select2-pagos').val();
+        var formaPagoTexto = $('#select2-pagos').select2('data')[0].text;
+        var importe = $('#importe').val();
+        if (Number(saldo_pago) == 0) {
+            var obj = $.alert({
+                    title: 'Atención',
+                    content: 'El total en formas de pago no puede superar al total de comprobantes seleccionados!',
+                    icon: 'fa fa-exclamation-triangle',
+                    type: 'orange',
+                    backgroundDismiss: true,
+                    theme: 'modern',
+                });
+                setTimeout(function(){
+                    obj.close();
+                },3000);
+        } else {
+            if (formaPago == 'EFE') {
+                if (importe.length != 0) {
+                    if (Number(importe) > Number(saldo_pago)) {
+                        var obj = $.alert({
+                            title: 'Atención',
+                            content: 'El total en formas de pago no puede superar al total de comprobantes seleccionados!',
+                            icon: 'fa fa-exclamation-triangle',
+                            type: 'orange',
+                            backgroundDismiss: true,
+                            theme: 'modern',
+                        });
+                        setTimeout(function(){
+                            obj.close();
+                        },3000); 
+                    } else {
+                        tabla_det.row.add([
+                            formaPagoTexto,
+                            null,
+                            null,
+                            null,
+                            $.number(importe, 0, ',', '.')
+                        ]).draw( false );
+                        saldo_pago = Number(saldo_pago) - Number(importe.replace(".", ""));
+                    }
+                } else {
+                    var obj = $.alert({
+                        title: 'Atención',
+                        content: 'Debe ingresar el monto del pago!',
+                        icon: 'fa fa-exclamation-triangle',
+                        type: 'orange',
+                        backgroundDismiss: true,
+                        theme: 'modern',
+                    });
+                    setTimeout(function(){
+                        obj.close();
+                    },3000); 
+                }
+            } else {
+
+            }
+        }
+        $('#importe').val("").change();
+        $('#select2-pagos').val(null).trigger('change');
+    }
 </script>
 @endsection
