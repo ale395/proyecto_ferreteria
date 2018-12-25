@@ -60,8 +60,8 @@
                             <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%"></select>
                         </div>
                         <div class="btn-group col-md-4" role="group">
-                            <a onclick="addFormContado()" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Seleccionar Facturas Contado">Cuenta Contado <i class="fa fa-search" aria-hidden="true"></i></a>
-                            <a onclick="addFormCredito()" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Seleccionar Facturas Crédito">Cuenta Crédito <i class="fa fa-search" aria-hidden="true"></i></a>
+                            <a id="btn-contado" onclick="addFormContado()" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Seleccionar Facturas Contado">Cuenta Contado <i class="fa fa-search" aria-hidden="true"></i></a>
+                            <a id="btn-credito" onclick="addFormCredito()" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Seleccionar Facturas Crédito">Cuenta Crédito <i class="fa fa-search" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <input type="hidden" name="moneda_id" value="{{$moneda->getId()}}">
@@ -116,7 +116,7 @@
                             <a data-toggle="tooltip" data-placement="top" title="Monto pagado"><input type="text" class="form-control" id="importe" name="importe"></a>
                         </div>
                         <div class="col-md-1">
-                            <a id="btn-add-articulo" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir pago" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                            <a id="btn-add-pago" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Añadir pago" onclick="addArticulo()"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <br>
@@ -152,6 +152,10 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
+    $("#btn-contado").attr("disabled", false);
+    $("#btn-credito").attr("disabled", false);
+    $("#btn-add-pago").attr("disabled", true);
+
     var table = $('#cobranza-comp').DataTable({
         "paging":   false,
         "ordering": false,
@@ -205,7 +209,7 @@
         language: { url: '/datatables/translation/spanish' },
         "columnDefs": [
           { className: "dt-center", "targets": [3,4] },
-          { className: "dt-left", "targets": [0,1,2,5] }
+          { className: "dt-left", "targets": [0,1,2] }
         ],
         "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
@@ -346,6 +350,42 @@
             ]).draw( false );
         }
         $('#modal-cuenta-contado').modal('hide');
+        $("#btn-contado").attr("disabled", true);
+        $("#btn-credito").attr("disabled", true);
+    }
+
+    function cargarFacturasCredito(){
+        var monto_total = $('#monto_total').val();
+        var saldo = monto_total;
+        var datos_monto = 0;
+        var datos = tablePedidos.rows().data();
+        if (monto_total > 0) {
+            for (i = 0; i < datos.length; i++) {
+                //console.log(datos[i]);
+                datos_monto = datos[i].monto_total.replace(".", "");
+                if (Number(saldo) > Number(datos_monto)) {
+                    saldo = Number(saldo) - Number(datos_monto);
+                    table.row.add([
+                        "Factura Crédito",
+                        datos[i].fecha,
+                        datos[i].nro_factura,
+                        datos[i].monto_total
+                    ]).draw( false );
+                } else {
+                    table.row.add([
+                        "Factura Crédito",
+                        datos[i].fecha,
+                        datos[i].nro_factura,
+                        $.number(saldo, 0, ',', '.')
+                    ]).draw( false );
+                }
+            }
+            $('#modal-cuenta-credito').modal('hide');
+            $("#btn-contado").attr("disabled", true);
+            $("#btn-credito").attr("disabled", true);
+        } else {
+            alret('Alerta else');
+        }
     }
 
     $(document).ready(function(){
