@@ -13,7 +13,7 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <strong>Proveedor:</strong> {{$cliente->getNombreIndex()}}
+                    <strong>Proveedor:</strong> {{$proveedor->getNombreIndex()}}
                 </div>
                 <div class="form-group"><strong>Rango de Fechas:</strong> {{$fecha_inicial}} <strong>A</strong> {{$fecha_final}}</div>
                 <div class="form-group">
