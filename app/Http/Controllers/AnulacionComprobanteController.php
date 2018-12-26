@@ -8,6 +8,7 @@ use App\FacturaVentaCab;
 use App\NotaCreditoVentaCab;
 use App\NotaCreditoVentaDet;
 use App\ExistenciaArticulo;
+use App\MovimientoArticulo;
 use Illuminate\Http\Request;
 use App\AnulacionComprobante;
 use Yajra\DataTables\Datatables;
@@ -82,6 +83,13 @@ class AnulacionComprobanteController extends Controller
                     $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())->where('sucursal_id', Auth::user()->empleado->sucursalDefault->getId())->first();
                     $existencia->setCantidad($existencia->getCantidadNumber() + $detalle->getCantidad());
                     $existencia->update();
+
+                    $movimiento_articulo = MovimientoArticulo::where('tipo_movimiento', 'F')
+                        ->where('movimiento_id', $factura->getId())
+                        ->where('articulo_id', $detalle->articulo->getId())
+                        ->where('sucursal_id', $factura->sucursal->getId())
+                        ->first();
+                    $movimiento_articulo->delete();
                 }
             }
 
@@ -98,6 +106,13 @@ class AnulacionComprobanteController extends Controller
                             ->first();
                         $existencia->setCantidad($existencia->getCantidadNumber() - $detalle->getCantidad());
                         $existencia->update();
+
+                        $movimiento_articulo = MovimientoArticulo::where('tipo_movimiento', 'Z')
+                        ->where('movimiento_id', $factura->getId())
+                        ->where('articulo_id', $detalle->articulo->getId())
+                        ->where('sucursal_id', $factura->sucursal->getId())
+                        ->first();
+                        $movimiento_articulo->delete();
                     }
                 }
             }
