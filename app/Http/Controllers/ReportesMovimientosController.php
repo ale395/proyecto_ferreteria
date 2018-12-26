@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Validator;
-use App\Articulos;
+use App\Articulo;
+use App\MovimientoArticulo;
 use App\Sucursal;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -30,13 +31,33 @@ class ReportesMovimientosController extends Controller
         ];
 
         Validator::make($request->all(), $rules, $mensajes)->validate();
-        
+
         $fecha_inicial = $request['fecha_inicial'];
         $fecha_final = $request['fecha_final'];
-        $articulo = null;
-        $sucursal = null;
 
-    	$pdf = PDF::loadView('reportesStock.movimientosReporte', compact('fecha_inicial', 'fecha_final',  'articulo','sucursal'))->setPaper('a4', 'landscape');
+        $sucursal_id = $request['sucursal_id'];     
+        $sucursal = Sucursal::findOrFail($sucursal_id);
+        $movimientos = DB::table('movimientos_articulos')
+        ->join('articulos', 'movimientos_articulos.articulo_id', '=', 'articulos.id')
+
+            ->where('movimientos_articulos.sucursal_id', $sucursal_id);
+           // ->where('movimientos_articulos.articulo_id', $articulo_id);
+
+        if ($request->has('sucursal_id')) {
+            $movimientos = $movimientos->whereIn('movimientos_articulos.sucursal_id', $request['sucursal_id']);
+            if (count($request['sucursal_id']) > 1) {
+                $sucursal = 'Multiple seleccion';
+            } else {
+                $sucursal = Sucursal::findOrFail($request['sucursal_id'][0]);
+                $sucursal = $sucursal->getNombre();
+            }
+        } else {
+            $sucursal = 'Todas';
+        }
+        
+       
+           $movimientos = $movimientos->get();
+    	$pdf = PDF::loadView('reportesStock.movimientosReporte', compact('movimientos','fecha_inicial', 'fecha_final','articulo','sucursal'))->setPaper('a4', 'landscape');
 
         return $pdf->stream('ReporteDeMovimientos.pdf',array('Attachment'=>0));
     }
