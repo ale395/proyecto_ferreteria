@@ -13,6 +13,7 @@ use App\FacturaVentaCab;
 use App\NotaCreditoVentaCab;
 use App\NotaCreditoVentaDet;
 use App\ExistenciaArticulo;
+use App\MovimientoArticulo;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -163,6 +164,15 @@ class NotaCreditoVentaController extends Controller
                             ->where('sucursal_id', $sucursal->getId())->first();
                         $existencia->actualizaStock('+', $detalle->getCantidad());
                         $existencia->update();
+
+                        $movimiento_articulo = new MovimientoArticulo;//F para factura
+                        $movimiento_articulo->setTipoMovimiento('Z');
+                        $movimiento_articulo->setMovimientoId($cabecera->getId());
+                        $movimiento_articulo->setFecha($request['fecha_emision']);
+                        $movimiento_articulo->setArticuloId($detalle->articulo->getId());
+                        $movimiento_articulo->setSucursalId($sucursal->getId());
+                        $movimiento_articulo->setCantidad(str_replace(',', '.', str_replace('.', '', $request['tab_cantidad'][$i])));
+                        $movimiento_articulo->save();
                     }
                 }
             }
