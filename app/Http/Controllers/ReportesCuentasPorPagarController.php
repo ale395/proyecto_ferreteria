@@ -37,91 +37,91 @@ class ReportesCuentasPorCobrarController extends Controller
         $fecha_inicial = $request['fecha_inicial'];
         $fecha_final = $request['fecha_final'];
 
-        $Proveedor = Proveedor::findOrFail($proveedor_id);
+       $proveedor = Proveedor::findOrFail($proveedor_id);
         $codigo_establecimiento = Empresa::first();
         $codigo_establecimiento = $codigo_establecimiento->getCodigoEstablecimiento();
         
-        /*$facturas = DB::table('cuenta_Proveedors')
-        	->join('compras_cab', 'cuenta_Proveedors.comprobante_id', '=', 'compras_cab.id')
+        /*$facturas = DB::table('cuenta_proveedores')
+        	->join('compras_cab', 'cuenta_proveedores.comprobante_id', '=', 'compras_cab.id')
         	->join('sucursales', 'compras_cab.sucursal_id', '=', 'sucursales.id')
         	->crossJoin('empresa')
         	->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
         		DB::raw("'Factura' as descripcion"), 
         		DB::raw("empresa.codigo_establecimiento||'-'||sucursales.codigo_punto_expedicion||' '||lpad(CAST(compras_cab.nro_factura AS CHAR), 7, '0') as nro_comp"), 
         		DB::raw("'0' as credito"), 
-        		DB::raw("TO_CHAR(ROUND(compras_cab.monto_total), '999G999G999') as debito"), 'cuenta_Proveedors.created_at')
-        	->where('cuenta_Proveedors.tipo_comprobante', 'F')
+        		DB::raw("TO_CHAR(ROUND(compras_cab.monto_total), '999G999G999') as debito"), 'cuenta_proveedores.created_at')
+        	->where('cuenta_proveedores.tipo_comprobante', 'F')
         	->where('compras_cab.proveedor_id', $proveedor_id)
         	->where('compras_cab.fecha_emision', '<=', $fecha_final);*/
-        $facturas = DB::table('cuenta_Proveedors')
-            ->join('compras_cab', 'cuenta_Proveedors.comprobante_id', '=', 'compras_cab.id')
+        $facturas = DB::table('cuenta_proveedores')
+            ->join('compras_cab', 'cuenta_proveedores.comprobante_id', '=', 'compras_cab.id')
             ->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
                 DB::raw("'Factura' as descripcion"), 
-                DB::raw("compras_cab.nume_serie||' '||lpad(CAST(compras_cab.nro_factura AS CHAR), 7, '0') as nro_comp"), 
+                DB::raw("compras_cab.nro_factura as nro_comp"), 
                 DB::raw("'0' as credito"), 
-                DB::raw("TO_CHAR(ROUND(compras_cab.monto_total), '999G999G999') as debito"), 'cuenta_Proveedors.created_at')
-            ->where('cuenta_Proveedors.tipo_comprobante', 'F')
-            ->where('cuenta_Proveedors.proveedor_id', $proveedor_id)
+                DB::raw("TO_CHAR(ROUND(compras_cab.monto_total), '999G999G999') as debito"), 'cuenta_proveedores.created_at')
+            ->where('cuenta_proveedores.tipo_comprobante', 'F')
+            ->where('cuenta_proveedores.proveedor_id', $proveedor_id)
             ->where('compras_cab.fecha_emision', '<=', $fecha_final)
             ->where('compras_cab.fecha_emision', '>=', $fecha_inicial);
 
-        /*$registros = DB::table('cuenta_Proveedors')
-        	->join('nota_credito_compras_cab', 'cuenta_Proveedors.comprobante_id', '=', 'nota_credito_compras_cab.id')
+        /*$registros = DB::table('cuenta_proveedores')
+        	->join('nota_credito_compras_cab', 'cuenta_proveedores.comprobante_id', '=', 'nota_credito_compras_cab.id')
         	->crossJoin('empresa')
         	->join('sucursales', 'nota_credito_compras_cab.sucursal_id', '=', 'sucursales.id')
         	->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
         		DB::raw("'Nota de Crédito' as descripcion"), 
         		DB::raw("empresa.codigo_establecimiento||'-'||sucursales.codigo_punto_expedicion||' '||lpad(CAST(nota_credito_compras_cab.nro_nota_credito AS CHAR), 7, '0') as nro_comp"), 
         		DB::raw("TO_CHAR(ROUND(nota_credito_compras_cab.monto_total), '999G999G999') as credito"), 
-        		DB::raw("'0' as debito"), 'cuenta_Proveedors.created_at')
-        	->where('cuenta_Proveedors.tipo_comprobante', 'N')
+        		DB::raw("'0' as debito"), 'cuenta_proveedores.created_at')
+        	->where('cuenta_proveedores.tipo_comprobante', 'N')
         	->where('nota_credito_compras_cab.proveedor_id', $proveedor_id)
         	->where('nota_credito_compras_cab.fecha_emision', '<=', $fecha_final)
         	->union($facturas);*/
-        $registros = DB::table('cuenta_Proveedors')
-            ->join('nota_credito_compras_cab', 'cuenta_Proveedors.comprobante_id', '=', 'nota_credito_compras_cab.id')
+        $registros = DB::table('cuenta_proveedores')
+            ->join('nota_credito_compras_cab', 'cuenta_proveedores.comprobante_id', '=', 'nota_credito_compras_cab.id')
             ->select(DB::raw("TO_CHAR(fecha_emision, 'dd/mm/yyyy') as fecha_emision"), 
                 DB::raw("'Nota de Crédito' as descripcion"), 
-                DB::raw("nota_credito_compras_cab.nume_serie||' '||lpad(CAST(nota_credito_compras_cab.nro_nota_credito AS CHAR), 7, '0') as nro_comp"), 
+                DB::raw("nota_credito_compras_cab.nro_nota_credito as nro_comp"), 
                 DB::raw("TO_CHAR(ROUND(nota_credito_compras_cab.monto_total), '999G999G999') as credito"), 
-                DB::raw("'0' as debito"), 'cuenta_Proveedors.created_at')
-            ->where('cuenta_Proveedors.tipo_comprobante', 'N')
-            ->where('cuenta_Proveedors.proveedor_id', $proveedor_id)
+                DB::raw("'0' as debito"), 'cuenta_proveedores.created_at')
+            ->where('cuenta_proveedores.tipo_comprobante', 'N')
+            ->where('cuenta_proveedores.proveedor_id', $proveedor_id)
             ->where('nota_credito_compras_cab.fecha_emision', '<=', $fecha_final)
             ->where('nota_credito_compras_cab.fecha_emision', '>=', $fecha_inicial)
             ->union($facturas);
         $registros->orderBy('created_at');
 
-        $total_debito = DB::table('cuenta_Proveedors')
-        	->join('compras_cab', 'cuenta_Proveedors.comprobante_id', '=', 'compras_cab.id')
-        	->where('cuenta_Proveedors.tipo_comprobante', 'F')
+        $total_debito = DB::table('cuenta_proveedores')
+        	->join('compras_cab', 'cuenta_proveedores.comprobante_id', '=', 'compras_cab.id')
+        	->where('cuenta_proveedores.tipo_comprobante', 'F')
         	->where('compras_cab.proveedor_id', $proveedor_id)
             ->where('compras_cab.fecha_emision', '>=', $fecha_inicial)
         	->where('compras_cab.fecha_emision', '<=', $fecha_final)
         	->where('compras_cab.estado', '<>', 'A')
         	->sum('compras_cab.monto_total');
         
-        $total_credito = DB::table('cuenta_Proveedors')
-        	->join('nota_credito_compras_cab', 'cuenta_Proveedors.comprobante_id', '=', 'nota_credito_compras_cab.id')
-        	->where('cuenta_Proveedors.tipo_comprobante', 'N')
+        $total_credito = DB::table('cuenta_proveedores')
+        	->join('nota_credito_compras_cab', 'cuenta_proveedores.comprobante_id', '=', 'nota_credito_compras_cab.id')
+        	->where('cuenta_proveedores.tipo_comprobante', 'N')
         	->where('nota_credito_compras_cab.proveedor_id', $proveedor_id)
             ->where('nota_credito_compras_cab.fecha_emision', '>=', $fecha_inicial)
         	->where('nota_credito_compras_cab.fecha_emision', '<=', $fecha_final)
         	->where('nota_credito_compras_cab.estado', '<>', 'A')
         	->sum('nota_credito_compras_cab.monto_total');
 
-        $facturas_saldo_ante = DB::table('cuenta_Proveedors')
-            ->join('compras_cab', 'cuenta_Proveedors.comprobante_id', '=', 'compras_cab.id')
-            ->where('cuenta_Proveedors.tipo_comprobante', 'F')
-            ->where('cuenta_Proveedors.proveedor_id', $proveedor_id)
+        $facturas_saldo_ante = DB::table('cuenta_proveedores')
+            ->join('compras_cab', 'cuenta_proveedores.comprobante_id', '=', 'compras_cab.id')
+            ->where('cuenta_proveedores.tipo_comprobante', 'F')
+            ->where('cuenta_proveedores.proveedor_id', $proveedor_id)
             ->where('compras_cab.fecha_emision', '<', $fecha_inicial)
             ->where('compras_cab.estado', '<>', 'A')
             ->sum('compras_cab.monto_total');
 
-        $notas_credito_saldo_ante = DB::table('cuenta_Proveedors')
-            ->join('nota_credito_compras_cab', 'cuenta_Proveedors.comprobante_id', '=', 'nota_credito_compras_cab.id')
-            ->where('cuenta_Proveedors.tipo_comprobante', 'N')
-            ->where('cuenta_Proveedors.proveedor_id', $proveedor_id)
+        $notas_credito_saldo_ante = DB::table('cuenta_proveedores')
+            ->join('nota_credito_compras_cab', 'cuenta_proveedores.comprobante_id', '=', 'nota_credito_compras_cab.id')
+            ->where('cuenta_proveedores.tipo_comprobante', 'N')
+            ->where('cuenta_proveedores.proveedor_id', $proveedor_id)
             ->where('nota_credito_compras_cab.fecha_emision', '<', $fecha_inicial)
             ->where('nota_credito_compras_cab.estado', '<>', 'A')
             ->sum('nota_credito_compras_cab.monto_total');
@@ -134,7 +134,9 @@ class ReportesCuentasPorCobrarController extends Controller
         $saldo = number_format($saldo, 0, ',', '.');
         $saldo_anterior = number_format($saldo_anterior, 0, ',', '.');
 
-        $pdf = PDF::loadView('reportescuentasporpagar.extractoproveedorreporte', compact('registros', 'total_credito', 'total_debito', 'Proveedor', 'fecha_final', 'fecha_inicial', 'saldo', 'saldo_anterior'));
+        $pdf = PDF::loadView('reportescuentasporpagar.extractoproveedorreporte', 
+                compact('registros', 'total_credito', 'total_debito', 'proveedor', 
+                'fecha_final', 'fecha_inicial', 'saldo', 'saldo_anterior'));
 
         return $pdf->stream('ExtractoDeProveedor.pdf',array('Attachment'=>0));
     }
