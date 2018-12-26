@@ -303,226 +303,158 @@ class NotaCreditoComprasController extends Controller
             //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
             return back()->withErrors( $e->getMessage() .' - '.$e->getFile(). ' - '.$e->getLine() )->withInput();
             //return back()->withErrors( $e->getTraceAsString() )->withInput();
-
+        }
         
     }
 
     public function apiNotaCreditoCompras(){
-             //en vez de editar, eliminamos en seco si algo se cargó mal
-             $permiso_editar = Auth::user()->can('compra.destroy');
-             $permiso_eliminar = Auth::user()->can('compra.destroy');
-             $permiso_ver = Auth::user()->can('compra.show');
-             $sucursal_actual = Auth::user()->empleado->sucursales->first();
-             $notas = NotaCreditoComprasCab::where('sucursal_id',$sucursal_actual->getId())->get();
+        //en vez de editar, eliminamos en seco si algo se cargó mal
+        $permiso_editar = Auth::user()->can('compra.destroy');
+        $permiso_eliminar = Auth::user()->can('compra.destroy');
+        $permiso_ver = Auth::user()->can('compra.show');
+        $sucursal_actual = Auth::user()->empleado->sucursales->first();
+        $notas = NotaCreditoComprasCab::where('sucursal_id',$sucursal_actual->getId())->get();
      
-             if ($permiso_editar) {
-                 if($permiso_eliminar){
-                     if ($permiso_ver) {
-                         return Datatables::of($notas)
-                            ->addColumn('tipo_nota_cred', function($notas){
-                            return $notas->getTipoNotaCreditoIndex();
-                            })
-                            ->addColumn('nro_nota_cred', function($notas){
-                                return $notas->getNroNotaCreditoIndex();
-                            })
-                            ->addColumn('fecha', function($notas){
-                                return $notas->getFechaEmision();
-                            })
-                            ->addColumn('proveedor', function($notas){
-                                return $notas->proveedor->getNombreIndex();
-                            })
-                            ->addColumn('moneda', function($notas){
-                                return $notas->moneda->getDescripcion();
-                            })
-                            ->addColumn('monto_total', function($notas){
-                                return $notas->getMontoTotal();
-                            })
-                             ->addColumn('action', function($notas){
-                                 $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
-                                 $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
-                                 $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                                 $puede_eliminar = '<a onclick="deleteData('. $notas->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
-                                 $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-                                     
-                                 if ($notas->estado == 'P') {
-                                     return $puede_ver.$puede_editar.$puede_eliminar;
-                                 } else {
-                                     return $puede_ver.$no_puede_editar.$no_puede_eliminar;
-                                 }
-                             })->make(true);
-                     } else {
-                         return Datatables::of($notas)
-                            ->addColumn('tipo_nota_cred', function($notas){
-                            return $notas->getTipoNotaCreditoIndex();
-                            })
-                            ->addColumn('nro_nota_cred', function($notas){
-                                return $notas->getNroNotaCreditoIndex();
-                            })
-                            ->addColumn('fecha', function($notas){
-                                return $notas->getFechaEmision();
-                            })
-                            ->addColumn('proveedor', function($notas){
-                                return $notas->proveedor->getNombreIndex();
-                            })
-                            ->addColumn('moneda', function($notas){
-                                return $notas->moneda->getDescripcion();
-                            })
-                            ->addColumn('monto_total', function($notas){
-                                return $notas->getMontoTotal();
-                            })
-                             ->addColumn('action', function($notas){
-                                 $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
-                                 $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
-                                 $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                                 $puede_eliminar = '<a onclick="deleteData('. $notas->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
-                                 $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-      
-                                 if ($notas->estado == 'P') {
-                                     return $no_puede_ver.$puede_editar.$puede_eliminar;
-                                 } else {
-                                     return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
-                                 }
-                             })->make(true);
-                     }
-                 } else {
-                     if ($permiso_ver) {
-                         return Datatables::of($notas)
-                            ->addColumn('tipo_nota_cred', function($notas){
-                            return $notas->getTipoNotaCreditoIndex();
-                            })
-                            ->addColumn('nro_nota_cred', function($notas){
-                                return $notas->getNroNotaCreditoIndex();
-                            })
-                            ->addColumn('fecha', function($notas){
-                                return $notas->getFechaEmision();
-                            })
-                            ->addColumn('proveedor', function($notas){
-                                return $notas->proveedor->getNombreIndex();
-                            })
-                            ->addColumn('moneda', function($notas){
-                                return $notas->moneda->getDescripcion();
-                            })
-                            ->addColumn('monto_total', function($notas){
-                                return $notas->getMontoTotal();
-                            })
-                             ->addColumn('action', function($notas){
-                                 $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
-                                 $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
-                                 $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                                 $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-     
-                                 if ($notas->estado == 'P') {
-                                     return $puede_ver.$puede_editar.$no_puede_eliminar;
-                                 } else {
-                                     return $puede_ver.$no_puede_editar.$no_puede_eliminar;
-                                 }
-                             })->make(true);
-                     } else {
-                         return Datatables::of($notas)
-                            ->addColumn('tipo_nota_cred', function($notas){
-                            return $notas->getTipoNotaCreditoIndex();
-                            })
-                            ->addColumn('nro_nota_cred', function($notas){
-                                return $notas->getNroNotaCreditoIndex();
-                            })
-                            ->addColumn('fecha', function($notas){
-                                return $notas->getFechaEmision();
-                            })
-                            ->addColumn('proveedor', function($notas){
-                                return $notas->proveedor->getNombreIndex();
-                            })
-                            ->addColumn('moneda', function($notas){
-                                return $notas->moneda->getDescripcion();
-                            })
-                            ->addColumn('monto_total', function($notas){
-                                return $notas->getMontoTotal();
-                            })
-                             ->addColumn('action', function($notas){
-                                 $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
-                                 $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
-                                 $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                                 $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-     
-                                 if ($notas->estado == 'P') {
-                                     return $no_puede_ver.$puede_editar.$no_puede_eliminar;
-                                 } else {
-                                     return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
-                                 }
-                             })->make(true);
-                     }
-                 }
-             } elseif ($permiso_eliminar){
-                 if ($permiso_ver) {
-                     return Datatables::of($notas)
-                        ->addColumn('tipo_nota_cred', function($notas){
-                        return $notas->getTipoNotaCreditoIndex();
-                        })
-                        ->addColumn('nro_nota_cred', function($notas){
-                            return $notas->getNroNotaCreditoIndex();
-                        })
-                        ->addColumn('fecha', function($notas){
-                            return $notas->getFechaEmision();
-                        })
-                        ->addColumn('proveedor', function($notas){
-                            return $notas->proveedor->getNombreIndex();
-                        })
-                        ->addColumn('moneda', function($notas){
-                            return $notas->moneda->getDescripcion();
-                        })
-                        ->addColumn('monto_total', function($notas){
-                            return $notas->getMontoTotal();
-                        })
-                         ->addColumn('action', function($notas){
-                             $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
-                             $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
-                             $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                             $puede_eliminar = '<a onclick="deleteData('. $notas->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
-                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-     
-                             if ($notas->estado == 'P') {
-                                 return $puede_ver.$puede_editar.$puede_eliminar;
-                             } else {
-                                 return $puede_ver.$no_puede_editar.$no_puede_eliminar;
-                             }
-                         })->make(true);
-                 } else {
-                     return Datatables::of($notas)
-                        ->addColumn('tipo_nota_cred', function($notas){
-                        return $notas->getTipoNotaCreditoIndex();
-                        })
-                        ->addColumn('nro_nota_cred', function($notas){
-                            return $notas->getNroNotaCreditoIndex();
-                        })
-                        ->addColumn('fecha', function($notas){
-                            return $notas->getFechaEmision();
-                        })
-                        ->addColumn('proveedor', function($notas){
-                            return $notas->proveedor->getNombreIndex();
-                        })
-                        ->addColumn('moneda', function($notas){
-                            return $notas->moneda->getDescripcion();
-                        })
-                        ->addColumn('monto_total', function($notas){
-                            return $notas->getMontoTotal();
-                        })
-                         ->addColumn('action', function($notas){
-                             $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
-                             $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
-                             $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                             $puede_eliminar = '<a onclick="deleteData('. $notas->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
-                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-     
-                             if ($notas->estado == 'P') {
-                                 return $no_puede_ver.$puede_editar.$puede_eliminar;
-                             } else {
-                                 return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
-                             }
-                         })->make(true);
-                 }
-             } else {
-                 if ($permiso_ver) {
+            if ($permiso_editar) {
+                if($permiso_eliminar){
+                    if ($permiso_ver) {
                         return Datatables::of($notas)
-                         ->addColumn('tipo_nota_cred', function($notas){
+                            ->addColumn('tipo_nota_cred', function($notas){
+                            return $notas->getTipoNotaCreditoIndex();
+                            })
+                            ->addColumn('nro_nota_cred', function($notas){
+                                return $notas->getNroNotaCreditoIndex();
+                            })
+                            ->addColumn('fecha', function($notas){
+                                return $notas->getFechaEmision();
+                            })
+                            ->addColumn('proveedor', function($notas){
+                                return $notas->proveedor->getNombreIndex();
+                            })
+                            ->addColumn('moneda', function($notas){
+                                return $notas->moneda->getDescripcion();
+                            })
+                            ->addColumn('monto_total', function($notas){
+                                return $notas->getMontoTotal();
+                            })
+                            ->addColumn('action', function($notas){
+                                $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
+                                $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                                $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                                $puede_eliminar = '<a onclick="deleteData('. $notas->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
+                                $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                                    
+                                if ($notas->estado == 'P') {
+                                    return $puede_ver.$puede_editar.$puede_eliminar;
+                                } else {
+                                    return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                }
+                            })->make(true);
+                    } else {
+                        return Datatables::of($notas)
+                            ->addColumn('tipo_nota_cred', function($notas){
+                            return $notas->getTipoNotaCreditoIndex();
+                            })
+                            ->addColumn('nro_nota_cred', function($notas){
+                                return $notas->getNroNotaCreditoIndex();
+                            })
+                            ->addColumn('fecha', function($notas){
+                                return $notas->getFechaEmision();
+                            })
+                            ->addColumn('proveedor', function($notas){
+                                return $notas->proveedor->getNombreIndex();
+                            })
+                            ->addColumn('moneda', function($notas){
+                                return $notas->moneda->getDescripcion();
+                            })
+                            ->addColumn('monto_total', function($notas){
+                                return $notas->getMontoTotal();
+                            })
+                            ->addColumn('action', function($notas){
+                                $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
+                                $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                                $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                                $puede_eliminar = '<a onclick="deleteData('. $notas->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
+                                $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+    
+                                if ($notas->estado == 'P') {
+                                    return $no_puede_ver.$puede_editar.$puede_eliminar;
+                                } else {
+                                    return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                }
+                            })->make(true);
+                    }
+                } else {
+                    if ($permiso_ver) {
+                        return Datatables::of($notas)
+                            ->addColumn('tipo_nota_cred', function($notas){
+                            return $notas->getTipoNotaCreditoIndex();
+                            })
+                            ->addColumn('nro_nota_cred', function($notas){
+                                return $notas->getNroNotaCreditoIndex();
+                            })
+                            ->addColumn('fecha', function($notas){
+                                return $notas->getFechaEmision();
+                            })
+                            ->addColumn('proveedor', function($notas){
+                                return $notas->proveedor->getNombreIndex();
+                            })
+                            ->addColumn('moneda', function($notas){
+                                return $notas->moneda->getDescripcion();
+                            })
+                            ->addColumn('monto_total', function($notas){
+                                return $notas->getMontoTotal();
+                            })
+                            ->addColumn('action', function($notas){
+                                $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
+                                $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                                $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                                $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+    
+                                if ($notas->estado == 'P') {
+                                    return $puede_ver.$puede_editar.$no_puede_eliminar;
+                                } else {
+                                    return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                }
+                            })->make(true);
+                    } else {
+                        return Datatables::of($notas)
+                            ->addColumn('tipo_nota_cred', function($notas){
+                            return $notas->getTipoNotaCreditoIndex();
+                            })
+                            ->addColumn('nro_nota_cred', function($notas){
+                                return $notas->getNroNotaCreditoIndex();
+                            })
+                            ->addColumn('fecha', function($notas){
+                                return $notas->getFechaEmision();
+                            })
+                            ->addColumn('proveedor', function($notas){
+                                return $notas->proveedor->getNombreIndex();
+                            })
+                            ->addColumn('moneda', function($notas){
+                                return $notas->moneda->getDescripcion();
+                            })
+                            ->addColumn('monto_total', function($notas){
+                                return $notas->getMontoTotal();
+                            })
+                            ->addColumn('action', function($notas){
+                                $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
+                                $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                                $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                                $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+    
+                                if ($notas->estado == 'P') {
+                                    return $no_puede_ver.$puede_editar.$no_puede_eliminar;
+                                } else {
+                                    return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                }
+                            })->make(true);
+                    }
+                }
+            } elseif ($permiso_eliminar){
+                if ($permiso_ver) {
+                    return Datatables::of($notas)
+                        ->addColumn('tipo_nota_cred', function($notas){
                         return $notas->getTipoNotaCreditoIndex();
                         })
                         ->addColumn('nro_nota_cred', function($notas){
@@ -540,14 +472,55 @@ class NotaCreditoComprasController extends Controller
                         ->addColumn('monto_total', function($notas){
                             return $notas->getMontoTotal();
                         })
-                         ->addColumn('action', function($notas){
-                             $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
-                             $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-                             
-                             return $puede_ver.$no_puede_editar.$no_puede_eliminar;
-                         })->make(true);
-                 } else {
+                        ->addColumn('action', function($notas){
+                            $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
+                            $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                            $puede_eliminar = '<a onclick="deleteData('. $notas->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
+                            $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+    
+                            if ($notas->estado == 'P') {
+                                return $puede_ver.$puede_editar.$puede_eliminar;
+                            } else {
+                                return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            }
+                        })->make(true);
+                } else {
+                    return Datatables::of($notas)
+                        ->addColumn('tipo_nota_cred', function($notas){
+                        return $notas->getTipoNotaCreditoIndex();
+                        })
+                        ->addColumn('nro_nota_cred', function($notas){
+                            return $notas->getNroNotaCreditoIndex();
+                        })
+                        ->addColumn('fecha', function($notas){
+                            return $notas->getFechaEmision();
+                        })
+                        ->addColumn('proveedor', function($notas){
+                            return $notas->proveedor->getNombreIndex();
+                        })
+                        ->addColumn('moneda', function($notas){
+                            return $notas->moneda->getDescripcion();
+                        })
+                        ->addColumn('monto_total', function($notas){
+                            return $notas->getMontoTotal();
+                        })
+                        ->addColumn('action', function($notas){
+                            $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
+                            $puede_editar = '<a data-toggle="tooltip" data-placement="top" onclick="editForm('. $notas->id .')" class="btn btn-warning btn-sm" title="Editar Compra"><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                            $puede_eliminar = '<a onclick="deleteData('. $notas->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
+                            $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+    
+                            if ($notas->estado == 'P') {
+                                return $no_puede_ver.$puede_editar.$puede_eliminar;
+                            } else {
+                                return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            }
+                        })->make(true);
+                }
+            } else {
+                if ($permiso_ver) {
                         return Datatables::of($notas)
                         ->addColumn('tipo_nota_cred', function($notas){
                         return $notas->getTipoNotaCreditoIndex();
@@ -567,14 +540,41 @@ class NotaCreditoComprasController extends Controller
                         ->addColumn('monto_total', function($notas){
                             return $notas->getMontoTotal();
                         })
-                         ->addColumn('action', function($notas){
-                             $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
-                             $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
-                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-     
-                             return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
-                         })->make(true);
-                 }
+                        ->addColumn('action', function($notas){
+                            $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $notas->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
+                            $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+                            
+                            return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                        })->make(true);
+                } else {
+                        return Datatables::of($notas)
+                        ->addColumn('tipo_nota_cred', function($notas){
+                        return $notas->getTipoNotaCreditoIndex();
+                        })
+                        ->addColumn('nro_nota_cred', function($notas){
+                            return $notas->getNroNotaCreditoIndex();
+                        })
+                        ->addColumn('fecha', function($notas){
+                            return $notas->getFechaEmision();
+                        })
+                        ->addColumn('proveedor', function($notas){
+                            return $notas->proveedor->getNombreIndex();
+                        })
+                        ->addColumn('moneda', function($notas){
+                            return $notas->moneda->getDescripcion();
+                        })
+                        ->addColumn('monto_total', function($notas){
+                            return $notas->getMontoTotal();
+                        })
+                        ->addColumn('action', function($notas){
+                            $no_puede_ver = '<a data-toggle="tooltip" data-placement="top"  class="btn btn-primary btn-sm" title="Ver Compra" disabled><i class="fa fa-eye"></i></a> ';
+                            $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
+                            $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
+    
+                            return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                        })->make(true);
+                }
              }
     }
 }
