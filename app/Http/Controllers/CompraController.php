@@ -16,10 +16,10 @@ use App\Articulo;
 use App\DatosDefault;
 use App\Impuesto;
 use App\Cotizacion;
-use App\ExistenciaArticulo;
 use App\CuentaProveedor;
 use App\NotaCreditoComprasCab;
 use App\OrdenPagoFacturas;
+use App\MovimientoArticulo;
 use DB;
 use Response;
 use Illuminate\Support\Collections;
@@ -206,6 +206,17 @@ class CompraController extends Controller
 
                 $articulo_costo->update();
                 //----------------para el costo promedio-----------------------------------
+
+                //Actualizacion de la captura de movimiento de articulos
+                $movimiento = new MovimientoArticulo;
+                $movimiento->setFecha($request['fecha_emision']);   
+                $movimiento->setTipoMovimiento('C');
+                $movimiento->setMovimientoId($cabecera->getId());
+                $movimiento->setSucursalId($cabecera->sucursal->getId());
+                $movimiento->setArticuloId($detalle->articulo->getId());      
+                $movimiento->setCantidad($detalle->getCantidad());             
+
+                $movimiento->save();
 
             }
 
@@ -484,7 +495,7 @@ class CompraController extends Controller
             DB::beginTransaction();
 
             $cabecera = ComprasCab::findOrFail($id);
-            $cuenta = where('comprobante_id', $id)->where('tipo_comprobante', 'F')->firstOrFail();
+            $cuenta = CuentaProveedor::where('comprobante_id', $id)->where('tipo_comprobante', 'F')->firstOrFail();
             $nota_credito = NotaCreditoComprasCab::where('compra_cab_id', $id)->firstOrFail();
             $orden_pago = OrdenPagoFacturas::findOrFail($cabecera->getId());
 
@@ -498,7 +509,7 @@ class CompraController extends Controller
             
             $modalidad_pago = $cabecera->getTipoFactura();
 
-            if (!empty($cuenta ) && $modalidad_pago != 'CO') {                
+            if (!empty($cuenta )) {                
                 $cuenta->delete();
             }
             
@@ -519,6 +530,10 @@ class CompraController extends Controller
                 }
 
             }
+
+            $movimiento_articulo = MovimientoArticulo::where('tipo_movimiento', 'C')
+            ->where('movimiento_id', $id);
+            $movimiento_articulo->delete();
 
             $cabecera->comprasdetalle()->delete();
 

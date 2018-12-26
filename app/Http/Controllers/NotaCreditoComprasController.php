@@ -13,6 +13,7 @@ use App\NotaCreditoComprasDet;
 use App\ExistenciaArticulo;
 use App\Cotizacion;
 use App\Moneda;
+use App\MovimientoArticulo;
 use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;
@@ -151,6 +152,17 @@ class NotaCreditoComprasController extends Controller
                     $existencia->actualizaStock('-', $detalle->getCantidad());
                     $existencia->update();
                 }
+
+                //Actualizacion de la captura de movimiento de articulos
+                $movimiento = new MovimientoArticulo;
+                $movimiento->setFecha($request['fecha_emision']);   
+                $movimiento->setTipoMovimiento('D');
+                $movimiento->setMovimientoId($cabecera->getId());
+                $movimiento->setSucursalId($cabecera->sucursal->getId());
+                $movimiento->setArticuloId($detalle->articulo->getId());      
+                $movimiento->setCantidad($detalle->getCantidad());             
+
+                $movimiento->save();
             }
     
             /*if (count($array_pedidos) > 0) {
@@ -243,7 +255,56 @@ class NotaCreditoComprasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+
+            DB::beginTransaction();
+
+            $cabecera = NotaCreditoComprasCab::findOrFail($id);
+            $cuenta = CuentaProveedor::where('comprobante_id', $id)->where('tipo_comprobante', 'N')->firstOrFail();
+            
+            if (!empty($cuenta )) {                
+                $cuenta->delete();
+            }
+            
+            foreach ($cabecera->pedidosDetalle() as $detalle) {
+
+                //controlamos existencia
+                if ($detalle->articulo->getControlExistencia() == true) {
+                    //Actualizacion de existencia
+                    $existencia = ExistenciaArticulo::where('articulo_id', $detalle->articulo->getId())
+                        ->where('sucursal_id', $sucursal->getId())->first();
+
+                    //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
+                    if (!empty($existencia)){
+                        $existencia->actualizaStock('+', $detalle->getCantidad());
+                        $existencia->update();                        
+                    }   
+
+                }
+
+            }
+
+            $movimiento_articulo = MovimientoArticulo::where('tipo_movimiento', 'D')
+            ->where('movimiento_id', $id);
+            $movimiento_articulo->delete();
+
+            $cabecera->comprasdetalle()->delete();
+
+            $cabecera->delete();
+
+            DB::commit();
+            
+        }
+        catch (\Exception $e) {
+            //Deshacemos la transaccion
+            DB::rollback();
+
+            //volvemos para atras y retornamos un mensaje de error
+            //return back()->withErrors('Ha ocurrido un error. Favor verificar')->withInput();
+            return back()->withErrors( $e->getMessage() .' - '.$e->getFile(). ' - '.$e->getLine() )->withInput();
+            //return back()->withErrors( $e->getTraceAsString() )->withInput();
+
+        
     }
 
     public function apiNotaCreditoCompras(){

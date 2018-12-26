@@ -114,40 +114,40 @@ class AjusteInventarioController extends Controller
 
              //-----------------------------------------------------------
              //controlamos existencia
- if ($ajuste_inventario_det->articulo->getControlExistencia() == true) {
-    //Actualizacion de existencia
-    $existencia = ExistenciaArticulo::where('articulo_id', $ajuste_inventario_det->articulo->getId())
-        ->where('sucursal_id', $request['sucursal_id'])->first();
+                if ($ajuste_inventario_det->articulo->getControlExistencia() == true) {
+                    //Actualizacion de existencia
+                    $existencia = ExistenciaArticulo::where('articulo_id', $ajuste_inventario_det->articulo->getId())
+                        ->where('sucursal_id', $request['sucursal_id'])->first();
 
-    //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
-    if (!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='+'){
-        $existencia->actualizaStock('+', $ajuste_inventario_det->getCantidad());
-        $existencia->update();   
-    }elseif(!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='-') {
-        $existencia->actualizaStock('-', $ajuste_inventario_det->getCantidad());
-        $existencia->update();                     
-    } else {
-        $existencia_nuevo = new ExistenciaArticulo();
+                    //si aún no existe el artícuo en la tabla de existencia, insertamos un nuevo registro 
+                    if (!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='+'){
+                        $existencia->actualizaStock('+', $ajuste_inventario_det->getCantidad());
+                        $existencia->update();   
+                    }elseif(!empty($existencia) &&  $ajuste_inventario_cab->conceptoAjuste->getSignoOperacion()=='-') {
+                        $existencia->actualizaStock('-', $ajuste_inventario_det->getCantidad());
+                        $existencia->update();                     
+                    } else {
+                        $existencia_nuevo = new ExistenciaArticulo();
 
-        $existencia_nuevo->setArticuloId($ajuste_inventario_det->articulo->getId());
-        $existencia_nuevo->setSucursalId($request['sucursal_id']);
-        $existencia_nuevo->setCantidad($ajuste_inventario_det->getCantidad());
-        $existencia_nuevo->setFechaUltimoInventario($request['fecha_emision']);
+                        $existencia_nuevo->setArticuloId($ajuste_inventario_det->articulo->getId());
+                        $existencia_nuevo->setSucursalId($request['sucursal_id']);
+                        $existencia_nuevo->setCantidad($ajuste_inventario_det->getCantidad());
+                        $existencia_nuevo->setFechaUltimoInventario($request['fecha_emision']);
 
-        $existencia_nuevo->save();  
-    }   
+                        $existencia_nuevo->save();  
+                    }   
 
-}
-    //Actualizacion de la captura de movimiento de articulos
-    $movimiento = new MovimientoArticulo;
-    $movimiento->setFecha($request['fecha_emision']);   
-    $movimiento->setTipoMovimiento('A');
-    $movimiento->setMovimientoId($ajuste_inventario_cab->getId());
-    $movimiento->setSucursalId($ajuste_inventario_cab->sucursal->getId());
-    $movimiento->setArticuloId($ajuste_inventario_det->articulo->getId());      
-    $movimiento->setCantidad($ajuste_inventario_det->getCantidad());             
+                }
+                //Actualizacion de la captura de movimiento de articulos
+                $movimiento = new MovimientoArticulo;
+                $movimiento->setFecha($request['fecha_emision']);   
+                $movimiento->setTipoMovimiento('A');
+                $movimiento->setMovimientoId($ajuste_inventario_cab->getId());
+                $movimiento->setSucursalId($ajuste_inventario_cab->sucursal->getId());
+                $movimiento->setArticuloId($ajuste_inventario_det->articulo->getId());      
+                $movimiento->setCantidad($ajuste_inventario_det->getCantidad());             
 
-    $movimiento->save();
+                $movimiento->save();
             }
             DB::commit();
         } catch (\Exception $e) {
