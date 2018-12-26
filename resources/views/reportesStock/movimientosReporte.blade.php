@@ -14,7 +14,6 @@
             <div class="panel-body">
                 <div class="form-group">
                     <strong>Periodo:</strong> {{$fecha_inicial}} - {{$fecha_final}}<br>
-                    <strong>Articulo:</strong> {{$articulo}}<br>
                     <strong>Sucursal:</strong> {{$sucursal}}<br>
                 </div>
                 <table class="table table-bordered">
@@ -28,13 +27,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                    @foreach($movimientos as $movimiento)
                         <tr>
-                            <td class="text-center"><font size="1"></font></td>
-                            <td><font size="1"></font></td>
-                            <td><font size="1"></font></td>
-                            <td><font size="1"></font></td>
-                            <td class="text-right"><font size="1"></font></td>
+                            <td class="text-center"><font size="1">{{$movimiento->fecha_movimiento}}</font></td>
+                            <td><font size="1"></font>{{$movimiento->tipo_movimiento}}</td>
+                            <td><font size="1"></font>{{$movimiento->movimiento_id}}</td>
+                            <td><font size="1"></font>{{$movimiento->descripcion}}</td>
+                            <td class="text-right"><font size="1"></font>{{$movimiento->cantidad}}</td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
