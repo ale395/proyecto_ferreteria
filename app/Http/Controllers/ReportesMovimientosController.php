@@ -34,14 +34,20 @@ class ReportesMovimientosController extends Controller
 
         $fecha_inicial = $request['fecha_inicial'];
         $fecha_final = $request['fecha_final'];
-
-        $sucursal_id = $request['sucursal_id'];     
-        $sucursal = Sucursal::findOrFail($sucursal_id);
+        $sucursal = null;     
+        $articulo  = null;   
+        //dd($articulo_id);  
+       // $sucursal = Sucursal::findOrFail($sucursal_id);
         $movimientos = DB::table('movimientos_articulos')
         ->join('articulos', 'movimientos_articulos.articulo_id', '=', 'articulos.id')
-
-            ->where('movimientos_articulos.sucursal_id', $sucursal_id);
-           // ->where('movimientos_articulos.articulo_id', $articulo_id);
+        ->join('sucursales', 'movimientos_articulos.sucursal_id', '=', 'sucursales.id')
+        ->select('movimientos_articulos.fecha_movimiento', 'movimientos_articulos.movimiento_id', 
+        'articulos.descripcion','movimientos_articulos.cantidad',
+        DB::raw("case when tipo_movimiento = 'C' THEN 'Compra' ELSE 'Inventario' END AS tipo_movimiento"))
+    // ->where('movimientos_articulos.sucursal_id', $sucursal_id)
+      //  ->where('movimientos_articulos.articulo_id', $articulo_id);
+      ->where('movimientos_articulos.fecha_movimiento', '>=', $fecha_inicial)
+      ->where('movimientos_articulos.fecha_movimiento', '<=', $fecha_final);
 
         if ($request->has('sucursal_id')) {
             $movimientos = $movimientos->whereIn('movimientos_articulos.sucursal_id', $request['sucursal_id']);
@@ -55,7 +61,17 @@ class ReportesMovimientosController extends Controller
             $sucursal = 'Todas';
         }
         
-       
+        if ($request->has('articulo_id')) {
+            $movimientos = $movimientos->whereIn('movimientos_articulos.articulo_id', $request['articulo_id']);
+            if (count($request['articulo_id']) > 1) {
+                $articulo = 'Multiple seleccion';
+            } else {
+                $articulo = Articulo::findOrFail($request['articulo_id'][0]);
+                $articulo = $articulo->getDescripcion();
+            }
+        } else {
+            $articulo = 'Todos';
+        }
            $movimientos = $movimientos->get();
     	$pdf = PDF::loadView('reportesStock.movimientosReporte', compact('movimientos','fecha_inicial', 'fecha_final','articulo','sucursal'))->setPaper('a4', 'landscape');
 

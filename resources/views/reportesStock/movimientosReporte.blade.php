@@ -14,6 +14,7 @@
             <div class="panel-body">
                 <div class="form-group">
                     <strong>Periodo:</strong> {{$fecha_inicial}} - {{$fecha_final}}<br>
+                    <strong>Articulo:</strong> {{$articulo}}<br>
                     <strong>Sucursal:</strong> {{$sucursal}}<br>
                 </div>
                 <table class="table table-bordered">

@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <label for="articulo_id" class="col-md-2 control-label">Articulo</label>
                         <div class="col-md-7">
-                            <select id="select2-articulos" name="cliente_id[]" class="form-control" style="width: 100%">
+                            <select id="select2-articulos" name="articulo_id[]" class="form-control" style="width: 100%">
                             </select>
                         </div>
                     </div>
