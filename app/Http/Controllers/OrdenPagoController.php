@@ -176,7 +176,7 @@ class OrdenPagoController extends Controller
 
                 //var_dump($detalle);
 
-                $detalle->save();
+                $detalle_che->save();
 
             }
 

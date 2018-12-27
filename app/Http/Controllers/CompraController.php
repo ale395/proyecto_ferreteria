@@ -20,6 +20,7 @@ use App\CuentaProveedor;
 use App\NotaCreditoComprasCab;
 use App\OrdenPagoFacturas;
 use App\MovimientoArticulo;
+use App\ExistenciaArticulo;
 use DB;
 use Response;
 use Illuminate\Support\Collections;
@@ -240,7 +241,7 @@ class CompraController extends Controller
                 }
             }
   
-            if ($modalidad_pago != 'CON'){
+            if ($modalidad_pago != 'CO'){
                 //Actualizacion de saldo proveedor
                 $cuenta = new CuentaProveedor;
                 $cuenta->setTipoComprobante('F');
@@ -448,7 +449,7 @@ class CompraController extends Controller
             }
             */
 
-            if ($modalidad_pago != 'CON' && empty($modalidad_pago)){
+            if ($modalidad_pago != 'CO'){
                 //Actualizacion de saldo proveedor
                 $cuenta = new CuentaProveedor;
                 $cuenta->setTipoComprobante('F');

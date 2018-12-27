@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 
-class ReportesCuentasPorCobrarController extends Controller
+class ReportesCuentasPorPagarController extends Controller
 {
     public function viewExtractoProveedor(){
     	$fecha_actual = date("d/m/Y");;
-    	return view('reportescuentasporpagar.extractoproveedorfiltros.blade', compact('fecha_actual'));
+    	return view('reportescuentasporpagar.extractoproveedorfiltros', compact('fecha_actual'));
     }
 
     public function verExtractoProveedor(Request $request){
