@@ -9,13 +9,15 @@ $factory->define(App\Cliente::class, function (Faker $faker) {
 	        'tipo_persona' => 'F',
 	        'nombre' => $faker->firstName,
 	        'apellido' => $faker->lastName,
-	        'nro_cedula' => $faker->unique()->numberBetween($min = 800000, $max = 7000000)
+	        'nro_cedula' => $faker->unique()->numberBetween($min = 800000, $max = 7000000),
+	        'limite_credito' => 900000
 	    ];
     } elseif ($tipo_persona == 'J') {
     	return [
 	        'tipo_persona' => 'J',
 	        'razon_social' => $faker->name,
-	        'ruc' => $faker->unique()->numberBetween($min = 800000, $max = 7000000)
+	        'ruc' => $faker->unique()->numberBetween($min = 800000, $max = 7000000),
+	        'limite_credito' => 900000
 	    ];
     }
 });

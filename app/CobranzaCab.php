@@ -8,6 +8,10 @@ class CobranzaCab extends Model
 {
     protected $table = 'cobranza_cab';
 
+    public function getId(){
+        return $this->id;
+    }
+
     public function getFecha(){
     	return $this->fecha;
     }
@@ -70,6 +74,10 @@ class CobranzaCab extends Model
 
     public function getMontoTotal(){
     	return $this->monto_total;
+    }
+
+    public function setVuelto($vuelto){
+        $this->vuelto = $vuelto;
     }
 
     public function sucursal()

@@ -24,6 +24,7 @@ class CreateCobranzaCabsTable extends Migration
             $table->char('estado', 1)->default('R');
             $table->string('comentario')->nullable();
             $table->decimal('monto_total', 12)->default(0);
+            $table->decimal('vuelto', 12)->default(0);
             $table->timestamps();
 
             $table->foreign('sucursal_id')->references('id')->on('sucursales');

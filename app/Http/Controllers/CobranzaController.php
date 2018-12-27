@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\HabilitacionCaja;
+use Validator;
+use App\Banco;
 use App\Moneda;
 use App\FormaPago;
-use App\Banco;
+use App\CobranzaCab;
+use App\CobranzaDet;
+use App\CobranzaComp;
+use App\CuentaCliente;
+use App\HabilitacionCaja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,7 +57,91 @@ class CobranzaController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        //return $request;
+        $rules = [
+            'habilitacion_id' => 'required',
+            'fecha' => 'required|date_format:d/m/Y',
+            'sucursal_id' => 'required',
+            'cliente_id' => 'required',
+            'moneda_id' => 'required',
+            'tab_comp_id' => 'required|array|min:1',
+            'tab_forma_pago_id' => 'required|array|min:1',
+        ];
+
+        $mensajes = [
+            'tab_comp_id.required' => 'No se puede realizar la cobranza sin cargar algun comprobante a cobrar',
+            'tab_forma_pago_id.required' => 'No se puede realizar la cobranza sin cargar la forma de pago!',
+            'tab_comp_id.min' => 'Como mínimo se debe cargar :min comprobante a cobrar!',
+            'tab_forma_pago_id.min' => 'Como mínimo se debe cargar :min forma de pago!',
+            'cliente_id.required' => 'Debe seleccionar un cliente!',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $mensajes)->validate();
+
+        $total_comp = 0;
+        $total_cobrado = 0;
+
+        $cabecera = new CobranzaCab;
+        $cabecera->setHabilitacionId($request['habilitacion_id']);
+        $cabecera->setSucursalId($request['sucursal_id']);
+        $cabecera->setClienteId($request['cliente_id']);
+        $cabecera->setMonedaId($request['moneda_id']);
+        $cabecera->setValorCambio(1);
+        $cabecera->setFecha($request['fecha']);
+        $cabecera->setComentario($request['comentario']);
+        $cabecera->save();
+
+        for ($i=0; $i < collect($request['tab_comp_id'])->count(); $i++){
+            $comprobante = new CobranzaComp;
+            $comprobante->setCobranzaCabId($cabecera->getId());
+            $comprobante->setComprobanteId($request['tab_comp_id'][$i]);
+            $comprobante->setMonto($request['tab_comp_monto'][$i]);
+            $comprobante->save();
+            $total_comp = $total_comp + $comprobante->getMonto();
+
+            //Resta el saldo de la factura cobrada
+            $cuenta_cliente = CuentaCliente::where('tipo_comprobante', 'F')
+                ->where('cliente_id', $request['cliente_id'])
+                ->where('comprobante_id', $request['tab_comp_id'][$i])->first();
+            $cuenta_cliente->setMontoSaldo($cuenta_cliente->getMontoSaldo() - $request['tab_comp_monto'][$i]);
+            $cuenta_cliente->save();
+
+            if ($cuenta_cliente->getMontoSaldo() == 0) {
+                $factura = $cuenta_cliente->factura;
+                $factura->setEstado('C');//Cobrado
+                $factura->update();
+            }
+        }
+
+        for ($i=0; $i < collect($request['tab_forma_pago_id'])->count(); $i++){
+            $detalle = new CobranzaDet;
+            $detalle->setCobranzaCabId($cabecera->getId());
+            $forma_pago = FormaPago::where('codigo', $request['tab_forma_pago_id'][$i])->first();
+            $detalle->setFormaPagoId($forma_pago->getId());
+            $detalle->setMonto($request['tab_pago_monto'][$i]);
+            if ($request['tab_forma_pago_id'][$i] != 'EFE') {
+                $detalle->setBancoId($request['tab_banco_id'][$i]);
+                $detalle->setFechaEmision($request['tab_fecha_emision'][$i]);
+                $detalle->setNroValor($request['tab_nro_valor'][$i]);
+            }
+            $detalle->save();
+
+            $total_cobrado = $total_cobrado + $detalle->getMonto();
+        }
+
+        $cuenta = new CuentaCliente;
+        $cuenta->setTipoComprobante('C');
+        $cuenta->setClienteId($request['cliente_id']);
+        $cuenta->setComprobanteId($cabecera->getId());
+        $cuenta->setMontoComprobante($total_comp);
+        $cuenta->setMontoSaldo(0);
+        $cuenta->save();
+
+        $cabecera->setMontoTotal($total_comp);
+        $cabecera->setVuelto($total_cobrado - $total_comp);
+        $cabecera->update();
+
+        return 'Ya se guardó';//redirect()->route('cobranza.show', ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
     }
 
     /**

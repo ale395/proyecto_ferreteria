@@ -38,6 +38,7 @@ class ClienteTableSeeder extends Seeder
         $cliente->telefono_celular = 973582620;
         $cliente->direccion = 'Manuel Ortiz Guerrero 1024';
         $cliente->correo_electronico = 'alexis.fernandez.rc@gmail.com';
+        $cliente->limite_credito = 900000;
         $cliente->zona_id = $zona->id;
         $cliente->tipo_cliente_id = $tipo_cliente->id;
         $cliente->save();

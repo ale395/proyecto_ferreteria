@@ -46,6 +46,10 @@ class CuentaCliente extends Model
     	return $this->belongsTo('App\NotaCreditoVentaCab', 'comprobante_id');
     }
 
+    public function cobranza(){
+        return $this->belongsTo('App\CobranzaCab', 'comprobante_id');
+    }
+
     public function cliente(){
         return $this->belongsTo('App\Cliente', 'cliente_id');
     }

@@ -38,6 +38,10 @@
                     <input name="_method" type="hidden" value="POST">
                     <input type="hidden" value="{{csrf_token()}}" name="_token" />
                     <input type="hidden" id="id" name="id">
+                    <input type="hidden" id="habilitacion_id" name="habilitacion_id" value="
+                    {{$habilitacion->getId()}}">
+                    <input type="hidden" id="sucursal_id" name="sucursal_id" value="
+                    {{Auth::user()->empleado->sucursalDefault->getId()}}">
                     <div class="form-group">
                         <label for="fecha" class="col-md-1 control-label">Fecha *</label>
                         <div class="col-md-2">
@@ -57,7 +61,7 @@
                     <div class="form-group">
                         <label for="cliente_id" class="col-md-1 control-label">Cliente *</label>
                         <div class="col-md-5">
-                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%"></select>
+                            <select id="select2-clientes" name="cliente_id" class="form-control" style="width: 100%"></select>
                         </div>
                         <div class="btn-group col-md-3" role="group">
                             <a id="btn-contado" onclick="addFormContado()" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Seleccionar Facturas Contado">Contado <i class="fa fa-search" aria-hidden="true"></i></a>

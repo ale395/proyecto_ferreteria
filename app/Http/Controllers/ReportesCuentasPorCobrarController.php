@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class ReportesCuentasPorCobrarController extends Controller
 {
     public function viewExtractoCliente(){
-    	$fecha_actual = date("d/m/Y");;
+    	$fecha_actual = date("d/m/Y");
     	return view('reportesCuentasPorCobrar.extractoClienteFiltros', compact('fecha_actual'));
     }
 
@@ -92,6 +92,19 @@ class ReportesCuentasPorCobrarController extends Controller
             ->union($facturas);
         $registros->orderBy('created_at');
 
+        $registros = DB::table('cuenta_clientes')
+            ->join('cobranza_cab', 'cuenta_clientes.comprobante_id', '=', 'cobranza_cab.id')
+            ->select(DB::raw("TO_CHAR(fecha, 'dd/mm/yyyy') as fecha_emision"), 
+                DB::raw("'Cobranza' as descripcion"), 
+                DB::raw("'N° '||cobranza_cab.id as nro_comp"), 
+                DB::raw("TO_CHAR(ROUND(cobranza_cab.monto_total), '999G999G999') as credito"), 
+                DB::raw("'0' as debito"), 'cuenta_clientes.created_at')
+            ->where('cuenta_clientes.tipo_comprobante', 'C')
+            ->where('cuenta_clientes.cliente_id', $cliente_id)
+            ->where('cobranza_cab.fecha', '<=', $fecha_final)
+            ->where('cobranza_cab.fecha', '>=', $fecha_inicial)
+            ->union($registros);
+
         $total_debito = DB::table('cuenta_clientes')
         	->join('facturas_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'facturas_ventas_cab.id')
         	->where('cuenta_clientes.tipo_comprobante', 'F')
@@ -110,6 +123,15 @@ class ReportesCuentasPorCobrarController extends Controller
         	->where('nota_credito_ventas_cab.estado', '<>', 'A')
         	->sum('nota_credito_ventas_cab.monto_total');
 
+        $total_cobranza = DB::table('cuenta_clientes')
+            ->join('cobranza_cab', 'cuenta_clientes.comprobante_id', '=', 'cobranza_cab.id')
+            ->where('cuenta_clientes.tipo_comprobante', 'C')
+            ->where('cobranza_cab.cliente_id', $cliente_id)
+            ->where('cobranza_cab.fecha', '>=', $fecha_inicial)
+            ->where('cobranza_cab.fecha', '<=', $fecha_final)
+            ->where('cobranza_cab.estado', '<>', 'A')
+            ->sum('cobranza_cab.monto_total');
+
         $facturas_saldo_ante = DB::table('cuenta_clientes')
             ->join('facturas_ventas_cab', 'cuenta_clientes.comprobante_id', '=', 'facturas_ventas_cab.id')
             ->where('cuenta_clientes.tipo_comprobante', 'F')
@@ -126,10 +148,18 @@ class ReportesCuentasPorCobrarController extends Controller
             ->where('nota_credito_ventas_cab.estado', '<>', 'A')
             ->sum('nota_credito_ventas_cab.monto_total');
 
-        $saldo_anterior = $facturas_saldo_ante - $notas_credito_saldo_ante;
+        $cobranza_saldo_ante = DB::table('cuenta_clientes')
+            ->join('cobranza_cab', 'cuenta_clientes.comprobante_id', '=', 'cobranza_cab.id')
+            ->where('cuenta_clientes.tipo_comprobante', 'N')
+            ->where('cuenta_clientes.cliente_id', $cliente_id)
+            ->where('cobranza_cab.fecha', '<', $fecha_inicial)
+            ->where('cobranza_cab.estado', '<>', 'A')
+            ->sum('cobranza_cab.monto_total');
+
+        $saldo_anterior = $facturas_saldo_ante - $notas_credito_saldo_ante - $cobranza_saldo_ante;
         $registros = $registros->get();
-        $saldo = $saldo_anterior + $total_debito - $total_credito;
-        $total_credito = number_format($total_credito, 0, ',', '.');
+        $saldo = $saldo_anterior + $total_debito - $total_credito - $total_cobranza;
+        $total_credito = number_format($total_credito + $total_cobranza, 0, ',', '.');
         $total_debito = number_format($total_debito, 0, ',', '.');
         $saldo = number_format($saldo, 0, ',', '.');
         $saldo_anterior = number_format($saldo_anterior, 0, ',', '.');
