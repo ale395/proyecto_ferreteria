@@ -30,7 +30,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->avatar = '5568434.jpg';
         $empleado->setSucursalActual($sucursal_central->getId());
         $empleado->save();
-        $empleado->tiposEmpleados()->sync($vendedor->id);
+        $empleado->tiposEmpleados()->sync([$vendedor->id, $cajero->id]);
         $empleado->sucursales()->sync([$sucursal_central->id, $sucursal_sanber->id]);
 
         $empleado = new Empleado();
@@ -69,7 +69,7 @@ class EmpleadoTableSeeder extends Seeder
         $empleado->setCorreoElectronico('yani_rsc@hotmail.com');
         $empleado->setSucursalActual($sucursal_central->getId());
         $empleado->save();
-        $empleado->tiposEmpleados()->sync($vendedor->id);
+        $empleado->tiposEmpleados()->sync([$vendedor->id, $cajero->id]);
         $empleado->sucursales()->sync([$sucursal_central->id]);
     }
 }

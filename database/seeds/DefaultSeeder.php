@@ -9,6 +9,7 @@ use App\ConceptoAjuste;
 use App\ClasificacionCliente;
 use App\Cajero;
 use App\User;
+use App\Caja;
 use App\TipoProveedor;
 use App\Proveedor;
 use App\DatosDefault;
@@ -249,6 +250,22 @@ class DefaultSeeder extends Seeder
         $empresa->setCodigoEstablecimiento('001');
         $empresa->setMonedaNacionalId(1);
         $empresa->save();
+
+        //Caja
+        $caja = new Caja;
+        $caja->setNombre('Caja N° 1');
+        $caja->setSucursalId(1);
+        $caja->save();
+
+        $caja = new Caja;
+        $caja->setNombre('Caja N° 2');
+        $caja->setSucursalId(1);
+        $caja->save();
+
+        $caja = new Caja;
+        $caja->setNombre('Caja N° 3');
+        $caja->setSucursalId(1);
+        $caja->save();
 
         //seeder de la forma de pago
 

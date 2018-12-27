@@ -31,4 +31,8 @@ class Caja extends Model
     public function setActivo($activo){
     	$this->activo = $activo;
     }
+
+    public function setSucursalId($sucursal_id){
+        $this->sucursal_id = $sucursal_id;
+    }
 }
