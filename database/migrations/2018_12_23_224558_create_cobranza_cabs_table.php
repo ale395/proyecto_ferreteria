@@ -21,6 +21,7 @@ class CreateCobranzaCabsTable extends Migration
             $table->integer('moneda_id')->unsigned();
             $table->decimal('valor_cambio', 14, 2)->default(1);
             $table->integer('cliente_id')->unsigned();
+            $table->integer('cajero_id')->unsigned();
             $table->char('estado', 1)->default('R');
             $table->string('comentario')->nullable();
             $table->decimal('monto_total', 12)->default(0);

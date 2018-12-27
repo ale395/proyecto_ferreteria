@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Banco;
 use App\Moneda;
+use App\Empresa;
 use App\FormaPago;
 use App\CobranzaCab;
 use App\CobranzaDet;
@@ -12,6 +13,8 @@ use App\CobranzaComp;
 use App\CuentaCliente;
 use App\HabilitacionCaja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
 class CobranzaController extends Controller
@@ -87,6 +90,7 @@ class CobranzaController extends Controller
         $cabecera->setClienteId($request['cliente_id']);
         $cabecera->setMonedaId($request['moneda_id']);
         $cabecera->setValorCambio(1);
+        $cabecera->setCajeroId(Auth::user()->id);
         $cabecera->setFecha($request['fecha']);
         $cabecera->setComentario($request['comentario']);
         $cabecera->save();
@@ -141,7 +145,7 @@ class CobranzaController extends Controller
         $cabecera->setVuelto($total_cobrado - $total_comp);
         $cabecera->update();
 
-        return 'Ya se guardó';//redirect()->route('cobranza.show', ['facturacionVenta' => $cabecera->getId()])->with('status', 'Factura guardada correctamente!');
+        return redirect()->route('cobranza.show', ['cobranza' => $cabecera->getId()])->with('status', 'Cobranza guardada correctamente!');
     }
 
     /**
@@ -152,7 +156,8 @@ class CobranzaController extends Controller
      */
     public function show($id)
     {
-        //
+        $cabecera = CobranzaCab::findOrFail($id);
+        return view('cobranza.show', compact('cabecera'));
     }
 
     /**
@@ -187,5 +192,12 @@ class CobranzaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function impresionCobranza($cobranza_id){
+        $cabecera = CobranzaCab::findOrFail($cobranza_id);
+        $empresa = Empresa::first();
+        $pdf = PDF::loadView('reportesCuentasPorCobrar.impresionCobranza', compact('cabecera', 'empresa'));
+        return $pdf->stream('Cobranza.pdf',array('Attachment'=>1));
     }
 }

@@ -13,7 +13,7 @@ class CobranzaCab extends Model
     }
 
     public function getFecha(){
-    	return $this->fecha;
+    	return date("d-m-Y", strtotime($this->fecha));
     }
 
     public function setFecha($fecha){
@@ -48,6 +48,10 @@ class CobranzaCab extends Model
     	$this->estado = $estado;
     }
 
+    public function setCajeroId($cajero_id){
+        $this->cajero_id = $cajero_id;
+    }
+
     public function getEstadoIndex(){
     	if ($this->estado == 'R') {
     		return 'Realizado';
@@ -80,6 +84,10 @@ class CobranzaCab extends Model
         $this->vuelto = $vuelto;
     }
 
+    public function getVuelto(){
+        return $this->vuelto;
+    }
+
     public function sucursal()
     {
         return $this->belongsTo('App\Sucursal', 'sucursal_id');
@@ -98,5 +106,17 @@ class CobranzaCab extends Model
     public function cliente()
     {
         return $this->belongsTo('App\Cliente', 'cliente_id');
+    }
+
+    public function comprobantes(){
+        return $this->hasMany('App\CobranzaComp', 'cobranza_cab_id');
+    }
+
+    public function pagos(){
+        return $this->hasMany('App\CobranzaDet', 'cobranza_cab_id');
+    }
+
+    public function usuario(){
+        return $this->belongsTo('App\User', 'cajero_id');
     }
 }

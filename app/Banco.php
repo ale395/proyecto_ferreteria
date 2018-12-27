@@ -17,4 +17,8 @@ class Banco extends Model
     public function getNombreSelect(){
             return '('.$this->codigo.') '.$this->nombre;
     }
+
+    public function getNombre(){
+    	return $this->nombre;
+    }
 }

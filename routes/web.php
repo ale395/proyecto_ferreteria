@@ -260,5 +260,6 @@ Route::middleware(['auth'])->group(function() {
 	Route::post('gestionCajas/cerrarCaja', 'GestionCajasController@cerrarCaja')->name('gestionCajas.cerrarCaja.metodo');
 
 	Route::resource('cobranza', 'CobranzaController');
+	Route::get('cobranza/impresion/{cobranza}', 'CobranzaController@impresionCobranza')->name('cobranza.impresion');
 
 });

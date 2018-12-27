@@ -34,4 +34,13 @@ class CobranzaComp extends Model
     public function getMonto(){
     	return $this->monto;
     }
+
+    public function getMontoIndex(){
+        return number_format($this->monto, 0, ',', '.');
+    }
+
+    public function factura()
+    {
+        return $this->belongsTo('App\FacturaVentaCab', 'comp_id');
+    }
 }

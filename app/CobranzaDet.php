@@ -33,7 +33,7 @@ class CobranzaDet extends Model
     }
 
     public function getFechaEmision(){
-    	date("d-m-Y", strtotime($this->fecha_emision));
+    	return date("d-m-Y", strtotime($this->fecha_emision));
     }
 
     public function setMonto($monto){
@@ -42,5 +42,19 @@ class CobranzaDet extends Model
 
     public function getMonto(){
     	return $this->monto;
+    }
+
+    public function getMontoIndex(){
+        return number_format($this->monto, 0, ',', '.');
+    }
+
+    public function formaPago()
+    {
+        return $this->belongsTo('App\FormaPago', 'forma_pago_id');
+    }
+
+    public function banco()
+    {
+        return $this->belongsTo('App\Banco', 'banco_id', 'id');
     }
 }
