@@ -3,10 +3,10 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <form method="post" action="{{action('ReportesCuentasPorCobrarController@verExtractoCliente')}}" class="form-horizontal" data-toggle="validator">
+            <form method="post" action="{{action('ReportesCuentasPorPagarController@verExtractoProveedor')}}" class="form-horizontal" data-toggle="validator">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Extracto de Clientes - Filtros</h4>
+                    <h4>Extracto de Proveedores - Filtros</h4>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
@@ -35,9 +35,9 @@
                     </div>
                     <br>
                     <div class="form-group">
-                        <label for="cliente_id" class="col-md-2 control-label">Cliente*</label>
+                        <label for="proveedor_id" class="col-md-2 control-label">Proveedor*</label>
                         <div class="col-md-7">
-                            <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%">
+                            <select id="select2-proveedores" name="proveedor_id" class="form-control" autofocus style="width: 100%">
                             </select>
                         </div>
                     </div>
@@ -52,12 +52,12 @@
 @endsection
 @section('otros_scripts')
 <script type="text/javascript">
-    $('#select2-clientes').select2({
+    $('#select2-proveedores').select2({
         placeholder: 'Seleccione una opción',
         language: "es",
         minimumInputLength: 4,
         ajax: {
-            url: "{{ route('api.clientes.ventas') }}",
+            url: "{{ route('api.proveedores.buscador') }}",
             delay: 250,
             data: function (params) {
                 var queryParameters = {

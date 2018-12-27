@@ -360,7 +360,7 @@ class OrdenPagoController extends Controller
                             $puede_eliminar = '<a onclick="deleteData('. $compras->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                                 
-                            if ($compras->estado == 'P') {
+                            if ($compras->estado == 'A') {
                                 return $puede_ver.$puede_editar.$puede_eliminar;
                             } else {
                                 return $puede_ver.$no_puede_editar.$no_puede_eliminar;
@@ -390,7 +390,7 @@ class OrdenPagoController extends Controller
                             $puede_eliminar = '<a onclick="deleteData('. $compras->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
  
-                            if ($compras->estado == 'P') {
+                            if ($compras->estado == 'A') {
                                 return $no_puede_ver.$puede_editar.$puede_eliminar;
                             } else {
                                 return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
@@ -424,7 +424,7 @@ class OrdenPagoController extends Controller
                             $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
 
-                            if ($compras->estado == 'P') {
+                            if ($compras->estado == 'A') {
                                 return $puede_ver.$puede_editar.$no_puede_eliminar;
                             } else {
                                 return $puede_ver.$no_puede_editar.$no_puede_eliminar;
@@ -453,7 +453,7 @@ class OrdenPagoController extends Controller
                             $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
 
-                            if ($compras->estado == 'P') {
+                            if ($compras->estado == 'A') {
                                 return $no_puede_ver.$puede_editar.$no_puede_eliminar;
                             } else {
                                 return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
@@ -489,7 +489,7 @@ class OrdenPagoController extends Controller
                         $puede_eliminar = '<a onclick="deleteData('. $compras->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
                         $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
 
-                        if ($compras->estado == 'P') {
+                        if ($compras->estado == 'A') {
                             return $puede_ver.$puede_editar.$puede_eliminar;
                         } else {
                             return $puede_ver.$no_puede_editar.$no_puede_eliminar;
@@ -519,7 +519,7 @@ class OrdenPagoController extends Controller
                         $puede_eliminar = '<a onclick="deleteData('. $compras->id .')" class="btn btn-danger btn-sm" title="Eliminar"><i class="fa fa-trash-o"></i></a>';
                         $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
 
-                        if ($compras->estado == 'P') {
+                        if ($compras->estado == 'A') {
                             return $no_puede_ver.$puede_editar.$puede_eliminar;
                         } else {
                             return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
