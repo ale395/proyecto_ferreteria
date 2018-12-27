@@ -53,7 +53,7 @@ class GestionCajasController extends Controller
         $habilitacion->setSaldoInicial(str_replace('.', '', $request['saldo_inicial']));
         $habilitacion->save();
 
-        return redirect('')->back()->with('status', 'Caja habilitada correctamente! N° de habilitacion: '.$habilitacion->getId());
+        return redirect()->back()->with('status', 'Caja habilitada correctamente! N° de habilitacion: '.$habilitacion->getId());
     }
 
     public function cerrarCajaView(){

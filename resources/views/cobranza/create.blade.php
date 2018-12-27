@@ -365,7 +365,6 @@
         var datos = tablePedidos.rows().data();
         if (monto_total > 0) {
             for (i = 0; i < datos.length; i++) {
-                //console.log(datos[i]);
                 datos_monto = datos[i].monto_total.replace(".", "");
                 if (Number(saldo) > Number(datos_monto)) {
                     saldo = Number(saldo) - Number(datos_monto);
@@ -384,6 +383,7 @@
                     ]).draw( false );
                 }
             }
+            saldo_pago = monto_total;
             $('#modal-cuenta-credito').modal('hide');
             $("#btn-contado").attr("disabled", true);
             $("#btn-credito").attr("disabled", true);
@@ -473,6 +473,7 @@
                 $("#select2-bancos").prop('disabled', false);
                 $("#fecha_emision").prop('disabled', false);
                 $("#nume_valo").prop('disabled', false);
+                $("#importe").val(saldo_pago).change();
                 $("#select2-bancos").focus();
                 $("#btn-add-pago").attr("disabled", false);
             }
@@ -481,11 +482,22 @@
         }
     });
 
+    $("#select2-bancos").change(function (e) {
+        var valor = $(this).val();
+        if (valor != '') {
+            var fecha = new Date().format('d/m/Y');
+            $("#fecha_emision").val(fecha);
+        }
+    });
+
     function agregarPago(){
         var formaPago = $('#select2-pagos').val();
         var formaPagoTexto = $('#select2-pagos').select2('data')[0].text;
         var importe = $('#importe').val();
-        if (Number(saldo_pago) == 0) {
+        var bancoTexto = $('#select2-bancos').select2('data')[0].text;
+        var nro_valor = $('#nume_valo').val();
+        var fecha_emision = $('#fecha_emision').val();
+        /*if (Number(saldo_pago) == 0) {
             var obj = $.alert({
                     title: 'Atención',
                     content: 'El total en formas de pago no puede superar al total de comprobantes seleccionados!',
@@ -497,9 +509,52 @@
                 setTimeout(function(){
                     obj.close();
                 },3000);
-        } else {
+        } else {*/
             if (formaPago == 'EFE') {
                 if (importe.length != 0) {
+                    /*if (Number(importe) > Number(saldo_pago)) {
+                        var obj = $.alert({
+                            title: 'Atención',
+                            content: 'El total en formas de pago no puede superar al total de comprobantes seleccionados!',
+                            icon: 'fa fa-exclamation-triangle',
+                            type: 'orange',
+                            backgroundDismiss: true,
+                            theme: 'modern',
+                        });
+                        setTimeout(function(){
+                            obj.close();
+                        },3000); 
+                    } else {*/
+                        tabla_det.row.add([
+                            formaPagoTexto,
+                            null,
+                            null,
+                            null,
+                            $.number(importe, 0, ',', '.')
+                        ]).draw( false );
+                        saldo_pago = Number(saldo_pago) - Number(importe.replace(".", ""));
+                        $('#importe').val("").change();
+                        $('#fecha_emision').val('');
+                        $('#nume_valo').val("").change();
+                        $('#select2-pagos').val(null).trigger('change');
+                        $('#select2-bancos').val(null).trigger('change');
+                        $("#btn-add-pago").attr("disabled", true);
+                    //}
+                } else {
+                    var obj = $.alert({
+                        title: 'Atención',
+                        content: 'Debe ingresar el monto del pago!',
+                        icon: 'fa fa-exclamation-triangle',
+                        type: 'orange',
+                        backgroundDismiss: true,
+                        theme: 'modern',
+                    });
+                    setTimeout(function(){
+                        obj.close();
+                    },3000); 
+                }
+            } else {
+                if (importe.length != 0 && bancoTexto.length != 0 && fecha_emision.length != 0 && nro_valor.length != 0) {
                     if (Number(importe) > Number(saldo_pago)) {
                         var obj = $.alert({
                             title: 'Atención',
@@ -515,17 +570,24 @@
                     } else {
                         tabla_det.row.add([
                             formaPagoTexto,
-                            null,
-                            null,
-                            null,
+                            bancoTexto,
+                            fecha_emision,
+                            nro_valor,
                             $.number(importe, 0, ',', '.')
                         ]).draw( false );
                         saldo_pago = Number(saldo_pago) - Number(importe.replace(".", ""));
+
+                        $('#importe').val(null).change();
+                        $('#fecha_emision').val("").change();
+                        $('#nume_valo').val("").change();
+                        $('#select2-pagos').val(null).trigger('change');
+                        $('#select2-bancos').val(null).trigger('change');
+                        $("#btn-add-pago").attr("disabled", true);
                     }
                 } else {
                     var obj = $.alert({
                         title: 'Atención',
-                        content: 'Debe ingresar el monto del pago!',
+                        content: 'Debe ingresar el banco, n° de cheque o tarjeta, fecha de emisión e importe para cargar el pago!',
                         icon: 'fa fa-exclamation-triangle',
                         type: 'orange',
                         backgroundDismiss: true,
@@ -535,12 +597,8 @@
                         obj.close();
                     },3000); 
                 }
-            } else {
-
             }
-        }
-        $('#importe').val("").change();
-        $('#select2-pagos').val(null).trigger('change');
+        //}
     }
 </script>
 @endsection

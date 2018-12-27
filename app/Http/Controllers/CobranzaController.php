@@ -37,8 +37,8 @@ class CobranzaController extends Controller
         $pagos = FormaPago::all();
         $bancos = Banco::all();
 
-        if (empty('habilitacion')) {
-            return redirect()->back();
+        if (count($habilitacion) == 0) {
+            return redirect('/gestionCajas/habilitarCaja')->with('status', 'Debe habilitar una caja para poder realizar cobranzas!');
         }
 
         return view('cobranza.create', compact('fecha_actual', 'habilitacion', 'moneda', 'valor_cabmio', 'pagos', 'bancos'));
