@@ -16,8 +16,9 @@ class CreateCobranzaCompsTable extends Migration
         Schema::create('cobranza_comp', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cobranza_cab_id')->unsigned();
-            $table->char('tipo_comp', 2);
-            $table->integer('comp_im')->unsigned();
+            //$table->char('tipo_comp', 2);
+            $table->integer('comp_id')->unsigned();
+            $table->decimal('monto', 12)->default(0);
             $table->timestamps();
         });
     }

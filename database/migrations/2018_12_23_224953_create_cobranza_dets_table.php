@@ -17,9 +17,10 @@ class CreateCobranzaDetsTable extends Migration
             $table->increments('id');
             $table->integer('cobranza_cab_id')->unsigned();
             $table->integer('forma_pago_id')->unsigned();
+            $table->integer('banco_id')->unsigned();
             $table->string('numero_valor')->nullable();
             $table->date('fecha_emision')->nullable();
-            $table->date('fecha_vencimiento')->nullable();
+            //$table->date('fecha_vencimiento')->nullable();
             $table->decimal('monto', 12)->default(0);
             $table->timestamps();
         });
