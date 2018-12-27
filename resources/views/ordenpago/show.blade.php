@@ -49,7 +49,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6"><strong>TOTAL</strong></td>
+                            <td colspan="2"><strong>TOTAL</strong></td>
                             <td class="text-right"><strong>{{$orden_pago->monto_total}}</strong></td>
                         </tr>
                     </tfoot>
