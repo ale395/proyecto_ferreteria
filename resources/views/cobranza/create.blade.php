@@ -59,9 +59,13 @@
                         <div class="col-md-5">
                             <select id="select2-clientes" name="cliente_id" class="form-control" autofocus style="width: 100%"></select>
                         </div>
-                        <div class="btn-group col-md-4" role="group">
-                            <a id="btn-contado" onclick="addFormContado()" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Seleccionar Facturas Contado">Cuenta Contado <i class="fa fa-search" aria-hidden="true"></i></a>
-                            <a id="btn-credito" onclick="addFormCredito()" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Seleccionar Facturas Crédito">Cuenta Crédito <i class="fa fa-search" aria-hidden="true"></i></a>
+                        <div class="btn-group col-md-3" role="group">
+                            <a id="btn-contado" onclick="addFormContado()" class="btn btn-warning" data-toggle="tooltip" data-placement="top" title="Seleccionar Facturas Contado">Contado <i class="fa fa-search" aria-hidden="true"></i></a>
+                            <a id="btn-credito" onclick="addFormCredito()" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Seleccionar Facturas Crédito">Crédito <i class="fa fa-search" aria-hidden="true"></i></a>
+                        </div>
+                        <label for="vuelto" class="col-md-1 control-label">Vuelto</label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control" id="vuelto" name="vuelto" readonly>
                         </div>
                     </div>
                     <input type="hidden" name="moneda_id" value="{{$moneda->getId()}}">
@@ -86,6 +90,24 @@
                         </tfoot>
                     </table>
                     <br>
+                    <table id="tab-comp-hidden" class="hidden">
+                        <thead>
+                            <tr>
+                                <th>Comp ID</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($errors->any())
+                                @for ($i=0; $i < collect(old('tab_comp_id'))->count(); $i++)
+                                    <tr>
+                                        <td><input type="text" id="tab_comp_id" name="tab_comp_id[]" value="{{old('tab_comp_id.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_comp_monto[]" value="{{old('tab_comp_monto.'.$i)}}"></td>
+                                    </tr>
+                                @endfor
+                            @endif
+                        </tbody>
+                    </table>
                     <div class="form-group">
                         <label for="forma_pago" class="col-md-1 control-label">Pago</label>
                         <div class="col-md-2">
@@ -141,6 +163,30 @@
                                 <th class="total">0</th>
                             </tr>
                         </tfoot>
+                    </table>
+                    <table id="tab-pago-hidden" class="hidden">
+                        <thead>
+                            <tr>
+                                <th>Forma pago ID</th>
+                                <th>Banco id</th>
+                                <th>Fecha Emision</th>
+                                <th>N° valor</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($errors->any())
+                                @for ($i=0; $i < collect(old('tab_forma_pago_id'))->count(); $i++)
+                                    <tr>
+                                        <td><input type="text" id="tab_forma_pago_id" name="tab_forma_pago_id[]" value="{{old('tab_forma_pago_id.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_banco_id[]" value="{{old('tab_banco_id.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_fecha_emision[]" value="{{old('tab_fecha_emision.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_nro_valor[]" value="{{old('tab_nro_valor.'.$i)}}"></td>
+                                        <td><input type="text" name="tab_pago_monto[]" value="{{old('tab_pago_monto.'.$i)}}"></td>
+                                    </tr>
+                                @endfor
+                            @endif
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -351,6 +397,8 @@
                 datos[i].monto_total
             ]).draw( false );
             total_comprobantes = Number(total_comprobantes) + Number(datos[i].monto_total.replace(".",""));
+            var markup = "<tr> <td> <input type='text' id='tab_comp_id' name='tab_comp_id[]' value='" + datos[i].id + "'></td> <td> <input type='text' name='tab_comp_monto[]' value='" + datos[i].monto_total.replace(".", "") + "'></td> </tr>";
+            $("#tab-comp-hidden").append(markup);
         }
         saldo_pago = total_comprobantes;
         $('#modal-cuenta-contado').modal('hide');
@@ -374,6 +422,8 @@
                         datos[i].nro_factura,
                         datos[i].monto_total
                     ]).draw( false );
+                    var markup = "<tr> <td> <input type='text' id='tab_comp_id' name='tab_comp_id[]' value='" + datos[i].id + "'></td> <td> <input type='text' name='tab_comp_monto[]' value='" + datos[i].monto_total.replace(".", "") + "'></td> </tr>";
+                    $("#tab-comp-hidden").append(markup);
                 } else {
                     table.row.add([
                         "Factura Crédito",
@@ -381,6 +431,8 @@
                         datos[i].nro_factura,
                         $.number(saldo, 0, ',', '.')
                     ]).draw( false );
+                    var markup = "<tr> <td> <input type='text' id='tab_comp_id' name='tab_comp_id[]' value='" + datos[i].id + "'></td> <td> <input type='text' name='tab_comp_monto[]' value='" + saldo + "'></td> </tr>";
+                    $("#tab-comp-hidden").append(markup);
                 }
             }
             saldo_pago = monto_total;
@@ -388,7 +440,7 @@
             $("#btn-contado").attr("disabled", true);
             $("#btn-credito").attr("disabled", true);
         } else {
-            alret('Alerta else');
+            //alret('Alerta else');
         }
     }
 
@@ -469,7 +521,7 @@
                 $("#importe").focus();
                 $("#importe").val(saldo_pago).change();
                 $("#btn-add-pago").attr("disabled", false);
-            } else {
+            } else if (valor.length > 0) {
                 $("#select2-bancos").prop('disabled', false);
                 $("#fecha_emision").prop('disabled', false);
                 $("#nume_valo").prop('disabled', false);
@@ -494,13 +546,14 @@
         var formaPago = $('#select2-pagos').val();
         var formaPagoTexto = $('#select2-pagos').select2('data')[0].text;
         var importe = $('#importe').val();
+        var banco = $('#select2-bancos').val();
         var bancoTexto = $('#select2-bancos').select2('data')[0].text;
         var nro_valor = $('#nume_valo').val();
         var fecha_emision = $('#fecha_emision').val();
-        /*if (Number(saldo_pago) == 0) {
+        if (Number(importe) <= 0) {
             var obj = $.alert({
                     title: 'Atención',
-                    content: 'El total en formas de pago no puede superar al total de comprobantes seleccionados!',
+                    content: 'No se puede agregar un pago con un monto menor o igual a cero!',
                     icon: 'fa fa-exclamation-triangle',
                     type: 'orange',
                     backgroundDismiss: true,
@@ -509,7 +562,7 @@
                 setTimeout(function(){
                     obj.close();
                 },3000);
-        } else {*/
+        } else {
             if (formaPago == 'EFE') {
                 if (importe.length != 0) {
                     /*if (Number(importe) > Number(saldo_pago)) {
@@ -533,12 +586,15 @@
                             $.number(importe, 0, ',', '.')
                         ]).draw( false );
                         saldo_pago = Number(saldo_pago) - Number(importe.replace(".", ""));
+                        $('#vuelto').val($.number(Number(saldo_pago)*-1, 0, ',', '.')).change();
                         $('#importe').val("").change();
-                        $('#fecha_emision').val('');
+                        $('#fecha_emision').val("").change();
                         $('#nume_valo').val("").change();
                         $('#select2-pagos').val(null).trigger('change');
                         $('#select2-bancos').val(null).trigger('change');
                         $("#btn-add-pago").attr("disabled", true);
+                        var markup = "<tr> <td> <input type='text' id='tab_forma_pago_id' name='tab_forma_pago_id[]' value='" + formaPago + "'></td> <td> <input type='text' name='tab_banco_id[]' value='" + '' + "'></td> <td> <input type='text' name='tab_fecha_emision[]' value='" + '' + "'></td> <td> <input type='text' name='tab_nro_valor[]' value='" + '' + "'></td> <td> <input type='text' name='tab_pago_monto[]' value='" + importe + "'></td> </tr>";
+                        $("#tab-pago-hidden").append(markup);
                     //}
                 } else {
                     var obj = $.alert({
@@ -577,6 +633,9 @@
                         ]).draw( false );
                         saldo_pago = Number(saldo_pago) - Number(importe.replace(".", ""));
 
+                        var markup = "<tr> <td> <input type='text' id='tab_forma_pago_id' name='tab_forma_pago_id[]' value='" + formaPago + "'></td> <td> <input type='text' name='tab_banco_id[]' value='" + banco + "'></td> <td> <input type='text' name='tab_fecha_emision[]' value='" + fecha_emision + "'></td> <td> <input type='text' name='tab_nro_valor[]' value='" + nro_valor + "'></td> <td> <input type='text' name='tab_pago_monto[]' value='" + importe + "'></td> </tr>";
+                        $("#tab-pago-hidden").append(markup);
+
                         $('#importe').val(null).change();
                         $('#fecha_emision').val("").change();
                         $('#nume_valo').val("").change();
@@ -598,7 +657,7 @@
                     },3000); 
                 }
             }
-        //}
+        }
     }
 </script>
 @endsection

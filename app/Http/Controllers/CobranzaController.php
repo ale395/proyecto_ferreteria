@@ -52,7 +52,7 @@ class CobranzaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request;
     }
 
     /**
