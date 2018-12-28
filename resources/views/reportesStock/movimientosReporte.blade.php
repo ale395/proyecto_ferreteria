@@ -38,6 +38,12 @@
                         </tr>
                         @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-center"><strong>saldo</strong></td>
+                            <td class="text-right"><strong><font size="1">{{$saldo}}</font></strong></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

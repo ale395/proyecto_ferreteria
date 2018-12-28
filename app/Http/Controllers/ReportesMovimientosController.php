@@ -41,9 +41,9 @@ class ReportesMovimientosController extends Controller
         $movimientos = DB::table('movimientos_articulos')
         ->join('articulos', 'movimientos_articulos.articulo_id', '=', 'articulos.id')
         ->join('sucursales', 'movimientos_articulos.sucursal_id', '=', 'sucursales.id')
-        ->select('movimientos_articulos.fecha_movimiento', 'movimientos_articulos.movimiento_id', 
-        'articulos.descripcion','movimientos_articulos.cantidad',
-        DB::raw("case when tipo_movimiento = 'C' THEN 'Compra' when tipo_movimiento = 'A' THEN 'Ajuste'  when tipo_movimiento = 'F' THEN 'Factura'  when tipo_movimiento = 'Z' THEN 'Nota Débito' ELSE 'Inventario' END AS tipo_movimiento"))
+        ->select('movimientos_articulos.fecha_movimiento', 'movimientos_articulos.movimiento_id','articulos.descripcion',
+        DB::raw("case when tipo_movimiento = 'C' THEN 'Compra' when tipo_movimiento = 'A' THEN 'Ajuste'  when tipo_movimiento = 'F' THEN 'Factura'  when tipo_movimiento = 'Z' THEN 'Nota Débito' ELSE 'Inventario' END AS tipo_movimiento"),
+        DB::raw("case when tipo_movimiento = 'C' THEN cantidad when tipo_movimiento = 'A' THEN cantidad  when tipo_movimiento = 'F' THEN cantidad*-1  when tipo_movimiento = 'Z' THEN cantidad ELSE cantidad END AS cantidad"))
     // ->where('movimientos_articulos.sucursal_id', $sucursal_id)
       //  ->where('movimientos_articulos.articulo_id', $articulo_id);
       ->where('movimientos_articulos.fecha_movimiento', '>=', $fecha_inicial)
@@ -73,7 +73,11 @@ class ReportesMovimientosController extends Controller
             $articulo = 'Todos';
         }
            $movimientos = $movimientos->get();
-    	$pdf = PDF::loadView('reportesStock.movimientosReporte', compact('movimientos','fecha_inicial', 'fecha_final','articulo','sucursal'))->setPaper('a4', 'landscape');
+           $saldo=0;
+           foreach ($movimientos as $movimiento) {
+             $saldo = $saldo + $movimiento->cantidad;
+               }
+    	$pdf = PDF::loadView('reportesStock.movimientosReporte', compact('movimientos','fecha_inicial', 'fecha_final','articulo','sucursal', 'saldo'))->setPaper('a4', 'landscape');
 
         return $pdf->stream('ReporteDeMovimientos.pdf',array('Attachment'=>0));
     }
