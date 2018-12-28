@@ -594,13 +594,13 @@ class CompraController extends Controller
         } else {
             $facturas = ComprasCab::where('proveedor_id', $cliente_id)->
                 where('estado', 'P')->get();
-
         }
 
-        /*Filtra por las facturas que tienen saldo.*/
         $facturas = $facturas->filter(function ($factura) {
             return ($factura->getMontoSaldo() > 0);
         });
+
+        //dd($facturas);
         
         foreach ($facturas as $factura) {
             $articulos_array[] = array('id'=> $factura->getId(), 'text'=> $factura->getTipoFacturaIndex().' - '.$factura->getNroFactura().' - '.$factura->getFechaEmision());
@@ -683,9 +683,11 @@ class CompraController extends Controller
                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
                                 
                             if ($compras->estado == 'P') {
-                                return $puede_ver.$puede_editar.$puede_eliminar;
+                                //return $puede_ver.$puede_editar.$puede_eliminar;
+                                return $puede_ver.$puede_eliminar;
                             } else {
-                                return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                //return $puede_ver.$no_puede_eliminar;
+                                return $puede_ver.$no_puede_eliminar;
                             }
                         })->make(true);
                 } else {
@@ -713,9 +715,11 @@ class CompraController extends Controller
                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
  
                             if ($compras->estado == 'P') {
-                                return $no_puede_ver.$puede_editar.$puede_eliminar;
+                                //return $no_puede_ver.$puede_editar.$puede_eliminar;
+                                return $no_puede_ver.$puede_eliminar;
                             } else {
-                                return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                //return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                return $no_puede_ver.$no_puede_eliminar;
                             }
                         })->make(true);
                 }
@@ -747,9 +751,11 @@ class CompraController extends Controller
                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
 
                             if ($compras->estado == 'P') {
-                                return $puede_ver.$puede_editar.$no_puede_eliminar;
+                                //return $puede_ver.$puede_editar.$no_puede_eliminar;
+                                return $puede_ver.$no_puede_eliminar;
                             } else {
-                                return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                //return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                return $puede_ver.$no_puede_eliminar;
                             }
                         })->make(true);
                 } else {
@@ -776,9 +782,11 @@ class CompraController extends Controller
                             $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
 
                             if ($compras->estado == 'P') {
-                                return $no_puede_ver.$puede_editar.$no_puede_eliminar;
+                                //return $no_puede_ver.$puede_editar.$no_puede_eliminar;
+                                return $no_puede_ver.$no_puede_eliminar;
                             } else {
-                                return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                //return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                                return $no_puede_ver.$no_puede_eliminar;
                             }
                         })->make(true);
                 }
@@ -812,9 +820,11 @@ class CompraController extends Controller
                         $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
 
                         if ($compras->estado == 'P') {
-                            return $puede_ver.$puede_editar.$puede_eliminar;
+                            //return $puede_ver.$puede_editar.$puede_eliminar;
+                            return $puede_ver.$puede_eliminar;
                         } else {
-                            return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            //return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            return $puede_ver.$no_puede_eliminar;
                         }
                     })->make(true);
             } else {
@@ -842,9 +852,11 @@ class CompraController extends Controller
                         $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
 
                         if ($compras->estado == 'P') {
-                            return $no_puede_ver.$puede_editar.$puede_eliminar;
+                            //return $no_puede_ver.$puede_editar.$puede_eliminar;
+                            return $no_puede_ver.$puede_eliminar;
                         } else {
-                            return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            //return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                            return $no_puede_ver.$no_puede_eliminar;
                         }
                     })->make(true);
             }
@@ -870,8 +882,9 @@ class CompraController extends Controller
                         $puede_ver = '<a data-toggle="tooltip" data-placement="top" onclick="showForm('. $compras->id .')" class="btn btn-primary btn-sm" title="Ver Compra"><i class="fa fa-eye"></i></a> ';
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
                         $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
-                        
-                        return $puede_ver.$no_puede_editar.$no_puede_eliminar;
+
+                        //return $puede_ver.$no_puede_editar.$no_puede_eliminar;                        
+                        return $puede_ver.$no_puede_eliminar;
                     })->make(true);
             } else {
                 return Datatables::of($compras)
@@ -895,7 +908,8 @@ class CompraController extends Controller
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Compra" disabled><i class="fa fa-pencil-square-o"></i></a> ';
                         $no_puede_eliminar = '<a class="btn btn-danger btn-sm" disabled><i class="fa fa-trash-o"></i> Eliminar</a>';
 
-                        return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                        //return $no_puede_ver.$no_puede_editar.$no_puede_eliminar;
+                        return $no_puede_ver.$no_puede_eliminar;
                     })->make(true);
             }
         }

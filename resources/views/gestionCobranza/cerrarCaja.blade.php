@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <label for="saldo_final" class="col-md-4 control-label">Saldo Final</label>
                         <div class="col-md-5">
-                            <input type="text" id="saldo_final" name="saldo_final" class="form-control" value="{{$saldo_final}}" readonly>
+                            <input type="text" id="saldo_final" name="saldo_final" class="form-control" value="{{number_format($saldo_final, 0, ',', '.')}}" readonly>
                         </div>
                     </div>
             	</div>

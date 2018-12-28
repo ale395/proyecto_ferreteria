@@ -162,9 +162,18 @@ class ComprasCab extends Model
     }
 
     public function getMontoSaldo(){
+        //if $this->estado
         $cuenta_proveedor = CuentaProveedor::where('tipo_comprobante', 'F')
             ->where('comprobante_id', $this->id)->first();
-        return $cuenta_proveedor->getMontoSaldo();
+        //dd($cuenta_proveedor->getMontoSaldo());
+
+        //$monto_saldo = $cuenta_proveedor->getMontoSaldo();
+
+        if ($cuenta_proveedor) {
+            return $cuenta_proveedor->getMontoSaldo();
+        } else {
+            return 0;
+        }
     }
 
     public function getMontoSaldoFormat(){

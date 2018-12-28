@@ -60,7 +60,6 @@ class CobranzaController extends Controller
      */
     public function store(Request $request)
     {
-        //return $request;
         $rules = [
             'habilitacion_id' => 'required',
             'fecha' => 'required|date_format:d/m/Y',

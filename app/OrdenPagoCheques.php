@@ -51,7 +51,7 @@ class OrdenPagoCheques extends Model
     }
 
     public function setNroCuenta($nro_cuenta){
-        $this->estado = $nro_cuenta;
+        $this->nro_cuenta = $nro_cuenta;
     }
 
     public function getLibrador(){
@@ -59,7 +59,7 @@ class OrdenPagoCheques extends Model
     }
 
     public function setLibrador($librador){
-        $this->estado = $librador;
+        $this->librador = $librador;
     }
 
     public function setFechaEmision($fecha_emision){

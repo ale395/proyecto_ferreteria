@@ -166,12 +166,12 @@ class OrdenPagoController extends Controller
 
                 $detalle_che->setOrdenPagoId($cabecera->getId());
                 $detalle_che->setBancoId($request['tab_compra_id'][$i]);
-                $detalle_che->setMonedaId($request['tab_moneda_id'][$i]);
+                $detalle_che->setMonedaId($request['tab_moneda_che_id'][$i]);
                 $detalle_che->setValorCambio(str_replace('.', '', $request['valor_cambio']));
                 $detalle_che->setNroCuenta($request['tab_cuenta'][$i]);
                 $detalle_che->setLibrador($request['tab_librador'][$i]);
                 $detalle_che->setFechaEmision($request['tab_fecha_emi'][$i]);
-                $detalle_che->setFechaVencimiento($request['tab_cuenta'][$i]);
+                $detalle_che->setFechaVencimiento($request['tab_fecha_venc'][$i]);
                 $detalle_che->setImporte(str_replace('.', '', $request['tab_importe_che'][$i]));
 
                 //var_dump($detalle);
