@@ -43,7 +43,7 @@ class ReportesMovimientosController extends Controller
         ->join('sucursales', 'movimientos_articulos.sucursal_id', '=', 'sucursales.id')
         ->select('movimientos_articulos.fecha_movimiento', 'movimientos_articulos.movimiento_id', 
         'articulos.descripcion','movimientos_articulos.cantidad',
-        DB::raw("case when tipo_movimiento = 'C' THEN 'Compra' ELSE 'Inventario' END AS tipo_movimiento"))
+        DB::raw("case when tipo_movimiento = 'C' THEN 'Compra' when tipo_movimiento = 'A' THEN 'Ajuste'  when tipo_movimiento = 'F' THEN 'Factura'  when tipo_movimiento = 'Z' THEN 'Nota Débito' ELSE 'Inventario' END AS tipo_movimiento"))
     // ->where('movimientos_articulos.sucursal_id', $sucursal_id)
       //  ->where('movimientos_articulos.articulo_id', $articulo_id);
       ->where('movimientos_articulos.fecha_movimiento', '>=', $fecha_inicial)
