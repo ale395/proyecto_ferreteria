@@ -52,7 +52,7 @@
                         </div>
                         <label for="vuelto" class="col-md-1 control-label">Vuelto</label>
                         <div class="col-md-2">
-                            <input type="text" class="form-control text-right" id="vuelto" name="vuelto" value="{{$cabecera->getVuelto()}}" readonly>
+                            <input type="text" class="form-control text-right" id="vuelto" name="vuelto" value="{{number_format($cabecera->getVuelto(), 0, ',', '.')}}" readonly>
                         </div>
                     </div>
                     <table id="cobranza-comp" class="table table-striped table-responsive display" style="width:100%">

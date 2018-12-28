@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Caja;
 use Validator;
+use App\CobranzaCab;
 use App\HabilitacionCaja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,7 +64,15 @@ class GestionCajasController extends Controller
         $habilitacion = HabilitacionCaja::where('user_id', Auth::user()->getId())
             ->whereNull('fecha_hora_cierre')
             ->whereIn('caja_id', $cajas_sucursal_actual->pluck('id')->toArray())->first();
-        $saldo_final = 0;
+
+        if (count($habilitacion) == 0) {
+            return redirect('/gestionCajas/habilitarCaja')->with('status', 'No tiene habilitación de caja pendiente de cierre!');
+        }
+
+        $cobranzas = CobranzaCab::where('habilitacion_id', $habilitacion->id)
+            ->where('estado', 'R')->get();
+        $saldo_final = $habilitacion->getSaldoInicialNumber() + $cobranzas->sum('monto_total') - $cobranzas->sum('vuelto');
+
         return view('gestionCobranza.cerrarCaja', compact('habilitacion', 'saldo_final'));
     }
 
