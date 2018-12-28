@@ -250,6 +250,7 @@
                                 <th>Banco</th>
                                 <th width="15%">Cuenta</th>
                                 <th width="30%">Librador</th>
+                                <th width="9%">Id Moneda</th>
                                 <th width="9%">Moneda</th>
                                 <th width="9%">Emisión</th>
                                 <th width="9%">Vencimiento</th>
@@ -265,6 +266,7 @@
                                         <th><input type="text" name="tab_banco_nombre[]" value="{{old('tab_banco_nombre.'.$i)}}"></th>
                                         <th><input type="text" name="tab_cuenta[]" value="{{old('tab_cuenta.'.$i)}}"></th>
                                         <th><input type="text" name="tab_librador[]" value="{{old('tab_librador.'.$i)}}"></th>
+                                        <th><input type="text" name="tab_moneda_che_id[]" value="{{old('tab_moneda_che_id.'.$i)}}"></th>
                                         <th><input type="text" name="tab_moneda_che[]" value="{{old('tab_moneda_che.'.$i)}}"></th>
                                         <th><input type="text" name="tab_fecha_emi[]" value="{{old('tab_fecha_emi.'.$i)}}"></th>
                                         <th><input type="text" name="tab_fecha_venc[]" value="{{old('tab_fecha_venc.'.$i)}}"></th>
@@ -730,7 +732,7 @@
                 importe
             ] ).draw( false );
 
-            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_banco_id' name='tab_banco_id[]' value='" + banco_id + "'></th> <th> <input type='text' name='tab_banco_nombre[]' value='" + banco + "'></th> <th> <input type='text' name='tab_cuenta[]' value='" + cuenta + "'></th> <th> <input type='text' name='tab_librador[]' value='" + librador+ "'></th> <th> <input type='text' name='tab_moneda_che[]' value='" + moneda + "'> </th> <th> <input type='text' name='tab_fecha_venc[]' value='" + fecha_vencimiento + "'> </th> <th> <input type='text' name='tab_importe_che[]' value='" + importe + "'> </th> </tr>";
+            var markup = "<tr> <th>" + "<a class='btn btn-danger btn-sm btn-delete-row' data-toggle='tooltip' data-placement='top' title='Eliminar del pedido'><i class='fa fa-trash' aria-hidden='true'></i></a>" + "</th> <th> <input type='text' id='tab_banco_id' name='tab_banco_id[]' value='" + banco_id + "'></th> <th> <input type='text' name='tab_banco_nombre[]' value='" + banco + "'></th> <th> <input type='text' name='tab_cuenta[]' value='" + cuenta + "'></th> <th> <input type='text' name='tab_librador[]' value='" + librador+ "'></th> <th> <input type='text' name='tab_moneda_che_id[]' value='" + moneda_id + "'> </th> <th> <input type='text' name='tab_moneda_che[]' value='" + moneda + "'> </th> <th> <input type='text' name='tab_fecha_emi[]' value='" + fecha_emision + "'> </th> <th> <input type='text' name='tab_fecha_venc[]' value='" + fecha_vencimiento + "'> </th> <th> <input type='text' name='tab_importe_che[]' value='" + importe + "'> </th> </tr>";
             $("#tab-hidden-che").append(markup);
 
             /*Se restauran a nulos los valores del bloque para la selección del articulo*/
