@@ -405,7 +405,7 @@
                 //async: false,
                 success: function(data){
                     $("#importe_compra" ).val(data.monto_total).change();
-                    $("#importe_afectado" ).val(data.monto_total).change();                    
+                    $("#importe_afectado" ).val(data.saldo).change();                    
                     $("#btn-add-articulo").attr("disabled", false);
                 }
             });

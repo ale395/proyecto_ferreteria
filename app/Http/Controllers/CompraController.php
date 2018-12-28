@@ -240,17 +240,18 @@ class CompraController extends Controller
                     //$pedido_factura->save();
                 }
             }
-  
-            if ($modalidad_pago != 'CO'){
-                //Actualizacion de saldo proveedor
-                $cuenta = new CuentaProveedor;
-                $cuenta->setTipoComprobante('F');
-                $cuenta->setComprobanteId($cabecera->getId());
-                $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
-                $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
-                $cuenta->save();
+            // a pedido de Duré, las compras contado también deben figurar en el extracto   
+            // if ($modalidad_pago != 'CO'){
             
-            } 
+            // Actualizacion de saldo proveedor
+            $cuenta = new CuentaProveedor;
+            $cuenta->setTipoComprobante('F');
+            $cuenta->setComprobanteId($cabecera->getId());
+            $cuenta->setMontoComprobante(str_replace('.', '', $cabecera->getMontoTotal()));
+            $cuenta->setMontoSaldo(str_replace('.', '', $cabecera->getMontoTotal()));
+            $cuenta->save();
+            
+            // } 
 
             DB::commit();
             
@@ -616,7 +617,10 @@ class CompraController extends Controller
             $articulo = collect(ComprasCab::findOrFail($compra_id));
             //$articulo_obj = ComprasCab::findOrFail($compra_id);
             //$articulo = Articulo::findOrFail($articulo_id)->first();
-            //$ultimo_costo = $articulo->ultimo_costo;    
+            //$ultimo_costo = $articulo->ultimo_costo; 
+            $articulo_obj = ComprasCab::findOrFail($compra_id);
+            
+            $articulo->put('saldo', $articulo_obj->getMontoSaldo());
             
             return $articulo;
         };

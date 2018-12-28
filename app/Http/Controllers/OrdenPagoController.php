@@ -144,7 +144,7 @@ class OrdenPagoController extends Controller
 
                 $detalle->save();
 
-                //Actualiza el saldo de la factura relacionada a la nota de credito
+                //Actualiza el saldo de la factura relacionada a la orden de pago
                 $cuenta_factura = CuentaProveedor::where('tipo_comprobante', 'F')
                 ->where('comprobante_id', $compra->getId())->first();
                 $cuenta_factura->setMontoSaldo($cuenta_factura->getMontoSaldo() - str_replace('.', '', $importe_afectado));

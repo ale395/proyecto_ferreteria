@@ -126,11 +126,11 @@
                             </select>
                         </div>
                         <div class="col-md-1">
-                            <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()" readonly></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Cantidad"><input type="text" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." onchange="calcularSubtotal()" onkeyup="calcularSubtotal()"></a>
                         </div>
                         <input type="hidden" id="existencia" name="existencia">
                         <div class="col-md-2">
-                            <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()"></a>
+                            <a data-toggle="tooltip" data-placement="top" title="Costo Unitario"><input type="text" id="precio_unitario" name="precio_unitario" class="form-control" placeholder="Costo Unitario" onchange="calcularSubtotal()" readonly></a>
                         </div>
                         <div class="col-md-1">
                             <a data-toggle="tooltip" data-placement="top" title="% Descuento">
@@ -361,7 +361,7 @@
                 //async: false,
                 success: function(data){
                     $("#porcentaje_iva" ).val(data.iva.porcentaje).change();
-                    $("#costo_unitario" ).val(data.ultimo_costo).change();                    
+                    $("#precio_unitario" ).val(data.ultimo_costo).change();                    
                     $("#porcentaje_descuento" ).val(0).change();
                     $("#btn-add-articulo").attr("disabled", false);
                 }
