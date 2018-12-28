@@ -76,17 +76,16 @@
                                 <td>{{$detalle->banco}}</td>
                                 <td>{{$detalle->nro_cuenta}}</td>
                                 <td>{{$detalle->librador}}</td>
-                                <td>{{$detalle->codigo_articulo}}</td>
-                                <td>{{$detalle->articulo}}</td>
-                                <td class="text-center">{{$detalle->cantidad}}</td>
-                                <td class="text-right">{{$detalle->costo_unitario}}</td>
-                                <td class="text-right">{{$detalle->sub_total}}</td>
+                                <td>{{$detalle->moneda}}</td>
+                                <td>{{$detalle->fecha_emision}}</td>
+                                <td>{{$detalle->fecha_vencimiento}}</td>
+                                <td class="text-right">{{$detalle->importe}}</td>
                             </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4"><strong>TOTAL</strong></td>
+                            <td colspan="6"><strong>TOTAL</strong></td>
                             <td class="text-right"><strong>{{$orden_pago->monto_total}}</strong></td>
                         </tr>
                     </tfoot>

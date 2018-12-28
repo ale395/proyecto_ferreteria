@@ -171,7 +171,7 @@ class OrdenPagoController extends Controller
                 $detalle_che->setNroCuenta($request['tab_cuenta'][$i]);
                 $detalle_che->setLibrador($request['tab_librador'][$i]);
                 $detalle_che->setFechaEmision($request['tab_fecha_emi'][$i]);
-                $detalle_che->setFechaVencimiento($request['tab_cuenta'][$i]);
+                $detalle_che->setFechaVencimiento($request['tab_fecha_venc'][$i]);
                 $detalle_che->setImporte(str_replace('.', '', $request['tab_importe_che'][$i]));
 
                 //var_dump($detalle);
