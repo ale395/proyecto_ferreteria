@@ -347,7 +347,8 @@ class InventarioController extends Controller
                         $no_puede_editar = '<a data-toggle="tooltip" data-placement="top" class="btn btn-warning btn-sm" title="Editar Factura" disabled><i class="fa fa-pencil-square-o"></i></a> ';
                         $puede_borrar = '<a data-toggle="tooltip" data-placement="top" onclick="deleteData('. $inventario->id .')" class="btn btn-danger btn-sm" title="Eliminar Pedido"><i class="fa fa-trash-o"></i></a>';
 
-                        return $puede_ver.$puede_editar.$puede_borrar;
+                       // return $puede_ver.$puede_editar.$puede_borrar;
+                       return $puede_ver.$puede_borrar;
 
                                         })->make(true);              
 
